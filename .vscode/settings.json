@@ -1,8 +1,0 @@
-{
-   "editor.formatOnSave": true,
-   "editor.tabSize": 3,
-   "git.rebaseWhenSync": true,
-   "remote.autoForwardPorts": false,
-   "remote.restoreForwardedPorts": false,
-   "typescript.preferences.quoteStyle": "single"
-}
