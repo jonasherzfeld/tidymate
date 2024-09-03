@@ -1,2 +1,11 @@
+# IDE configuration and artifacts
+.vscode
+.DS_Store
+
+# Build artifacts
+build
 node_modules
 console/**/*.js
+
+# Environment variables
+.env

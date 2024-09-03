@@ -8,9 +8,6 @@
    "service": "tidymate-dev",
    "workspaceFolder": "/work",
    // Which folders to mount
-   "mounts": [
-      "source=${localEnv:HOME}/.bashrc,target=~/.bashrc,type=bind,consistency=cached"
-   ],
    "customizations": {
       "vscode": {
          "extensions": [

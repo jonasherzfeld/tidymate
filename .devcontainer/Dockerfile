@@ -1,5 +1,6 @@
 FROM node:20.12.2
 
+USER node
 
 # Upgrade NPM
 RUN npm install -g npm@10.5.2
