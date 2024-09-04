@@ -1,11 +1,15 @@
 # IDE configuration and artifacts
 .vscode
-.DS_Store
 
 # Build artifacts
-build
-node_modules
+**/build
+**/node_modules
 console/**/*.js
+**/.turbo
+**/.next
 
 # Environment variables
 .env
+
+# Misc
+.DS_Store
