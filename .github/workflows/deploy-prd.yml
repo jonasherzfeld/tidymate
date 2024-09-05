@@ -9,15 +9,19 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Setup Environment
+      - name: Setup environment
         uses: ./.github/actions/npm-install
+      - name: Setup Turbo Cache
+        uses: rharkor/caching-for-turbo@v1.5
+        with:
+          cache-prefix: tidymate_
       - name: Build
         run: npm run build
       - name: Upload App Artifact
         uses: actions/upload-artifact@v3
         with:
           name: tidymate-app-artifact
-          path: ./packages/app/build
+          path: ./packages/app
   deploy:
     environment:
       name: production

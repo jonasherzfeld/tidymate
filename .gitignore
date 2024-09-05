@@ -3,6 +3,7 @@
 
 # Build artifacts
 **/build
+**/dist
 **/node_modules
 console/**/*.js
 **/.turbo

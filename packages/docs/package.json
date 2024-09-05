@@ -14,6 +14,8 @@
   "dependencies": {
     "firebase-cli": "^1.2.0",
     "next": "14.2.6",
+    "nextra": "2.13.4",
+    "nextra-theme-docs": "2.13.4",
     "react": "18.3.1",
     "react-dom": "18.3.1"
   },
