@@ -9,24 +9,30 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Setup environment
+        uses: ./.github/actions/npm-install
+      - name: Setup Turbo Cache
+        uses: rharkor/caching-for-turbo@v1.5
+        with:
+          cache-prefix: tidymate_
       - name: Build
-        run: npm run build && npm run build:cp-public
-      - name: Upload Artifact
+        run: npm run build
+      - name: Upload App Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: tidymate-artifact
-          path: .
+          name: tidymate-app-artifact
+          path: ./packages/app
   deploy:
-    environment: 
+    environment:
       name: production
       url: ${{ steps.deploy.outputs.details_url }}
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - name: Download Artifact
+      - name: Download App Artifact
         uses: actions/download-artifact@v3
         with:
-          name: tidymate-artifact
+          name: tidymate-app-artifact
       - name: Deploy to Firebase Hosting
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
