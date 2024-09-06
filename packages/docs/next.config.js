@@ -1,9 +1,22 @@
-const withNextra = require("nextra")({
-  theme: "nextra-theme-docs",
-  themeConfig: "./theme.config.jsx",
+const withNextra = require('nextra')({
+  //Nextra
+  theme: 'nextra-theme-docs',
+  themeConfig: './theme.config.tsx',
+  unstable_staticImage: false
 });
+const path = require('path');
 
-module.exports = withNextra();
-
-// If you have other Next.js configurations, you can pass them as the parameter:
-// module.exports = withNextra({ /* other next.js config */ })
+module.exports = module.exports = {
+  ...withNextra({
+    sassOptions: {
+      includePaths: [path.join(__dirname, 'styles')],
+    },
+    trailingSlash: true,
+    basePath: process.env.NEXT_PUBLIC_BASE_PATH || ''
+  }),
+  output: "export",
+  assetPrefix: './',
+  images: {
+    unoptimized: true,
+  },
+};

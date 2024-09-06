@@ -1,9 +1,9 @@
 function helloWorld() {
-    const element = document.getElementById("hello-world");
+  const element = document.getElementById("hello-world");
 
-    if (element) {
-        element.textContent = "Hello World!";
-    }
+  if (element) {
+    element.textContent = "Hello World!";
+  }
 }
 
 helloWorld();

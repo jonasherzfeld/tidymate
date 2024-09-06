@@ -4,10 +4,12 @@
 # Build artifacts
 **/build
 **/dist
+**/out
 **/node_modules
 console/**/*.js
 **/.turbo
 **/.next
+*.log
 
 # Environment variables
 .env
