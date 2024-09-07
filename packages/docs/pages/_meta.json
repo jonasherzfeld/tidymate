@@ -1,0 +1,15 @@
+{
+  "index": "Introduction",
+  "another": "Another Page",
+  "advanced": "Advanced (A Folder)",
+  "about": {
+    "title": "About",
+    "type": "page"
+  },
+  "app": {
+    "title": "App ↗",
+    "type": "page",
+    "href": "https://tidy-mate.web.app",
+    "newWindow": true
+  }
+}
