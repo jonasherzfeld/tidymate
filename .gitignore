@@ -10,9 +10,10 @@ console/**/*.js
 **/.turbo
 **/.next
 *.log
+**/venv
 
 # Environment variables
-.env
+.env*
 
 # Misc
 .DS_Store
