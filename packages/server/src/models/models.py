@@ -1,4 +1,4 @@
-from .config import db
+from config.config import db
 
 class Contact():
     id: str

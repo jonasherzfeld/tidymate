@@ -1,6 +1,6 @@
 from flask import request, jsonify
-from config import db
-from models import Contact
+from packages.server.src.config.config import db
+from packages.server.src.models.models import Contact
 
 def get_contacts():
     contacts_raw = db.get_all_data("contacts")

@@ -14,7 +14,9 @@ function App() {
     }, []);
 
     const fetchContacts = async () => {
-        const response = await fetch("/contacts");
+        const response = await fetch(
+            `${process.env.REACT_APP_API_URL}/contacts`
+        );
         const data = await response.json();
         setContacts(data.contacts);
         console.log(data);

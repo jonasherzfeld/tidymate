@@ -11,7 +11,7 @@ console/**/*.js
 **/.next
 *.log
 **/venv
-
+**/__pycache__
 # Environment variables
 .env*
 
