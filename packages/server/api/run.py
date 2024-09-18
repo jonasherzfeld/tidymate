@@ -1,6 +1,6 @@
 from flask import request, jsonify
-from config import app, db
-from models import Contact
+from .config import app, db
+from .models import Contact
 
 @app.route("/")
 @app.route("/contacts")
