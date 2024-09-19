@@ -20,7 +20,7 @@ const ContactForm = ({
             email
         };
         const url =
-            "/" +
+            `${process.env.REACT_APP_API_URL}/` +
             (updating
                 ? `update_contact/${existingContact.id}`
                 : "create_contact");

@@ -23,7 +23,10 @@ export const ContactList = ({
             const options = {
                 method: "DELETE"
             };
-            const response = await fetch(`/delete_contact/${id}`, options);
+            const response = await fetch(
+                `${process.env.REACT_APP_API_URL}/delete_contact/${id}`,
+                options
+            );
 
             if (response.status === 200) {
                 updateCallback();
