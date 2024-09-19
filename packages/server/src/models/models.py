@@ -1,5 +1,3 @@
-from config.config import db
-
 class Contact():
     id: str
     first_name: str

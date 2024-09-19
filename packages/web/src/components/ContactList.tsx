@@ -24,7 +24,7 @@ export const ContactList = ({
                 method: "DELETE"
             };
             const response = await fetch(
-                `${process.env.BACKEND_URL}/delete_contact/${id}`,
+                `${process.env.REACT_APP_API_URL}/delete_contact/${id}`,
                 options
             );
 
