@@ -5,7 +5,7 @@ from flask import Flask
 from flask_cors import CORS
 import os
 
-from .database import Database
+from config.database import Database
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": ["http://localhost:3000", os.environ['FRONTEND_URL']]}})
