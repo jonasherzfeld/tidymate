@@ -1,14 +1,17 @@
 {
     "builds": [
         {
-            "src": "src/run.py",
+            "src": "src/index.py",
             "use": "@vercel/python"
         }
     ],
     "routes": [
         {
             "src": "/(.*)",
-            "dest": "src/run.py"
+            "dest": "src/index.py",
+            "headers": {
+                "Access-Control-Allow-Origin": "https://tidymate.vercel.app"
+            }
         }
     ],
     "env": {
