@@ -6,6 +6,8 @@ cffi==1.17.1
 charset-normalizer==3.3.2
 click==8.1.7
 cryptography==43.0.1
+distlib==0.3.8
+filelock==3.16.1
 firebase-admin==6.5.0
 Flask==3.0.3
 Flask-Cors==5.0.0
@@ -28,6 +30,8 @@ itsdangerous==2.2.0
 Jinja2==3.1.4
 MarkupSafe==2.1.5
 msgpack==1.1.0
+pipenv==2024.0.2
+platformdirs==4.3.6
 proto-plus==1.24.0
 protobuf==5.28.1
 pyasn1==0.6.1
@@ -39,5 +43,6 @@ requests==2.32.3
 rsa==4.9
 uritemplate==4.1.1
 urllib3==2.2.3
+virtualenv==20.26.5
 Werkzeug==3.0.4
 zipp==3.20.2

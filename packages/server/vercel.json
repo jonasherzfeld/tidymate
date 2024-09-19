@@ -10,5 +10,8 @@
             "src": "/(.*)",
             "dest": "src/run.py"
         }
-    ]
+    ],
+    "env": {
+        "PYTHONPATH": "src/"
+    }
 }
