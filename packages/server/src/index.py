@@ -1,8 +1,31 @@
-from flask import request, jsonify
+from flask import render_template, request, jsonify
 from config.config import app, db
 from models.models import Contact
+from firebase_admin import auth
 
-@app.route("/")
+@app.route("/", methods=["GET", "POST"])
+def index():
+    if request.method == "POST":
+        email = request.form.get("email")
+        password = request.form.get("password")
+        try:
+            user = auth.get_user_by_email(email)
+        except:
+            return "Failed to Login"
+    return render_template('index.html')
+
+@app.route("/login")
+def login():
+    return jsonify({"message": "Login route"})
+
+@app.route("/logout")
+def logout():
+    return jsonify({"message": "Logout route"})
+
+@app.route("/register")
+def register():
+    return create_user("","")
+
 @app.route("/contacts")
 def get_contacts():
     contacts_raw = db.get_all_data("contacts")

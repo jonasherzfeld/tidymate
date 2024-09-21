@@ -1,4 +1,4 @@
-from google.cloud.firestore_v1.base_query import FieldFilter, Or
+from google.cloud.firestore_v1.base_query import FieldFilter
 
 class Database():
     def __init__(self, db):
