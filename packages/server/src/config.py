@@ -1,16 +1,16 @@
 import firebase_admin
-from firebase_admin import credentials, firestore, auth
+from firebase_admin import credentials, firestore
+import pyrebase
 from flask import Flask
 from flask_cors import CORS
 import os
 
-from config.database import Database
-
-app = Flask(__name__, template_folder='../public')
-CORS(app, resources={r"/*": {"origins": ["http://localhost:3000", os.environ['FRONTEND_URL']]}})
+app = Flask(__name__, template_folder='public')
+CORS(app, resources={r"/*": {"origins": ["http://localhost:3000", "http://localhost:5173", os.environ['FRONTEND_URL']]}})
 
 app.config['SECRET_KEY'] = os.environ['FLASK_SECRET_KEY']
-cred = credentials.Certificate({
+
+service_account = {
     "type": os.environ['TYPE'],
     "project_id": os.environ['PROJECT_ID'],
     "private_key_id": os.environ['PRIVATE_KEY_ID'],
@@ -22,7 +22,17 @@ cred = credentials.Certificate({
     "auth_provider_x509_cert_url": os.environ['AUTH_PROVIDER_X509_CERT_URL'],
     "client_x509_cert_url": os.environ['CLIENT_X509_CERT_URL'],
     "universe_domain": os.environ['UNIVERSE_DOMAIN']
-    })
-
+    }
+cred = credentials.Certificate(service_account)
 firebase_admin.initialize_app(cred)
-db = Database(firestore.client())
+
+pb_config = {
+  "apiKey": os.environ['API_KEY'],
+  "authDomain": os.environ['AUTH_DOMAIN'],
+  "databaseURL": os.environ['DATABASE_URL'],
+  "storageBucket": os.environ['STORAGE_BUCKET'],
+  "serviceAccount": service_account
+}
+fb_auth = pyrebase.initialize_app(pb_config).auth()
+
+db = firestore.client()
