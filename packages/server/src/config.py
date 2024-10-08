@@ -1,14 +1,20 @@
 import firebase_admin
 from firebase_admin import credentials, firestore
-import pyrebase
 from flask import Flask
 from flask_cors import CORS
+from flask_session import Session
+import redis
 import os
 
 app = Flask(__name__, template_folder='public')
 CORS(app, resources={r"/*": {"origins": ["http://localhost:3000", "http://localhost:5173", os.environ['FRONTEND_URL']]}})
 
 app.config['SECRET_KEY'] = os.environ['FLASK_SECRET_KEY']
+app.config['SESSION_TYPE'] = 'redis'
+app.config['SESSION_PERMANENT'] = False
+app.config['SESSION_USE_SIGNER'] = True
+app.config['SESSION_REDIS'] = redis.from_url(os.environ['REDIS_URL'])
+server_session = Session(app)
 
 service_account = {
     "type": os.environ['TYPE'],
@@ -25,14 +31,5 @@ service_account = {
     }
 cred = credentials.Certificate(service_account)
 firebase_admin.initialize_app(cred)
-
-pb_config = {
-  "apiKey": os.environ['API_KEY'],
-  "authDomain": os.environ['AUTH_DOMAIN'],
-  "databaseURL": os.environ['DATABASE_URL'],
-  "storageBucket": os.environ['STORAGE_BUCKET'],
-  "serviceAccount": service_account
-}
-fb_auth = pyrebase.initialize_app(pb_config).auth()
 
 db = firestore.client()

@@ -5,7 +5,13 @@
         "build": {
             "dependsOn": ["^build"],
             "inputs": ["$TURBO_DEFAULT$", ".env*"],
-            "outputs": ["build/**", ".next/**", "!.next/cache/**"]
+            "outputs": [
+                ".svelte-kit/**",
+                ".vercel/**",
+                "build/**",
+                ".next/**",
+                "!.next/cache/**"
+            ]
         },
         "lint": {
             "dependsOn": ["^lint"]

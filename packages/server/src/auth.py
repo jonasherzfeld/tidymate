@@ -1,80 +1,87 @@
 from datetime import datetime
-from flask import Blueprint, render_template, request, flash, redirect, url_for
+from flask import Blueprint, request, flash, redirect, url_for, jsonify, session
 from models import User
-from flask_login import login_user, login_required, logout_user, current_user
-from config import fb_auth
+from firebase_admin import auth as fb_auth
 from view_models import UserViewModel
+import requests
+import os
 
 auth = Blueprint('auth', __name__)
 
-
-@auth.route('/login', methods=['GET', 'POST'])
+@auth.route('/login', methods=['POST'])
 def login():
-    if request.method == 'POST':
-        email = request.form.get('email')
-        password = request.form.get('password')
+    email = request.json['email']
+    password = request.json['password']
 
-        try:
-            user_data = fb_auth.sign_in_with_email_and_password(email, password)
-            print(user_data)
-        except Exception as e:
-            print(e)
-            flash(f'Incorrect credentials', category='error')
-            return redirect(url_for('auth.login'))
+    identity_tool_kit_id = os.getenv("API_KEY")
+    identity_url = f"https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={identity_tool_kit_id}"
 
-        if user_data["registered"]:
-            vm = UserViewModel()
-            user_db = vm.get(user_data['localId'])
-            user = User(id=user_data['localId'],
-                    email=user_data['email'],
-                    first_name=user_db.first_name,
-                    joined_on=user_db.joined_on
-                    )
-            flash('Logged in successfully!', category='success')
-            login_user(user, remember=True)
-            return redirect(url_for('views.home'))
-        else:
-            flash('Email does not exist.', category='error')
+    user_auth_response = requests.post(
+        url=identity_url,
+        json={
+            "email": email,
+            "password": password,
+            "returnSecureToken":True
+        }
+    )
 
-    return render_template("login.html", user=current_user)
+    if user_auth_response.status_code != 200:
+        return jsonify({"error": "Incorrect credentials"}), user_auth_response.status_code
+
+    user_data = fb_auth.get_user_by_email(email)
+    if user_data:
+        session["user_id"] = user_data.uid
+        return jsonify({
+            "id": user_data.uid,
+            "email": user_data.email,
+        }), 200
+    else:
+        return jsonify({"error": "Email does not exist."}), 404
 
 
 @auth.route('/logout')
-@login_required
 def logout():
     logout_user()
     return redirect(url_for('auth.login'))
 
 
-@auth.route('/register', methods=['GET', 'POST'])
+@auth.route('/register', methods=["POST"])
 def register():
-    if request.method == 'POST':
-        email = request.form.get('email')
-        first_name = request.form.get('firstName')
-        password1 = request.form.get('password1')
-        password2 = request.form.get('password2')
+    email = request.json['email']
+    first_name = request.json['firstName']
+    password1 = request.json['password1']
+    password2 = request.json['password2']
 
-        vm = UserViewModel()
-        user = vm.filter(email)
-        if user:
-            flash('Email already exists.', category='error')
-        elif len(email) < 4:
-            flash('Email must be greater than 3 characters.', category='error')
-        elif len(first_name) < 2:
-            flash('First name must be greater than 1 character.', category='error')
-        elif password1 != password2:
-            flash('Passwords don\'t match.', category='error')
-        elif len(password1) < 7:
-            flash('Password must be at least 7 characters.', category='error')
-        else:
-            fb_user = fb_auth.create_user_with_email_and_password(email, password1)
-            new_user = User(id=fb_user["localId"],
-                            email=email,
-                            first_name=first_name,
-                            joined_on=datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
-            vm.set(fb_user["localId"], new_user)
-            login_user(new_user, remember=True)
-            flash('Account created!', category='success')
-            return redirect(url_for('views.home'))
+    vm = UserViewModel()
+    user = vm.filter(email)
+    print("User: ", user)
+    if user:
+        flash('Email already exists.', category='error')
+        return jsonify({"error": "Email already exists."}), 409
+    elif len(email) < 4:
+        flash('Email must be greater than 3 characters.', category='error')
+        return jsonify({"error": "Email must be greater than 3 characters."}), 400
+    elif len(first_name) < 2:
+        flash('First name must be greater than 1 character.', category='error')
+        return jsonify({"error": "First name must be greater than 1 character."}), 400
+    elif password1 != password2:
+        flash('Passwords don\'t match.', category='error')
+        return jsonify({"error": "Passwords don't match."}), 400
+    elif len(password1) < 7:
+        flash('Password must be at least 7 characters.', category='error')
+        return jsonify({"error": "Password must be at least 7 characters."}), 400
+    else:
+        fb_user = fb_auth.create_user(email=email, password=password1,
+                                        display_name=first_name)
+        new_user = User(id=fb_user.uid,
+                        email=email,
+                        first_name=first_name,
+                        joined_on=datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+        vm.set(fb_user.uid, new_user)
+        login_user(new_user, remember=True)
+        flash('Account created!', category='success')
 
-    return render_template("register.html", user=current_user)
+    return jsonify({
+        "id": new_user.id,
+        "email": new_user.email,
+    })

@@ -1,7 +1,6 @@
 from datetime import datetime
 import uuid
 from google.cloud.firestore_v1.base_query import FieldFilter
-from flask_login import current_user
 
 from config import db
 from models import Note, User
@@ -11,12 +10,8 @@ NOTES_COLLECTION : str = "notes"
 
 class NoteViewModel():
 
-    def get(self, note_id: str) -> Note:
-        if not current_user:
-            print(f"Could not access note. No user logged in!")
-            return None
-
-        doc_ref = db.collection(USER_COLLECTION).document(current_user.id) \
+    def get(self, user_id: str, note_id: str) -> Note:
+        doc_ref = db.collection(USER_COLLECTION).document(user_id) \
                     .collection(NOTES_COLLECTION).document(note_id)
         doc = doc_ref.get()
         if doc.exists:
@@ -26,9 +21,9 @@ class NoteViewModel():
             print(f"Document {id} not found")
             return None
 
-    def get_all(self) -> list:
+    def get_all(self, user_id: str) -> list:
         docs = (
-            db.collection(USER_COLLECTION).document(current_user.id) \
+            db.collection(USER_COLLECTION).document(user_id) \
                     .collection(NOTES_COLLECTION).stream()
         )
 
@@ -43,25 +38,17 @@ class NoteViewModel():
 
         return note_list
 
-    def set(self, data : str) -> bool:
-        if not current_user:
-            print(f"Could not access note. No user logged in!")
-            return False
-
+    def set(self, user_id: str, data : str) -> bool:
         note_id = str(uuid.uuid4())
-        doc_ref = db.collection(USER_COLLECTION).document(current_user.id) \
+        doc_ref = db.collection(USER_COLLECTION).document(user_id) \
                     .collection(NOTES_COLLECTION).document(note_id)
         note = Note(note_id, data, datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
         doc_ref.set(note.to_json())
         return True
 
-    def update(self, note_id: str, data : str) -> bool:
-        if not current_user:
-            print(f"Could not access note. No user logged in!")
-            return False
-
+    def update(self, user_id: str, note_id: str, data : str) -> bool:
         doc_ref = self.db.collection(USER_COLLECTION) \
-                        .document(current_user.id) \
+                        .document(user_id) \
                         .collection(NOTES_COLLECTION) \
                         .document(note_id)
         doc = doc_ref.get()
@@ -73,14 +60,10 @@ class NoteViewModel():
             print(f"Document {note_id} not found")
             return False
 
-    def delete(self, note_id: str):
-        if not current_user:
-            print(f"Could not access note. No user logged in!")
-            return False
-
+    def delete(self, user_id: str, note_id: str):
         try:
             doc_ref = self.db.collection(USER_COLLECTION) \
-                        .document(current_user.id) \
+                        .document(user_id) \
                         .collection(NOTES_COLLECTION) \
                         .document(note_id)
             doc_ref.delete()
@@ -107,17 +90,18 @@ class UserViewModel():
 
     def filter(self, email: str) -> list:
         try:
-            doc_ref = self.db.collection(USER_COLLECTION)
+            doc_ref = db.collection(USER_COLLECTION)
             query = doc_ref.where(filter=FieldFilter("email", "==", email))
             docs = query.stream()
 
             doc_list = list()
             for doc in docs:
                 doc_data = doc.to_dict()
+                print(doc_data)
                 user = User(doc_data["id"],
-                            doc_data['data']["email"],
-                            doc_data['data']["first_name"],
-                            doc_data['data']["joined_on"])
+                            doc_data["email"],
+                            doc_data["first_name"],
+                            doc_data["joined_on"])
 
                 doc_list.append(user)
 
