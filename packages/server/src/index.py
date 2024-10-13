@@ -5,7 +5,7 @@ from view_models import UserViewModel
 from views import views
 
 def run():
-    app.register_blueprint(auth, url_prefix='/')
+    app.register_blueprint(auth, url_prefix='/auth')
     app.register_blueprint(views, url_prefix='/')
 
     login_manager = LoginManager()

@@ -83,6 +83,7 @@ class UserViewModel():
             return User(doc_json["id"],
                         doc_json["email"],
                         doc_json["first_name"],
+                        doc_json["last_name"],
                         doc_json["joined_on"])
         else:
             print(f"Document {id} not found in collection {USER_COLLECTION}")
@@ -101,6 +102,7 @@ class UserViewModel():
                 user = User(doc_data["id"],
                             doc_data["email"],
                             doc_data["first_name"],
+                            doc_data["last_name"],
                             doc_data["joined_on"])
 
                 doc_list.append(user)
