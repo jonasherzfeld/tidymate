@@ -4,7 +4,7 @@
 	export let key;
 
 	/** @type {number} */
-	export let duration = 300;
+	export let duration = 100;
 </script>
 
 {#key key}
