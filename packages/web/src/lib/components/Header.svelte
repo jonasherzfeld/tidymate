@@ -3,38 +3,36 @@
 
 	import { applyAction, enhance } from '$app/forms';
 	import { page } from '$app/stores';
-	import Developer from '$lib/img/hero-image.png';
 	import Avatar from '$lib/img/teamavatar.png';
 	import Unknown from '$lib/img/Unknown_person.jpg';
+	import Logo from '$lib/img/tidymate_logo_white.png';
 
+	// this is for later in TypeScript
+	// type NavLink = {
+	// 	title: string;
+	// 	href: string;
+	// };
+	export let nav_links = [];
 	//const Avatar = 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp';
 </script>
 
-<div class="navbar bg-base-100 text-shade-500 border-solid border-b border-shape-500">
-	<div class="flex-none">
-		<button class="btn btn-square btn-ghost">
-			<svg
-				xmlns="http://www.w3.org/2000/svg"
-				fill="none"
-				viewBox="0 0 24 24"
-				class="inline-block h-5 w-5 stroke-current"
-			>
-				<path
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					stroke-width="2"
-					d="M4 6h16M4 12h16M4 18h16"
-				></path>
-			</svg>
-		</button>
-	</div>
+<div class="navbar">
 	<div class="flex-1">
-		<a href="/" class="btn btn-ghost text-xl">Tidymate</a>
+		<a href="/" class="btn btn-ghost text-xl">
+			<img alt="User" src={Logo} width="30px" />Tidymate</a
+		>
+		<div class="hidden flex-none lg:block">
+			<ul class="menu menu-horizontal px-1">
+				{#each nav_links as link}
+					<li><a href={link.href}>{link.title}</a></li>
+				{/each}
+			</ul>
+		</div>
 	</div>
 	<div class="flex-none gap-2">
 		<ul class="menu menu-horizontal px-1">
-			<li><a>About</a></li>
-			<li><a>Documention</a></li>
+			<li><a href="/about">About</a></li>
+			<li><a href="https://tidymate-docs.vercel.app" target="_blank">Documention ↗</a></li>
 		</ul>
 		<div class="dropdown dropdown-end">
 			<div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">

@@ -2,16 +2,17 @@
 .vscode
 
 # Build artifacts
-**/build
-**/dist
-**/out
-**/node_modules
+build
+dist
+out
+node_modules
 console/**/*.js
-**/.turbo
-**/.next
+.turbo
+.next
 *.log
-**/venv
-**/__pycache__
+venv
+__pycache__
+.vercel
 
 # Environment variables
 .env*
