@@ -13,6 +13,7 @@ console/**/*.js
 venv
 __pycache__
 .vercel
+*.rdb
 
 # Environment variables
 .env*

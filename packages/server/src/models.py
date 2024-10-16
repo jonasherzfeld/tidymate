@@ -1,5 +1,3 @@
-from flask_login import UserMixin
-
 USER_COLLECTION : str = "user"
 NOTES_COLLECTION : str = "notes"
 
@@ -20,7 +18,7 @@ class Note():
             "date": self.date
         }
 
-class User(UserMixin):
+class User():
     id : str = None
     email : str = None
     first_name : str = None
