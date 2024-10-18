@@ -1,24 +1,33 @@
 <script>
-    import 'tailwindcss/tailwind.css';
-
-    import TextInput from '$lib/components/TextInput.svelte';
     import { applyAction, enhance } from '$app/forms';
-    import { page } from '$app/stores';
     import { receive, send } from '$lib/utils/helpers';
+    import { create_group } from '$lib/utils/stores';
+    import { scale } from 'svelte/transition';
+    import TextInput from '$lib/components/TextInput.svelte';
+
+    let create_group_value;
+    create_group.subscribe((value) => {
+        create_group_value = value;
+    });
 
     /** @type {import('./$types').ActionData} */
     export let form;
 
     /** @type {import('./$types').SubmitFunction} */
-    const handleLogin = async () => {
+    const handleRegister = async () => {
         return async ({ result }) => {
             await applyAction(result);
         };
     };
 </script>
 
-<div class="lg:text-center">
-    <form class="flex flex-col space-y-4" method="POST" action="?/login" use:enhance={handleLogin}>
+<div>
+    <form
+        class="flex flex-col space-y-2 mt-4 m-2"
+        action="?/register_group"
+        method="POST"
+        use:enhance={handleRegister}
+    >
         {#if form?.errors}
             {#each form?.errors as error (error.id)}
                 <h4
@@ -31,8 +40,7 @@
             {/each}
         {/if}
 
-        <input type="hidden" name="next" value={$page.url.searchParams.get('next')} />
-        <TextInput type="text" name="email" class_in="grow" placeholder="Email">
+        <TextInput type="text" name="house_name" class_in="grow" placeholder="Home name">
             <path
                 d="M2.5 3A1.5 1.5 0 0 0 1 4.5v.793c.026.009.051.02.076.032L7.674 8.51c.206.1.446.1.652 0l6.598-3.185A.755.755 0 0 1 15 5.293V4.5A1.5 1.5 0 0 0 13.5 3h-11Z"
             />
@@ -40,16 +48,14 @@
                 d="M15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5V6.954Z"
             />
         </TextInput>
-        <TextInput type="password" name="password" class_in="grow" placeholder="Password">
-            <path
-                fill-rule="evenodd"
-                d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z"
-                clip-rule="evenodd"
-            />
-        </TextInput>
-        <div>
-            <button class="btn btn-neutral btn-wide w-full">Login</button>
-            <p>Have no account? <a href="/auth/register">Register here</a>.</p>
+        {#if form?.fieldsError && form?.fieldsError.houseName}
+            <p class="warning" transition:scale|local={{ start: 0.7 }}>
+                {form?.fieldsError.houseName}
+            </p>
+        {/if}
+
+        <div class="btn-container">
+            <button class="btn btn-neutral btn-wide w-full"> Register </button>
         </div>
     </form>
 </div>
