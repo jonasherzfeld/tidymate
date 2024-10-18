@@ -24,7 +24,7 @@
 <div>
     <form
         class="flex flex-col space-y-2 mt-4 m-2"
-        action="?/register_group"
+        action="?/register_house"
         method="POST"
         use:enhance={handleRegister}
     >

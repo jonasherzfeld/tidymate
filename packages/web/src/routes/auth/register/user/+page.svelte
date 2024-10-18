@@ -89,10 +89,10 @@
         {/if}
 
         {#if !create_group_value}
-            <TextInput type="text" name="group_id" class_in="grow" placeholder="Home ID" />
-            {#if form?.fieldsError && form?.fieldsError.groupId}
+            <TextInput type="text" name="join_id" class_in="grow" placeholder="Home ID" />
+            {#if form?.fieldsError && form?.fieldsError.joinId}
                 <p class="warning" transition:scale|local={{ start: 0.7 }}>
-                    {form?.fieldsError.groupId}
+                    {form?.fieldsError.joinId}
                 </p>
             {/if}
         {/if}

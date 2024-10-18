@@ -37,7 +37,7 @@ export const actions = {
         const lastName = String(formData.get('last_name'));
         const password = String(formData.get('password'));
         const confirmPassword = String(formData.get('confirm_password'));
-        const groupId = String(formData.get('group_id'));
+        const joinId = String(formData.get('join_id')) || '';
 
         // Some validations
         /** @type {Record<string, string>} */
@@ -52,8 +52,8 @@ export const actions = {
         if (confirmPassword.trim() !== password.trim()) {
             fieldsError.confirmPassword = 'Password and confirm password do not match.';
         }
-        if (isValidGroupId(groupId)) {
-            fieldsError.groupId = 'Invalid Home ID.';
+        if (isValidGroupId(joinId)) {
+            fieldsError.joinId = 'Invalid Home ID.';
         }
 
         if (!isEmpty(fieldsError)) {
@@ -63,7 +63,7 @@ export const actions = {
             email,
             first_name: firstName,
             last_name: lastName,
-            group_id: groupId,
+            join_id: joinId,
             password
         };
 
@@ -78,15 +78,17 @@ export const actions = {
 
         const res = await fetch(`${BASE_API_URI}/auth/register`, requestInitOptions);
 
+        const response = await res.json();
         if (!res.ok) {
-            const response = await res.json();
             const errors = formatError(response.error);
             return fail(400, { errors: errors });
         }
 
         if (create_group_value) {
+            console.log('redirecting to /');
             throw redirect(303, '/auth/register/group');
         }
+        console.log('redirecting to /');
         throw redirect(303, '/');
     }
 };

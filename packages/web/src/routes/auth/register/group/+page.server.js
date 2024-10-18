@@ -4,9 +4,13 @@ import { fail, redirect } from '@sveltejs/kit';
 
 /** @type {import('./$types').PageServerLoad} */
 export async function load({ locals }) {
-    // redirect user if logged in
+    // redirect user if not logged in
     if (locals.user) {
-        throw redirect(302, '/');
+        if (locals.user.house_id) {
+            throw redirect(302, '/');
+        }
+    } else {
+        throw redirect(302, '/auth/login');
     }
 }
 
@@ -18,22 +22,21 @@ export const actions = {
      * @param fetch - Fetch object from sveltekit
      * @returns Error data or redirects user to the home page or the previous page
      */
-    register_group: async ({ request, fetch }) => {
+    register_house: async ({ request, fetch, locals }) => {
         const formData = await request.formData();
         const houseName = String(formData.get('house_name'));
 
         // Some validations
         /** @type {Record<string, string>} */
         const fieldsError = {};
-        // if (false) {
-        //     fieldsError.houseName = 'Invalid house name.';
-        // }
 
         if (!isEmpty(fieldsError)) {
             return fail(400, { fieldsError: fieldsError });
         }
+        console.log(locals.user);
         const registrationBody = {
-            house_name: houseName
+            house_name: houseName,
+            user_id: locals.user.id
         };
 
         /** @type {RequestInit} */
@@ -45,7 +48,7 @@ export const actions = {
             body: JSON.stringify(registrationBody)
         };
 
-        const res = await fetch(`${BASE_API_URI}/auth/register_group`, requestInitOptions);
+        const res = await fetch(`${BASE_API_URI}/auth/register_house`, requestInitOptions);
 
         if (!res.ok) {
             const response = await res.json();

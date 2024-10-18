@@ -24,14 +24,16 @@ class User():
     first_name : str = None
     last_name : str = None
     joined_on : str = None
+    house_id : str = None
 
     def __init__(self, id: str = None, email: str = None, first_name: str = None,
-                 last_name: str = None, joined_on: str = None):
+                 last_name: str = None, joined_on: str = None, house_id: str = None):
         self.id = id
         self.email = email
         self.first_name = first_name
         self.last_name = last_name
         self.joined_on = joined_on
+        self.house_id = house_id
 
     def to_json(self) -> dict:
         return {
@@ -40,4 +42,37 @@ class User():
             "first_name": self.first_name,
             "last_name": self.last_name,
             "joined_on": self.joined_on,
+            "house_id": self.house_id,
+        }
+
+
+class House():
+    id : str = None
+    name : str = None
+    city : str = None
+    country : str = None
+    created_on : str = None
+    join_id : str = None
+    members : list = None
+
+    def __init__(self, id: str = None, name: str = None, city: str = None,
+                 country: str = None, created_on: str = None, join_id: str = None,
+                 members: list = None):
+        self.id = id
+        self.name = name
+        self.city = city
+        self.country = country
+        self.created_on = created_on
+        self.join_id = join_id
+        self.members = members
+
+    def to_json(self) -> dict:
+        return {
+            "id": self.id,
+            "name": self.name,
+            "city": self.city,
+            "country": self.country,
+            "created_on": self.created_on,
+            "join_id": self.join_id,
+            "members": self.members
         }
