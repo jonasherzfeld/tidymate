@@ -1,6 +1,5 @@
 <script>
     import 'tailwindcss/tailwind.css';
-    import Developer from '$lib/img/hero-image.png';
 </script>
 
 <div class="hero bg-base-200 min-h-screen">

@@ -81,7 +81,6 @@ def register():
         auth_user = None
 
     if join_id and join_id != "null":
-        print("Join ID: ", join_id)
         house_vm = HouseViewModel()
         db_house_list = house_vm.filter("join_id", join_id)
         if len(db_house_list) != 1:
@@ -110,7 +109,8 @@ def register():
                         first_name=first_name,
                         last_name=last_name,
                         joined_on=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                        house_id=house_id)
+                        house_id=house_id,
+                        is_admin=False)
         user_vm.set(fb_user.uid, new_user)
 
         if house_id:
@@ -129,7 +129,6 @@ def register():
 @auth.route('/register_house', methods=["POST"])
 def register_house():
     try:
-        print(request.json)
         house_name = request.json['house_name']
         user_id = request.json['user_id']
     except KeyError:
@@ -157,6 +156,7 @@ def register_house():
     house_vm.set(new_house.id, new_house)
 
     db_user.house_id = new_house.id
+    db_user.is_admin = True
     user_vm.update(user_id, db_user)
     session["user_id"] = user_id
 
@@ -239,16 +239,23 @@ def get_current_user():
     if not user_id:
         return jsonify({"error": "Unauthorized"}), 401
 
-    vm = UserViewModel()
-    user = vm.get(user_id)
+    user = UserViewModel().get(user_id)
+    house = House()
     if user:
+        if user.house_id:
+            house = HouseViewModel().get(user.house_id)
+
+            # Validate user is in house
+            if not house:
+                return jsonify({
+                    "error": "House not found"}), 400
+            if not user.id in house.members:
+                return jsonify({
+                    "error": "User not found in house"}), 402
+
         return jsonify({
-            "id": user.id,
-            "email": user.email,
-            "first_name": user.first_name,
-            "last_name": user.last_name,
-            "joinedOn": user.joined_on,
-            "house_id": user.house_id
+            "user": user.to_json(),
+            "house": house.to_json()
         }), 200
 
     return jsonify({

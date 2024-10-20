@@ -1,1 +1,5 @@
-<h1>Home</h1>
+<script>
+    export let data;
+</script>
+
+<h1>Home {data.house.name}</h1>

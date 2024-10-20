@@ -5,12 +5,8 @@ import { fail, redirect } from '@sveltejs/kit';
 /** @type {import('./$types').PageServerLoad} */
 export async function load({ locals }) {
     // redirect user if not logged in
-    if (locals.user) {
-        if (locals.user.house_id) {
-            throw redirect(302, '/');
-        }
-    } else {
-        throw redirect(302, '/auth/login');
+    if (locals.user && locals.house) {
+        throw redirect(302, '/');
     }
 }
 

@@ -7,13 +7,25 @@ interface User {
     last_name: string;
     id: string;
     thumbnail: string;
-    house_id: UserProfile;
+    house_id: string;
+    joined_on: string;
+    is_admin: boolean;
 }
+interface House {
+    id: string;
+    name: string;
+    city: string;
+    country: string;
+    created_on: string;
+    join_id: string;
+}
+
 declare global {
     namespace App {
         // interface Error {}
         interface Locals {
             user: User;
+            house: House;
         }
         // interface PageData {}
         // interface Platform {}

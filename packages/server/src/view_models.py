@@ -80,7 +80,6 @@ class HouseViewModel():
         doc = doc_ref.get()
         if doc.exists:
             doc_json = doc.to_dict()
-            print(doc_json)
             return House(doc_json["id"],
                         doc_json["name"],
                         doc_json["city"],
@@ -101,7 +100,6 @@ class HouseViewModel():
             doc_list = list()
             for doc in docs:
                 doc_data = doc.to_dict()
-                print(doc_data)
                 user = House(doc_data["id"],
                             doc_data["name"],
                             doc_data["city"],
@@ -157,7 +155,9 @@ class UserViewModel():
                         doc_json["first_name"],
                         doc_json["last_name"],
                         doc_json["joined_on"],
-                        doc_json["house_id"])
+                        doc_json["house_id"],
+                        doc_json["thumbnail"],
+                        doc_json["is_admin"])
         else:
             print(f"Document {id} not found in collection {USER_COLLECTION}")
             return None
@@ -177,7 +177,9 @@ class UserViewModel():
                             doc_data["first_name"],
                             doc_data["last_name"],
                             doc_data["joined_on"],
-                            doc_data["house_id"])
+                            doc_data["house_id"],
+                            doc_data["thumbnail"],
+                            doc_data["is_admin"])
 
                 doc_list.append(user)
 

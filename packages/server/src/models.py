@@ -25,15 +25,19 @@ class User():
     last_name : str = None
     joined_on : str = None
     house_id : str = None
+    is_admin : bool = False
 
     def __init__(self, id: str = None, email: str = None, first_name: str = None,
-                 last_name: str = None, joined_on: str = None, house_id: str = None):
+                 last_name: str = None, joined_on: str = None, house_id: str = None,
+                 thumbnail: str = None, is_admin: bool = False):
         self.id = id
         self.email = email
         self.first_name = first_name
         self.last_name = last_name
         self.joined_on = joined_on
         self.house_id = house_id
+        self.thumbnail = thumbnail
+        self.is_admin = is_admin
 
     def to_json(self) -> dict:
         return {
@@ -43,6 +47,8 @@ class User():
             "last_name": self.last_name,
             "joined_on": self.joined_on,
             "house_id": self.house_id,
+            "thumbnail": self.thumbnail,
+            "is_admin": self.is_admin
         }
 
 
@@ -73,6 +79,6 @@ class House():
             "city": self.city,
             "country": self.country,
             "created_on": self.created_on,
+            "members": self.members,
             "join_id": self.join_id,
-            "members": self.members
         }
