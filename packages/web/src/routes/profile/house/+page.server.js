@@ -8,17 +8,28 @@ export const actions = {
      * @param fetch - Fetch object from sveltekit
      * @returns Error data or redirects user to the home page or the previous page
      */
-    activate_join: async ({ cookies }) => {
-        const requestInitOptions = {
-            method: 'GET',
+    toggle_join_id: async ({ locals, cookies }) => {
+        let requestInitOptions = {
+            method: 'POST',
             credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
-                Cookie: `sessionid=${cookies.get('session')}`
-            }
+                Cookie: `session=${cookies.get('session')}`
+            },
+            body: JSON.stringify({
+                house_id: locals.house.id,
+                user_id: locals.user.id
+            })
         };
 
-        const res = await fetch(`${BASE_API_URI}/auth/activate_join`, requestInitOptions);
+        let route;
+        if (locals.house.join_id) {
+            requestInitOptions.method = 'DELETE';
+            route = `${BASE_API_URI}/auth/deactivate_join`;
+        } else {
+            route = `${BASE_API_URI}/auth/activate_join`;
+        }
+        const res = await fetch(route, requestInitOptions);
 
         const response = await res.json();
         if (!res.ok) {
@@ -27,6 +38,6 @@ export const actions = {
             return fail(400, { errors: errors });
         }
 
-        return { name: response.join_id, success: res.ok };
+        return { join_id: response.join_id, success: res.ok };
     }
 };

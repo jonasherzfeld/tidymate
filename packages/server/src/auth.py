@@ -200,7 +200,7 @@ def activate_join():
     }), 200
 
 
-@auth.route('/deactivate_join', methods=["POST"])
+@auth.route('/deactivate_join', methods=["DELETE"])
 def deactivate_join():
     user_id = session.get("user_id")
     if not user_id:
@@ -226,10 +226,10 @@ def deactivate_join():
     if not db_house.members or not user_id in db_house.members:
         return jsonify({"error": "User not part of House."}), 400
 
-    db_house.join_id = None
+    db_house.join_id = ""
     vm.update(db_house.id, db_house)
     return jsonify({
-        "house_id": db_house.id
+        "join_id": db_house.join_id
     }), 200
 
 

@@ -5,11 +5,11 @@
     export let data;
     // export let action: undefined | { success: boolean, name: string};
     export let action;
+    export let form;
 
-    const handlerActivateJoin = async () => {
-        console.log('handlerActivateJoin');
+    const handlerJoinId = async () => {
         return async ({ result }) => {
-            action = { success: result.status === 200, name: result.data.join_id };
+            action = { success: result.status === 200, join_id: result.data.join_id };
         };
     };
 </script>
@@ -31,17 +31,45 @@
             <TextInput name="joined_on" bind:value={data.house.created_on} disabled={true}
                 ><b>Created On</b>
             </TextInput>
-            <div class="join">
-                {#if data.house.join_id}
-                    <input
-                        class="input input-bordered join-item"
-                        placeholder={data.house.join_id}
-                    />
-                {:else}
-                    <input class="input input-bordered join-item" placeholder="Join ID" />
-                {/if}
-                <form action="?/activate_join" method="GET" use:enhance={handlerActivateJoin}>
-                    <button class="btn join-item rounded-r-full">Create</button>
+
+            <div>
+                <h2 class="mt-5 mb-2">Invite friends to your house</h2>
+                <form action="?/toggle_join_id" method="POST" use:enhance={handlerJoinId}>
+                    {#if form?.errors}
+                        {#each form?.errors as error (error.id)}
+                            <h4
+                                class="step-subtitle warning"
+                                in:receive={{ key: error.id }}
+                                out:send={{ key: error.id }}
+                            >
+                                {error.error}
+                            </h4>
+                        {/each}
+                    {/if}
+                    <div class="join">
+                        {#if action?.success}
+                            <input
+                                id="npm-install-copy-button"
+                                class="input input-bordered join-item"
+                                placeholder="Join ID"
+                                value={action?.join_id}
+                            />
+                        {:else}
+                            <input
+                                id="npm-install-copy-button"
+                                class="input input-bordered join-item input-primary"
+                                placeholder="Join ID"
+                                value={data.house.join_id}
+                            />
+                        {/if}
+                        <button class="btn join-item rounded-r-full bg-primary border-none">
+                            {#if data.house.join_id || action?.join_id}
+                                Delete
+                            {:else}
+                                Create
+                            {/if}
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>
