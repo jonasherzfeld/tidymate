@@ -11,7 +11,7 @@
     $: is_logged_in = $page.data.user ? true : false;
 </script>
 
-<div class="navbar">
+<div class="navbar p-0 pe-2 min-h-0">
     <div class="flex-1">
         <a href="/" class="btn btn-ghost text-xl">
             <img alt="User" src={Logo} width="30px" />Tidymate</a
@@ -28,7 +28,7 @@
     </div>
     <div class="flex-none gap-2">
         <div class="hidden lg:block">
-            <ul class="menu menu-horizontal px-1">
+            <ul class="menu menu-horizontal m-0 p-0">
                 <li>
                     <a href="/about">
                         <svg
