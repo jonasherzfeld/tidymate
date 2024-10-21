@@ -4,12 +4,12 @@
     export let type = 'text';
     export let name;
     export let placeholder = '';
-    export let class_in = 'grow';
+    export let class_in = 'input input-bordered flex items-center gap-2';
     export let value = '';
     export let disabled = false;
 </script>
 
-<label class="input input-bordered flex items-center gap-2">
+<label class={class_in}>
     <slot />
-    <input {type} {name} class={class_in} {placeholder} {value} {disabled} />
+    <input {type} {name} class="grow" {placeholder} {value} {disabled} />
 </label>
