@@ -40,7 +40,7 @@
             {/each}
         {/if}
 
-        <IconTextInput type="text" name="house_name" class_in="grow" placeholder="Home name">
+        <IconTextInput type="text" name="house_name" placeholder="Home name">
             <path
                 d="M2.5 3A1.5 1.5 0 0 0 1 4.5v.793c.026.009.051.02.076.032L7.674 8.51c.206.1.446.1.652 0l6.598-3.185A.755.755 0 0 1 15 5.293V4.5A1.5 1.5 0 0 0 13.5 3h-11Z"
             />
