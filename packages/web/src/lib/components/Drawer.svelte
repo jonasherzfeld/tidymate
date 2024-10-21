@@ -16,7 +16,7 @@
     <div class="drawer-content flex flex-col">
         <!-- Navbar -->
         <div
-            class="navbar bg-base-300 w-full bg-base-100 text-shade-500 border-solid border-b border-shape-500"
+            class="navbar w-full bg-base-100 text-shade-500 border-solid border-b border-shape-500"
         >
             <div class="flex-none lg:hidden">
                 <button on:click={handleClick} class="btn btn-square btn-ghost">
@@ -50,7 +50,7 @@
             {#if is_logged_in}
                 {#each NAV_LINKS as link}
                     <li>
-                        <a href={link.href}>{link.title}</a>
+                        <a href={link.href} on:click={handleClick}>{link.title}</a>
                     </li>
                 {/each}
                 <div class="divider" />
