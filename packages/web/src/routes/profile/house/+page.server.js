@@ -17,8 +17,7 @@ export const actions = {
                 Cookie: `session=${cookies.get('session')}`
             },
             body: JSON.stringify({
-                house_id: locals.house.id,
-                user_id: locals.user.id
+                house_id: locals.house.id
             })
         };
 
@@ -33,9 +32,7 @@ export const actions = {
 
         const response = await res.json();
         if (!res.ok) {
-            const errors = [];
-            errors.push({ error: response.error, id: 0 });
-            return fail(400, { errors: errors });
+            return fail(400, { error: response.error });
         }
 
         return { join_id: response.join_id, success: res.ok };

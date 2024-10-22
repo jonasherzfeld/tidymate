@@ -3,7 +3,6 @@
     import { page } from '$app/stores';
 
     let action;
-    let form;
     $: is_active_join_id = $page.data.house.join_id || action?.join_id;
     $: creating_join_id = false;
 
@@ -20,19 +19,7 @@
 
 <div>
     <h2 class="mt-5 mb-2">Invite friends to your house</h2>
-    <form action="?/toggle_join_id" method="POST" use:enhance={handlerJoinId}>
-        {#if form?.errors}
-            {#each form?.errors as error (error.id)}
-                <h4
-                    class="step-subtitle warning"
-                    in:receive={{ key: error.id }}
-                    out:send={{ key: error.id }}
-                >
-                    {error.error}
-                </h4>
-            {/each}
-        {/if}
-
+    <form action="/profile/house?/toggle_join_id" method="POST" use:enhance={handlerJoinId}>
         <div class="join">
             <input
                 disabled={creating_join_id}
@@ -41,7 +28,10 @@
                 placeholder="Join ID"
                 value={action?.success ? action?.join_id : $page.data.house.join_id}
             />
-            <button class="btn join-item rounded-r-full bg-primary border-none">
+            <button
+                class="btn join-item rounded-r-full bg-primary border-none"
+                disabled={creating_join_id || !$page.data.user.is_admin}
+            >
                 {is_active_join_id ? 'Delete' : 'Create'}
             </button>
         </div>
