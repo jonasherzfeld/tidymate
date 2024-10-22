@@ -1,33 +1,44 @@
 from datetime import datetime
+from firebase_admin import auth as fb_auth
 from flask import Blueprint, request, jsonify, session
 from functools import wraps
-from models import User, House
-from firebase_admin import auth as fb_auth
-from view_models import UserViewModel, HouseViewModel
-import requests
 import os
+import requests
+import shortuuid
 import uuid
+import redis
+
+from models import User, House
+from view_models import UserViewModel, HouseViewModel
 
 auth = Blueprint('auth', __name__)
 
 def login_required(function_to_protect):
     @wraps(function_to_protect)
     def wrapper(*args, **kwargs):
-        user_id = session.get('user_id')
+        try:
+            user_id = session.get('user_id')
+        except ConnectionRefusedError or redis.exceptions.ConnectionError:
+            return jsonify({"error": "Connection error on internal Session DB"}), 500
+
         if user_id:
             user = UserViewModel().get(user_id)
             if user:
                 # Success!
-                return function_to_protect(*args, **kwargs)
+                return function_to_protect(user, *args, **kwargs)
             else:
                 return jsonify({"error": "Invalid user"}), 401
         else:
             return jsonify({"error": "Unauthorized"}), 401
+    return wrapper
 
 @auth.route('/login', methods=['POST'])
 def login():
-    email = request.json['email']
-    password = request.json['password']
+    try:
+        email = request.json['email']
+        password = request.json['password']
+    except KeyError:
+        return jsonify({"error": "Missing required fields"}), 400
 
     identity_tool_kit_id = os.getenv("API_KEY")
     identity_url = f"https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={identity_tool_kit_id}"
@@ -46,7 +57,11 @@ def login():
 
     user_data = fb_auth.get_user_by_email(email)
     if user_data:
-        session["user_id"] = user_data.uid
+        try:
+            session["user_id"] = user_data.uid
+        except ConnectionError:
+            return jsonify({"error": "Connection error on internal Session DB"}), 500
+
         return jsonify({
             "id": user_data.uid,
             "email": user_data.email,
@@ -57,7 +72,11 @@ def login():
 
 @auth.route('/logout', methods=["POST"])
 def logout():
-    session.clear()
+    try:
+        session.clear()
+    except ConnectionError:
+        return jsonify({"error": "Connection error on internal Session DB"}), 500
+
     return jsonify({}), 200
 
 
@@ -92,14 +111,6 @@ def register():
 
     if db_user or auth_user:
         return jsonify({"error": "Email already exists."}), 409
-    elif len(email) < 4:
-        return jsonify({"error": "Email must be greater than 3 characters."}), 400
-    elif len(first_name) < 2:
-        return jsonify({"error": "First name must be greater than 1 character."}), 400
-    elif len(last_name) < 2:
-        return jsonify({"error": "First name must be greater than 1 character."}), 400
-    elif len(password) < 7:
-        return jsonify({"error": "Password must be at least 7 characters."}), 400
     else:
         full_name = first_name + " " + last_name
         fb_user = fb_auth.create_user(email=email, password=password,
@@ -117,7 +128,11 @@ def register():
             db_house.members.append(fb_user.uid)
             house_vm.update(house_id, db_house)
 
-        session["user_id"] = fb_user.uid
+        try:
+            session["user_id"] = fb_user.uid
+        except ConnectionError:
+            return jsonify({"error": "Connection error on internal Session DB"}), 500
+
 
     return jsonify({
         "id": fb_user.uid,
@@ -127,17 +142,12 @@ def register():
 
 
 @auth.route('/register_house', methods=["POST"])
-def register_house():
+@login_required
+def register_house(user):
     try:
         house_name = request.json['house_name']
-        user_id = request.json['user_id']
     except KeyError:
         return jsonify({"error": "Missing required fields"}), 400
-
-    user_vm = UserViewModel()
-    db_user = user_vm.get(user_id)
-    if not db_user:
-        return jsonify({"error": "User not found in database."}), 409
 
     # Check if user already exists in Database ort Authentication
     house_vm = HouseViewModel()
@@ -152,47 +162,35 @@ def register_house():
                       country=None,
                       created_on=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                       join_id= None,
-                      members=[user_id])
+                      members=[user.id])
     house_vm.set(new_house.id, new_house)
 
-    db_user.house_id = new_house.id
-    db_user.is_admin = True
-    user_vm.update(user_id, db_user)
-    session["user_id"] = user_id
+    user.house_id = new_house.id
+    user.is_admin = True
+    UserViewModel().update(user.id, user)
 
     return jsonify({
-        "house_name": house_name,
+        "house_name": new_house.name,
         "house_id": new_house.id
     }), 200
 
 
 @auth.route('/activate_join', methods=["POST"])
-def activate_join():
-    user_id = session.get("user_id")
-    if not user_id:
-        return jsonify({"error": "Unauthorized"}), 401
-
-    try:
-        house_id = request.json['house_id']
-        user_id = request.json['user_id']
-    except KeyError:
-        return jsonify({"error": "Missing required fields"}), 400
-
-    user_vm = UserViewModel()
-    db_user = user_vm.get(user_id)
-    if not db_user:
-        return jsonify({"error": "User not found in database."}), 409
+@login_required
+def activate_join(user):
+    if not user.is_admin:
+        return jsonify({"error": "User not unauthorized to make changes."}), 401
 
     # Check if user already exists in Database ort Authentication
     vm = HouseViewModel()
-    db_house = vm.get(house_id)
+    db_house = vm.get(user.house_id)
     if not db_house:
         return jsonify({"error": "House name not found."}), 409
 
-    if not db_house.members or not user_id in db_house.members:
-        return jsonify({"error": "User not part of House."}), 400
+    if not db_house.members or not user.id in db_house.members:
+        return jsonify({"error": "User not part of House."}), 401
 
-    db_house.join_id = str(uuid.uuid4())
+    db_house.join_id = str(shortuuid.ShortUUID().random(length=12))
     vm.update(db_house.id, db_house)
 
     return jsonify({
@@ -201,29 +199,18 @@ def activate_join():
 
 
 @auth.route('/deactivate_join', methods=["DELETE"])
-def deactivate_join():
-    user_id = session.get("user_id")
-    if not user_id:
-        return jsonify({"error": "Unauthorized"}), 401
-
-    try:
-        house_id = request.json['house_id']
-        user_id = request.json['user_id']
-    except KeyError:
-        return jsonify({"error": "Missing required fields"}), 400
-
-    user_vm = UserViewModel()
-    db_user = user_vm.get(user_id)
-    if not db_user:
-        return jsonify({"error": "User not found in database."}), 409
+@login_required
+def deactivate_join(user):
+    if not user.is_admin:
+        return jsonify({"error": "User not unauthorized to make changes."}), 401
 
     # Check if user already exists in Database ort Authentication
     vm = HouseViewModel()
-    db_house = vm.get(house_id)
+    db_house = vm.get(user.house_id)
     if not db_house:
         return jsonify({"error": "House name not found."}), 409
 
-    if not db_house.members or not user_id in db_house.members:
+    if not db_house.members or not user.id in db_house.members:
         return jsonify({"error": "User not part of House."}), 400
 
     db_house.join_id = ""
@@ -234,14 +221,10 @@ def deactivate_join():
 
 
 @auth.route('/current-user', methods=['GET'])
-def get_current_user():
-    user_id = session.get("user_id")
-    if not user_id:
-        return jsonify({"error": "Unauthorized"}), 401
-
-    user = UserViewModel().get(user_id)
-    house = House()
+@login_required
+def get_current_user(user):
     if user:
+        house = House()
         if user.house_id:
             house = HouseViewModel().get(user.house_id)
 
@@ -253,9 +236,11 @@ def get_current_user():
                 return jsonify({
                     "error": "User not found in house"}), 402
 
+        house_json = house.to_json()
+        house_json.pop("members") # Remove members from response
         return jsonify({
             "user": user.to_json(),
-            "house": house.to_json()
+            "house": house_json
         }), 200
 
     return jsonify({

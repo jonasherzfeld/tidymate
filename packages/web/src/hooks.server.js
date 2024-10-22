@@ -45,7 +45,7 @@ export async function validateSession(event) {
 /** @type {import('@sveltejs/kit').Handle} */
 export async function handle({ event, resolve }) {
     if (event.locals.user) {
-        // if there is already a user  in session load page as normal
+        // if there is already a user in session load page as normal
         return await resolve(event);
     }
 

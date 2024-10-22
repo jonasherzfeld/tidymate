@@ -31,8 +31,7 @@ export const actions = {
         }
         console.log(locals.user);
         const registrationBody = {
-            house_name: houseName,
-            user_id: locals.user.id
+            house_name: houseName
         };
 
         /** @type {RequestInit} */
