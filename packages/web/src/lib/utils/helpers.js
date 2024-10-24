@@ -55,9 +55,8 @@ export const isValidPasswordMedium = (password) => {
 };
 
 export const isValidJoinId = (join_id) => {
-    // const groupIdRegex = new RegExp('^[0-9]*$');
-    // return groupIdRegex.test(group_id.trim());
-    return !!join_id;
+    const joinIdRegex = new RegExp('^[A-Za-z0-9]{12}$');
+    return joinIdRegex.test(join_id.trim());
 };
 
 /**
