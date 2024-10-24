@@ -2,9 +2,10 @@
     import { enhance } from '$app/forms';
     import { page } from '$app/stores';
 
-    let action;
-    $: is_active_join_id = $page.data.house.join_id || action?.join_id;
-    $: creating_join_id = false;
+    let action = $state();
+    let is_active_join_id = $derived($page.data.house.join_id || action?.join_id);
+    let creating_join_id = $state(false);
+    
 
     const handlerJoinId = async () => {
         creating_join_id = true;

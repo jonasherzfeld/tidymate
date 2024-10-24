@@ -6,8 +6,14 @@
     import { page } from '$app/stores';
     import { receive, send } from '$lib/utils/helpers';
 
-    /** @type {import('./$types').ActionData} */
-    export let form;
+    
+    /**
+     * @typedef {Object} Props
+     * @property {import('./$types').ActionData} form
+     */
+
+    /** @type {Props} */
+    let { form } = $props();
 
     /** @type {import('./$types').SubmitFunction} */
     const handleLogin = async () => {

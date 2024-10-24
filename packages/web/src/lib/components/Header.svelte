@@ -8,7 +8,7 @@
     import Logo from '$lib/img/tidymate_logo_white.png';
     import { NAV_LINKS } from '$lib/utils/constants';
 
-    $: is_logged_in = $page.data.user ? true : false;
+    let is_logged_in = $derived($page.data.user ? true : false);
 </script>
 
 <div class="navbar p-0 pe-2 min-h-0">

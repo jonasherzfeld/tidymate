@@ -1,11 +1,17 @@
 <script>
 	import { receive, send } from '$lib/utils/helpers';
 
-	/** @type {any} */
-	export let stat;
+	
 
-	/** @type {number} */
-	export let idx;
+	
+	/**
+	 * @typedef {Object} Props
+	 * @property {any} stat
+	 * @property {number} idx
+	 */
+
+	/** @type {Props} */
+	let { stat, idx } = $props();
 </script>
 
 <li class="stats-item" in:receive={{ key: stat.id }} out:send={{ key: stat.id }}>

@@ -1,17 +1,17 @@
 <script>
     import { applyAction, enhance } from '$app/forms';
     import { receive, send } from '$lib/utils/helpers';
-    import { create_group } from '$lib/utils/stores';
     import { scale } from 'svelte/transition';
     import IconTextInput from '$lib/components/IconTextInput.svelte';
 
-    let create_group_value;
-    create_group.subscribe((value) => {
-        create_group_value = value;
-    });
 
-    /** @type {import('./$types').ActionData} */
-    export let form;
+    /**
+     * @typedef {Object} Props
+     * @property {import('./$types').ActionData} form
+     */
+
+    /** @type {Props} */
+    let { form } = $props();
 
     /** @type {import('./$types').SubmitFunction} */
     const handleRegister = async () => {

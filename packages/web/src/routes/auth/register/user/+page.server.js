@@ -4,22 +4,18 @@ import {
     isEmpty,
     isValidEmail,
     isValidPasswordMedium,
-    isValidGroupId
+    isValidJoinId
 } from '$lib/utils/helpers';
 import { fail, redirect } from '@sveltejs/kit';
-import { create_group } from '$lib/utils/stores';
-
-let create_group_value;
-create_group.subscribe((value) => {
-    create_group_value = value;
-});
 
 /** @type {import('./$types').PageServerLoad} */
-export async function load({ locals }) {
+export async function load({ locals, url }) {
     // redirect user if logged in
     if (locals.user) {
-        throw redirect(302, '/');
+        redirect(302, '/');
     }
+    let join_home = url.searchParams.get('join_home') == "true";
+    return { join_home };
 }
 
 /** @type {import('./$types').Actions} */
@@ -52,9 +48,9 @@ export const actions = {
         if (confirmPassword.trim() !== password.trim()) {
             fieldsError.confirmPassword = 'Password and confirm password do not match.';
         }
-        if (isValidGroupId(joinId)) {
-            fieldsError.joinId = 'Invalid Home ID.';
-        }
+        // if (!isValidJoinId(joinId)) {
+        //     fieldsError.joinId = 'Invalid Home ID.';
+        // }
 
         if (!isEmpty(fieldsError)) {
             return fail(400, { fieldsError: fieldsError });
@@ -84,11 +80,9 @@ export const actions = {
             return fail(400, { errors: errors });
         }
 
-        if (create_group_value) {
-            console.log('redirecting to /');
-            throw redirect(303, '/auth/register/group');
+        if (!joinId) {
+            redirect(303, '/auth/register/group');
         }
-        console.log('redirecting to /');
-        throw redirect(303, '/');
+        redirect(303, '/');
     }
 };

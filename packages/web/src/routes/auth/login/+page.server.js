@@ -6,7 +6,7 @@ import { fail, redirect } from '@sveltejs/kit';
 export async function load({ locals }) {
     // redirect user if logged in
     if (locals.user) {
-        throw redirect(302, '/');
+        redirect(302, '/');
     }
 }
 
@@ -42,9 +42,13 @@ export const actions = {
         const res = await fetch(`${BASE_API_URI}/auth/login`, requestInitOptions);
 
         if (!res.ok) {
-            const response = await res.json();
-            const errors = formatError(response.error);
-            return fail(400, { errors: errors });
+            try {
+                const response = await res.json();
+                const errors = formatError(response.error);
+                return fail(400, { errors: errors });
+            } catch {
+                return fail(500, { error: 'Internal Server Error' });
+            }
         }
 
         if (res.headers.has('Set-Cookie')) {
@@ -64,7 +68,7 @@ export const actions = {
             });
         }
 
-        throw redirect(303, next || '/');
+        redirect(303, next || '/');
         //return { success: true };
         // then in +page.svelte
         // 	{#if form?.success}

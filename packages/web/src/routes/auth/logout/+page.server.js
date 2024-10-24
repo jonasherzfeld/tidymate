@@ -27,6 +27,6 @@ export const actions = {
         cookies.delete('session', { path: '/' });
 
         // redirect the user
-        throw redirect(302, '/auth/login');
+        redirect(302, '/auth/login');
     }
 };

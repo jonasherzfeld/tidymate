@@ -54,10 +54,10 @@ export const isValidPasswordMedium = (password) => {
     return mediumRegex.test(password.trim());
 };
 
-export const isValidGroupId = (group_id) => {
-    const groupIdRegex = new RegExp('^[0-9]*$');
-
-    return groupIdRegex.test(group_id.trim());
+export const isValidJoinId = (join_id) => {
+    // const groupIdRegex = new RegExp('^[0-9]*$');
+    // return groupIdRegex.test(group_id.trim());
+    return !!join_id;
 };
 
 /**

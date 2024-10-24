@@ -1,17 +1,19 @@
 <script>
     import { applyAction, enhance } from '$app/forms';
     import { receive, send } from '$lib/utils/helpers';
-    import { create_group } from '$lib/utils/stores';
+    import { create_group } from '$lib/utils/global.svelte';
     import { scale } from 'svelte/transition';
     import TextInput from '$lib/components/TextInput.svelte';
+    import { page } from '$app/stores';
 
-    let create_group_value;
-    create_group.subscribe((value) => {
-        create_group_value = value;
-    });
 
-    /** @type {import('./$types').ActionData} */
-    export let form;
+    /**
+     * @typedef {Object} Props
+     * @property {import('./$types').ActionData} form
+     */
+
+    /** @type {Props} */
+    let { form } = $props();
 
     /** @type {import('./$types').SubmitFunction} */
     const handleRegister = async () => {
@@ -82,7 +84,7 @@
             </p>
         {/if}
 
-        {#if !create_group_value}
+        {#if $page.data.join_home}
             <TextInput
                 type="text"
                 name="join_id"
@@ -98,7 +100,7 @@
 
         <div class="btn-container">
             <button class="btn btn-neutral btn-wide w-full"
-                >{create_group_value ? 'Continue' : 'Register'}
+                >{!$page.data.join_home ? 'Continue' : 'Register'}
             </button>
         </div>
     </form>
