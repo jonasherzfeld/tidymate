@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "description": "Tidymate Docs",
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev  -p 8080",
     "build": "next build",
-    "start": "next start"
+    "start": "next start -p 8080"
   },
   "repository": {
     "type": "git",
@@ -23,7 +23,8 @@
     "nextra-theme-docs": "^2.13.4",
     "nextra-theme-blog": "^2.13.4",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "styled-jsx": "latest"
   },
   "devDependencies": {
     "@types/node": "22.5.4"
