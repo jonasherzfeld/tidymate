@@ -2,12 +2,27 @@
     import 'tailwindcss/tailwind.css';
     import TextInput from './TextInput.svelte';
 
-    export let type = 'text';
-    export let name;
-    export let placeholder = '';
-    export let class_in = 'input input-bordered flex items-center gap-2';
-    export let value = '';
-    export let disabled = false;
+    /**
+     * @typedef {Object} Props
+     * @property {string} [type]
+     * @property {any} name
+     * @property {string} [placeholder]
+     * @property {string} [class_in]
+     * @property {string} [value]
+     * @property {boolean} [disabled]
+     * @property {import('svelte').Snippet} [children]
+     */
+
+    /** @type {Props} */
+    let {
+        type = 'text',
+        name,
+        placeholder = '',
+        class_in = 'input input-bordered flex items-center gap-2',
+        value = '',
+        disabled = false,
+        children
+    } = $props();
 </script>
 
 <TextInput {type} {name} {class_in} {placeholder} {value} {disabled}>
@@ -17,6 +32,6 @@
         fill="currentColor"
         class="h-4 w-4 opacity-70"
     >
-        <slot />
+        {@render children?.()}
     </svg>
 </TextInput>

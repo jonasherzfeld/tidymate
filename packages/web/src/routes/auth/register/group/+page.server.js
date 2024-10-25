@@ -6,7 +6,7 @@ import { fail, redirect } from '@sveltejs/kit';
 export async function load({ locals }) {
     // redirect user if not logged in
     if (locals.user && locals.house) {
-        throw redirect(302, '/');
+        redirect(302, '/');
     }
 }
 
@@ -51,6 +51,6 @@ export const actions = {
             return fail(400, { errors: errors });
         }
 
-        throw redirect(303, '/');
+        redirect(303, '/');
     }
 };

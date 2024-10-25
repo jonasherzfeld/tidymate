@@ -59,7 +59,7 @@ export async function handle({ event, resolve }) {
 
     const is_valid = isAccessValid(event.url.pathname, event.locals.user, event.locals.house);
     if (!is_valid) {
-        throw redirect(303, '/');
+        redirect(303, '/');
     }
 
     // load page as normal

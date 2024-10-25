@@ -3,9 +3,16 @@
     import Logo from '$lib/img/tidymate_logo_white.png';
     import { page } from '$app/stores';
     import { INFO_LINKS, NAV_LINKS } from '$lib/utils/constants';
+    /**
+     * @typedef {Object} Props
+     * @property {import('svelte').Snippet} [children]
+     */
 
-    $: is_logged_in = $page.data.user ? true : false;
-    let checked = '';
+    /** @type {Props} */
+    let { children } = $props();
+
+    let is_logged_in = $derived($page.data.user ? true : false);
+    let checked = $state('');
     function handleClick() {
         checked === 'checked' ? (checked = '') : (checked = 'checked');
     }
@@ -19,7 +26,7 @@
             class="navbar w-full bg-base-100 text-shade-500 border-solid border-b border-shape-500"
         >
             <div class="flex-none lg:hidden">
-                <button on:click={handleClick} class="btn btn-square btn-ghost">
+                <button onclick={handleClick} class="btn btn-square btn-ghost" aria-label="Open Menu">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
@@ -37,11 +44,11 @@
             </div>
             <Header />
         </div>
-        <slot />
+        {@render children?.()}
     </div>
 
     <div class="drawer-side">
-        <button on:click={handleClick} class="drawer-overlay" />
+        <button onclick={handleClick} class="drawer-overlay" aria-label="Close Menu"></button>
         <ul class="menu bg-base-200 min-h-full w-80 p-4">
             <!-- Sidebar content here -->
             <a href="/" class="btn btn-ghost text-xl">
@@ -50,13 +57,13 @@
             {#if is_logged_in}
                 {#each NAV_LINKS as link}
                     <li>
-                        <a href={link.href} on:click={handleClick}>{link.title}</a>
+                        <a href={link.href} onclick={handleClick}>{link.title}</a>
                     </li>
                 {/each}
-                <div class="divider" />
+                <div class="divider"></div>
             {/if}
             {#each INFO_LINKS as link}
-                <li><a href={link.href} on:click={handleClick}>{link.title}</a></li>
+                <li><a href={link.href} onclick={handleClick}>{link.title}</a></li>
             {/each}
         </ul>
     </div>
