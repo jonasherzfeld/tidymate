@@ -32,6 +32,21 @@ def login_required(function_to_protect):
             return jsonify({"error": "Unauthorized"}), 401
     return wrapper
 
+def validate_house_member(user):
+    if not user.house_id:
+        return jsonify({
+            "error": "Not house id given"}), 400
+
+    house = HouseViewModel().get(user.house_id)
+    if not house:
+        return House(), jsonify({
+            "error": "House not found"}), 400
+    if not house.members or not user.id in house.members:
+        return House(), jsonify({
+            "error": "User not found in house"}), 402
+
+    return house, jsonify({}), 200
+
 @auth.route('/login', methods=['POST'])
 def login():
     try:
@@ -182,19 +197,15 @@ def activate_join(user):
         return jsonify({"error": "User not unauthorized to make changes."}), 401
 
     # Check if user already exists in Database ort Authentication
-    vm = HouseViewModel()
-    db_house = vm.get(user.house_id)
-    if not db_house:
-        return jsonify({"error": "House name not found."}), 409
+    house, response, ret = validate_house_member(user)
+    if ret != 200:
+        return response, ret
 
-    if not db_house.members or not user.id in db_house.members:
-        return jsonify({"error": "User not part of House."}), 401
-
-    db_house.join_id = str(shortuuid.ShortUUID().random(length=12))
-    vm.update(db_house.id, db_house)
+    house.join_id = str(shortuuid.ShortUUID().random(length=12))
+    HouseViewModel().update(house.id, house)
 
     return jsonify({
-        "join_id": db_house.join_id
+        "join_id": house.join_id
     }), 200
 
 
@@ -204,43 +215,86 @@ def deactivate_join(user):
     if not user.is_admin:
         return jsonify({"error": "User not unauthorized to make changes."}), 401
 
-    # Check if user already exists in Database ort Authentication
-    vm = HouseViewModel()
-    db_house = vm.get(user.house_id)
-    if not db_house:
-        return jsonify({"error": "House name not found."}), 409
+    house, response, ret = validate_house_member(user)
+    if ret != 200:
+        return response, ret
 
-    if not db_house.members or not user.id in db_house.members:
-        return jsonify({"error": "User not part of House."}), 400
-
-    db_house.join_id = ""
-    vm.update(db_house.id, db_house)
+    house.join_id = ""
+    HouseViewModel().update(house.id, house)
     return jsonify({
-        "join_id": db_house.join_id
+        "join_id": house.join_id
     }), 200
+
+@auth.route('/get-user/<string:requested_user_id>', methods=['GET'])
+@login_required
+def get_user(user, requested_user_id):
+    _, response, ret = validate_house_member(user)
+    if ret != 200:
+        return response, ret
+
+    requested_user = UserViewModel().get(requested_user_id)
+    _, response, ret = validate_house_member(requested_user)
+    if ret != 200:
+        return response, ret
+
+    return jsonify({
+        "user": requested_user.to_json(),
+    }), 200
+
+@auth.route('/update-user/<string:update_user_id>', methods=['PATCH'])
+@login_required
+def update_user(user, update_user_id):
+    print("Update User ID: ", update_user_id)
+    _, response, ret = validate_house_member(user)
+    if ret != 200:
+        return response, ret
+
+    is_admin = request.json.get('is_admin', None)
+    email = request.json.get('email', None)
+    first_name = request.json.get('first_name', None)
+    last_name = request.json.get('last_name', None)
+    password = request.json.get('password', None)
+    thumbnail = request.json.get('thumbnail', None)
+
+    updated_user = UserViewModel().get(update_user_id)
+    _, response, ret = validate_house_member(updated_user)
+    if ret != 200:
+        return response, ret
+
+    # Allow change of admin status for other users
+    if user.id != updated_user.id:
+        if user.is_admin and is_admin is not None:
+            updated_user.is_admin = is_admin
+        else:
+            return jsonify({"error": "User not unauthorized to make changes."}), 401
+    else:
+        # TODO: Add password and email change
+        if first_name:
+            updated_user.first_name = first_name
+        if last_name:
+            updated_user.last_name = last_name
+        if thumbnail:
+            updated_user.thumbnail = thumbnail
+
+    UserViewModel().update(updated_user.id, updated_user)
+
+    return jsonify({
+        "user": updated_user.to_json(),
+    }), 200
+
 
 
 @auth.route('/current-user', methods=['GET'])
 @login_required
 def get_current_user(user):
     if user:
-        house = House()
-        if user.house_id:
-            house = HouseViewModel().get(user.house_id)
+        house, response, ret = validate_house_member(user)
+        if ret != 200:
+            return response, ret
 
-            # Validate user is in house
-            if not house:
-                return jsonify({
-                    "error": "House not found"}), 400
-            if not user.id in house.members:
-                return jsonify({
-                    "error": "User not found in house"}), 402
-
-        house_json = house.to_json()
-        house_json.pop("members") # Remove members from response
         return jsonify({
             "user": user.to_json(),
-            "house": house_json
+            "house": house.to_json()
         }), 200
 
     return jsonify({

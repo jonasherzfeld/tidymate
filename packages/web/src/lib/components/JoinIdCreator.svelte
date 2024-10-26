@@ -5,7 +5,6 @@
     let action = $state();
     let is_active_join_id = $derived($page.data.house.join_id || action?.join_id);
     let creating_join_id = $state(false);
-    
 
     const handlerJoinId = async () => {
         creating_join_id = true;
@@ -13,7 +12,7 @@
         return async ({ update }) => {
             let result = await update();
             creating_join_id = false;
-            action = { success: result.status === 200, join_id: result.$page.data.join_id };
+            action = { success: result.status === 200, join_id: result.join_id };
         };
     };
 </script>

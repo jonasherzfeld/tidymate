@@ -1,6 +1,7 @@
 <script>
     import TextInput from '$lib/components/TextInput.svelte';
     import JoinIdCreator from '$lib/components/JoinIdCreator.svelte';
+    import HouseMemberTable from '$lib/components/HouseMemberTable.svelte';
 
     let { data = $bindable() } = $props();
 </script>
@@ -10,9 +11,7 @@
         <div class="max-w-md">
             <h1 class="text-5xl font-bold">{data.house.name}</h1>
             <p class="py-6">This is the settings page for your house!</p>
-            <TextInput name="name" value={data.house.name} disabled={true}
-                ><b>Name</b></TextInput
-            >
+            <TextInput name="name" value={data.house.name} disabled={true}><b>Name</b></TextInput>
             <TextInput name="first_name" value={data.house.country} disabled={true}
                 ><b>Country</b>
             </TextInput>
@@ -23,7 +22,10 @@
                 ><b>Created On</b>
             </TextInput>
 
-            <JoinIdCreator />
+            <HouseMemberTable user_list={data.user_list} change_enabled={data.user.is_admin} />
+            {#if data.user.is_admin}
+                <JoinIdCreator />
+            {/if}
         </div>
     </div>
 </div>
