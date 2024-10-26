@@ -72,7 +72,7 @@
         </div>
         <div class="dropdown dropdown-end">
             <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
-                <div class="w-10 rounded-full">
+                <div class=" mask mask-squircle h-10 w-10">
                     {#if !$page.data.user}
                         <img alt="User" src={Unknown} />
                     {:else}
@@ -115,7 +115,6 @@
                             };
                         }}
                     >
-                        <!-- <li><a href="/auth/logout">Logout</a></li> -->
                         <li><button type="submit">Logout</button></li>
                     </form>
                 {/if}

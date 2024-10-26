@@ -18,6 +18,7 @@ interface House {
     country: string;
     created_on: string;
     join_id: string;
+    members: string[];
 }
 
 declare global {

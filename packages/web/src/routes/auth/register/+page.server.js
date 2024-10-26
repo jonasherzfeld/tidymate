@@ -9,7 +9,7 @@ import {
 import { fail, redirect } from '@sveltejs/kit';
 
 /** @type {import('./user/$types').PageServerLoad} */
-export async function load({ locals, url }) {
+export async function load({ locals }) {
     // redirect user if logged in
     if (locals.user) {
         redirect(302, '/');
@@ -47,7 +47,7 @@ export const actions = {
         if (confirmPassword.trim() !== password.trim()) {
             fieldsError.confirmPassword = 'Password and confirm password do not match.';
         }
-        if (join_id_given &&!isValidJoinId(joinId)) {
+        if (join_id_given && !isValidJoinId(joinId)) {
             fieldsError.joinId = 'Invalid Home ID.';
         }
 
