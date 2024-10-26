@@ -1,7 +1,7 @@
 import { BASE_API_URI } from '$lib/utils/constants';
 import { fail } from '@sveltejs/kit';
 
-async function get_user_by_id(user_id, cookies) {
+async function get_house_members(cookies) {
     let requestInitOptions = {
         method: 'GET',
         credentials: 'include',
@@ -11,22 +11,19 @@ async function get_user_by_id(user_id, cookies) {
         }
     };
 
-    const res = await fetch(`${BASE_API_URI}/auth/get-user/${user_id}`, requestInitOptions);
+    const res = await fetch(`${BASE_API_URI}/auth/get-house-members`, requestInitOptions);
     const response = await res.json();
     if (!res.ok) {
         return null;
     }
-    return response.user;
+    return response.user_list;
 }
 
 /** @type {import('./user/$types').PageServerLoad} */
-export async function load({ locals, cookies }) {
-    let user_list = [];
-    for (const member_id of locals.house.members) {
-        let user = await get_user_by_id(member_id, cookies);
-        if (user) {
-            user_list.push(user);
-        }
+export async function load({ cookies }) {
+    let user_list = await get_house_members(cookies);
+    if (!user_list) {
+        return fail(400, { error: 'Failed to get house members' });
     }
     return { user_list: user_list };
 }
@@ -85,7 +82,7 @@ export const actions = {
             })
         };
 
-        const res = await fetch(`${BASE_API_URI}/auth/update-user/${user_id}`, requestInitOptions);
+        const res = await fetch(`${BASE_API_URI}/auth/set-admin/${user_id}`, requestInitOptions);
         const response = await res.json();
         if (!res.ok) {
             return fail(400, { error: response.error });
