@@ -28,7 +28,7 @@
     };
 </script>
 
-<tr class={is_calling_user ? 'bg-base-300 rounded-full  border-2 border-accent' : ''}>
+<tr class={is_calling_user ? 'bg-base-300' : ''}>
     <td>
         <div class="flex items-center gap-3">
             <div class="avatar">
