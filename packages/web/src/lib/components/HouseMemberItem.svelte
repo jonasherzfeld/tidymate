@@ -55,7 +55,6 @@
             <input
                 type="checkbox"
                 name="is_admin"
-                value={is_admin}
                 class="toggle toggle-primary cursor-pointer"
                 onchange={() => form.requestSubmit()}
                 bind:checked={is_admin}

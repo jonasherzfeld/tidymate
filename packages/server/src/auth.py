@@ -6,23 +6,21 @@ import os
 import requests
 import shortuuid
 import uuid
-import redis
 
 from models import User, House
 from view_models import UserViewModel, HouseViewModel
 
 auth = Blueprint('auth', __name__)
 
+user_vm = UserViewModel()
+house_vm = HouseViewModel()
+
 def login_required(function_to_protect):
     @wraps(function_to_protect)
     def wrapper(*args, **kwargs):
-        try:
-            user_id = session.get('user_id')
-        except ConnectionRefusedError or redis.exceptions.ConnectionError:
-            return jsonify({"error": "Connection error on internal Session DB"}), 500
-
+        user_id = session.get('user_id')
         if user_id:
-            user = UserViewModel().get(user_id)
+            user = user_vm.get(user_id)
             if user:
                 # Success!
                 return function_to_protect(user, *args, **kwargs)
@@ -32,12 +30,7 @@ def login_required(function_to_protect):
             return jsonify({"error": "Unauthorized"}), 401
     return wrapper
 
-def validate_house_member(user):
-    if not user.house_id:
-        return jsonify({
-            "error": "Not house id given"}), 400
-
-    house = HouseViewModel().get(user.house_id)
+def validate_house_member(user, house):
     if not house:
         return House(), jsonify({
             "error": "House not found"}), 400
@@ -45,7 +38,7 @@ def validate_house_member(user):
         return House(), jsonify({
             "error": "User not found in house"}), 402
 
-    return house, jsonify({}), 200
+    return jsonify({}), 200
 
 @auth.route('/login', methods=['POST'])
 def login():
@@ -107,15 +100,13 @@ def register():
         return jsonify({"error": "Missing required fields"}), 400
 
     # Check if user already exists in Database ort Authentication
-    user_vm = UserViewModel()
-    db_user = user_vm.filter(email)
+    db_user = user_vm.filter("email", email)
     try:
         auth_user = fb_auth.get_user_by_email(email)
     except fb_auth.UserNotFoundError:
         auth_user = None
 
     if join_id and join_id != "null":
-        house_vm = HouseViewModel()
         db_house_list = house_vm.filter("join_id", join_id)
         if len(db_house_list) != 1:
             return jsonify({"error": "Invalid House ID"}), 404
@@ -165,7 +156,6 @@ def register_house(user):
         return jsonify({"error": "Missing required fields"}), 400
 
     # Check if user already exists in Database ort Authentication
-    house_vm = HouseViewModel()
     db_house = house_vm.filter("name", house_name)
 
     if db_house:
@@ -182,7 +172,7 @@ def register_house(user):
 
     user.house_id = new_house.id
     user.is_admin = True
-    UserViewModel().update(user.id, user)
+    user_vm.update(user.id, user)
 
     return jsonify({
         "house_name": new_house.name,
@@ -197,12 +187,16 @@ def activate_join(user):
         return jsonify({"error": "User not unauthorized to make changes."}), 401
 
     # Check if user already exists in Database ort Authentication
-    house, response, ret = validate_house_member(user)
+    if not user.house_id:
+        return jsonify({"error": "User not assigned to house."}), 401
+    house = house_vm.get(user.house_id)
+
+    response, ret = validate_house_member(user, house)
     if ret != 200:
         return response, ret
 
     house.join_id = str(shortuuid.ShortUUID().random(length=12))
-    HouseViewModel().update(house.id, house)
+    house_vm.update(house.id, house)
 
     return jsonify({
         "join_id": house.join_id
@@ -215,37 +209,84 @@ def deactivate_join(user):
     if not user.is_admin:
         return jsonify({"error": "User not unauthorized to make changes."}), 401
 
-    house, response, ret = validate_house_member(user)
+    if not user.house_id:
+        return jsonify({"error": "User not assigned to house."}), 401
+    house = house_vm.get(user.house_id)
+
+    response, ret = validate_house_member(user, house)
     if ret != 200:
         return response, ret
 
     house.join_id = ""
-    HouseViewModel().update(house.id, house)
+    house_vm.update(house.id, house)
     return jsonify({
         "join_id": house.join_id
     }), 200
 
-@auth.route('/get-user/<string:requested_user_id>', methods=['GET'])
+@auth.route('/get-house-members', methods=['GET'])
 @login_required
-def get_user(user, requested_user_id):
-    _, response, ret = validate_house_member(user)
+def get_house_members(user):
+    if not user.house_id:
+        return jsonify({"error": "User not assigned to house."}), 401
+    house = house_vm.get(user.house_id)
+
+    response, ret = validate_house_member(user, house)
     if ret != 200:
         return response, ret
 
-    requested_user = UserViewModel().get(requested_user_id)
-    _, response, ret = validate_house_member(requested_user)
-    if ret != 200:
-        return response, ret
+    house_member_list = user_vm.filter("house_id", user.house_id)
+    house_member_list_json = []
+    for house_mate in house_member_list:
+        response, ret = validate_house_member(house_mate, house)
+        if ret != 200:
+            return response, ret
+        house_member_list_json.append(house_mate.to_json())
 
     return jsonify({
-        "user": requested_user.to_json(),
+        "user_list": house_member_list_json,
     }), 200
 
-@auth.route('/update-user/<string:update_user_id>', methods=['PATCH'])
+@auth.route('/set-admin/<string:update_user_id>', methods=['PATCH'])
+@login_required
+def set_admin(user, update_user_id):
+    is_admin = request.json.get('is_admin', None)
+
+    # Validate calling user
+    if not user.house_id:
+        return jsonify({"error": "User not assigned to house."}), 401
+    house = house_vm.get(user.house_id)
+
+    response, ret = validate_house_member(user, house)
+    if ret != 200:
+        return response, ret
+
+    # Validate requested user
+    updated_user = user_vm.get(update_user_id)
+    response, ret = validate_house_member(updated_user, house)
+    if ret != 200:
+        return response, ret
+
+    # Allow change of admin status for other users
+    if user.is_admin and is_admin is not None:
+        updated_user.is_admin = is_admin
+    else:
+        return jsonify({"error": "User not unauthorized to make changes."}), 401
+
+    user_vm.update(updated_user.id, updated_user)
+    return jsonify({
+        "user": updated_user.to_json(),
+    }), 200
+
+
+@auth.route('/update-user', methods=['PATCH'])
 @login_required
 def update_user(user, update_user_id):
-    print("Update User ID: ", update_user_id)
-    _, response, ret = validate_house_member(user)
+    # Validate calling user
+    if not user.house_id:
+        return jsonify({"error": "User not assigned to house."}), 401
+    house = house_vm.get(user.house_id)
+
+    _, response, ret = validate_house_member(user, house)
     if ret != 200:
         return response, ret
 
@@ -256,8 +297,8 @@ def update_user(user, update_user_id):
     password = request.json.get('password', None)
     thumbnail = request.json.get('thumbnail', None)
 
-    updated_user = UserViewModel().get(update_user_id)
-    _, response, ret = validate_house_member(updated_user)
+    updated_user = user_vm.get(update_user_id)
+    _, response, ret = validate_house_member(updated_userhouse)
     if ret != 200:
         return response, ret
 
@@ -276,7 +317,7 @@ def update_user(user, update_user_id):
         if thumbnail:
             updated_user.thumbnail = thumbnail
 
-    UserViewModel().update(updated_user.id, updated_user)
+    user_vm.update(updated_user.id, updated_user)
 
     return jsonify({
         "user": updated_user.to_json(),
@@ -288,7 +329,10 @@ def update_user(user, update_user_id):
 @login_required
 def get_current_user(user):
     if user:
-        house, response, ret = validate_house_member(user)
+        if not user.house_id:
+            return jsonify({"error": "User not assigned to house."}), 401
+        house = house_vm.get(user.house_id)
+        response, ret = validate_house_member(user, house)
         if ret != 200:
             return response, ret
 

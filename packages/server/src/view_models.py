@@ -162,16 +162,15 @@ class UserViewModel():
             print(f"Document {id} not found in collection {USER_COLLECTION}")
             return None
 
-    def filter(self, email: str) -> list:
+    def filter(self, filter_field : str, data: str) -> list:
         try:
             doc_ref = db.collection(USER_COLLECTION)
-            query = doc_ref.where(filter=FieldFilter("email", "==", email))
+            query = doc_ref.where(filter=FieldFilter(filter_field, "==", data))
             docs = query.stream()
 
             doc_list = list()
             for doc in docs:
                 doc_data = doc.to_dict()
-                print(doc_data)
                 user = User(doc_data["id"],
                             doc_data["email"],
                             doc_data["first_name"],
