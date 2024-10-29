@@ -1,7 +1,9 @@
+import { redirect } from '@sveltejs/kit';
+
 /** @type {import('./$types').LayoutServerLoad} */
 export async function load({ locals }) {
-    return {
-        user: locals.user,
-        house: locals.house
-    };
+    // redirect user if logged in
+    if (locals.user) {
+        redirect(302, '/home');
+    }
 }

@@ -12,7 +12,7 @@
 
 <div class="navbar p-0 pe-2 min-h-0">
     <div class="flex-1">
-        <a href="/" class="btn btn-ghost text-xl">
+        <a href={is_logged_in ? '/home' : '/'} class="btn btn-ghost text-xl">
             <img alt="User" src={Logo} width="30px" />Tidymate</a
         >
         {#if is_logged_in}
