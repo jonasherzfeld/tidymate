@@ -1,4 +1,5 @@
 <script>
+    import Unknown_Avatar from '$lib/img/Unknown_person.jpg';
     import HouseMemberItem from './HouseMemberItem.svelte';
 
     let { user_list = $bindable([]), change_enabled = false } = $props();
@@ -22,9 +23,7 @@
                     last_name={user.last_name}
                     is_admin={user.is_admin}
                     joined_on={user.joined_on}
-                    src={user.thumbnail
-                        ? user.thumbnail
-                        : 'https://img.daisyui.com/images/profile/demo/3@94.webp'}
+                    src={user.thumbnail ? user.thumbnail : Unknown_Avatar}
                     {change_enabled}
                 />
             {/each}

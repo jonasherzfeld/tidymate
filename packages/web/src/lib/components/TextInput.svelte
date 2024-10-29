@@ -26,5 +26,5 @@
 
 <label class={class_in}>
     {@render children?.()}
-    <input {type} {name} class="grow" {placeholder} {value} {disabled} />
+    <input {type} {name} class="text-right grow" {placeholder} {value} {disabled} />
 </label>

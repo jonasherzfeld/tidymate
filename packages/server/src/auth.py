@@ -7,6 +7,7 @@ import requests
 import shortuuid
 import uuid
 
+from config import bucket
 from models import User, House
 from view_models import UserViewModel, HouseViewModel
 
@@ -280,47 +281,26 @@ def set_admin(user, update_user_id):
 
 @auth.route('/update-user', methods=['PATCH'])
 @login_required
-def update_user(user, update_user_id):
-    # Validate calling user
-    if not user.house_id:
-        return jsonify({"error": "User not assigned to house."}), 401
-    house = house_vm.get(user.house_id)
+def update_user(user):
 
-    _, response, ret = validate_house_member(user, house)
-    if ret != 200:
-        return response, ret
-
-    is_admin = request.json.get('is_admin', None)
-    email = request.json.get('email', None)
+    # email = request.json.get('email', None)
     first_name = request.json.get('first_name', None)
     last_name = request.json.get('last_name', None)
-    password = request.json.get('password', None)
+    # password = request.json.get('password', None)
     thumbnail = request.json.get('thumbnail', None)
 
-    updated_user = user_vm.get(update_user_id)
-    _, response, ret = validate_house_member(updated_userhouse)
-    if ret != 200:
-        return response, ret
+    # TODO: Add password and email change
+    if first_name:
+        user.first_name = first_name
+    if last_name:
+        user.last_name = last_name
+    if thumbnail:
+        user.thumbnail = thumbnail
 
-    # Allow change of admin status for other users
-    if user.id != updated_user.id:
-        if user.is_admin and is_admin is not None:
-            updated_user.is_admin = is_admin
-        else:
-            return jsonify({"error": "User not unauthorized to make changes."}), 401
-    else:
-        # TODO: Add password and email change
-        if first_name:
-            updated_user.first_name = first_name
-        if last_name:
-            updated_user.last_name = last_name
-        if thumbnail:
-            updated_user.thumbnail = thumbnail
-
-    user_vm.update(updated_user.id, updated_user)
+    user_vm.update(user.id, user)
 
     return jsonify({
-        "user": updated_user.to_json(),
+        "user": user.to_json(),
     }), 200
 
 

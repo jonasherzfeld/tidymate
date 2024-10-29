@@ -26,7 +26,11 @@
             class="navbar w-full bg-base-100 text-shade-500 border-solid border-b border-shape-500"
         >
             <div class="flex-none lg:hidden">
-                <button onclick={handleClick} class="btn btn-square btn-ghost" aria-label="Open Menu">
+                <button
+                    onclick={handleClick}
+                    class="btn btn-square btn-ghost"
+                    aria-label="Open Menu"
+                >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
@@ -51,7 +55,11 @@
         <button onclick={handleClick} class="drawer-overlay" aria-label="Close Menu"></button>
         <ul class="menu bg-base-200 min-h-full w-80 p-4">
             <!-- Sidebar content here -->
-            <a href="/" class="btn btn-ghost text-xl">
+            <a
+                href={is_logged_in ? '/home' : '/'}
+                class="btn btn-ghost text-xl"
+                onclick={handleClick}
+            >
                 <img alt="User" src={Logo} width="30px" />Tidymate</a
             >
             {#if is_logged_in}

@@ -3,7 +3,6 @@
 
     import { applyAction, enhance } from '$app/forms';
     import { page } from '$app/stores';
-    import Avatar from '$lib/img/teamavatar.png';
     import Unknown from '$lib/img/Unknown_person.jpg';
     import Logo from '$lib/img/tidymate_logo_white.png';
     import { NAV_LINKS } from '$lib/utils/constants';
@@ -13,7 +12,7 @@
 
 <div class="navbar p-0 pe-2 min-h-0">
     <div class="flex-1">
-        <a href="/" class="btn btn-ghost text-xl">
+        <a href={is_logged_in ? '/home' : '/'} class="btn btn-ghost text-xl">
             <img alt="User" src={Logo} width="30px" />Tidymate</a
         >
         {#if is_logged_in}
@@ -78,7 +77,7 @@
                     {:else}
                         <img
                             alt="User"
-                            src={$page.data.user.thumbnail ? $page.data.user.thumbnail : Avatar}
+                            src={$page.data.user.thumbnail ? $page.data.user.thumbnail : Unknown}
                         />
                     {/if}
                 </div>

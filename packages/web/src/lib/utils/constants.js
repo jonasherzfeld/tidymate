@@ -3,7 +3,6 @@ export const PROTECTED_ROUTES_USER = ['/auth/logout', '/profile', '/home', '/aut
 export const PROTECTED_ROUTES_HOUSE = ['/profile/house', '/home'];
 
 export const NAV_LINKS = [
-    { title: 'Home', href: '/home' },
     { title: 'Todo', href: '/home/todo' },
     { title: 'Chores', href: '/home/chores' }
 ];
