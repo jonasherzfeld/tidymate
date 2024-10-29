@@ -9,6 +9,8 @@ node_modules
 console/**/*.js
 .turbo
 .next
+.svelte-kit
+.sveltepress
 *.log
 venv
 __pycache__

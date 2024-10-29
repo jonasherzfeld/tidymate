@@ -1,31 +1,25 @@
 {
   "name": "@tidymate/docs",
-  "version": "0.1.0",
-  "description": "Tidymate Docs",
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/jonasherzfeld/tidymate.git"
-  },
-  "author": "Jonas Herzfeld <jonas.herzfeld@gmail.com>",
+  "type": "module",
+  "version": "0.0.0",
+  "private": true,
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/jonasherzfeld/tidymate/issues"
+  "scripts": {
+    "dev": "vite dev",
+    "build": "vite build"
   },
-  "homepage": "https://github.com/jonasherzfeld/tidymate#readme",
-  "dependencies": {
-    "next": "^14.2.8",
-    "nextra": "^2.13.4",
-    "nextra-theme-docs": "^2.13.4",
-    "nextra-theme-blog": "^2.13.4",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+  "engines" : {
+    "node" : ">=18.0.0 <20.0.0"
   },
   "devDependencies": {
-    "@types/node": "22.5.4"
+    "@sveltejs/adapter-static": "^3.0.1",
+    "@sveltejs/kit": "^2.5.1",
+    "@sveltejs/vite-plugin-svelte": "^3.1.2",
+    "@sveltepress/theme-default": "^3.1.0",
+    "@sveltepress/vite": "^0.35.0",
+    "@types/node": "^20.11.20",
+    "svelte": "^4.2.12",
+    "typescript": "^5.3.3",
+    "vite": "^5.1.4"
   }
 }
