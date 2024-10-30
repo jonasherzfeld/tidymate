@@ -3,8 +3,8 @@
     import Unknown_Avatar from '$lib/img/Unknown_person.jpg';
     import TextInput from '$lib/components/TextInput.svelte';
     import AvatarModal from '$lib/components/AvatarModal.svelte';
-    import EditIcon from '$lib/icons/EditIcon.svelte';
-    import SubmitIcon from '$lib/icons/SubmitIcon.svelte';
+    import EditIcon from 'virtual:icons/mdi/file-edit-outline';
+    import SubmitIcon from 'virtual:icons/mdi/file-send-outline';
 
     let { data = $bindable() } = $props();
     let showModal = $state(false);
@@ -29,7 +29,7 @@
 </script>
 
 <div class="grid bg-base-200 min-h-screen w-full items-start justify-center">
-    <div class="grid justify-center text-center max-w-xl mt-10">
+    <div class="grid justify-center text-center max-w-xl m-2 mt-10">
         <div class="flex justify-center items-center gap-2">
             <div class="relative text-center">
                 <div class="avatar m-5">
@@ -76,18 +76,18 @@
                         ><b>First name</b>
                     </TextInput>
                     {#if edit_first_name}
-                        <button type="submit" class="btn btn-primary">
-                            <SubmitIcon />
+                        <button type="submit" class="btn bg-base-300">
+                            <SubmitIcon style="font-size:1.2em" />
                         </button>
                     {:else}
                         <button
                             type="button"
-                            class="btn btn-primary"
+                            class="btn bg-base-300"
                             onclick={() => {
                                 edit_first_name = true;
                             }}
                         >
-                            <EditIcon />
+                            <EditIcon style="font-size:1.2em" />
                         </button>
                     {/if}
                 </div>
@@ -99,21 +99,21 @@
                         class_in="input input-bordered flex w-full items-center gap-2 border-solid"
                         value={data.user.last_name}
                         disabled={!edit_last_name}
-                        ><b>First name</b>
+                        ><b>Last name</b>
                     </TextInput>
                     {#if edit_last_name}
-                        <button type="submit" class="btn btn-primary">
-                            <SubmitIcon />
+                        <button type="submit" class="btn bg-base-300">
+                            <SubmitIcon style="font-size:1.2em" />
                         </button>
                     {:else}
                         <button
                             type="button"
-                            class="btn btn-primary"
+                            class="btn bg-base-300"
                             onclick={() => {
                                 edit_last_name = true;
                             }}
                         >
-                            <EditIcon />
+                            <EditIcon style="font-size:1.2em" />
                         </button>
                     {/if}
                 </div>
@@ -123,7 +123,7 @@
             </TextInput>
         </div>
         <AvatarModal bind:showModal>
-            <div class="flex items-center gap-3 mb-5">
+            <div class="flex flex-col sm:flex-row items-center gap-3 mb-5">
                 <div class="avatar m-5">
                     <div class="mask mask-squircle h-24 w-24">
                         <img
@@ -142,7 +142,7 @@
                                 accept=".jpg, .jpeg, .png, .webp"
                             />
                         </label>
-                        <div class="grid grid-cols-2 gap-3">
+                        <div class="grid sm:grid-cols-2 gap-3">
                             <button
                                 class="btn"
                                 type="submit"
