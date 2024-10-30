@@ -1,11 +1,18 @@
 <script>
-    import 'tailwindcss/tailwind.css';
+    import UserCircleOutline from '~icons/mdi/user-circle-outline';
+    import HouseCircleOutline from '~icons/mdi/house-circle-outline';
+    import InfoIcon from 'virtual:icons/fluent/info-12-regular';
+    import DocsIcon from 'virtual:icons/fluent/document-bullet-list-16-regular';
+    import SignOut from 'virtual:icons/mdi/sign-out';
+    import SignIn from 'virtual:icons/mdi/sign-in';
+    import RegisterIcon from 'virtual:icons/mdi/register-outline';
+    import TodoIcon from 'virtual:icons/fluent/task-list-square-16-filled';
+    import ChoresIcon from 'virtual:icons/fluent/calendar-arrow-counterclockwise-48-filled';
 
     import { applyAction, enhance } from '$app/forms';
     import { page } from '$app/stores';
     import Unknown from '$lib/img/Unknown_person.jpg';
     import Logo from '$lib/img/tidymate_logo_white.png';
-    import { NAV_LINKS } from '$lib/utils/constants';
 
     let is_logged_in = $derived($page.data.user ? true : false);
 </script>
@@ -18,9 +25,12 @@
         {#if is_logged_in}
             <div class="hidden flex-none lg:block">
                 <ul class="menu menu-horizontal px-1">
-                    {#each NAV_LINKS as link}
-                        <li><a href={link.href}>{link.title}</a></li>
-                    {/each}
+                    <li>
+                        <a href="/home/todo"><TodoIcon style="font-size:1.2rem" />To-Dos</a>
+                    </li>
+                    <li>
+                        <a href="/home/chores"><ChoresIcon style="font-size:1.2rem" />Chores</a>
+                    </li>
                 </ul>
             </div>
         {/if}
@@ -29,42 +39,11 @@
         <div class="hidden lg:block">
             <ul class="menu menu-horizontal m-0 p-0">
                 <li>
-                    <a href="/about">
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke-width="1.5"
-                            stroke="currentColor"
-                            class="size-6"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z"
-                            />
-                        </svg>
-
-                        About</a
-                    >
+                    <a href="/about"><InfoIcon style="font-size:1.2rem" /> About</a>
                 </li>
                 <li>
                     <a href="https://tidymate-docs.vercel.app" target="_blank">
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke-width="1.5"
-                            stroke="currentColor"
-                            class="size-6"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"
-                            />
-                        </svg>
-                        Documention ↗</a
+                        <DocsIcon style="font-size:1.2rem" /> Documention ↗</a
                     >
                 </li>
             </ul>
@@ -84,24 +63,37 @@
             </div>
             <ul
                 tabindex="-1"
-                class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
+                class="menu menu-xl dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
             >
                 {#if !$page.data.user}
-                    <li><a href="/auth/login">Login</a></li>
-                    <li><a href="/auth/register">Register</a></li>
+                    <li class="text-base">
+                        <a href="/auth/login" class="justify-left gap-5"
+                            ><SignIn style="font-size:1.2em" />Login</a
+                        >
+                    </li>
+                    <li class="text-base">
+                        <a href="/auth/register" class="justify-left gap-5"
+                            ><RegisterIcon style="font-size:1.2em" /> Register</a
+                        >
+                    </li>
                 {:else}
-                    <li>
-                        <a href="/profile/user" class="justify-between"> Profile </a>
+                    <li class="text-base">
+                        <a href="/profile/user" class="justify-left gap-5"
+                            ><UserCircleOutline style="font-size:1.2em" /> Your Profile
+                        </a>
                     </li>
                     {#if !$page.data.user.house_id}
-                        <li>
-                            <a href="/auth/register/group" class="justify-between">
+                        <li class="text-base">
+                            <a href="/auth/register/group" class="justify-left gap-5">
+                                <RegisterIcon style="font-size:1.2em" />
                                 Register House
                             </a>
                         </li>
                     {:else}
-                        <li>
-                            <a href="/profile/house" class="justify-between"> House </a>
+                        <li class="text-base">
+                            <a href="/profile/house" class="justify-left gap-5">
+                                <HouseCircleOutline style="font-size:1.2em" /> Your House
+                            </a>
                         </li>
                     {/if}
 
@@ -114,7 +106,11 @@
                             };
                         }}
                     >
-                        <li><button type="submit">Logout</button></li>
+                        <li class="text-base">
+                            <button type="submit" class="justify-left gap-5">
+                                <SignOut style="font-size:1.2em" /> Logout</button
+                            >
+                        </li>
                     </form>
                 {/if}
             </ul>

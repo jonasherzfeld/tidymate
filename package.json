@@ -11,12 +11,15 @@
         "format": "prettier --write \"**/*.{ts,tsx,md}\""
     },
     "devDependencies": {
+        "@iconify-json/fluent": "^1.2.5",
+        "@iconify-json/mdi": "^1.2.1",
         "daisyui": "^4.12.13",
         "postcss-normalize": "^13.0.1",
         "prettier": "^3.2.5",
         "svelte2tsx": "^0.7.22",
         "turbo": "^2.2.3",
-        "typescript": "^5.4.5"
+        "typescript": "^5.4.5",
+        "unplugin-icons": "^0.19.3"
     },
     "engines": {
         "node": ">=18"

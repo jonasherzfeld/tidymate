@@ -1,8 +1,11 @@
 <script>
     import Header from '$lib/components/Header.svelte';
     import Logo from '$lib/img/tidymate_logo_white.png';
+    import TodoIcon from 'virtual:icons/fluent/task-list-square-16-filled';
+    import ChoresIcon from 'virtual:icons/fluent/calendar-arrow-counterclockwise-48-filled';
+
     import { page } from '$app/stores';
-    import { INFO_LINKS, NAV_LINKS } from '$lib/utils/constants';
+    import { INFO_LINKS } from '$lib/utils/constants';
     /**
      * @typedef {Object} Props
      * @property {import('svelte').Snippet} [children]
@@ -63,11 +66,12 @@
                 <img alt="User" src={Logo} width="30px" />Tidymate</a
             >
             {#if is_logged_in}
-                {#each NAV_LINKS as link}
-                    <li>
-                        <a href={link.href} onclick={handleClick}>{link.title}</a>
-                    </li>
-                {/each}
+                <li class="text-base">
+                    <a href="/home/todo"><TodoIcon style="font-size:1.2rem" />To-Dos</a>
+                </li>
+                <li class="text-base">
+                    <a href="/home/chores"><ChoresIcon style="font-size:1.2rem" />Chores</a>
+                </li>
                 <div class="divider"></div>
             {/if}
             {#each INFO_LINKS as link}
