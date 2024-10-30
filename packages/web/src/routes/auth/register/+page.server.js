@@ -24,7 +24,7 @@ export const actions = {
      * @param fetch - Fetch object from sveltekit
      * @returns Error data or redirects user to the home page or the previous page
      */
-    register: async ({ request, fetch }) => {
+    register: async ({ request, fetch, cookies }) => {
         const formData = await request.formData();
         const email = String(formData.get('email'));
         const firstName = String(formData.get('first_name'));
@@ -32,7 +32,7 @@ export const actions = {
         const password = String(formData.get('password'));
         const confirmPassword = String(formData.get('confirm_password'));
         const joinId = String(formData.get('join_id'));
-        const join_id_given = joinId !== 'null';
+        const is_join_home = String(formData.get('join_home')) == 'true';
 
         // Some validations
         /** @type {Record<string, string>} */
@@ -47,7 +47,7 @@ export const actions = {
         if (confirmPassword.trim() !== password.trim()) {
             fieldsError.confirmPassword = 'Password and confirm password do not match.';
         }
-        if (join_id_given && !isValidJoinId(joinId)) {
+        if (is_join_home && !isValidJoinId(joinId)) {
             fieldsError.joinId = 'Invalid Home ID.';
         }
 
@@ -79,7 +79,24 @@ export const actions = {
             return fail(400, { errors: errors });
         }
 
-        if (!join_id_given) {
+        if (res.headers.has('Set-Cookie')) {
+            const sessionID = Object.fromEntries(res.headers)
+                ['set-cookie'].split(';')[0]
+                .split(/=(.*)/s)[1];
+
+            const path = Object.fromEntries(res.headers)['set-cookie'].split(';')[2].split('=')[1];
+            const maxAge = 60 * 60 * 24 * 30;
+
+            cookies.set('session', sessionID, {
+                httpOnly: true,
+                sameSite: 'lax',
+                path: path,
+                secure: false,
+                maxAge: maxAge
+            });
+        }
+
+        if (!is_join_home) {
             redirect(303, '/auth/register/group');
         }
         redirect(303, '/');

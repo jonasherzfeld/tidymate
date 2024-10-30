@@ -37,6 +37,8 @@
         method="POST"
         use:enhance={handleRegister}
     >
+        <input class="hidden" name="join_home" value={join_home} />
+
         {#if form?.errors}
             {#each form?.errors as error (error.id)}
                 <h4
