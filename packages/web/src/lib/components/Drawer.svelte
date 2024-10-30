@@ -15,6 +15,8 @@
     let { children } = $props();
 
     let is_logged_in = $derived($page.data.user ? true : false);
+    let is_in_house = $derived($page.data.house? true : false);
+
     let checked = $state('');
     function handleClick() {
         checked === 'checked' ? (checked = '') : (checked = 'checked');
@@ -59,13 +61,13 @@
         <ul class="menu bg-base-200 min-h-full w-80 p-4">
             <!-- Sidebar content here -->
             <a
-                href={is_logged_in ? '/home' : '/'}
+                href={is_logged_in && is_in_house ? '/home' : '/'}
                 class="btn btn-ghost text-xl"
                 onclick={handleClick}
             >
                 <img alt="User" src={Logo} width="30px" />Tidymate</a
             >
-            {#if is_logged_in}
+            {#if is_logged_in && is_in_house}
                 <li class="text-base">
                     <a href="/home/todo"><TodoIcon style="font-size:1.2rem" />To-Dos</a>
                 </li>
