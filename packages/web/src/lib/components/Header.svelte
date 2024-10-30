@@ -14,15 +14,16 @@
     import Unknown from '$lib/img/Unknown_person.jpg';
     import Logo from '$lib/img/tidymate_logo_white.png';
 
-    let is_logged_in = $derived($page.data.user ? true : false);
+    let is_logged_in = $derived($page.data.user? true : false);
+    let is_in_house = $derived($page.data.house? true : false);
 </script>
 
 <div class="navbar p-0 pe-2 min-h-0">
     <div class="flex-1">
-        <a href={is_logged_in ? '/home' : '/'} class="btn btn-ghost text-xl">
+        <a href={is_logged_in && is_in_house? '/home' : '/'} class="btn btn-ghost text-xl">
             <img alt="User" src={Logo} width="30px" />Tidymate</a
         >
-        {#if is_logged_in}
+        {#if is_logged_in && is_in_house}
             <div class="hidden flex-none lg:block">
                 <ul class="menu menu-horizontal px-1">
                     <li>
@@ -51,7 +52,7 @@
         <div class="dropdown dropdown-end">
             <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
                 <div class=" mask mask-squircle h-10 w-10">
-                    {#if !$page.data.user}
+                    {#if !is_logged_in}
                         <img alt="User" src={Unknown} />
                     {:else}
                         <img
@@ -65,7 +66,7 @@
                 tabindex="-1"
                 class="menu menu-xl dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
             >
-                {#if !$page.data.user}
+                {#if !is_logged_in}
                     <li class="text-base">
                         <a href="/auth/login" class="justify-left gap-5"
                             ><SignIn style="font-size:1.2em" />Login</a
@@ -82,7 +83,7 @@
                             ><UserCircleOutline style="font-size:1.2em" /> Your Profile
                         </a>
                     </li>
-                    {#if !$page.data.user.house_id}
+                    {#if !is_in_house}
                         <li class="text-base">
                             <a href="/auth/register/group" class="justify-left gap-5">
                                 <RegisterIcon style="font-size:1.2em" />

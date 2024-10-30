@@ -308,18 +308,18 @@ def update_user(user):
 @auth.route('/current-user', methods=['GET'])
 @login_required
 def get_current_user(user):
+    house = None
     if user:
         if user.house_id:
             house = house_vm.get(user.house_id)
             response, ret = validate_house_member(user, house)
             if ret != 200:
                 return response, ret
-        else:
-            house = House()
+
 
         return jsonify({
             "user": user.to_json(),
-            "house": house.to_json()
+            "house": house.to_json() if house else None
         }), 200
 
     return jsonify({
