@@ -51,9 +51,9 @@ export const actions = {
         let route;
         if (locals.house.join_id) {
             requestInitOptions.method = 'DELETE';
-            route = `${BASE_API_URI}/auth/deactivate_join`;
+            route = `${BASE_API_URI}/auth/deactivate-join`;
         } else {
-            route = `${BASE_API_URI}/auth/activate_join`;
+            route = `${BASE_API_URI}/auth/activate-join`;
         }
         const res = await fetch(route, requestInitOptions);
 

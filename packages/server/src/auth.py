@@ -148,7 +148,7 @@ def register():
     }), 200
 
 
-@auth.route('/register_house', methods=["POST"])
+@auth.route('/register-house', methods=["POST"])
 @login_required
 def register_house(user):
     try:
@@ -181,7 +181,7 @@ def register_house(user):
     }), 200
 
 
-@auth.route('/activate_join', methods=["POST"])
+@auth.route('/activate-join', methods=["POST"])
 @login_required
 def activate_join(user):
     if not user.is_admin:
@@ -204,7 +204,7 @@ def activate_join(user):
     }), 200
 
 
-@auth.route('/deactivate_join', methods=["DELETE"])
+@auth.route('/deactivate-join', methods=["DELETE"])
 @login_required
 def deactivate_join(user):
     if not user.is_admin:
