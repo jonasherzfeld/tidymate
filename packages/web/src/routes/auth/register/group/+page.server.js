@@ -18,7 +18,7 @@ export const actions = {
      * @param fetch - Fetch object from sveltekit
      * @returns Error data or redirects user to the home page or the previous page
      */
-    register_house: async ({ request, fetch, locals }) => {
+    register_house: async ({ request, fetch, locals, cookies }) => {
         const formData = await request.formData();
         const houseName = String(formData.get('house_name'));
 
@@ -37,13 +37,17 @@ export const actions = {
         /** @type {RequestInit} */
         const requestInitOptions = {
             method: 'POST',
+            credentials: 'include',
+
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                Cookie: `session=${cookies.get('session')}`
+
             },
             body: JSON.stringify(registrationBody)
         };
 
-        const res = await fetch(`${BASE_API_URI}/auth/register_house`, requestInitOptions);
+        const res = await fetch(`${BASE_API_URI}/auth/register-house`, requestInitOptions);
 
         if (!res.ok) {
             const response = await res.json();
