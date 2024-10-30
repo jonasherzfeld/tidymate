@@ -69,10 +69,5 @@ export const actions = {
         }
 
         redirect(303, next || '/');
-        //return { success: true };
-        // then in +page.svelte
-        // 	{#if form?.success}
-        // <p>Successfully logged in! Welcome back, {data.user.name}</p>
-        // {/if}
     }
 };

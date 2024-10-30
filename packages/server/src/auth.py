@@ -309,12 +309,13 @@ def update_user(user):
 @login_required
 def get_current_user(user):
     if user:
-        if not user.house_id:
-            return jsonify({"error": "User not assigned to house."}), 401
-        house = house_vm.get(user.house_id)
-        response, ret = validate_house_member(user, house)
-        if ret != 200:
-            return response, ret
+        if user.house_id:
+            house = house_vm.get(user.house_id)
+            response, ret = validate_house_member(user, house)
+            if ret != 200:
+                return response, ret
+        else:
+            house = House()
 
         return jsonify({
             "user": user.to_json(),
