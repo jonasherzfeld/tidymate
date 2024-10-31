@@ -1,19 +1,11 @@
-<script>
+<script lang="ts">
     import { applyAction, enhance } from '$app/forms';
     import { receive, send } from '$lib/utils/helpers';
     import { scale } from 'svelte/transition';
     import IconTextInput from '$lib/components/IconTextInput.svelte';
 
-
-    /**
-     * @typedef {Object} Props
-     * @property {import('./$types').ActionData} form
-     */
-
-    /** @type {Props} */
     let { form } = $props();
 
-    /** @type {import('./$types').SubmitFunction} */
     const handleRegister = async () => {
         return async ({ result }) => {
             await applyAction(result);

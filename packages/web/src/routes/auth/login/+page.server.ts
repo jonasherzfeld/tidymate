@@ -2,7 +2,6 @@ import { BASE_API_URI } from '$lib/utils/constants';
 import { formatError } from '$lib/utils/helpers';
 import { fail, redirect } from '@sveltejs/kit';
 
-/** @type {import('./$types').PageServerLoad} */
 export async function load({ locals }) {
     // redirect user if logged in
     if (locals.user) {
@@ -10,7 +9,6 @@ export async function load({ locals }) {
     }
 }
 
-/** @type {import('./$types').Actions} */
 export const actions = {
     /**
      *
@@ -25,8 +23,7 @@ export const actions = {
         const password = String(data.get('password'));
         const next = String(data.get('next'));
 
-        /** @type {RequestInit} */
-        const requestInitOptions = {
+        const requestInitOptions: RequestInit = {
             method: 'POST',
             credentials: 'include',
             headers: {
@@ -38,7 +35,6 @@ export const actions = {
             })
         };
 
-        console.log(`${BASE_API_URI}/auth/login`);
         const res = await fetch(`${BASE_API_URI}/auth/login`, requestInitOptions);
 
         if (!res.ok) {
@@ -68,6 +64,7 @@ export const actions = {
             });
         }
 
+        console.log("REDIRECT?!")
         redirect(303, next || '/');
     }
 };

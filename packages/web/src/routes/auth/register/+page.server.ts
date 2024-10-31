@@ -16,6 +16,13 @@ export async function load({ locals }) {
     }
 }
 
+type FieldsError = {
+    email?: String,
+    password?: String,
+    confirmPassword?: String,
+    joinId?: String
+}
+
 /** @type {import('./user/$types').Actions} */
 export const actions = {
     /**
@@ -35,8 +42,7 @@ export const actions = {
         const is_join_home = String(formData.get('join_home')) == 'true';
 
         // Some validations
-        /** @type {Record<string, string>} */
-        const fieldsError = {};
+        let fieldsError: FieldsError = {};
         if (!isValidEmail(email)) {
             fieldsError.email = 'That email address is invalid.';
         }

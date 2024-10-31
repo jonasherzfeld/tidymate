@@ -1,8 +1,9 @@
 import { BASE_API_URI } from '$lib/utils/constants';
 import { fail } from '@sveltejs/kit';
+import type { Cookies } from '@sveltejs/kit';
 
-async function get_house_members(cookies) {
-    let requestInitOptions = {
+async function get_house_members(cookies: Cookies) {
+    let requestInitOptions: RequestInit = {
         method: 'GET',
         credentials: 'include',
         headers: {
@@ -36,7 +37,7 @@ export const actions = {
      * @returns Error data or redirects user to the home page or the previous page
      */
     toggle_join_id: async ({ locals, cookies }) => {
-        let requestInitOptions = {
+        let requestInitOptions: RequestInit = {
             method: 'POST',
             credentials: 'include',
             headers: {
@@ -70,7 +71,7 @@ export const actions = {
         const user_id = String(formData.get('user_id'));
         const is_admin = Boolean(formData.get('is_admin'));
 
-        let requestInitOptions = {
+        let requestInitOptions: RequestInit = {
             method: 'PATCH',
             credentials: 'include',
             headers: {

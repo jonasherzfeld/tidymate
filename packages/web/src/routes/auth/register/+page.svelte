@@ -1,17 +1,10 @@
-<script>
+<script lang="ts">
     import { applyAction, enhance } from '$app/forms';
     import { receive, send } from '$lib/utils/helpers';
     import { scale } from 'svelte/transition';
     import TextInput from '$lib/components/TextInput.svelte';
 
-    /**
-     * @typedef {Object} Props
-     * @property {import('./user/$types').ActionData} form
-     */
-
-    /** @type {Props} */
     let { form } = $props();
-
     let join_home = $state(true);
 
     /** @type {import('./user/$types').SubmitFunction} */
