@@ -1,7 +1,8 @@
 import { BASE_API_URI, PROTECTED_ROUTES_HOUSE, PROTECTED_ROUTES_USER } from '$lib/utils/constants';
 import { redirect } from '@sveltejs/kit';
+import type { RequestEvent } from '@sveltejs/kit';
 
-export function isAccessValid(path, user, house) {
+export function isAccessValid(path: String, user: User, house : House) {
     const is_protecte_route_user = PROTECTED_ROUTES_USER.filter((option) =>
         path.startsWith(option)
     );
@@ -19,7 +20,7 @@ export function isAccessValid(path, user, house) {
     return true;
 }
 
-export async function validateSession(event) {
+export async function validateSession(event: RequestEvent) {
     // get cookies from browser
     const session = event.cookies.get('session');
     if (!session) {
@@ -42,7 +43,6 @@ export async function validateSession(event) {
     return res;
 }
 
-/** @type {import('@sveltejs/kit').Handle} */
 export async function handle({ event, resolve }) {
     if (event.locals.user) {
         // if there is already a user in session load page as normal

@@ -1,8 +1,12 @@
-<script>
+<script lang="ts">
     import { enhance } from '$app/forms';
     import { page } from '$app/stores';
 
-    let action = $state();
+    type ActionResult = {
+        success: boolean,
+        join_id: string
+    }
+    let action: ActionResult | undefined = $state();
     let is_active_join_id = $derived($page.data.house.join_id || action?.join_id);
     let creating_join_id = $state(false);
 

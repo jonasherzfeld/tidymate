@@ -1,21 +1,13 @@
-<script>
+<script lang="ts">
     import 'tailwindcss/tailwind.css';
 
     import IconTextInput from '$lib/components/IconTextInput.svelte';
     import { applyAction, enhance } from '$app/forms';
     import { page } from '$app/stores';
-    import { receive, send } from '$lib/utils/helpers';
+    import { receive, send } from '$lib/utils/helpers.js';
 
-    
-    /**
-     * @typedef {Object} Props
-     * @property {import('./$types').ActionData} form
-     */
-
-    /** @type {Props} */
     let { form } = $props();
 
-    /** @type {import('./$types').SubmitFunction} */
     const handleLogin = async () => {
         return async ({ result }) => {
             await applyAction(result);

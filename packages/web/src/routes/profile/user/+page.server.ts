@@ -6,7 +6,7 @@ export const actions = {
         const formData = await request.formData();
         const first_name = String(formData.get('first_name'));
 
-        let requestInitOptions = {
+        let requestInitOptions: RequestInit = {
             method: 'PATCH',
             credentials: 'include',
             headers: {
@@ -31,7 +31,7 @@ export const actions = {
         const formData = await request.formData();
         const last_name = String(formData.get('last_name'));
 
-        let requestInitOptions = {
+        let requestInitOptions: RequestInit = {
             method: 'PATCH',
             credentials: 'include',
             headers: {
@@ -55,8 +55,7 @@ export const actions = {
     upload_image: async ({ request, fetch, cookies }) => {
         const formData = await request.formData();
 
-        /** @type {RequestInit} */
-        const requestInitOptions = {
+        const requestInitOptions: RequestInit = {
             method: 'POST',
             headers: {
                 Cookie: `session=${cookies.get('session')}`
@@ -80,8 +79,7 @@ export const actions = {
     },
 
     delete_image: async ({ fetch, cookies }) => {
-        /** @type {RequestInit} */
-        const requestInitOptions = {
+        const requestInitOptions: RequestInit = {
             method: 'DELETE',
             headers: {
                 Cookie: `session=${cookies.get('session')}`

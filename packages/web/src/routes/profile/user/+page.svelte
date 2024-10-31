@@ -1,26 +1,28 @@
-<script>
+<script lang="ts">
     import { enhance } from '$app/forms';
     import Unknown_Avatar from '$lib/img/Unknown_person.jpg';
     import TextInput from '$lib/components/TextInput.svelte';
     import AvatarModal from '$lib/components/AvatarModal.svelte';
     import EditIcon from 'virtual:icons/mdi/file-edit-outline';
     import SubmitIcon from 'virtual:icons/mdi/file-send-outline';
+	import type { TypedSubmitFunction } from '$lib/form';
+	import type { ActionData } from './$types';
 
     let { data = $bindable() } = $props();
     let showModal = $state(false);
     let edit_first_name = $state(false);
     let edit_last_name = $state(false);
     let is_img_hover = $state(false);
-    let handleImgHover = (value) => {
+    let handleImgHover = (value: boolean) => {
         is_img_hover = value;
     };
-    let handleFirstName = async () => {
+    let handleFirstName: TypedSubmitFunction<ActionData>  = async () => {
         return async ({ update }) => {
             await update();
             edit_first_name = false;
         };
     };
-    let handleLastName = async () => {
+    let handleLastName: TypedSubmitFunction<ActionData> = async () => {
         return async ({ update }) => {
             await update();
             edit_last_name = false;
@@ -70,7 +72,6 @@
                 <div class="flex gap-2">
                     <TextInput
                         name="first_name"
-                        class_in="input input-bordered flex w-full items-center gap-2 border-solid"
                         value={data.user.first_name}
                         disabled={!edit_first_name}
                         ><b>First name</b>
@@ -93,10 +94,9 @@
                 </div>
             </form>
             <form action="?/update_last_name" method="POST" use:enhance={handleLastName}>
-                <div class="flex">
+                <div class="flex gap-2">
                     <TextInput
                         name="last_name"
-                        class_in="input input-bordered flex w-full items-center gap-2 border-solid"
                         value={data.user.last_name}
                         disabled={!edit_last_name}
                         ><b>Last name</b>

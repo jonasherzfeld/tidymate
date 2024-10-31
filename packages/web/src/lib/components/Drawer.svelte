@@ -1,18 +1,19 @@
-<script>
+<script lang="ts">
+    import type { Snippet } from 'svelte';
+    import { page } from '$app/stores';
+
     import Header from '$lib/components/Header.svelte';
     import Logo from '$lib/img/tidymate_logo_white.png';
     import TodoIcon from 'virtual:icons/fluent/task-list-square-16-filled';
     import ChoresIcon from 'virtual:icons/fluent/calendar-arrow-counterclockwise-48-filled';
+    import InfoIcon from 'virtual:icons/fluent/info-12-regular';
+    import DocsIcon from 'virtual:icons/fluent/document-bullet-list-16-regular';
 
-    import { page } from '$app/stores';
-    import { INFO_LINKS } from '$lib/utils/constants';
-    /**
-     * @typedef {Object} Props
-     * @property {import('svelte').Snippet} [children]
-     */
 
-    /** @type {Props} */
-    let { children } = $props();
+    type Props = {
+        children: Snippet
+    }
+    let { children }: Props = $props();
 
     let is_logged_in = $derived($page.data.user ? true : false);
     let is_in_house = $derived($page.data.house? true : false);
@@ -69,16 +70,15 @@
             >
             {#if is_logged_in && is_in_house}
                 <li class="text-base">
-                    <a href="/home/todo"><TodoIcon style="font-size:1.2rem" />To-Dos</a>
+                    <a href="/home/todo" onclick={handleClick}><TodoIcon style="font-size:1.2rem" />To-Dos</a>
                 </li>
                 <li class="text-base">
-                    <a href="/home/chores"><ChoresIcon style="font-size:1.2rem" />Chores</a>
+                    <a href="/home/chores" onclick={handleClick}><ChoresIcon style="font-size:1.2rem" />Chores</a>
                 </li>
                 <div class="divider"></div>
             {/if}
-            {#each INFO_LINKS as link}
-                <li><a href={link.href} onclick={handleClick}>{link.title}</a></li>
-            {/each}
+                <li><a href='/about' onclick={handleClick}><InfoIcon style="font-size:1.2rem" /> About</a></li>
+                <li><a href='https://tidymate-docs.vercel.app' onclick={handleClick} target="_blank"><DocsIcon style="font-size:1.2rem" />Documention ↗</a></li>
         </ul>
     </div>
 </div>

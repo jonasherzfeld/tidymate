@@ -16,6 +16,16 @@ app.config['SESSION_USE_SIGNER'] = True
 app.config['SESSION_REDIS'] = redis.from_url(os.environ['REDIS_URL'])
 server_session = Session(app)
 
+DEV_MODE = os.environ["DEV_MODE"] == 'True'
+
+if DEV_MODE:
+    os.environ["FIREBASE_AUTH_EMULATOR_HOST"] = "127.0.0.1:9099"
+    os.environ["FIRESTORE_EMULATOR_HOST"] = "127.0.0.1:8070"
+    os.environ["FIRESTORE_EMULATOR_HOST"] = "127.0.0.1:8070"
+    os.environ["FIREBASE_STORAGE_EMULATOR_HOST"] = "127.0.0.1:9199"
+    os.environ["STORAGE_EMULATOR_HOST"] = "http://127.0.0.1:9199"
+    print("Is Dev Mode")
+
 service_account = {
     "type": os.environ['TYPE'],
     "project_id": os.environ['PROJECT_ID'],

@@ -1,28 +1,25 @@
-<script>
-    import 'tailwindcss/tailwind.css';
+<script lang="ts">
     import TextInput from './TextInput.svelte';
+    import type { Snippet } from 'svelte';
 
-    /**
-     * @typedef {Object} Props
-     * @property {string} [type]
-     * @property {any} name
-     * @property {string} [placeholder]
-     * @property {string} [class_in]
-     * @property {string} [value]
-     * @property {boolean} [disabled]
-     * @property {import('svelte').Snippet} [children]
-     */
-
-    /** @type {Props} */
+    type Props = {
+        type: string,
+        name: string,
+        placeholder: string,
+        class_in: string,
+        value: string,
+        disabled: boolean,
+        children: Snippet
+    }
     let {
         type = 'text',
         name,
         placeholder = '',
-        class_in = 'input input-bordered flex items-center gap-2',
+        class_in = '',
         value = '',
         disabled = false,
         children
-    } = $props();
+    }: Props = $props();
 </script>
 
 <TextInput {type} {name} {class_in} {placeholder} {value} {disabled}>

@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import TextInput from '$lib/components/TextInput.svelte';
     import JoinIdCreator from '$lib/components/JoinIdCreator.svelte';
     import HouseMemberTable from '$lib/components/HouseMemberTable.svelte';
