@@ -304,6 +304,31 @@ def update_user(user):
     }), 200
 
 
+@auth.route('/update-house', methods=['PATCH'])
+@login_required
+def update_house(user):
+    house = house_vm.get(user.house_id)
+    response, ret = validate_house_member(user, house)
+    if ret != 200:
+        return response, ret
+
+    name = request.json.get('name', None)
+    country = request.json.get('country', None)
+    city = request.json.get('city', None)
+
+    if name:
+        house.name = name
+    if country:
+        house.country = country
+    if city:
+        house.city = city
+
+    house_vm.update(house.id, house)
+
+    return jsonify({
+        "user": house.to_json(),
+    }), 200
+
 
 @auth.route('/current-user', methods=['GET'])
 @login_required

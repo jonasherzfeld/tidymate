@@ -30,12 +30,35 @@ export async function load({ cookies }) {
 }
 
 export const actions = {
-    /**
-     *
-     * @param request - The request object
-     * @param fetch - Fetch object from sveltekit
-     * @returns Error data or redirects user to the home page or the previous page
-     */
+    update_house: async ({ request, fetch, cookies }) => {
+        const formData = await request.formData();
+        const name = String(formData.get('name'));
+        const city = String(formData.get('city'));
+        const country = String(formData.get('country'));
+
+        let requestInitOptions: RequestInit = {
+            method: 'PATCH',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+                Cookie: `session=${cookies.get('session')}`
+            },
+            body: JSON.stringify({
+                name: name === "null" ? '' : name,
+                city: city === "null" ? '' : city,
+                country: country === "null" ? '' : country
+            })
+        };
+
+        const res = await fetch(`${BASE_API_URI}/auth/update-house`, requestInitOptions);
+        const response = await res.json();
+        if (!res.ok) {
+            return fail(400, { error: response.error });
+        }
+
+        return { user: response.user, success: res.ok };
+    },
+
     toggle_join_id: async ({ locals, cookies }) => {
         let requestInitOptions: RequestInit = {
             method: 'POST',

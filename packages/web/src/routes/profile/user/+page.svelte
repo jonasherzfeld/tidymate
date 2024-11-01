@@ -8,13 +8,22 @@
 	import type { TypedSubmitFunction } from '$lib/form';
 	import type { ActionData } from './$types';
 
+    import AttributeLabel from '$lib/components/AttributeLabel.svelte';
+
     let { data = $bindable() } = $props();
     let showModal = $state(false);
+    let edit_email = $state(false);
     let edit_first_name = $state(false);
     let edit_last_name = $state(false);
     let is_img_hover = $state(false);
     let handleImgHover = (value: boolean) => {
         is_img_hover = value;
+    };
+    let handleEmail: TypedSubmitFunction<ActionData>  = async () => {
+        return async ({ update }) => {
+            await update();
+            edit_email = false;
+        };
     };
     let handleFirstName: TypedSubmitFunction<ActionData>  = async () => {
         return async ({ update }) => {
@@ -62,23 +71,38 @@
         <p class="py-6">This is your profile page. Here you can see your details.</p>
 
         <div class="grid gap-2">
-            <TextInput name="email" value={data.user.email} disabled={true}><b>Email</b></TextInput>
-            <form action="?/update_first_name" method="POST" use:enhance={handleFirstName}>
+            <form action="?/update_user" method="POST" use:enhance={handleEmail}>
                 <div class="flex gap-2">
-                    <TextInput
-                        name="first_name"
-                        value={data.user.first_name}
-                        disabled={!edit_first_name}
-                        ><b>First name</b>
-                    </TextInput>
-                    {#if edit_first_name}
-                        <button type="submit" class="btn bg-base-300">
+                    <AttributeLabel is_change_mode={edit_email} name="email_name" desc_text="Email" bind:label_text={data.user.email}>
+                    {#if edit_email}
+                        <button type="submit" class="btn join-item bg-base-300" disabled>
                             <SubmitIcon style="font-size:1.2em" />
                         </button>
                     {:else}
                         <button
                             type="button"
-                            class="btn bg-base-300"
+                            class="btn join-item bg-base-300"
+                            onclick={() => {
+                                edit_email = true;
+                            }}
+                            disabled>
+                            <EditIcon style="font-size:1.2em" />
+                        </button>
+                    {/if}
+                    </AttributeLabel>
+                </div>
+            </form>
+            <form  action="?/update_user" method="POST" use:enhance={handleFirstName}>
+                <AttributeLabel is_change_mode={edit_first_name} name="first_name" desc_text="First Name" bind:label_text={data.user.first_name}>
+                    {#if edit_first_name}
+                        <button type="submit" class="btn join-item bg-base-3000">
+                            <SubmitIcon style="font-size:1.2em" />
+                        </button>
+
+                    {:else}
+                        <button
+                            type="button"
+                            class="btn join-item bg-base-300"
                             onclick={() => {
                                 edit_first_name = true;
                             }}
@@ -86,24 +110,19 @@
                             <EditIcon style="font-size:1.2em" />
                         </button>
                     {/if}
-                </div>
+                </AttributeLabel>
             </form>
-            <form action="?/update_last_name" method="POST" use:enhance={handleLastName}>
+            <form action="?/update_user" method="POST" use:enhance={handleLastName}>
                 <div class="flex gap-2">
-                    <TextInput
-                        name="last_name"
-                        value={data.user.last_name}
-                        disabled={!edit_last_name}
-                        ><b>Last name</b>
-                    </TextInput>
+                    <AttributeLabel is_change_mode={edit_last_name} name="last_name" desc_text="Last Name" bind:label_text={data.user.last_name}>
                     {#if edit_last_name}
-                        <button type="submit" class="btn bg-base-300">
+                        <button type="submit" class="btn join-item bg-base-300">
                             <SubmitIcon style="font-size:1.2em" />
                         </button>
                     {:else}
                         <button
                             type="button"
-                            class="btn bg-base-300"
+                            class="btn join-item bg-base-300"
                             onclick={() => {
                                 edit_last_name = true;
                             }}
@@ -111,6 +130,7 @@
                             <EditIcon style="font-size:1.2em" />
                         </button>
                     {/if}
+                    </AttributeLabel>
                 </div>
             </form>
             <TextInput name="joined_on" value={data.user.joined_on} disabled={true}
@@ -136,12 +156,12 @@
                             <button
                                 class="btn"
                                 type="submit"
-                                formaction="user?/upload_image"
+                                formaction="?/upload_image"
                                 disabled={data.user.thumbnail}>Upload image</button
                             >
                             <button
                                 class="btn btn-error"
-                                formaction="user?/delete_image"
+                                formaction="?/delete_image"
                                 type="submit"
                                 disabled={!data.user.thumbnail}
                             >
