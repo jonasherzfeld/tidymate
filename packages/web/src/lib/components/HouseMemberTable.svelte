@@ -27,7 +27,7 @@
                     last_name={user.last_name}
                     is_admin={user.is_admin}
                     joined_on={user.joined_on}
-                    src={user.thumbnail ? user.thumbnail : Unknown_Avatar}
+                    src={user.thumbnail ? user.thumbnail : ''}
                     {change_enabled}
                 />
             {/each}

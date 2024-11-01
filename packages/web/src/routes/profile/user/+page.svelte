@@ -1,6 +1,6 @@
 <script lang="ts">
     import { enhance } from '$app/forms';
-    import Unknown_Avatar from '$lib/img/Unknown_person.jpg';
+    import AvatarGraphic from '$lib/components/AvatarGraphic.svelte';
     import TextInput from '$lib/components/TextInput.svelte';
     import AvatarModal from '$lib/components/AvatarModal.svelte';
     import EditIcon from 'virtual:icons/mdi/file-edit-outline';
@@ -34,22 +34,16 @@
     <div class="grid justify-center text-center max-w-xl m-2 mt-10">
         <div class="flex justify-center items-center gap-2">
             <div class="relative text-center">
-                <div class="avatar m-5">
-                    <div
-                        class="mask mask-squircle h-24 w-24"
+                <div class="avatar m-5"
                         role="img"
                         onmouseenter={() => {
                             handleImgHover(true);
                         }}
                         onmouseleave={() => {
                             handleImgHover(false);
-                        }}
-                    >
+                        }}>
                         <button onclick={() => (showModal = true)}>
-                            <img
-                                src={data.user.thumbnail ? data.user.thumbnail : Unknown_Avatar}
-                                alt="User"
-                            />
+                    <AvatarGraphic height="h-24" width="w-24" text_size="text-5xl font-bold">
                             <div
                                 class="w-full absolute bottom-0 left-0 text-center h-6 bg-white bg-opacity-60"
                                 aria-label="Change Avatar"
@@ -57,8 +51,9 @@
                             >
                                 <h2 class="text-sm text-base-300">Change</h2>
                             </div>
-                        </button>
-                    </div>
+                    </AvatarGraphic>
+                </button>
+
                 </div>
             </div>
 
@@ -125,12 +120,7 @@
         <AvatarModal bind:showModal>
             <div class="flex flex-col sm:flex-row items-center gap-3 mb-5">
                 <div class="avatar m-5">
-                    <div class="mask mask-squircle h-24 w-24">
-                        <img
-                            src={data.user.thumbnail ? data.user.thumbnail : Unknown_Avatar}
-                            alt="User"
-                        />
-                    </div>
+                    <AvatarGraphic height="h-24" width="w-24" text_size="text-5xl font-bold"/>
                 </div>
                 <div>
                     <form method="POST" use:enhance enctype="multipart/form-data">

@@ -64,7 +64,6 @@ export const actions = {
             });
         }
 
-        console.log("REDIRECT?!")
         redirect(303, next || '/');
     }
 };

@@ -16,12 +16,6 @@ export async function load({ locals }) {
     }
 }
 
-type FieldsError = {
-    email?: String,
-    password?: String,
-    confirmPassword?: String,
-    joinId?: String
-}
 
 /** @type {import('./user/$types').Actions} */
 export const actions = {

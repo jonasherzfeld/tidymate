@@ -9,10 +9,13 @@
     import TodoIcon from 'virtual:icons/fluent/task-list-square-16-filled';
     import ChoresIcon from 'virtual:icons/fluent/calendar-arrow-counterclockwise-48-filled';
 
+    import Unknown from '$lib/img/Unknown_person.jpg';
+    let name_initials = $derived($page.data.user?.first_name?.charAt(0).toUpperCase() + $page.data.user?.last_name?.charAt(0).toUpperCase())
+
     import { applyAction, enhance } from '$app/forms';
     import { page } from '$app/stores';
-    import Unknown from '$lib/img/Unknown_person.jpg';
     import Logo from '$lib/img/tidymate_logo_white.png';
+    import AvatarGraphic from './AvatarGraphic.svelte';
 
     let is_logged_in = $derived($page.data.user? true : false);
     let is_in_house = $derived($page.data.house? true : false);
@@ -51,16 +54,7 @@
         </div>
         <div class="dropdown dropdown-end">
             <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
-                <div class=" mask mask-squircle h-10 w-10">
-                    {#if !is_logged_in}
-                        <img alt="User" src={Unknown} />
-                    {:else}
-                        <img
-                            alt="User"
-                            src={$page.data.user.thumbnail ? $page.data.user.thumbnail : Unknown}
-                        />
-                    {/if}
-                </div>
+                <AvatarGraphic height="h-10" width="w-10" />
             </div>
             <ul
                 tabindex="-1"
