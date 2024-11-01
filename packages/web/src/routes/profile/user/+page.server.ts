@@ -2,33 +2,10 @@ import { BASE_API_URI } from '$lib/utils/constants';
 import { fail } from '@sveltejs/kit';
 
 export const actions = {
-    update_first_name: async ({ request, fetch, cookies }) => {
+    update_user: async ({ request, fetch, cookies }) => {
         const formData = await request.formData();
+        const email = String(formData.get('email'));
         const first_name = String(formData.get('first_name'));
-
-        let requestInitOptions: RequestInit = {
-            method: 'PATCH',
-            credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json',
-                Cookie: `session=${cookies.get('session')}`
-            },
-            body: JSON.stringify({
-                first_name: first_name
-            })
-        };
-
-        const res = await fetch(`${BASE_API_URI}/auth/update-user`, requestInitOptions);
-        const response = await res.json();
-        if (!res.ok) {
-            return fail(400, { error: response.error });
-        }
-
-        return { user: response.user, success: res.ok };
-    },
-
-    update_last_name: async ({ request, fetch, cookies }) => {
-        const formData = await request.formData();
         const last_name = String(formData.get('last_name'));
 
         let requestInitOptions: RequestInit = {
@@ -39,7 +16,9 @@ export const actions = {
                 Cookie: `session=${cookies.get('session')}`
             },
             body: JSON.stringify({
-                last_name: last_name
+                email: email === "null" ? '' : email,
+                first_name: first_name === "null" ? '' : first_name,
+                last_name: last_name === "null" ? '' : last_name
             })
         };
 
