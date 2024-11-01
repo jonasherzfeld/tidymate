@@ -26,7 +26,6 @@ export const actions = {
         if (!isEmpty(fieldsError)) {
             return fail(400, { fieldsError: fieldsError });
         }
-        console.log(locals.user);
         const registrationBody = {
             house_name: houseName
         };

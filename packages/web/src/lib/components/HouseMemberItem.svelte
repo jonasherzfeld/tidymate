@@ -1,6 +1,7 @@
 <script lang="ts">
     import { enhance } from '$app/forms';
     import { page } from '$app/stores';
+    import AvatarGraphic from './AvatarGraphic.svelte';
 
     let {
         form,
@@ -32,9 +33,7 @@
     <td>
         <div class="flex items-center gap-3">
             <div class="avatar">
-                <div class="mask mask-squircle h-12 w-12">
-                    <img {src} alt="{first_name} {last_name}" />
-                </div>
+                <AvatarGraphic height="h-10" width="w-10" {first_name} {last_name} thumbnail={src}/>
             </div>
             <div>
                 <div class="font-bold">{first_name} {last_name}</div>
