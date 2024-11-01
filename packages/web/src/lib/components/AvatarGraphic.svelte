@@ -29,16 +29,17 @@
     let derived_name_initials = $derived($page.data.user?.first_name?.charAt(0).toUpperCase() + $page.data.user?.last_name?.charAt(0).toUpperCase())
     let no_initials = $derived(!input_name_initials && !derived_name_initials)
 
-    let thumbnail_src = $derived(thumbnail !== undefined? thumbnail : $page.data.user.thumbnail)
+    let thumbnail_user = $derived($page.data.user.thumbnail)
+    let thumbnail_given = thumbnail !== undefined
 </script>
 
 <div class={`mask mask-squircle ${height} ${width}`}>
     {#if !is_logged_in  || is_logged_in && no_initials}
         <img alt="User" src={Unknown_Avatar} />
-    {:else if thumbnail_src}
+    {:else if (!thumbnail_given && thumbnail_user) || (thumbnail_given  && thumbnail)}
         <img
             alt="User"
-            src={thumbnail_src}
+            src={thumbnail_given? thumbnail : thumbnail_user}
         />
     {:else}
         <div class={`flex items-center justify-center bg-primary text-white ${height} ${width} ${text_size}`}>
