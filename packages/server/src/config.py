@@ -24,7 +24,6 @@ if DEV_MODE:
     os.environ["FIRESTORE_EMULATOR_HOST"] = "127.0.0.1:8070"
     os.environ["FIREBASE_STORAGE_EMULATOR_HOST"] = "127.0.0.1:9199"
     os.environ["STORAGE_EMULATOR_HOST"] = "http://127.0.0.1:9199"
-    print("Is Dev Mode")
 
 service_account = {
     "type": os.environ['TYPE'],

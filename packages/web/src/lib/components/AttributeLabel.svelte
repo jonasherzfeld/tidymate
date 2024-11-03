@@ -17,9 +17,7 @@
     } : Props = $props();
 
 
-    let change_mode_bg = $derived(is_change_mode ? 'bg-slate-700' : 'bg-slate-800');
-    console.log(change_mode_bg);
-
+    let change_mode_bg = $derived(is_change_mode ? 'bg-base-100' : 'bg-base-300');
 </script>
 
 

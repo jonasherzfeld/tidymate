@@ -1,10 +1,10 @@
 <script lang="ts">
   import AvatarGraphic from "$lib/components/AvatarGraphic.svelte";
-    let { data } = $props();
+  let { data } = $props();
 </script>
 
 <h1>Home {data.house.name}</h1>
-<div class="stats shadow">
+<div class="tats shadow grid md:grid-cols-3 s">
     <div class="stat">
       <div class="stat-figure text-primary">
         <svg
@@ -46,7 +46,7 @@
     <div class="stat">
       <div class="stat-figure text-secondary">
         <div class="avatar online">
-          <AvatarGraphic height="h-24" width="w-24" text_size="text-xl" />
+          <AvatarGraphic thumbnail={data.user?.thumbnail} height="h-24" width="w-24" text_size="text-xl" />
         </div>
       </div>
       <div class="stat-value">86%</div>

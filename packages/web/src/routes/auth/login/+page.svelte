@@ -7,9 +7,13 @@
     import { receive, send } from '$lib/utils/helpers.js';
 
     let { form } = $props();
+    let is_loading = $state(false);
 
     const handleLogin = async () => {
+        is_loading = true;
+
         return async ({ result }) => {
+            is_loading = false;
             await applyAction(result);
         };
     };
@@ -46,7 +50,13 @@
             />
         </IconTextInput>
         <div>
-            <button class="btn btn-neutral btn-wide w-full">Login</button>
+            <button class="btn btn-neutral btn-wide w-full" disabled={is_loading}>
+                {#if !is_loading}
+                    Login
+                {:else}
+                    <span class="loading loading-spinner loading-lg"></span>
+                {/if}
+            </button>
             <p>Have no account? <a href="/auth/register">Register here</a>.</p>
         </div>
     </form>

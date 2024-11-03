@@ -6,10 +6,14 @@
 
     let { form } = $props();
     let join_home = $state(true);
+    let is_loading = $state(false);
 
     /** @type {import('./user/$types').SubmitFunction} */
     const handleRegister = async () => {
+        is_loading = true;
+
         return async ({ result }) => {
+            is_loading = false
             await applyAction(result);
         };
     };
@@ -101,8 +105,13 @@
         {/if}
 
         <div class="btn-container">
-            <button class="btn btn-neutral btn-wide w-full"
-                >{!join_home ? 'Continue' : 'Register'}
+            <button class="btn btn-neutral btn-wide w-full" disabled={is_loading}
+                >
+                {#if !is_loading}
+                    {!join_home ? 'Continue' : 'Register'}
+                {:else}
+                    <span class="loading loading-spinner loading-lg"></span>
+                {/if}
             </button>
         </div>
     </form>

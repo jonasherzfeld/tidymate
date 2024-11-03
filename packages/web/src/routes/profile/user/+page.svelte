@@ -52,7 +52,7 @@
                             handleImgHover(false);
                         }}>
                         <button onclick={() => (showModal = true)}>
-                    <AvatarGraphic height="h-24" width="w-24" text_size="text-5xl font-bold">
+                    <AvatarGraphic thumbnail={data.user.thumbnail} height="h-24" width="w-24" text_size="text-5xl font-bold">
                             <div
                                 class="w-full absolute bottom-0 left-0 text-center h-6 bg-white bg-opacity-60"
                                 aria-label="Change Avatar"
@@ -140,7 +140,7 @@
         <AvatarModal bind:showModal>
             <div class="flex flex-col sm:flex-row items-center gap-3 mb-5">
                 <div class="avatar m-5">
-                    <AvatarGraphic height="h-24" width="w-24" text_size="text-5xl font-bold"/>
+                    <AvatarGraphic thumbnail={data.user.thumbnail} height="h-24" width="w-24" text_size="text-5xl font-bold"/>
                 </div>
                 <div>
                     <form method="POST" use:enhance enctype="multipart/form-data">
