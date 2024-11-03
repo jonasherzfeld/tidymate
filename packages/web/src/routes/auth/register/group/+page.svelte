@@ -5,9 +5,12 @@
     import IconTextInput from '$lib/components/IconTextInput.svelte';
 
     let { form } = $props();
+    let is_loading = $state(false);
 
     const handleRegister = async () => {
+        is_loading = true;
         return async ({ result }) => {
+            is_loading = false;
             await applyAction(result);
         };
     };
@@ -47,7 +50,13 @@
         {/if}
 
         <div class="btn-container">
-            <button class="btn btn-neutral btn-wide w-full"> Register </button>
+            <button class="btn btn-neutral btn-wide w-full" disabled={is_loading}>
+                {#if !is_loading}
+                    Register
+                {:else}
+                    <span class="loading loading-spinner loading-lg"></span>
+                {/if}
+             </button>
         </div>
     </form>
 </div>

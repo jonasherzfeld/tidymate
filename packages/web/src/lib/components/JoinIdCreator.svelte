@@ -36,7 +36,11 @@
                 class="btn join-item rounded-r-full bg-primary border-none"
                 disabled={creating_join_id || !$page.data.user.is_admin}
             >
+            {#if !creating_join_id}
                 {is_active_join_id ? 'Delete' : 'Create'}
+            {:else}
+                <span class="loading loading-spinner loading-lg"></span>
+            {/if}
             </button>
         </div>
     </form>
