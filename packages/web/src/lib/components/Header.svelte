@@ -8,10 +8,6 @@
     import RegisterIcon from 'virtual:icons/mdi/register-outline';
     import TodoIcon from 'virtual:icons/fluent/task-list-square-16-filled';
     import ChoresIcon from 'virtual:icons/fluent/calendar-arrow-counterclockwise-48-filled';
-
-    import Unknown from '$lib/img/Unknown_person.jpg';
-    let name_initials = $derived($page.data.user?.first_name?.charAt(0).toUpperCase() + $page.data.user?.last_name?.charAt(0).toUpperCase())
-
     import { applyAction, enhance } from '$app/forms';
     import { page } from '$app/stores';
     import Logo from '$lib/img/tidymate_logo_white.png';
@@ -54,7 +50,7 @@
         </div>
         <div class="dropdown dropdown-end">
             <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
-                <AvatarGraphic height="h-10" width="w-10" />
+                <AvatarGraphic thumbnail={$page.data.user?.thumbnail} height="h-10" width="w-10" />
             </div>
             <ul
                 tabindex="-1"
