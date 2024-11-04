@@ -44,9 +44,27 @@ export async function validateSession(event: RequestEvent) {
 }
 
 export async function handle({ event, resolve }) {
+    let theme: string | null = "light";
+    const new_theme = event.url.searchParams.get('theme');
+    const cookie_theme = event.cookies.get("colortheme");
+    if (new_theme) {
+        theme = new_theme;
+    } else if (cookie_theme) {
+        theme = cookie_theme;
+    }
+
+    let add_theme_config = {};
+    if (theme) {
+        add_theme_config = {
+            transformPageChunk: ({html}) =>
+                html.replace('data-theme=""', `data-theme="${theme}"`)
+            };
+    };
+
+
     if (event.locals.user) {
         // if there is already a user in session load page as normal
-        return await resolve(event);
+        return await resolve(event, add_theme_config);
     }
 
     const res = await validateSession(event);
@@ -63,5 +81,5 @@ export async function handle({ event, resolve }) {
     }
 
     // load page as normal
-    return await resolve(event);
+    return await resolve(event, add_theme_config);
 }

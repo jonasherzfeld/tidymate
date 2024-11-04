@@ -7,6 +7,7 @@
     import SubmitIcon from 'virtual:icons/mdi/file-send-outline';
 	import type { TypedSubmitFunction } from '$lib/form';
 	import type { ActionData } from './$types';
+    import ThemeSwitch from '$lib/components/ThemeSwitch.svelte';
 
     import AttributeLabel from '$lib/components/AttributeLabel.svelte';
 
@@ -136,6 +137,7 @@
             <TextInput name="joined_on" value={data.user.joined_on} disabled={true}
                 ><b>Joined On</b>
             </TextInput>
+            <ThemeSwitch />
         </div>
         <AvatarModal bind:showModal>
             <div class="flex flex-col sm:flex-row items-center gap-3 mb-5">

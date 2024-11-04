@@ -1,6 +1,4 @@
 <script lang="ts">
-    import 'tailwindcss/tailwind.css';
-
     import IconTextInput from '$lib/components/IconTextInput.svelte';
     import { applyAction, enhance } from '$app/forms';
     import { page } from '$app/stores';

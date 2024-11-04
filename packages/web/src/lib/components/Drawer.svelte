@@ -3,7 +3,7 @@
     import { page } from '$app/stores';
 
     import Header from '$lib/components/Header.svelte';
-    import Logo from '$lib/img/tidymate_logo_white.png';
+    import Logo from './Logo.svelte';
     import TodoIcon from 'virtual:icons/fluent/task-list-square-16-filled';
     import ChoresIcon from 'virtual:icons/fluent/calendar-arrow-counterclockwise-48-filled';
     import InfoIcon from 'virtual:icons/fluent/info-12-regular';
@@ -66,7 +66,7 @@
                 class="btn btn-ghost text-xl"
                 onclick={handleClick}
             >
-                <img alt="User" src={Logo} width="30px" />Tidymate</a
+            <Logo width="30px" />Tidymate</a
             >
             {#if is_logged_in && is_in_house}
                 <li class="text-base">
