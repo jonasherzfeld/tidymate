@@ -10,7 +10,7 @@
     import ChoresIcon from 'virtual:icons/fluent/calendar-arrow-counterclockwise-48-filled';
     import { applyAction, enhance } from '$app/forms';
     import { page } from '$app/stores';
-    import Logo from '$lib/img/tidymate_logo_white.png';
+    import Logo from './Logo.svelte';
     import AvatarGraphic from './AvatarGraphic.svelte';
 
     let is_logged_in = $derived($page.data.user? true : false);
@@ -20,7 +20,7 @@
 <div class="navbar p-0 pe-2 min-h-0">
     <div class="flex-1">
         <a href={is_logged_in && is_in_house? '/home' : '/'} class="btn btn-ghost text-xl">
-            <img alt="User" src={Logo} width="30px" />Tidymate</a
+            <Logo width="30px" />Tidymate</a
         >
         {#if is_logged_in && is_in_house}
             <div class="hidden flex-none lg:block">
