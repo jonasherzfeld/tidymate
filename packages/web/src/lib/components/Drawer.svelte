@@ -8,6 +8,7 @@
     import ChoresIcon from 'virtual:icons/fluent/calendar-arrow-counterclockwise-48-filled';
     import InfoIcon from 'virtual:icons/fluent/info-12-regular';
     import DocsIcon from 'virtual:icons/fluent/document-bullet-list-16-regular';
+    import { browser } from '$app/environment';
 
 
     type Props = {
@@ -22,6 +23,11 @@
     function handleClick() {
         checked === 'checked' ? (checked = '') : (checked = 'checked');
     }
+
+    let is_web_app : boolean = $state(false);
+    if (browser) {
+        is_web_app = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+    }
 </script>
 
 <div class="drawer">
@@ -29,7 +35,7 @@
     <div class="drawer-content flex flex-col">
         <!-- Navbar -->
         <div
-            class="navbar w-full bg-base-100 text-shade-500 border-solid border-b border-shape-500 sticky top-0 z-10"
+            class={`navbar w-full bg-base-100 text-shade-500 border-solid border-b border-shape-500 sticky top-0 z-10 ${is_web_app? 'pt-12' : ''}`}
         >
             <div class="flex-none lg:hidden">
                 <button
@@ -59,7 +65,7 @@
 
     <div class="drawer-side z-20">
         <button onclick={handleClick} class="drawer-overlay" aria-label="Close Menu"></button>
-        <ul class="menu bg-base-200 min-h-full w-80 p-4">
+        <ul class={`menu bg-base-200 min-h-full w-80 p-4  ${is_web_app? 'pt-12' : ''}`}>
             <!-- Sidebar content here -->
             <a
                 href={is_logged_in && is_in_house ? '/home' : '/'}

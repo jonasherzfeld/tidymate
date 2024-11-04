@@ -5,6 +5,8 @@
         <meta name="theme-color" content="#fff">
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+        <meta name="viewport"
+            content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
         <link rel="icon" href="%sveltekit.assets%/favicon.png" />
         <link
             rel="icon"
@@ -21,7 +23,6 @@
         />
         <meta name="apple-mobile-web-app-title" content="Tidymate" />
         <link rel="manifest" href="%sveltekit.assets%/site.webmanifest" />
-        <meta name="viewport" content="width=device-width" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link
@@ -32,5 +33,14 @@
     </head>
     <body data-sveltekit-preload-data="hover">
         <div style="display: contents">%sveltekit.body%</div>
+        <style>
+            .main-page.bubble-element.Page {
+                padding-top: 0px;
+            }
+        
+            .bubble-element.FloatingGroup.floating-group {
+                padding-top: 0px;
+            }
+        </style>
     </body>
 </html>
