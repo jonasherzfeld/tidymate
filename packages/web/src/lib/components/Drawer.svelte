@@ -29,7 +29,7 @@
     <div class="drawer-content flex flex-col">
         <!-- Navbar -->
         <div
-            class="navbar w-full bg-base-100 text-shade-500 border-solid border-b border-shape-500"
+            class="navbar w-full bg-base-100 text-shade-500 border-solid border-b border-shape-500 sticky top-0 z-10"
         >
             <div class="flex-none lg:hidden">
                 <button
