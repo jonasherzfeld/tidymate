@@ -2,7 +2,7 @@
     import { enhance } from '$app/forms';
     import TextInput from '$lib/components/TextInput.svelte';
     import JoinIdCreator from '$lib/components/JoinIdCreator.svelte';
-    import HouseMemberTable from '$lib/components/HouseMemberTable.svelte';
+    import HouseMemberItem from '$lib/components/HouseMemberItem.svelte';
     import AttributeLabel from '$lib/components/AttributeLabel.svelte';
     import EditIcon from 'virtual:icons/mdi/file-edit-outline';
     import SubmitIcon from 'virtual:icons/mdi/file-send-outline';
@@ -35,9 +35,9 @@
 
 </script>
 
-<div class="hero bg-base-200 min-h-screen">
-    <div class="hero-content text-center">
-        <div class="grid gap-2 max-w-md">
+<div class="grid bg-base-200 min-h-screen w-full items-start justify-center">
+    <div class="grid justify-center text-center min-w-96 m-2 mt-10">
+        <div class="grid gap-2 min-w-96">
             <h1 class="text-5xl font-bold">{data.house.name}</h1>
             <p class="py-6">This is the settings page for your house!</p>
             <form action="?/update_house" method="POST" use:enhance={handleName}>
@@ -101,7 +101,42 @@
                 ><b>Created On</b>
             </TextInput>
 
-            <HouseMemberTable user_list={data.user_list} change_enabled={data.user.is_admin} />
+            <div class="overflow-x-auto">
+                <h2 class="m-4 text-xl font-bold">House Members</h2>
+                {#await data.streamed.user_list}
+                <div class="flex w-full flex-col gap-4">
+                    <div class="skeleton h-32 w-full"></div>
+                    <div class="skeleton h-4 w-28"></div>
+                    <div class="skeleton h-4 w-full"></div>
+                    <div class="skeleton h-4 w-full"></div>
+                </div>
+                {:then user_list}
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Joined On</th>
+                            <th>Admin</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {#each user_list as user}
+                            <HouseMemberItem
+                                user_id={user.id}
+                                first_name={user.first_name}
+                                last_name={user.last_name}
+                                is_admin={user.is_admin}
+                                joined_on={user.joined_on}
+                                src={user.thumbnail ? user.thumbnail : ''}
+                                change_enabled={data.user.is_admin}
+                            />
+                        {/each}
+                    </tbody>
+                </table>
+                {/await}
+            </div>
+
             {#if data.user.is_admin}
                 <JoinIdCreator />
             {/if}

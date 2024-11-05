@@ -42,9 +42,9 @@
 
 <div class="grid bg-base-200 min-h-screen w-full items-start justify-center">
     <div class="grid justify-center text-center max-w-xl m-2 mt-10">
-        <div class="flex justify-center items-center gap-2">
+        <div class="flex justify-center items-center gap-5">
             <div class="relative text-center">
-                <div class="avatar m-5"
+                <div class="avatar"
                         role="img"
                         onmouseenter={() => {
                             handleImgHover(true);
