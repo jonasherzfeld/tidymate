@@ -2,6 +2,11 @@ import { BASE_API_URI } from '$lib/utils/constants';
 import { fail } from '@sveltejs/kit';
 import type { Cookies } from '@sveltejs/kit';
 
+function sleep(ms : number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+
 async function get_house_members(cookies: Cookies) {
     let requestInitOptions: RequestInit = {
         method: 'GET',
@@ -20,14 +25,29 @@ async function get_house_members(cookies: Cookies) {
     return response.user_list;
 }
 
-/** @type {import('./user/$types').PageServerLoad} */
-export async function load({ cookies }) {
-    let user_list = await get_house_members(cookies);
-    if (!user_list) {
-        return fail(400, { error: 'Failed to get house members' });
-    }
-    return { user_list: user_list };
-}
+export const load = ( ({ cookies }) => {
+  const user_list = sleep(2000).then(async () => {
+        let user_list = get_house_members(cookies);
+        if (!user_list) {
+            return fail(400, { error: 'Failed to get house members' });
+        }
+        return user_list;
+    });
+
+    return {
+        streamed: {
+            user_list: new Promise((resolve) => {
+            user_list
+              .then(data => {
+                 return resolve(data)
+              })
+              .catch((error) => {
+                console.log(error)
+              })
+          })
+        }
+      }
+});
 
 export const actions = {
     update_house: async ({ request, fetch, cookies }) => {
