@@ -26,13 +26,7 @@ async function get_house_members(cookies: Cookies) {
 }
 
 export const load = ( ({ cookies }) => {
-  const user_list = sleep(2000).then(async () => {
-        let user_list = get_house_members(cookies);
-        if (!user_list) {
-            return fail(400, { error: 'Failed to get house members' });
-        }
-        return user_list;
-    });
+    const user_list = get_house_members(cookies);
 
     return {
         streamed: {
@@ -42,7 +36,7 @@ export const load = ( ({ cookies }) => {
                  return resolve(data)
               })
               .catch((error) => {
-                console.log(error)
+                return fail(400, { error: error });
               })
           })
         }
