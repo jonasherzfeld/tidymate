@@ -39,7 +39,7 @@
     <p class="py-4">This is the settings page for your house!</p>
 
     <div class="flex flex-col flex-1 gap-3 min-w-full">
-    <div class="flex flex-col flex-1 gap-2 p-3 card bg-white">
+    <div class="flex flex-col flex-1 gap-2 p-3 card bg-base-100">
         <form action="?/update_house" method="POST" use:enhance={handleName}>
             <AttributeLabel
                 is_change_mode={edit_name}
@@ -117,7 +117,7 @@
         </TextInput>
     </div>
 
-    <div class="flex flex-col flex-1 gap-2 p-3 card bg-white">
+    <div class="flex flex-col flex-1 gap-2 p-3 card bg-base-100">
         <h2 class="m-4 text-xl font-bold">House Members</h2>
         {#await data.streamed.user_list}
             <div class="flex w-full flex-col gap-4">
