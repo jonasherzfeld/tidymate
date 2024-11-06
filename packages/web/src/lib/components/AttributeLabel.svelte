@@ -25,7 +25,7 @@
     <div class={`flex justify-between w-full border border-slate-500 ${change_mode_bg}`}>
         <span class="label label-text text-left ml-2 w-24 join-item"><b>{desc_text}</b></span>
         {#if is_change_mode}
-            <input type='text' {name} class={`label label-text grow text-right join-item mr-3 ${change_mode_bg}`}  bind:value={label_text}/>
+            <input type='text' {name} size="1" class={`label label-text grow text-right join-item mr-3 ${change_mode_bg}`}  bind:value={label_text}/>
         {:else}
             <span class={`label label-text grow justify-end join-item mr-3 ${change_mode_bg}`}>{label_text}</span>
         {/if}
