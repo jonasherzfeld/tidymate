@@ -40,104 +40,79 @@
     };
 </script>
 
-<div>
-<div class="flex justify-center items-center gap-5">
-    <div class="relative text-center">
-        <div
-            class="avatar"
-            role="img"
-            onmouseenter={() => {
-                handleImgHover(true);
-            }}
-            onmouseleave={() => {
-                handleImgHover(false);
-            }}
-        >
-            <button onclick={() => (showModal = true)}>
-                <AvatarGraphic
-                    thumbnail={data.user.thumbnail}
-                    height="h-24"
-                    width="w-24"
-                    text_size="text-5xl font-bold"
-                >
-                    <div
-                        class="w-full absolute bottom-0 left-0 text-center h-6 bg-white bg-opacity-60"
-                        aria-label="Change Avatar"
-                        style="display: {is_img_hover ? 'block' : 'none'}"
+<div class="flex flex-col flex-1 min-w-full">
+    <div class="flex justify-left sm:justify-center items-center ml-5 mr-2 gap-5">
+        <div class="relative text-center">
+            <div
+                class="avatar"
+                role="img"
+                onmouseenter={() => {
+                    handleImgHover(true);
+                }}
+                onmouseleave={() => {
+                    handleImgHover(false);
+                }}
+            >
+                <button onclick={() => (showModal = true)}>
+                    <AvatarGraphic
+                        thumbnail={data.user.thumbnail}
+                        height="h-24"
+                        width="w-24"
+                        text_size="text-5xl font-bold"
                     >
-                        <h2 class="text-sm text-base-300">Change</h2>
-                    </div>
-                </AvatarGraphic>
-            </button>
+                        <div
+                            class="w-full absolute bottom-0 left-0 text-center h-6 bg-base-300 bg-opacity-60"
+                            aria-label="Change Avatar"
+                            style="display: {is_img_hover ? 'block' : 'none'}"
+                        >
+                            <h2 class="text-sm text-base-300">Change</h2>
+                        </div>
+                    </AvatarGraphic>
+                </button>
+            </div>
         </div>
+
+        <h1 class="text-4xl text-center font-bold">Hi, {data.user.first_name}!</h1>
     </div>
+    <p class="py-6">This is your profile page. Here you can see your details.</p>
 
-    <h1 class="text-5xl text-center font-bold">Hi, {data.user.first_name}!</h1>
-</div>
-<p class="py-6">This is your profile page. Here you can see your details.</p>
-
-<div class="flex flex-col flex-1 gap-2 p-3 card bg-white">
+    <div class="flex flex-col flex-1 gap-2 p-3 card bg-base-100">
         <form action="?/update_user" method="POST" use:enhance={handleEmail}>
-        <div class="flex gap-2">
-            <AttributeLabel
-                is_change_mode={edit_email}
-                name="email_name"
-                desc_text="Email"
-                bind:label_text={data.user.email}
-            >
-                {#if edit_email}
-                    <button type="submit" class="btn join-item bg-base-300" disabled>
-                        <SubmitIcon style="font-size:1.2em" />
-                    </button>
-                {:else}
-                    <button
-                        type="button"
-                        class="btn join-item bg-base-300"
-                        onclick={() => {
-                            edit_email = true;
-                        }}
-                        disabled
-                    >
-                        <EditIcon style="font-size:1.2em" />
-                    </button>
-                {/if}
-            </AttributeLabel>
-        </div>
-    </form>
-    <form action="?/update_user" method="POST" use:enhance={handleFirstName}>
-        <AttributeLabel
-            is_change_mode={edit_first_name}
-            name="first_name"
-            desc_text="First Name"
-            bind:label_text={data.user.first_name}
-        >
-            {#if edit_first_name}
-                <button type="submit" class="btn join-item bg-base-3000">
-                    <SubmitIcon style="font-size:1.2em" />
-                </button>
-            {:else}
-                <button
-                    type="button"
-                    class="btn join-item bg-base-300"
-                    onclick={() => {
-                        edit_first_name = true;
-                    }}
+            <div class="flex gap-2">
+                <AttributeLabel
+                    is_change_mode={edit_email}
+                    name="email_name"
+                    desc_text="Email"
+                    bind:label_text={data.user.email}
                 >
-                    <EditIcon style="font-size:1.2em" />
-                </button>
-            {/if}
-        </AttributeLabel>
-    </form>
-    <form action="?/update_user" method="POST" use:enhance={handleLastName}>
-        <div class="flex gap-2">
+                    {#if edit_email}
+                        <button type="submit" class="btn join-item bg-base-300" disabled>
+                            <SubmitIcon style="font-size:1.2em" />
+                        </button>
+                    {:else}
+                        <button
+                            type="button"
+                            class="btn join-item bg-base-300"
+                            onclick={() => {
+                                edit_email = true;
+                            }}
+                            disabled
+                        >
+                            <EditIcon style="font-size:1.2em" />
+                        </button>
+                    {/if}
+                </AttributeLabel>
+            </div>
+        </form>
+        <form action="?/update_user" method="POST" use:enhance={handleFirstName}>
             <AttributeLabel
-                is_change_mode={edit_last_name}
-                name="last_name"
-                desc_text="Last Name"
-                bind:label_text={data.user.last_name}
+                is_change_mode={edit_first_name}
+                name="first_name"
+                desc_text="First Name"
+                bind:label_text={data.user.first_name}
             >
-                {#if edit_last_name}
-                    <button type="submit" class="btn join-item bg-base-300">
+                {#if edit_first_name}
+                    <button type="submit" class="btn join-item bg-base-3000">
                         <SubmitIcon style="font-size:1.2em" />
                     </button>
                 {:else}
@@ -145,20 +120,45 @@
                         type="button"
                         class="btn join-item bg-base-300"
                         onclick={() => {
-                            edit_last_name = true;
+                            edit_first_name = true;
                         }}
                     >
                         <EditIcon style="font-size:1.2em" />
                     </button>
                 {/if}
             </AttributeLabel>
-        </div>
-    </form>
-    <TextInput name="joined_on" value={data.user.joined_on} disabled={true}
-        ><b>Joined On</b>
-    </TextInput>
-    <ThemeSwitch />
-</div>
+        </form>
+        <form action="?/update_user" method="POST" use:enhance={handleLastName}>
+            <div class="flex gap-2">
+                <AttributeLabel
+                    is_change_mode={edit_last_name}
+                    name="last_name"
+                    desc_text="Last Name"
+                    bind:label_text={data.user.last_name}
+                >
+                    {#if edit_last_name}
+                        <button type="submit" class="btn join-item bg-base-300">
+                            <SubmitIcon style="font-size:1.2em" />
+                        </button>
+                    {:else}
+                        <button
+                            type="button"
+                            class="btn join-item bg-base-300"
+                            onclick={() => {
+                                edit_last_name = true;
+                            }}
+                        >
+                            <EditIcon style="font-size:1.2em" />
+                        </button>
+                    {/if}
+                </AttributeLabel>
+            </div>
+        </form>
+        <TextInput name="joined_on" value={data.user.joined_on} disabled={true}
+            ><b>Joined On</b>
+        </TextInput>
+        <ThemeSwitch />
+    </div>
 </div>
 <AvatarModal bind:showModal>
     <div class="flex flex-col sm:flex-row items-center gap-3 mb-5">

@@ -29,7 +29,7 @@
     };
 </script>
 
-<tr class={is_calling_user ? 'bg-base-300' : ''}>
+<tr class={is_calling_user ? 'bg-base-100' : ''}>
     <td>
         <div class="flex items-center gap-3">
             <div class="avatar">
