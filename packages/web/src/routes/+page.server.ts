@@ -10,7 +10,6 @@ export async function load({ locals }) {
 
 export const actions: Actions = {
     set_theme: async ({ url, cookies }) => {
-        console.log('set_theme', url.searchParams.get('theme'));
         const theme = url.searchParams.get('theme');
         const redirect_to = url.searchParams.get('redirectTo');
 

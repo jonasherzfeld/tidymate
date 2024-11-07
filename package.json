@@ -17,9 +17,11 @@
         "postcss-normalize": "^13.0.1",
         "prettier": "^3.2.5",
         "svelte2tsx": "^0.7.22",
+        "sveltekit-superforms": "^2.20.0",
         "turbo": "^2.2.3",
         "typescript": "^5.4.5",
-        "unplugin-icons": "^0.19.3"
+        "unplugin-icons": "^0.19.3",
+        "zod": "^3.23.8"
     },
     "engines": {
         "node": ">=18"

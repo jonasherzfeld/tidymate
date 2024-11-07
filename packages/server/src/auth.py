@@ -326,7 +326,7 @@ def update_house(user):
     house_vm.update(house.id, house)
 
     return jsonify({
-        "user": house.to_json(),
+        "house": house.to_json(),
     }), 200
 
 
