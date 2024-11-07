@@ -5,14 +5,16 @@
     import AvatarModal from '$lib/components/AvatarModal.svelte';
     import EditIcon from 'virtual:icons/mdi/file-edit-outline';
     import SubmitIcon from 'virtual:icons/mdi/file-send-outline';
-    import type { TypedSubmitFunction } from '$lib/form';
-    import type { ActionData } from './$types';
     import ThemeSwitch from '$lib/components/ThemeSwitch.svelte';
-
     import AttributeLabel from '$lib/components/AttributeLabel.svelte';
+    import { superForm } from 'sveltekit-superforms';
 
     let { data = $bindable() } = $props();
     let showModal = $state(false);
+
+    let creating_email = $state(false);
+    let creating_first_name = $state(false);
+    let creating_last_name = $state(false);
     let edit_email = $state(false);
     let edit_first_name = $state(false);
     let edit_last_name = $state(false);
@@ -20,24 +22,69 @@
     let handleImgHover = (value: boolean) => {
         is_img_hover = value;
     };
-    let handleEmail: TypedSubmitFunction<ActionData> = async () => {
-        return async ({ update }) => {
-            await update();
-            edit_email = false;
-        };
-    };
-    let handleFirstName: TypedSubmitFunction<ActionData> = async () => {
-        return async ({ update }) => {
-            await update();
-            edit_first_name = false;
-        };
-    };
-    let handleLastName: TypedSubmitFunction<ActionData> = async () => {
-        return async ({ update }) => {
-            await update();
-            edit_last_name = false;
-        };
-    };
+
+    const {
+        form: email_form,
+        errors: email_errors,
+        enhance: email_enhance,
+        message: email_message
+    } = superForm(data.email_form, {
+        invalidateAll: false,
+        resetForm: false,
+        onSubmit: async () => {
+            creating_email = true;
+        },
+        onUpdate: async ({ form }) => {
+            if (form.valid) {
+                edit_email = false;
+            } else {
+                edit_email = true;
+            }
+            creating_email = false;
+        }
+    });
+
+    const {
+        form: first_name_form,
+        errors: first_name_errors,
+        enhance: first_name_enhance,
+        message: first_name_message
+    } = superForm(data.first_name_form, {
+        invalidateAll: false,
+        resetForm: false,
+        onSubmit: async () => {
+            creating_first_name = true;
+        },
+        onUpdate: async ({ form }) => {
+            if (form.valid) {
+                edit_first_name = false;
+            } else {
+                edit_first_name = true;
+            }
+            creating_first_name = false;
+        }
+    });
+
+    const {
+        form: last_name_form,
+        errors: last_name_errors,
+        enhance: last_name_enhance,
+        message: last_name_message
+    } = superForm(data.last_name_form, {
+        invalidateAll: false,
+        resetForm: false,
+        onSubmit: async () => {
+            creating_last_name = true;
+        },
+        onUpdate: async ({ form }) => {
+            if (form.valid) {
+                edit_last_name = false;
+            } else {
+                edit_last_name = true;
+            }
+            creating_last_name = false;
+        }
+    });
 </script>
 
 <div class="flex flex-col flex-1 min-w-full">
@@ -61,7 +108,7 @@
                         text_size="text-5xl font-bold"
                     >
                         <div
-                            class="w-full absolute bottom-0 left-0 text-center h-6 bg-base-300 bg-opacity-60"
+                            class="w-full absolute bottom-0 left-0 text-center h-6 bg-white bg-opacity-60"
                             aria-label="Change Avatar"
                             style="display: {is_img_hover ? 'block' : 'none'}"
                         >
@@ -72,48 +119,64 @@
             </div>
         </div>
 
-        <h1 class="text-4xl text-center font-bold">Hi, {data.user.first_name}!</h1>
+        <h1 class="text-4xl text-center font-bold">Hi, {$first_name_form.first_name}!</h1>
     </div>
     <p class="py-6">This is your profile page. Here you can see your details.</p>
 
     <div class="flex flex-col flex-1 gap-2 p-3 card bg-base-100">
-        <form action="?/update_user" method="POST" use:enhance={handleEmail}>
-            <div class="flex gap-2">
+        <form action="?/update_email" method="POST" use:email_enhance>
+                {#if $email_errors.email}<span class="invalid">{$email_errors.email}</span>{/if}
                 <AttributeLabel
                     is_change_mode={edit_email}
                     name="email_name"
                     desc_text="Email"
-                    bind:label_text={data.user.email}
+                    bind:label_text={$email_form.email}
                 >
                     {#if edit_email}
-                        <button type="submit" class="btn join-item bg-base-300" disabled>
-                            <SubmitIcon style="font-size:1.2em" />
+                        <button
+                            type="submit"
+                            class="btn join-item btn-primary"
+                            disabled={creating_email}
+                        >
+                            {#if !creating_email}
+                                <SubmitIcon style="font-size:1.2em" />
+                            {:else}
+                                <span class="loading loading-spinner loading-sm"></span>
+                            {/if}
                         </button>
                     {:else}
                         <button
                             type="button"
                             class="btn join-item bg-base-300"
+                            disabled={true}
                             onclick={() => {
                                 edit_email = true;
                             }}
-                            disabled
                         >
                             <EditIcon style="font-size:1.2em" />
                         </button>
                     {/if}
                 </AttributeLabel>
-            </div>
         </form>
-        <form action="?/update_user" method="POST" use:enhance={handleFirstName}>
+        <form action="?/update_first_name" method="POST" use:first_name_enhance>
+            {#if $first_name_errors.first_name}<span class="invalid">{$first_name_errors.first_name}</span>{/if}
             <AttributeLabel
                 is_change_mode={edit_first_name}
                 name="first_name"
                 desc_text="First Name"
-                bind:label_text={data.user.first_name}
+                bind:label_text={$first_name_form.first_name}
             >
                 {#if edit_first_name}
-                    <button type="submit" class="btn join-item bg-base-3000">
-                        <SubmitIcon style="font-size:1.2em" />
+                    <button
+                        type="submit"
+                        class="btn join-item btn-primary"
+                        disabled={creating_first_name}
+                    >
+                        {#if !creating_first_name}
+                            <SubmitIcon style="font-size:1.2em" />
+                        {:else}
+                            <span class="loading loading-spinner loading-sm"></span>
+                        {/if}
                     </button>
                 {:else}
                     <button
@@ -128,17 +191,26 @@
                 {/if}
             </AttributeLabel>
         </form>
-        <form action="?/update_user" method="POST" use:enhance={handleLastName}>
+        <form action="?/update_last_name" method="POST" use:last_name_enhance>
             <div class="flex gap-2">
+                {#if $last_name_errors.last_name}<span class="invalid">{$last_name_errors.last_name}</span>{/if}
                 <AttributeLabel
                     is_change_mode={edit_last_name}
                     name="last_name"
                     desc_text="Last Name"
-                    bind:label_text={data.user.last_name}
+                    bind:label_text={$last_name_form.last_name}
                 >
                     {#if edit_last_name}
-                        <button type="submit" class="btn join-item bg-base-300">
-                            <SubmitIcon style="font-size:1.2em" />
+                        <button
+                            type="submit"
+                            class="btn join-item btn-primary"
+                            disabled={creating_last_name}
+                        >
+                            {#if !creating_last_name}
+                                <SubmitIcon style="font-size:1.2em" />
+                            {:else}
+                                <span class="loading loading-spinner loading-sm"></span>
+                            {/if}
                         </button>
                     {:else}
                         <button
