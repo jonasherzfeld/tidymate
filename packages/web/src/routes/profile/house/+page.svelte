@@ -1,9 +1,7 @@
 <script lang="ts">
     import TextInput from '$lib/components/TextInput.svelte';
     import HouseMemberItem from '$lib/components/HouseMemberItem.svelte';
-    import AttributeLabel from '$lib/components/AttributeLabel.svelte';
-    import EditIcon from 'virtual:icons/mdi/file-edit-outline';
-    import SubmitIcon from 'virtual:icons/mdi/file-send-outline';
+    import FormTextInput from '$lib/components/FormTextInput.svelte';
     import { superForm } from 'sveltekit-superforms';
 
     let { data = $bindable() } = $props();
@@ -102,109 +100,40 @@
 </script>
 
 <div class="flex flex-col flex-1 min-w-full">
-    <h1 class="text-5xl font-bold">{$name_form?.name? $name_form.name : data.house.name}</h1>
+    <h1 class="text-5xl font-bold">{$name_form.name}</h1>
     <p class="py-4">This is the settings page for your house!</p>
     <div class="flex flex-col flex-1 gap-3 min-w-full">
         <div class="flex flex-col flex-1 gap-2 p-3 card bg-base-100">
             <form action="?/update_name" method="POST" use:name_enhance>
                 {#if $name_errors.name}<span class="invalid">{$name_errors.name}</span>{/if}
-                <AttributeLabel
-                    is_change_mode={edit_name}
-                    name="name"
-                    desc_text="Name"
-                    bind:label_text={$name_form.name}
-                >
-                    {#if edit_name}
-                        <button
-                            type="submit"
-                            class="btn join-item btn-primary"
-                            disabled={creating_name}
-                        >
-                            {#if !creating_name}
-                                <SubmitIcon style="font-size:1.2em" />
-                            {:else}
-                                <span class="loading loading-spinner loading-sm"></span>
-                            {/if}
-                        </button>
-                    {:else}
-                        <button
-                            type="button"
-                            class="btn join-item bg-base-300"
-                            onclick={() => {
-                                edit_name = true;
-                            }}
-                        >
-                            <EditIcon style="font-size:1.2em" />
-                        </button>
-                    {/if}
-                </AttributeLabel>
+                <FormTextInput
+                superform={data.name_form}
+                field="name"
+                label="Name"
+                bind:edit_value={edit_name}
+                bind:creating_value={creating_name}
+            />
             </form>
             <form action="?/update_city" method="POST" use:city_enhance>
                 {#if $city_errors.city}<span class="invalid">{$city_errors.city}</span>{/if}
-                <AttributeLabel
-                    is_change_mode={edit_city}
-                    name="city"
-                    desc_text="City"
-                    bind:label_text={$city_form.city}
-                >
-                    {#if edit_city}
-                        <button
-                            type="submit"
-                            class="btn join-item btn-primary"
-                            disabled={creating_city}
-                        >
-                            {#if !creating_city}
-                                <SubmitIcon style="font-size:1.2em" />
-                            {:else}
-                                <span class="loading loading-spinner loading-sm"></span>
-                            {/if}
-                        </button>
-                    {:else}
-                        <button
-                            type="button"
-                            class="btn join-item bg-base-300"
-                            onclick={() => {
-                                edit_city = true;
-                            }}
-                        >
-                            <EditIcon style="font-size:1.2em" />
-                        </button>
-                    {/if}
-                </AttributeLabel>
+                <FormTextInput
+                superform={data.city_form}
+                field="city"
+                label="City"
+                bind:edit_value={edit_city}
+                bind:creating_value={creating_city}
+            />
             </form>
             <form action="?/update_country" method="POST" use:country_enhance>
                 {#if $country_errors.country}<span class="invalid">{$country_errors.country}</span
                     >{/if}
-                <AttributeLabel
-                    is_change_mode={edit_country}
-                    name="country"
-                    desc_text="Country"
-                    bind:label_text={$country_form.country}
-                >
-                    {#if edit_country}
-                        <button
-                            type="submit"
-                            class="btn join-item btn-primary"
-                            disabled={creating_country}
-                        >
-                            {#if !creating_country}
-                                <SubmitIcon style="font-size:1.2em" />
-                            {:else}
-                                <span class="loading loading-spinner loading-sm"></span>
-                            {/if}
-                        </button>
-                    {:else}
-                        <button
-                            type="button"
-                            class="btn join-item bg-base-300"
-                            onclick={() => {
-                                edit_country = true;
-                            }}
-                        >
-                            <EditIcon style="font-size:1.2em" />
-                        </button>
-                    {/if}
-                </AttributeLabel>
+                    <FormTextInput
+                    superform={data.country_form}
+                    field="country"
+                    label="Country"
+                    bind:edit_value={edit_country}
+                    bind:creating_value={creating_country}
+                />
             </form>
             <TextInput name="joined_on" value={data.house.created_on} disabled={true}
                 ><b>Created On</b>
