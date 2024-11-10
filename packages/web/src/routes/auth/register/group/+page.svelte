@@ -1,12 +1,10 @@
 <script lang="ts">
-    import { receive, send } from '$lib/utils/helpers';
-    import { scale } from 'svelte/transition';
     import TextInput from '$lib/components/TextInput.svelte';
     import { superForm } from 'sveltekit-superforms';
 
     let { data } = $props();
     let is_loading = $state(false);
-    let server_errors = $state([]);
+    let server_errors = $state();
 
     const { form, errors, enhance } = superForm(data.register_house_form, {
         onSubmit: async () => {
@@ -27,27 +25,24 @@
         use:enhance
     >
         {#if server_errors}
-            {#each server_errors as error (error.id)}
-                <h4
-                    class="step-subtitle warning"
-                    in:receive={{ key: error.id }}
-                    out:send={{ key: error.id }}
-                >
-                    {error.error}
-                </h4>
-            {/each}
+            <h1 class="mt-2 step-subtitle warning">
+                {server_errors}
+            </h1>
         {/if}
 
-        <TextInput
-            type="text"
-            name="house_name"
-            placeholder="Home name"
-            bind:value={$form.house_name}
-        />
-        {#if $errors.house_name}<span class="invalid text-error">{$errors.house_name}</span>{/if}
+        <div>
+            <TextInput
+                type="text"
+                name="house_name"
+                placeholder="Home name"
+                bind:value={$form.house_name}
+            />
+            {#if $errors.house_name}<span class="invalid text-error">{$errors.house_name}</span
+                >{/if}
+        </div>
 
         <div class="btn-container">
-            <button class="btn btn-neutral btn-wide" disabled={is_loading}>
+            <button class="btn btn-neutral w-full" disabled={is_loading}>
                 {#if !is_loading}
                     Register
                 {:else}

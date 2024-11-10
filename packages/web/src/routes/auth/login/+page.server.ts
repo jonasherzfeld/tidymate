@@ -1,6 +1,5 @@
 import { BASE_API_URI } from '$lib/utils/constants';
 import { loginSchema } from '$lib/utils/schemas';
-import { formatError } from '$lib/utils/helpers';
 import { fail, redirect } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
@@ -49,8 +48,7 @@ export const actions = {
         if (!res.ok) {
             try {
                 const response = await res.json();
-                const errors = formatError(response.error);
-                return fail(400, { form, errors: errors });
+                return fail(400, { form, errors: response.error });
             } catch {
                 return fail(500, { form });
             }

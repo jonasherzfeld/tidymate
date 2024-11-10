@@ -2,24 +2,12 @@ import { BASE_API_URI } from '$lib/utils/constants';
 import { fail } from '@sveltejs/kit';
 import { message, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
-import { z } from 'zod';
-
-const email_schema = z.object({
-    email: z.string().email()
-});
-
-const first_name_schema = z.object({
-    first_name: z.string().min(3)
-});
-
-const last_name_schema = z.object({
-    last_name: z.string().min(3)
-});
+import { emailSchema, firstNameSchema, lastNameSchema } from '$lib/utils/schemas';
 
 export const load = async ({ locals }) => {
-    const email_form = await superValidate(locals.user, zod(email_schema));
-    const first_name_form = await superValidate(locals.user, zod(first_name_schema));
-    const last_name_form = await superValidate(locals.user, zod(last_name_schema));
+    const email_form = await superValidate(locals.user, zod(emailSchema));
+    const first_name_form = await superValidate(locals.user, zod(firstNameSchema));
+    const last_name_form = await superValidate(locals.user, zod(lastNameSchema));
 
     return {
         email_form,
@@ -30,7 +18,7 @@ export const load = async ({ locals }) => {
 
 export const actions = {
     update_email: async ({ request, fetch, cookies }) => {
-        const email_form = await superValidate(request, zod(email_schema));
+        const email_form = await superValidate(request, zod(emailSchema));
         if (!email_form.valid) return fail(400, { email_form });
 
         let requestInitOptions: RequestInit = {
@@ -50,14 +38,14 @@ export const actions = {
         const res = await fetch(`${BASE_API_URI}/auth/update-user`, requestInitOptions);
         const response = await res.json();
         if (!res.ok) {
-            return fail(400, { error: response.error });
+            return fail(400, { email_form, error: response.error });
         }
 
         return message(email_form, 'Email Updated!');
     },
 
     update_first_name: async ({ request, fetch, cookies }) => {
-        const first_name_form = await superValidate(request, zod(first_name_schema));
+        const first_name_form = await superValidate(request, zod(firstNameSchema));
         if (!first_name_form.valid) return fail(400, { first_name_form });
 
         let requestInitOptions: RequestInit = {
@@ -77,14 +65,14 @@ export const actions = {
         const res = await fetch(`${BASE_API_URI}/auth/update-user`, requestInitOptions);
         const response = await res.json();
         if (!res.ok) {
-            return fail(400, { error: response.error });
+            return fail(400, { first_name_form, error: response.error });
         }
 
         return message(first_name_form, 'Email Updated!');
     },
 
     update_last_name: async ({ request, fetch, cookies }) => {
-        const last_name_form = await superValidate(request, zod(last_name_schema));
+        const last_name_form = await superValidate(request, zod(lastNameSchema));
         if (!last_name_form.valid) return fail(400, { last_name_form });
 
         let requestInitOptions: RequestInit = {
@@ -104,7 +92,7 @@ export const actions = {
         const res = await fetch(`${BASE_API_URI}/auth/update-user`, requestInitOptions);
         const response = await res.json();
         if (!res.ok) {
-            return fail(400, { error: response.error });
+            return fail(400, { last_name_form, error: response.error });
         }
 
         return message(last_name_form, 'Email Updated!');

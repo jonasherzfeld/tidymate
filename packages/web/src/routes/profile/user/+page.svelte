@@ -10,6 +10,7 @@
     let { data = $bindable() } = $props();
     let showModal = $state(false);
 
+    let server_errors = $state();
     let creating_email = $state(false);
     let creating_first_name = $state(false);
     let creating_last_name = $state(false);
@@ -27,7 +28,8 @@
         onSubmit: async () => {
             creating_email = true;
         },
-        onUpdate: async ({ form }) => {
+        onUpdate: async ({ form, result }) => {
+            server_errors = result.data.errors;
             if (form.valid) {
                 edit_email = false;
             } else {
@@ -117,6 +119,11 @@
     <p class="py-6">This is your profile page. Here you can see your details.</p>
 
     <div class="flex flex-col flex-1 gap-2 p-3 card bg-base-100">
+        {#if server_errors}
+            <h1 class="mt-2 step-subtitle warning">
+                {server_errors}
+            </h1>
+        {/if}
         <form action="?/update_email" method="POST" use:email_enhance>
             <FormTextInput
                 superform={data.email_form}

@@ -18,9 +18,7 @@ export const actions = {
 
         if (!res.ok) {
             const response = await res.json();
-            const errors = [];
-            errors.push({ error: response.error, id: 0 });
-            return fail(400, { errors: errors });
+            return fail(400, { errors: response.error });
         }
 
         // eat the cookie
