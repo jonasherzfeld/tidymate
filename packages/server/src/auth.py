@@ -156,18 +156,12 @@ def register_house(user):
     except KeyError:
         return jsonify({"error": "Missing required fields"}), 400
 
-    # Check if user already exists in Database ort Authentication
-    db_house = house_vm.filter("name", house_name)
-
-    if db_house:
-        return jsonify({"error": "House name already exists."}), 409
-
     new_house = House(id=str(uuid.uuid4()),
                       name=house_name,
-                      city=None,
-                      country=None,
+                      city="",
+                      country="",
                       created_on=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                      join_id= None,
+                      join_id= "",
                       members=[user.id])
     house_vm.set(new_house.id, new_house)
 

@@ -10,11 +10,11 @@ const name_schema = z.object({
 });
 
 const city_schema = z.object({
-    city: z.string().min(3),
+    city: z.string()
 });
 
 const country_schema = z.object({
-    country: z.string().min(3),
+    country: z.string()
 });
 
 const joinid_schema = z.object({

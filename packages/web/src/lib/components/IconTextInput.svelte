@@ -6,17 +6,17 @@
         type: string,
         name: string,
         placeholder: string,
-        class_in: string,
+        class_in?: string,
         value: string,
-        disabled: boolean,
-        children: Snippet
+        disabled?: boolean,
+        children?: Snippet
     }
     let {
         type = 'text',
         name,
         placeholder = '',
         class_in = '',
-        value = '',
+        value = $bindable(''),
         disabled = false,
         children
     }: Props = $props();

@@ -1,12 +1,20 @@
 import { BASE_API_URI } from '$lib/utils/constants';
-import { formatError, isEmpty } from '$lib/utils/helpers';
+import { formatError } from '$lib/utils/helpers';
 import { fail, redirect } from '@sveltejs/kit';
+import { superValidate } from 'sveltekit-superforms';
+import { zod } from 'sveltekit-superforms/adapters';
+import { registerHouseSchema } from '$lib/utils/schemas';
 
 export async function load({ locals }) {
     // redirect user if not logged in
     if (locals.user && locals.house) {
         redirect(302, '/');
     }
+
+    const register_house_form = await superValidate(locals.user, zod(registerHouseSchema));
+    return {
+        register_house_form
+    };
 }
 
 export const actions = {
@@ -17,17 +25,14 @@ export const actions = {
      * @returns Error data or redirects user to the home page or the previous page
      */
     register_house: async ({ request, fetch, locals, cookies }) => {
-        const formData = await request.formData();
-        const houseName = String(formData.get('house_name'));
+        const form = await superValidate(request, zod(registerHouseSchema));
 
-        // Some validations
-        const fieldsError: FieldsError = {};
-
-        if (!isEmpty(fieldsError)) {
-            return fail(400, { fieldsError: fieldsError });
+        if (!form.valid) {
+            return fail(400, { form });
         }
+
         const registrationBody = {
-            house_name: houseName
+            house_name: form.data.house_name
         };
 
         const requestInitOptions: RequestInit = {
@@ -37,7 +42,6 @@ export const actions = {
             headers: {
                 'Content-Type': 'application/json',
                 Cookie: `session=${cookies.get('session')}`
-
             },
             body: JSON.stringify(registrationBody)
         };
@@ -47,7 +51,7 @@ export const actions = {
         if (!res.ok) {
             const response = await res.json();
             const errors = formatError(response.error);
-            return fail(400, { errors: errors });
+            return fail(400, { form, errors: errors });
         }
 
         redirect(303, '/');

@@ -32,10 +32,9 @@
     const form = superForm(superform);
     const { value, errors, constraints } = formFieldProxy(form, field);
 
-    let change_mode_bg = $derived(edit_value ? 'bg-base-100' : 'bg-base-200');
+    let change_mode_bg = $derived(edit_value ? 'bg-base-300' : 'bg-base-200');
 </script>
 
-{#if $errors}<span class="invalid">{$errors}</span>{/if}
 <div class="flex join w-full">
     <div class={`flex justify-between w-full border border-slate-500 ${change_mode_bg}`}>
         <span class="label label-text text-left ml-2 w-24 join-item"><b>{label}</b></span>

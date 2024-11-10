@@ -1,21 +1,21 @@
 import { BASE_API_URI } from '$lib/utils/constants';
-import {
-    formatError,
-    isEmpty,
-    isValidEmail,
-    isValidPasswordMedium,
-    isValidJoinId
-} from '$lib/utils/helpers';
+import { formatError } from '$lib/utils/helpers';
+import { registerSchema } from '$lib/utils/schemas';
 import { fail, redirect } from '@sveltejs/kit';
+import { superValidate } from 'sveltekit-superforms';
+import { zod } from 'sveltekit-superforms/adapters';
 
-/** @type {import('./user/$types').PageServerLoad} */
 export async function load({ locals }) {
     // redirect user if logged in
     if (locals.user) {
         redirect(302, '/');
     }
-}
 
+    const register_form = await superValidate(locals.user, zod(registerSchema));
+    return {
+        register_form
+    };
+}
 
 /** @type {import('./user/$types').Actions} */
 export const actions = {
@@ -26,43 +26,20 @@ export const actions = {
      * @returns Error data or redirects user to the home page or the previous page
      */
     register: async ({ request, fetch, cookies }) => {
-        const formData = await request.formData();
-        const email = String(formData.get('email'));
-        const firstName = String(formData.get('first_name'));
-        const lastName = String(formData.get('last_name'));
-        const password = String(formData.get('password'));
-        const confirmPassword = String(formData.get('confirm_password'));
-        const joinId = String(formData.get('join_id'));
-        const is_join_home = String(formData.get('join_home')) == 'true';
+        const form = await superValidate(request, zod(registerSchema));
 
-        // Some validations
-        let fieldsError: FieldsError = {};
-        if (!isValidEmail(email)) {
-            fieldsError.email = 'That email address is invalid.';
-        }
-        if (!isValidPasswordMedium(password)) {
-            fieldsError.password =
-                'Password is not valid. Password must contain six characters or more and has at least one lowercase and one uppercase alphabetical character or has at least one lowercase and one numeric character or has at least one uppercase and one numeric character.';
-        }
-        if (confirmPassword.trim() !== password.trim()) {
-            fieldsError.confirmPassword = 'Password and confirm password do not match.';
-        }
-        if (is_join_home && !isValidJoinId(joinId)) {
-            fieldsError.joinId = 'Invalid Home ID.';
+        if (!form.valid) {
+            return fail(400, { form });
         }
 
-        if (!isEmpty(fieldsError)) {
-            return fail(400, { fieldsError: fieldsError });
-        }
         const registrationBody = {
-            email,
-            first_name: firstName,
-            last_name: lastName,
-            join_id: joinId,
-            password
+            email: form.data.email,
+            first_name: form.data.first_name,
+            last_name: form.data.last_name,
+            join_id: form.data.join_id ? form.data.join_id : '',
+            password: form.data.password
         };
 
-        /** @type {RequestInit} */
         const requestInitOptions = {
             method: 'POST',
             headers: {
@@ -76,7 +53,7 @@ export const actions = {
         const response = await res.json();
         if (!res.ok) {
             const errors = formatError(response.error);
-            return fail(400, { errors: errors });
+            return fail(400, { form, errors: errors });
         }
 
         if (res.headers.has('Set-Cookie')) {
@@ -96,7 +73,7 @@ export const actions = {
             });
         }
 
-        if (!is_join_home) {
+        if (!form.data.join_id) {
             redirect(303, '/auth/register/group');
         }
         redirect(303, '/');
