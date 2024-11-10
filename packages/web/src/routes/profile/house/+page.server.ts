@@ -3,23 +3,12 @@ import { fail } from '@sveltejs/kit';
 import type { Cookies } from '@sveltejs/kit';
 import { message, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
-import { z } from 'zod';
-
-const name_schema = z.object({
-  name: z.string().min(3),
-});
-
-const city_schema = z.object({
-    city: z.string()
-});
-
-const country_schema = z.object({
-    country: z.string()
-});
-
-const joinid_schema = z.object({
-    join_id: z.string(),
-});
+import {
+    houseNamechema,
+    houseCitySchema,
+    houseCountrySchema,
+    houseJoinIdSchema
+} from '$lib/utils/schemas';
 
 async function get_house_members(cookies: Cookies) {
     let requestInitOptions: RequestInit = {
@@ -40,10 +29,10 @@ async function get_house_members(cookies: Cookies) {
 }
 
 export const load = async ({ locals, cookies }) => {
-    const name_form = await superValidate(locals.house, zod(name_schema));
-    const city_form = await superValidate(locals.house, zod(city_schema));
-    const country_form = await superValidate(locals.house, zod(country_schema));
-    const joinid_form = await superValidate(locals.house, zod(joinid_schema));
+    const name_form = await superValidate(locals.house, zod(houseNamechema));
+    const city_form = await superValidate(locals.house, zod(houseCitySchema));
+    const country_form = await superValidate(locals.house, zod(houseCountrySchema));
+    const joinid_form = await superValidate(locals.house, zod(houseJoinIdSchema));
     const user_list = async () => {
         return await get_house_members(cookies);
     };
@@ -55,12 +44,12 @@ export const load = async ({ locals, cookies }) => {
         streamed: {
             user_list: user_list()
         }
-     }
+    };
 };
 
 export const actions = {
     update_name: async ({ request, fetch, cookies }) => {
-        const name_form = await superValidate(request, zod(name_schema));
+        const name_form = await superValidate(request, zod(houseNamechema));
 
         if (!name_form.valid) return fail(400, { name_form });
 
@@ -73,7 +62,7 @@ export const actions = {
             },
             body: JSON.stringify({
                 name: name_form.data.name,
-                city:  '',
+                city: '',
                 country: ''
             })
         };
@@ -81,14 +70,14 @@ export const actions = {
         const res = await fetch(`${BASE_API_URI}/auth/update-house`, requestInitOptions);
         const response = await res.json();
         if (!res.ok) {
-            return fail(400, { name_form });
+            return fail(400, { name_form, errors: response.error });
         }
 
         return message(name_form, 'Name Updated!');
     },
 
     update_city: async ({ request, fetch, cookies }) => {
-        const city_form = await superValidate(request, zod(city_schema));
+        const city_form = await superValidate(request, zod(houseCitySchema));
 
         if (!city_form.valid) return fail(400, { city_form });
 
@@ -109,14 +98,14 @@ export const actions = {
         const res = await fetch(`${BASE_API_URI}/auth/update-house`, requestInitOptions);
         const response = await res.json();
         if (!res.ok) {
-            return fail(400, { city_form });
+            return fail(400, { city_form, errors: response.error });
         }
 
         return message(city_form, 'City updated!');
     },
 
     update_country: async ({ request, fetch, cookies }) => {
-        const country_form = await superValidate(request, zod(country_schema));
+        const country_form = await superValidate(request, zod(houseCountrySchema));
 
         if (!country_form.valid) return fail(400, { country_form });
 
@@ -137,14 +126,14 @@ export const actions = {
         const res = await fetch(`${BASE_API_URI}/auth/update-house`, requestInitOptions);
         const response = await res.json();
         if (!res.ok) {
-            return fail(400, { country_form });
+            return fail(400, { country_form, errors: response.error });
         }
 
         return message(country_form, 'Country updated!');
     },
 
     toggle_join_id: async ({ request, locals, cookies }) => {
-        const joinid_form = await superValidate(request, zod(joinid_schema));
+        const joinid_form = await superValidate(request, zod(houseJoinIdSchema));
 
         let requestInitOptions: RequestInit = {
             method: 'POST',
@@ -169,7 +158,7 @@ export const actions = {
 
         const response = await res.json();
         if (!res.ok) {
-            return fail(400, { joinid_form });
+            return fail(400, { joinid_form, errors: response.error });
         }
         return { joinid_form, join_id: response.join_id };
     },

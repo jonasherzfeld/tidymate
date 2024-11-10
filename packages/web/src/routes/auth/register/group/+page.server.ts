@@ -1,5 +1,4 @@
 import { BASE_API_URI } from '$lib/utils/constants';
-import { formatError } from '$lib/utils/helpers';
 import { fail, redirect } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
@@ -11,7 +10,7 @@ export async function load({ locals }) {
         redirect(302, '/');
     }
 
-    const register_house_form = await superValidate(locals.user, zod(registerHouseSchema));
+    const register_house_form = await superValidate(zod(registerHouseSchema));
     return {
         register_house_form
     };
@@ -50,8 +49,7 @@ export const actions = {
 
         if (!res.ok) {
             const response = await res.json();
-            const errors = formatError(response.error);
-            return fail(400, { form, errors: errors });
+            return fail(400, { form, errors: response.error });
         }
 
         redirect(303, '/');

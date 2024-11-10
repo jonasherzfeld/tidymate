@@ -1,5 +1,4 @@
 import { BASE_API_URI } from '$lib/utils/constants';
-import { formatError } from '$lib/utils/helpers';
 import { registerSchema } from '$lib/utils/schemas';
 import { fail, redirect } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms';
@@ -32,11 +31,12 @@ export const actions = {
             return fail(400, { form });
         }
 
+        console.log(form.data);
         const registrationBody = {
             email: form.data.email,
             first_name: form.data.first_name,
             last_name: form.data.last_name,
-            join_id: form.data.join_id ? form.data.join_id : '',
+            join_id: form.data.join_id === undefined ? form.data.join_id : '',
             password: form.data.password
         };
 
@@ -52,8 +52,7 @@ export const actions = {
 
         const response = await res.json();
         if (!res.ok) {
-            const errors = formatError(response.error);
-            return fail(400, { form, errors: errors });
+            return fail(400, { form, errors: response.error });
         }
 
         if (res.headers.has('Set-Cookie')) {

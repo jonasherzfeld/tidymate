@@ -3,6 +3,7 @@
     import HouseMemberItem from '$lib/components/HouseMemberItem.svelte';
     import FormTextInput from '$lib/components/FormTextInput.svelte';
     import { superForm } from 'sveltekit-superforms';
+    import { server } from 'typescript';
 
     let { data = $bindable() } = $props();
     const {
@@ -81,6 +82,7 @@
         },
         onUpdate: async ({ form, result }) => {
             const action = result.data;
+            server_errors = result.data.errors;
             if (form.valid) {
                 join_id_value = action.join_id;
             }
@@ -88,6 +90,7 @@
         }
     });
 
+    let server_errors = $state();
     let edit_name = $state(false);
     let edit_country = $state(false);
     let edit_city = $state(false);
@@ -104,36 +107,41 @@
     <p class="py-4">This is the settings page for your house!</p>
     <div class="flex flex-col flex-1 gap-3 min-w-full">
         <div class="flex flex-col flex-1 gap-2 p-3 card bg-base-100">
+            {#if server_errors}
+                <h1 class="mt-2 step-subtitle warning">
+                    {server_errors}
+                </h1>
+            {/if}
             <form action="?/update_name" method="POST" use:name_enhance>
-                {#if $name_errors.name}<span class="invalid">{$name_errors.name}</span>{/if}
                 <FormTextInput
-                superform={data.name_form}
-                field="name"
-                label="Name"
-                bind:edit_value={edit_name}
-                bind:creating_value={creating_name}
-            />
+                    superform={data.name_form}
+                    field="name"
+                    label="Name"
+                    bind:edit_value={edit_name}
+                    bind:creating_value={creating_name}
+                />
+                {#if $name_errors.name}<span class="invalid text-error">{$name_errors.name}</span>{/if}
             </form>
             <form action="?/update_city" method="POST" use:city_enhance>
-                {#if $city_errors.city}<span class="invalid">{$city_errors.city}</span>{/if}
                 <FormTextInput
-                superform={data.city_form}
-                field="city"
-                label="City"
-                bind:edit_value={edit_city}
-                bind:creating_value={creating_city}
-            />
+                    superform={data.city_form}
+                    field="city"
+                    label="City"
+                    bind:edit_value={edit_city}
+                    bind:creating_value={creating_city}
+                />
+                {#if $city_errors.city}<span class="invalid text-error">{$city_errors.city}</span>{/if}
             </form>
             <form action="?/update_country" method="POST" use:country_enhance>
-                {#if $country_errors.country}<span class="invalid">{$country_errors.country}</span
-                    >{/if}
-                    <FormTextInput
+                <FormTextInput
                     superform={data.country_form}
                     field="country"
                     label="Country"
                     bind:edit_value={edit_country}
                     bind:creating_value={creating_country}
                 />
+                {#if $country_errors.country}<span class="invalid text-error">{$country_errors.country}</span
+                    >{/if}
             </form>
             <TextInput name="joined_on" value={data.house.created_on} disabled={true}
                 ><b>Created On</b>
