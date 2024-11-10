@@ -21,10 +21,7 @@
         is_img_hover = value;
     };
 
-    const {
-        enhance: email_enhance,
-        errors: email_errors,
-    } = superForm(data.email_form, {
+    const { enhance: email_enhance, errors: email_errors } = superForm(data.email_form, {
         invalidateAll: false,
         resetForm: false,
         onSubmit: async () => {
@@ -40,13 +37,14 @@
         }
     });
 
-    const { form: first_name_form,
+    const {
+        form: first_name_form,
         errors: first_name_errors,
-        enhance: first_name_enhance } = superForm(data.first_name_form, {
+        enhance: first_name_enhance
+    } = superForm(data.first_name_form, {
         invalidateAll: false,
         resetForm: false,
         onSubmit: async () => {
-            console.log('submitting');
             creating_first_name = true;
         },
         onUpdate: async ({ form }) => {
@@ -60,27 +58,26 @@
         }
     });
 
-    const {
-        errors: last_name_errors,
-        enhance: last_name_enhance,
-    } = superForm(data.last_name_form, {
-        invalidateAll: false,
-        resetForm: false,
-        onSubmit: async () => {
-            creating_last_name = true;
-        },
-        onUpdate: async ({ form }) => {
-            console.log(form.valid);
-            if (form.valid) {
-                edit_last_name = false;
-            } else {
-                edit_last_name = true;
+    const { errors: last_name_errors, enhance: last_name_enhance } = superForm(
+        data.last_name_form,
+        {
+            invalidateAll: false,
+            resetForm: false,
+            onSubmit: async () => {
+                creating_last_name = true;
+            },
+            onUpdate: async ({ form }) => {
+                console.log(form.valid);
+                if (form.valid) {
+                    edit_last_name = false;
+                } else {
+                    edit_last_name = true;
+                }
+                creating_last_name = false;
+                console.log(creating_last_name, edit_last_name);
             }
-            creating_last_name = false;
-            console.log(creating_last_name, edit_last_name);
-
         }
-    });
+    );
 </script>
 
 <div class="flex flex-col flex-1 min-w-full">
@@ -121,18 +118,18 @@
 
     <div class="flex flex-col flex-1 gap-2 p-3 card bg-base-100">
         <form action="?/update_email" method="POST" use:email_enhance>
-            {#if $email_errors.email}<span class="invalid">{$email_errors.email}</span>{/if}
-        <FormTextInput
-            superform={data.email_form}
-            field="email"
-            label="Email"
-            disabled={true}
-            bind:edit_value={edit_email}
-            bind:creating_value={creating_email}
-        />
+            <FormTextInput
+                superform={data.email_form}
+                field="email"
+                label="Email"
+                disabled={true}
+                bind:edit_value={edit_email}
+                bind:creating_value={creating_email}
+            />
+            {#if $email_errors.email}<span class="invalid text-error">{$email_errors.email}</span
+                >{/if}
         </form>
         <form action="?/update_first_name" method="POST" use:first_name_enhance>
-            {#if $first_name_errors.first_name}<span class="invalid">{$first_name_errors.first_name}</span>{/if}
             <FormTextInput
                 superform={data.first_name_form}
                 field="first_name"
@@ -140,9 +137,11 @@
                 bind:edit_value={edit_first_name}
                 bind:creating_value={creating_first_name}
             />
+            {#if $first_name_errors.first_name}<span class="invalid text-error"
+                    >{$first_name_errors.first_name}</span
+                >{/if}
         </form>
         <form action="?/update_last_name" method="POST" use:last_name_enhance>
-            {#if $last_name_errors.last_name}<span class="invalid">{$last_name_errors.last_name}</span>{/if}
             <FormTextInput
                 superform={data.last_name_form}
                 field="last_name"
@@ -150,6 +149,9 @@
                 bind:edit_value={edit_last_name}
                 bind:creating_value={creating_last_name}
             />
+            {#if $last_name_errors.last_name}<span class="invalid text-error"
+                    >{$last_name_errors.last_name}</span
+                >{/if}
         </form>
         <TextInput name="joined_on" value={data.user.joined_on} disabled={true}
             ><b>Joined On</b>

@@ -1,12 +1,20 @@
 import { BASE_API_URI } from '$lib/utils/constants';
+import { loginSchema } from '$lib/utils/schemas';
 import { formatError } from '$lib/utils/helpers';
 import { fail, redirect } from '@sveltejs/kit';
+import { superValidate } from 'sveltekit-superforms';
+import { zod } from 'sveltekit-superforms/adapters';
 
 export async function load({ locals }) {
     // redirect user if logged in
     if (locals.user) {
         redirect(302, '/');
     }
+
+    const login_form = await superValidate(locals.user, zod(loginSchema));
+    return {
+        login_form
+    };
 }
 
 export const actions = {
@@ -18,10 +26,11 @@ export const actions = {
      * @returns Error data or redirects user to the home page or the previous page
      */
     login: async ({ request, fetch, cookies }) => {
-        const data = await request.formData();
-        const email = String(data.get('email'));
-        const password = String(data.get('password'));
-        const next = String(data.get('next'));
+        const form = await superValidate(request, zod(loginSchema));
+
+        if (!form.valid) {
+            return fail(400, { form });
+        }
 
         const requestInitOptions: RequestInit = {
             method: 'POST',
@@ -30,8 +39,8 @@ export const actions = {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                email: email,
-                password: password
+                email: form.data.email,
+                password: form.data.password
             })
         };
 
@@ -41,9 +50,9 @@ export const actions = {
             try {
                 const response = await res.json();
                 const errors = formatError(response.error);
-                return fail(400, { errors: errors });
+                return fail(400, { form, errors: errors });
             } catch {
-                return fail(500, { error: 'Internal Server Error' });
+                return fail(500, { form });
             }
         }
 
@@ -64,6 +73,6 @@ export const actions = {
             });
         }
 
-        redirect(303, next || '/');
+        redirect(303, form.data.next ? form.data.next : '/');
     }
 };
