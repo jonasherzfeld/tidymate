@@ -31,12 +31,11 @@ export const actions = {
             return fail(400, { form });
         }
 
-        console.log(form.data);
         const registrationBody = {
             email: form.data.email,
             first_name: form.data.first_name,
             last_name: form.data.last_name,
-            join_id: form.data.join_id === undefined ? form.data.join_id : '',
+            join_id: form.data.is_join_home ? form.data.join_id : '',
             password: form.data.password
         };
 
@@ -72,8 +71,8 @@ export const actions = {
             });
         }
 
-        if (!form.data.join_id) {
-            redirect(303, '/auth/register/group');
+        if (!form.data.is_join_home) {
+            redirect(303, '/auth/register/house');
         }
         redirect(303, '/');
     }

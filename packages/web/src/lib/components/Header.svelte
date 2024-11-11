@@ -75,7 +75,7 @@
                     </li>
                     {#if !is_in_house}
                         <li class="text-base">
-                            <a href="/auth/register/group" class="justify-left gap-5">
+                            <a href="/auth/register/house" class="justify-left gap-5">
                                 <RegisterIcon style="font-size:1.2em" />
                                 Register House
                             </a>

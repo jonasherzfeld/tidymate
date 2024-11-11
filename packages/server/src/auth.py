@@ -110,7 +110,7 @@ def register():
     if join_id and join_id != "null":
         db_house_list = house_vm.filter("join_id", join_id)
         if len(db_house_list) != 1:
-            return jsonify({"error": "Invalid House ID"}), 404
+            return jsonify({"error": "Invalid Join ID"}), 404
         db_house = db_house_list[0]
         house_id = db_house.id
     else:
@@ -153,13 +153,15 @@ def register():
 def register_house(user):
     try:
         house_name = request.json['house_name']
+        house_city = request.json.get('house_city', "")
+        house_country = request.json.get('house_country', "")
     except KeyError:
         return jsonify({"error": "Missing required fields"}), 400
 
     new_house = House(id=str(uuid.uuid4()),
                       name=house_name,
-                      city="",
-                      country="",
+                      city=house_city,
+                      country=house_country,
                       created_on=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                       join_id= "",
                       members=[user.id])

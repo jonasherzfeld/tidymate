@@ -15,7 +15,11 @@ export const registerSchema = z
         password: z.string().min(8, 'Password should be at least 8 characters'),
         confirm_password: z.string().min(8, 'Password should be at least 8 characters'),
         is_join_home: z.boolean().default(true),
-        join_id: z.string().min(12).max(12).optional()
+        join_id: z
+            .string()
+            .min(12, 'Join ID should have 12 characters')
+            .max(12, 'Join ID should have 12 characters')
+            .optional()
     })
     .superRefine(({ confirm_password, password }, ctx) => {
         if (confirm_password !== password) {
@@ -26,7 +30,16 @@ export const registerSchema = z
             });
         }
     })
-    .superRefine(({ password }, checkPassComplexity) => {
+    .superRefine(({ is_join_home, join_id }, ctx) => {
+        if (is_join_home && !join_id) {
+            ctx.addIssue({
+                code: 'custom',
+                message: 'Join ID is required',
+                path: ['join_id']
+            });
+        }
+    })
+    .superRefine(({ password }, ctx) => {
         const containsUppercase = (ch: string) => /[A-Z]/.test(ch);
         const containsLowercase = (ch: string) => /[a-z]/.test(ch);
         const containsSpecialChar = (ch: string) =>
@@ -48,7 +61,7 @@ export const registerSchema = z
             countOfSpecialChar < 1 ||
             countOfNumbers < 1
         ) {
-            checkPassComplexity.addIssue({
+            ctx.addIssue({
                 code: 'custom',
                 message:
                     ' Password should contain at least one uppercase, one lowercase, one number and one special character',
@@ -59,7 +72,9 @@ export const registerSchema = z
 export type RegisterSchema = typeof registerSchema;
 
 export const registerHouseSchema = z.object({
-    house_name: z.string().min(3, 'House name should be at least 3 characters')
+    house_name: z.string().min(3, 'House name should be at least 3 characters'),
+    house_city: z.string().optional(),
+    house_country: z.string().optional()
 });
 export type RegisterHouseSchema = typeof registerHouseSchema;
 

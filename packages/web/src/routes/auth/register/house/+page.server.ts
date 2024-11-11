@@ -31,7 +31,9 @@ export const actions = {
         }
 
         const registrationBody = {
-            house_name: form.data.house_name
+            house_name: form.data.house_name,
+            house_city: form.data.house_country ? form.data.house_city : '',
+            house_country: form.data.house_country ? form.data.house_country : ''
         };
 
         const requestInitOptions: RequestInit = {

@@ -41,6 +41,29 @@
                 >{/if}
         </div>
 
+        <div>
+            <TextInput
+                type="text"
+                name="house_city"
+                placeholder="City (optional)"
+                bind:value={$form.house_city}
+            />
+            {#if $errors.house_city}<span class="invalid text-error">{$errors.house_city}</span
+                >{/if}
+        </div>
+
+        <div>
+            <TextInput
+                type="text"
+                name="house_country"
+                placeholder="Country (optional)"
+                bind:value={$form.house_country}
+            />
+            {#if $errors.house_country}<span class="invalid text-error">{$errors.house_country}</span
+                >{/if}
+        </div>
+
+
         <div class="btn-container">
             <button class="btn btn-neutral w-full" disabled={is_loading}>
                 {#if !is_loading}
