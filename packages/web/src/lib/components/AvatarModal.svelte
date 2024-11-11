@@ -1,9 +1,9 @@
 <script lang="ts">
-import type { Snippet } from 'svelte'
+    import type { Snippet } from 'svelte';
 
     interface Props {
-        children: Snippet,
-        showModal: Boolean
+        children: Snippet;
+        showModal: Boolean;
     }
 
     let { children, showModal = $bindable() }: Props = $props();

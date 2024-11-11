@@ -52,11 +52,7 @@
             >
         {/if}
         {#if edit_value}
-            <button
-                type="submit"
-                class="btn join-item btn-primary"
-                disabled={creating_value}
-            >
+            <button type="submit" class="btn join-item btn-primary" disabled={creating_value}>
                 {#if !creating_value}
                     <SubmitIcon style="font-size:1.2em" />
                 {:else}

@@ -19,8 +19,8 @@ interface House {
 }
 
 type FieldsError = {
-    email?: String,
-    password?: String,
-    confirmPassword?: String,
-    joinId?: String
-}
+    email?: String;
+    password?: String;
+    confirmPassword?: String;
+    joinId?: String;
+};

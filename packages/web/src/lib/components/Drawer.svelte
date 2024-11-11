@@ -10,23 +10,23 @@
     import DocsIcon from 'virtual:icons/fluent/document-bullet-list-16-regular';
     import { browser } from '$app/environment';
 
-
     type Props = {
-        children: Snippet
-    }
+        children: Snippet;
+    };
     let { children }: Props = $props();
 
     let is_logged_in = $derived($page.data.user ? true : false);
-    let is_in_house = $derived($page.data.house? true : false);
+    let is_in_house = $derived($page.data.house ? true : false);
 
     let checked = $state('');
     function handleClick() {
         checked === 'checked' ? (checked = '') : (checked = 'checked');
     }
 
-    let is_web_app : boolean = $state(false);
+    let is_web_app: boolean = $state(false);
     if (browser) {
-        is_web_app = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+        is_web_app =
+            window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
     }
 </script>
 
@@ -35,7 +35,7 @@
     <div class="drawer-content flex flex-col">
         <!-- Navbar -->
         <div
-            class={`navbar w-full bg-base-100 text-shade-500 border-solid border-b border-shape-500 sticky top-0 z-10 ${is_web_app? 'pt-12' : ''}`}
+            class={`navbar w-full bg-base-100 text-shade-500 border-solid border-b border-shape-500 sticky top-0 z-10 ${is_web_app ? 'pt-12' : ''}`}
         >
             <div class="flex-none lg:hidden">
                 <button
@@ -65,26 +65,38 @@
 
     <div class="drawer-side z-20">
         <button onclick={handleClick} class="drawer-overlay" aria-label="Close Menu"></button>
-        <ul class={`menu bg-base-200 min-h-full w-80 p-4  ${is_web_app? 'pt-12' : ''}`}>
+        <ul class={`menu bg-base-200 min-h-full w-80 p-4  ${is_web_app ? 'pt-12' : ''}`}>
             <!-- Sidebar content here -->
             <a
                 href={is_logged_in && is_in_house ? '/home' : '/'}
                 class="btn btn-ghost text-xl"
                 onclick={handleClick}
             >
-            <Logo width="30px" />Tidymate</a
+                <Logo width="30px" />Tidymate</a
             >
             {#if is_logged_in && is_in_house}
                 <li class="text-base">
-                    <a href="/home/todo" onclick={handleClick}><TodoIcon style="font-size:1.2rem" />To-Dos</a>
+                    <a href="/home/todo" onclick={handleClick}
+                        ><TodoIcon style="font-size:1.2rem" />To-Dos</a
+                    >
                 </li>
                 <li class="text-base">
-                    <a href="/home/chores" onclick={handleClick}><ChoresIcon style="font-size:1.2rem" />Chores</a>
+                    <a href="/home/chores" onclick={handleClick}
+                        ><ChoresIcon style="font-size:1.2rem" />Chores</a
+                    >
                 </li>
                 <div class="divider"></div>
             {/if}
-                <li><a href='/about' onclick={handleClick}><InfoIcon style="font-size:1.2rem" /> About</a></li>
-                <li><a href='https://tidymate-docs.vercel.app' onclick={handleClick} target="_blank"><DocsIcon style="font-size:1.2rem" />Documention ↗</a></li>
+            <li>
+                <a href="/about" onclick={handleClick}
+                    ><InfoIcon style="font-size:1.2rem" /> About</a
+                >
+            </li>
+            <li>
+                <a href="https://tidymate-docs.vercel.app" onclick={handleClick} target="_blank"
+                    ><DocsIcon style="font-size:1.2rem" />Documention ↗</a
+                >
+            </li>
         </ul>
     </div>
 </div>

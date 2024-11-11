@@ -1,4 +1,3 @@
-
 <div align="center">
   <img src="./packages/web/src/lib/img/tidymate_logo_white.png#gh-dark-mode-only" style="width: 30%;">
   <img src="./packages/web/src/lib/img/tidymate_logo.png#gh-light-mode-only" style="width: 30%;">
