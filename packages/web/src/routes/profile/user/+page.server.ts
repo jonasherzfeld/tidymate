@@ -3,6 +3,11 @@ import { fail } from '@sveltejs/kit';
 import { message, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { emailSchema, firstNameSchema, lastNameSchema } from '$lib/utils/schemas';
+import type { Config } from '@sveltejs/adapter-vercel';
+
+export const config: Config = {
+    runtime: 'edge'
+};
 
 export const load = async ({ locals }) => {
     const email_form = await superValidate(locals.user, zod(emailSchema));

@@ -3,7 +3,6 @@
     import HouseMemberItem from '$lib/components/HouseMemberItem.svelte';
     import FormTextInput from '$lib/components/FormTextInput.svelte';
     import { superForm } from 'sveltekit-superforms';
-    import { server } from 'typescript';
 
     let { data = $bindable() } = $props();
     const {
