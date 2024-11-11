@@ -9,7 +9,6 @@
         form: name_form,
         errors: name_errors,
         enhance: name_enhance,
-        message: name_message
     } = superForm(data.name_form, {
         invalidateAll: false,
         resetForm: false,
@@ -27,10 +26,8 @@
     });
 
     const {
-        form: city_form,
         errors: city_errors,
         enhance: city_enhance,
-        message: city_message
     } = superForm(data.city_form, {
         invalidateAll: false,
         resetForm: false,
@@ -48,10 +45,8 @@
     });
 
     const {
-        form: country_form,
         errors: country_errors,
         enhance: country_enhance,
-        message: country_message
     } = superForm(data.country_form, {
         invalidateAll: false,
         resetForm: false,
@@ -69,10 +64,7 @@
     });
 
     const {
-        form: joinid_form,
-        errors: joinid_errors,
         enhance: joinid_enhance,
-        message: joinid_message
     } = superForm(data.joinid_form, {
         invalidateAll: false,
         resetForm: false,
