@@ -1,17 +1,10 @@
 ---
-title: Welcome to Sveltepress
-heroImage: /sveltepress@3x.png
-tagline: A simple, easy to use content centered site build tool with the full power of Sveltekit.
+title: Welcome to the Tidymate Documentation!
+heroImage: /tidymate_logo.png
+tagline: This documentation page is under construction. Soon you will find information here about the features of the Tidymate web app.
 actions:
   - label: View on github
     type: primary
-    to: https://github.com/Blackman99/sveltepress
+    to: https://github.com/jonasherzfeld/tidymate
     external: true
-features:
-  - title: Markdown centered
-    description: To help you can start writing with minimal configuration
-  - title: Build with Sveltekit
-    description: Preserve the full power of Sveltekit. So that you can do more than SSG
-  - title: Svelte in Markdown
-    description: Feel free to use svelte in markdown. Explore infinite possibilities.
 ---
