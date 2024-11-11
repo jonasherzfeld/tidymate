@@ -56,7 +56,6 @@
                 edit_first_name = true;
             }
             creating_first_name = false;
-            console.log(form.valid, creating_first_name, edit_first_name);
         }
     });
 
@@ -76,7 +75,6 @@
                     edit_last_name = true;
                 }
                 creating_last_name = false;
-                console.log(creating_last_name, edit_last_name);
             }
         }
     );
