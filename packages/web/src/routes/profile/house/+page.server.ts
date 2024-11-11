@@ -9,6 +9,11 @@ import {
     houseCountrySchema,
     houseJoinIdSchema
 } from '$lib/utils/schemas';
+import type { Config } from '@sveltejs/adapter-vercel';
+
+export const config: Config = {
+    runtime: 'edge'
+};
 
 async function get_house_members(cookies: Cookies) {
     let requestInitOptions: RequestInit = {
