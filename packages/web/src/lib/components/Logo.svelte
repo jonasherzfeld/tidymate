@@ -3,10 +3,15 @@
     import Logo_Light from '$lib/img/tidymate_logo.png';
 
     type Props = {
-        width: string
-    }
-    let { width = "30px"}: Props = $props();
+        width: string;
+    };
+    let { width = '30px' }: Props = $props();
 </script>
 
 <img alt="User" class="[[data-theme=light]_&]:hidde" src={Logo_Dark} {width} />
-<img alt="User" class='[[data-theme=dark]_&]:hidden [[data-theme=default]_&]:hidden' src={Logo_Light} {width} />
+<img
+    alt="User"
+    class="[[data-theme=dark]_&]:hidden [[data-theme=default]_&]:hidden"
+    src={Logo_Light}
+    {width}
+/>

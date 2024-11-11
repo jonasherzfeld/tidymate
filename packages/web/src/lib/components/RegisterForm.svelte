@@ -1,12 +1,9 @@
 <script lang="ts">
     import TextInput from '$lib/components/TextInput.svelte';
-    import { superForm,
-        type SuperValidated,
-        type Infer
-     } from 'sveltekit-superforms';
+    import { superForm, type SuperValidated, type Infer } from 'sveltekit-superforms';
     import type { RegisterSchema } from '$lib/utils/schemas';
 
-    let  { register_form } : { register_form: SuperValidated<Infer<RegisterSchema>> } = $props();
+    let { register_form }: { register_form: SuperValidated<Infer<RegisterSchema>> } = $props();
 
     const { form, errors, enhance } = superForm(register_form, {
         onSubmit: async () => {

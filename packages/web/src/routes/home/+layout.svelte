@@ -1,5 +1,5 @@
 <script lang="ts">
-	let { children } = $props();
+    let { children } = $props();
 </script>
 
 <div class="flex bg-base-200 h-[calc(100vh-74px)] w-full items-start justify-center">

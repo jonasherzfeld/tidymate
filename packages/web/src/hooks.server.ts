@@ -2,7 +2,7 @@ import { BASE_API_URI, PROTECTED_ROUTES_HOUSE, PROTECTED_ROUTES_USER } from '$li
 import { redirect } from '@sveltejs/kit';
 import type { RequestEvent } from '@sveltejs/kit';
 
-export function isAccessValid(path: String, user: User, house : House) {
+export function isAccessValid(path: String, user: User, house: House) {
     const is_protecte_route_user = PROTECTED_ROUTES_USER.filter((option) =>
         path.startsWith(option)
     );
@@ -46,7 +46,7 @@ export async function validateSession(event: RequestEvent) {
 export async function handle({ event, resolve }) {
     let theme: string | null = 'default';
     const new_theme = event.url.searchParams.get('theme');
-    const cookie_theme = event.cookies.get("colortheme");
+    const cookie_theme = event.cookies.get('colortheme');
     if (new_theme) {
         theme = new_theme;
     } else if (cookie_theme) {
@@ -56,11 +56,9 @@ export async function handle({ event, resolve }) {
     let add_theme_config = {};
     if (theme) {
         add_theme_config = {
-            transformPageChunk: ({html}) =>
-                html.replace('data-theme=""', `data-theme="${theme}"`)
-            };
-    };
-
+            transformPageChunk: ({ html }) => html.replace('data-theme=""', `data-theme="${theme}"`)
+        };
+    }
 
     if (event.locals.user) {
         // if there is already a user in session load page as normal

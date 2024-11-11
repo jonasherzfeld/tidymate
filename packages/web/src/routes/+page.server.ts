@@ -16,9 +16,9 @@ export const actions: Actions = {
         if (theme) {
             cookies.set('colortheme', theme, {
                 path: '/',
-                maxAge: 60 * 60 * 24 * 365,
+                maxAge: 60 * 60 * 24 * 365
             });
         }
         redirect(303, redirect_to ?? '/');
     }
-}
+};

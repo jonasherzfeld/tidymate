@@ -1,5 +1,5 @@
 <script lang="ts">
-    import RegisterHouseForm from "$lib/components/RegisterHouseForm.svelte";
+    import RegisterHouseForm from '$lib/components/RegisterHouseForm.svelte';
 
     let { data } = $props();
 </script>

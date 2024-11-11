@@ -13,13 +13,13 @@
     import Logo from './Logo.svelte';
     import AvatarGraphic from './AvatarGraphic.svelte';
 
-    let is_logged_in = $derived($page.data.user? true : false);
-    let is_in_house = $derived($page.data.house? true : false);
+    let is_logged_in = $derived($page.data.user ? true : false);
+    let is_in_house = $derived($page.data.house ? true : false);
 </script>
 
 <div class="navbar p-0 pe-2 min-h-0">
     <div class="flex-1">
-        <a href={is_logged_in && is_in_house? '/home' : '/'} class="btn btn-ghost text-xl">
+        <a href={is_logged_in && is_in_house ? '/home' : '/'} class="btn btn-ghost text-xl">
             <Logo width="30px" />Tidymate</a
         >
         {#if is_logged_in && is_in_house}

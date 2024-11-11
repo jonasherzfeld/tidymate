@@ -1,16 +1,10 @@
-
-
 <script lang="ts">
-        import {
-        superForm,
-        type SuperValidated,
-        type Infer
-    } from 'sveltekit-superforms';
+    import { superForm, type SuperValidated, type Infer } from 'sveltekit-superforms';
     import type { LoginSchema } from '$lib/utils/schemas';
     import IconTextInput from '$lib/components/IconTextInput.svelte';
     import { page } from '$app/stores';
 
-    let  { login_form } : { login_form: SuperValidated<Infer<LoginSchema>> } = $props();
+    let { login_form }: { login_form: SuperValidated<Infer<LoginSchema>> } = $props();
     const { form, errors, enhance } = superForm(login_form, {
         onSubmit: async () => {
             is_loading = true;
@@ -63,7 +57,7 @@
         {#if $errors.password}<span class="invalid text-error">{$errors.password}</span>{/if}
     </div>
     <div>
-        <button class="btn btn-neutral btn-wide w-full" disabled={is_loading}>
+        <button class="btn btn-neutral w-full" disabled={is_loading}>
             {#if !is_loading}
                 Login
             {:else}

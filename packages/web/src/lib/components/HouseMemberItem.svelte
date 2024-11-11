@@ -33,7 +33,13 @@
     <td>
         <div class="flex items-center gap-3">
             <div class="avatar">
-                <AvatarGraphic height="h-10" width="w-10" {first_name} {last_name} thumbnail={src}/>
+                <AvatarGraphic
+                    height="h-10"
+                    width="w-10"
+                    {first_name}
+                    {last_name}
+                    thumbnail={src}
+                />
             </div>
             <div>
                 <div class="font-bold">{first_name} {last_name}</div>

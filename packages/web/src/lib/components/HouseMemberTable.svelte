@@ -3,9 +3,9 @@
     import HouseMemberItem from './HouseMemberItem.svelte';
 
     type Props = {
-        user_list: User[],
-        change_enabled: Boolean
-    }
+        user_list: User[];
+        change_enabled: Boolean;
+    };
     let { user_list = $bindable([]), change_enabled = false }: Props = $props();
 </script>
 

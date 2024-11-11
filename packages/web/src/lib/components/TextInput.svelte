@@ -1,15 +1,15 @@
 <script lang="ts">
-    import type { Snippet } from "svelte";
+    import type { Snippet } from 'svelte';
 
     type Props = {
-        type: string,
-        name: string,
-        placeholder?: string,
-        class_in?: string,
-        value?: string,
-        disabled?: boolean,
-        children?: Snippet
-    }
+        type?: string;
+        name: string;
+        placeholder?: string;
+        class_in?: string;
+        value?: string;
+        disabled?: boolean;
+        children?: Snippet;
+    };
     let {
         type = 'text',
         name,

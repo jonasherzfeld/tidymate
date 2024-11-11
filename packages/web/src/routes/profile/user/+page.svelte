@@ -189,7 +189,7 @@
                         class="btn"
                         type="submit"
                         formaction="?/upload_image"
-                        disabled={data.user.thumbnail}>Upload image</button
+                        disabled={!!data.user.thumbnail}>Upload image</button
                     >
                     <button
                         class="btn btn-error"

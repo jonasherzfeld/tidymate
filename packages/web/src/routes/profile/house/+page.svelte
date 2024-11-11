@@ -8,7 +8,7 @@
     const {
         form: name_form,
         errors: name_errors,
-        enhance: name_enhance,
+        enhance: name_enhance
     } = superForm(data.name_form, {
         invalidateAll: false,
         resetForm: false,
@@ -25,10 +25,7 @@
         }
     });
 
-    const {
-        errors: city_errors,
-        enhance: city_enhance,
-    } = superForm(data.city_form, {
+    const { errors: city_errors, enhance: city_enhance } = superForm(data.city_form, {
         invalidateAll: false,
         resetForm: false,
         onSubmit: async () => {
@@ -44,10 +41,7 @@
         }
     });
 
-    const {
-        errors: country_errors,
-        enhance: country_enhance,
-    } = superForm(data.country_form, {
+    const { errors: country_errors, enhance: country_enhance } = superForm(data.country_form, {
         invalidateAll: false,
         resetForm: false,
         onSubmit: async () => {
@@ -63,9 +57,7 @@
         }
     });
 
-    const {
-        enhance: joinid_enhance,
-    } = superForm(data.joinid_form, {
+    const { enhance: joinid_enhance } = superForm(data.joinid_form, {
         invalidateAll: false,
         resetForm: false,
         onSubmit: async () => {
@@ -111,7 +103,8 @@
                     bind:edit_value={edit_name}
                     bind:creating_value={creating_name}
                 />
-                {#if $name_errors.name}<span class="invalid text-error">{$name_errors.name}</span>{/if}
+                {#if $name_errors.name}<span class="invalid text-error">{$name_errors.name}</span
+                    >{/if}
             </form>
             <form action="?/update_city" method="POST" use:city_enhance>
                 <FormTextInput
@@ -121,7 +114,8 @@
                     bind:edit_value={edit_city}
                     bind:creating_value={creating_city}
                 />
-                {#if $city_errors.city}<span class="invalid text-error">{$city_errors.city}</span>{/if}
+                {#if $city_errors.city}<span class="invalid text-error">{$city_errors.city}</span
+                    >{/if}
             </form>
             <form action="?/update_country" method="POST" use:country_enhance>
                 <FormTextInput
@@ -131,7 +125,8 @@
                     bind:edit_value={edit_country}
                     bind:creating_value={creating_country}
                 />
-                {#if $country_errors.country}<span class="invalid text-error">{$country_errors.country}</span
+                {#if $country_errors.country}<span class="invalid text-error"
+                        >{$country_errors.country}</span
                     >{/if}
             </form>
             <TextInput name="joined_on" value={data.house.created_on} disabled={true}
