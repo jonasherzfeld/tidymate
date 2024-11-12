@@ -337,7 +337,6 @@ def get_current_user(user):
             if ret != 200:
                 return response, ret
 
-
         return jsonify({
             "user": user.to_json(),
             "house": house.to_json() if house else None
