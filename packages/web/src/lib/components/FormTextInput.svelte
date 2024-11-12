@@ -36,8 +36,12 @@
 </script>
 
 <div class="flex join w-full">
-    <div class={`input input-bordered flex pl-0 pr-0 justify-between items-center w-full ${change_mode_bg}`}>
-        <span class={`label label-text text-left m-2 w-24 h-full join-item ${change_mode_bg}`}><b>{label}</b></span>
+    <div
+        class={`input input-bordered flex pl-0 pr-0 justify-between items-center w-full ${change_mode_bg}`}
+    >
+        <span class={`label label-text text-left m-2 w-24 h-full join-item ${change_mode_bg}`}
+            ><b>{label}</b></span
+        >
         {#if edit_value}
             <input
                 type="text"
@@ -52,7 +56,11 @@
             >
         {/if}
         {#if edit_value}
-            <button type="submit" class="btn -mr-px h-full join-item btn-secondary input-bordered disabled:bg-base-300" disabled={creating_value}>
+            <button
+                type="submit"
+                class="btn -mr-px h-full join-item btn-secondary input-bordered disabled:bg-base-300"
+                disabled={creating_value}
+            >
                 {#if !creating_value}
                     <SubmitIcon style="font-size:1.2em" />
                 {:else}
