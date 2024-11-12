@@ -1,7 +1,6 @@
-<div class="hero bg-base-200 min-h-screen">
-    <div class="hero-content text-center">
-        <div class="max-w-md">
-            <h1 class="text-fuchsia-900 text-5xl">About</h1>
-        </div>
+<div class="flex bg-base-100 h-[calc(100vh-74px)]  items-center w-full justify-center">
+    <div class="flex flex-col justify-center items-center text-center w-screen p-4 mt-5">
+        <h1 class="text-7xl">🚧</h1>
+        <h1 class="text-3xl">Under construction </h1>
     </div>
 </div>

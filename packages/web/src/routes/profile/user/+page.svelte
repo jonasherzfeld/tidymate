@@ -112,11 +112,15 @@
             </div>
         </div>
 
-        <h1 class="text-4xl text-center font-bold">Hi, {$first_name_form.first_name}!</h1>
+        <h1 class="text-4xl text-center font-bold">
+            <span>Hi, </span>
+            <span class="text-accent ">{$first_name_form.first_name}</span>
+            <span>!</span>
+        </h1>
     </div>
     <p class="py-6">This is your profile page. Here you can see your details.</p>
 
-    <div class="flex flex-col flex-1 gap-2 p-3 card bg-base-100">
+    <div class="flex flex-col flex-1 gap-2 p-3 card bg-base-200">
         {#if server_errors}
             <h1 class="mt-2 step-subtitle warning">
                 {server_errors}

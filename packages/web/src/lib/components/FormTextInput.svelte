@@ -32,12 +32,12 @@
     const form = superForm(superform);
     const { value, errors, constraints } = formFieldProxy(form, field);
 
-    let change_mode_bg = $derived(edit_value ? 'bg-base-300' : 'bg-base-200');
+    let change_mode_bg = $derived(edit_value ? 'bg-neutral text-base-300' : 'bg-base-100');
 </script>
 
 <div class="flex join w-full">
-    <div class={`flex justify-between w-full border border-slate-500 ${change_mode_bg}`}>
-        <span class="label label-text text-left ml-2 w-24 join-item"><b>{label}</b></span>
+    <div class={`input input-bordered flex pl-0 pr-0 justify-between items-center w-full ${change_mode_bg}`}>
+        <span class={`label label-text text-left m-2 w-24 h-full join-item ${change_mode_bg}`}><b>{label}</b></span>
         {#if edit_value}
             <input
                 type="text"
@@ -52,7 +52,7 @@
             >
         {/if}
         {#if edit_value}
-            <button type="submit" class="btn join-item btn-primary" disabled={creating_value}>
+            <button type="submit" class="btn -mr-px h-full join-item btn-secondary input-bordered disabled:bg-base-300" disabled={creating_value}>
                 {#if !creating_value}
                     <SubmitIcon style="font-size:1.2em" />
                 {:else}
@@ -62,7 +62,7 @@
         {:else}
             <button
                 type="button"
-                class="btn join-item bg-base-300"
+                class="btn -mr-px h-full join-item bg-primary input-bordered"
                 {disabled}
                 onclick={() => {
                     edit_value = true;

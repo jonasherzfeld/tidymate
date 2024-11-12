@@ -35,7 +35,7 @@
     <div class="drawer-content flex flex-col">
         <!-- Navbar -->
         <div
-            class={`navbar w-full bg-base-100 text-shade-500 border-solid border-b border-shape-500 sticky top-0 z-10 ${is_web_app ? 'pt-12' : ''}`}
+            class={`navbar w-full bg-base-300 text-shade-500 border-solid border-b border-shape-500 sticky top-0 z-10 ${is_web_app ? 'pt-12' : ''}`}
         >
             <div class="flex-none lg:hidden">
                 <button
@@ -65,7 +65,7 @@
 
     <div class="drawer-side z-20">
         <button onclick={handleClick} class="drawer-overlay" aria-label="Close Menu"></button>
-        <ul class={`menu bg-base-200 min-h-full w-80 p-4  ${is_web_app ? 'pt-12' : ''}`}>
+        <ul class={`menu bg-base-300 min-h-full w-80 p-4  ${is_web_app ? 'pt-12' : ''}`}>
             <!-- Sidebar content here -->
             <a
                 href={is_logged_in && is_in_house ? '/home' : '/'}
