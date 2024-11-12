@@ -114,7 +114,7 @@
 
         <h1 class="text-4xl text-center font-bold">
             <span>Hi, </span>
-            <span class="text-accent ">{$first_name_form.first_name}</span>
+            <span class="text-accent">{$first_name_form.first_name}</span>
             <span>!</span>
         </h1>
     </div>
