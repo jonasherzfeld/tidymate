@@ -4,8 +4,18 @@
     import '../app.css';
 
     let { children } = $props();
+
+    let page_loaded = $state(false);
+    const pageLoaded = ({}) => {
+        page_loaded = true;
+    };
 </script>
 
+{#if !page_loaded}
+    <div class="flex justify-center items-center h-screen" use:pageLoaded>
+        <span class="loading loading-spinner loading-lg"></span>
+    </div>
+{/if}
 <Drawer>
     {@render children?.()}
     <Footer />

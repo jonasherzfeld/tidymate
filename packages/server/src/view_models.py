@@ -3,75 +3,133 @@ import uuid
 from google.cloud.firestore_v1.base_query import FieldFilter
 
 from config import db
-from models import Note, User, House
+from models import Todo, User, House, Chore
 
 USER_COLLECTION : str = "user"
 HOUSE_COLLECTION : str = "house"
-NOTES_COLLECTION : str = "notes"
+TODOS_COLLECTION : str = "todos"
+CHORES_COLLECTION : str = "chores"
 
-class NoteViewModel():
+class BaseViewModel():
 
-    def get(self, user_id: str, note_id: str) -> Note:
-        doc_ref = db.collection(HOUSE_COLLECTION).document(house_id) \
-                    .collection(NOTES_COLLECTION).document(note_id)
+    def get_data(self, doc_ref):
         doc = doc_ref.get()
         if doc.exists:
-            doc_json = doc.to_dict()
-            return Note(doc_json["id"], doc_json["data"], doc_json["date"])
+            doc_data = doc.to_dict()
+            if doc_data is None or not doc_data.get("id", ""):
+                return None
+            return doc_data
         else:
-            print(f"Document {id} not found")
+            print("Document not found")
             return None
 
-    def get_all(self, user_id: str) -> list:
-        docs = (
-            db.collection(HOUSE_COLLECTION).document(house_id) \
-                    .collection(NOTES_COLLECTION).stream()
-        )
-
-        note_list = list()
-        for doc in docs:
-            doc_data = doc.to_dict()
-            doc_data['id'] = doc.id
-            doc_data['data'] = doc._data["data"]
-
-            note = Note(doc.id, doc._data["data"], doc._data["date"])
-            note_list.append(note)
-
-        return note_list
-
-    def set(self, user_id: str, data : str) -> bool:
-        note_id = str(uuid.uuid4())
-        doc_ref = db.collection(HOUSE_COLLECTION).document(house_id) \
-                    .collection(NOTES_COLLECTION).document(note_id)
-        note = Note(note_id, data, datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
-        doc_ref.set(note.to_json())
-        return True
-
-    def update(self, user_id: str, note_id: str, data : str) -> bool:
-        doc_ref = db.collection(HOUSE_COLLECTION) \
-                        .document(house_id) \
-                        .collection(NOTES_COLLECTION) \
-                        .document(note_id)
-        doc = doc_ref.get()
-        if doc.exists:
-            note = Note(note_id, data, datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
-            doc_ref.update(note.to_json())
+    def set_data(self, doc_ref, data) -> bool:
+        doc_ref.set(data.to_json())
+        if doc_ref.get().exists:
             return True
         else:
-            print(f"Document {note_id} not found")
+            print("Document could not be set collection")
             return False
 
-    def delete(self, house_id: str, note_id: str):
+
+    def update_data(self, doc_ref, data) -> bool:
+        if doc_ref.get().exists:
+            doc_ref.update(data.to_json())
+            return True
+        else:
+            print("Document not found in collection")
+            return False
+
+    def delete_data(self, doc_ref) -> bool:
         try:
-            doc_ref = db.collection(HOUSE_COLLECTION) \
-                        .document(house_id) \
-                        .collection(NOTES_COLLECTION) \
-                        .document(note_id)
             doc_ref.delete()
             return True
         except Exception as e:
             print(f"Error deleting document: {str(e)}")
             return False
+
+
+class ChoreViewModel(BaseViewModel):
+
+    def get(self, house_id: str, chore_id: str) -> Chore:
+        doc_ref = db.collection(HOUSE_COLLECTION).document(house_id) \
+                    .collection(CHORES_COLLECTION).document(chore_id)
+        data = self.get_data(doc_ref)
+        if data is not None:
+            return Chore().from_json(data)
+        return None
+
+    def get_all(self, house_id: str) -> list:
+        docs = (
+            db.collection(HOUSE_COLLECTION).document(house_id) \
+                    .collection(CHORES_COLLECTION).stream()
+        )
+
+        chore_list = list()
+        for doc in docs:
+            doc_data = doc.to_dict()
+            if doc_data is None or not doc_data.get("id", ""):
+                return None
+            chore = Chore().from_json(doc_data)
+            chore_list.append(chore)
+
+        return chore_list
+
+    def set(self, house_id: str, chore: Chore) -> bool:
+        doc_ref = db.collection(HOUSE_COLLECTION).document(house_id) \
+                    .collection(CHORES_COLLECTION).document(chore.id)
+        return self.set_data(doc_ref, chore)
+
+    def update(self, house_id: str, chore: Chore) -> bool:
+        doc_ref = db.collection(HOUSE_COLLECTION).document(house_id) \
+                    .collection(CHORES_COLLECTION).document(chore.id)
+        return self.update_data(doc_ref, chore)
+
+    def delete(self, house_id: str, chore_id: str) -> bool:
+        doc_ref = db.collection(HOUSE_COLLECTION).document(house_id) \
+                    .collection(CHORES_COLLECTION).document(chore_id)
+        return self.delete_data(doc_ref)
+
+class TodoViewModel(BaseViewModel):
+
+    def get(self, house_id: str, todo_id: str) -> Todo:
+        doc_ref = db.collection(HOUSE_COLLECTION).document(house_id) \
+                    .collection(TODOS_COLLECTION).document(todo_id)
+        data = self.get_data(doc_ref)
+        if data is not None:
+            return Todo().from_json(data)
+        return None
+
+    def get_all(self, house_id: str) -> list:
+        docs = (
+            db.collection(HOUSE_COLLECTION).document(house_id) \
+                    .collection(TODOS_COLLECTION).stream())
+
+        todo_list = list()
+        for doc in docs:
+            doc_data = doc.to_dict()
+            if doc_data is None or not doc_data.get("id", ""):
+                return None
+            todo = Todo().from_json(doc_data)
+            todo_list.append(todo)
+
+        return todo_list
+
+    def set(self, house_id: str, todo_id : str, data : Todo) -> bool:
+        doc_ref = db.collection(HOUSE_COLLECTION).document(house_id) \
+                    .collection(TODOS_COLLECTION).document(todo_id)
+        return self.set_data(doc_ref, data)
+
+    def update(self, house_id : str, todo_id : str, todo : Todo) -> bool:
+        doc_ref = db.collection(HOUSE_COLLECTION).document(house_id) \
+                    .collection(TODOS_COLLECTION).document(todo_id)
+        return self.update_data(doc_ref, todo)
+
+    def delete(self, house_id : str, todo_id : str) -> bool:
+        doc_ref = db.collection(HOUSE_COLLECTION).document(house_id) \
+                    .collection(TODOS_COLLECTION).document(todo_id)
+        return self.delete_data(doc_ref)
+
 
 class HouseViewModel():
 
@@ -79,14 +137,10 @@ class HouseViewModel():
         doc_ref = db.collection(HOUSE_COLLECTION).document(id)
         doc = doc_ref.get()
         if doc.exists:
-            doc_json = doc.to_dict()
-            return House(doc_json["id"],
-                        doc_json["name"],
-                        doc_json["city"],
-                        doc_json["country"],
-                        doc_json["created_on"],
-                        doc_json["join_id"],
-                        doc_json["members"])
+            doc_data = doc.to_dict()
+            if doc_data is None or not doc_data.get("id", ""):
+                return None
+            return House().from_json(doc_data)
         else:
             print(f"Document {id} not found in collection {USER_COLLECTION}")
             return None
@@ -100,14 +154,10 @@ class HouseViewModel():
             doc_list = list()
             for doc in docs:
                 doc_data = doc.to_dict()
-                user = House(doc_data["id"],
-                            doc_data["name"],
-                            doc_data["city"],
-                            doc_data["country"],
-                            doc_data["created_on"],
-                            doc_data["join_id"],
-                            doc_data["members"])
-                doc_list.append(user)
+                if doc_data is None or not doc_data.get("id", ""):
+                    return None
+                house = House().from_json(doc_data)
+                doc_list.append(house)
 
             return doc_list
         except Exception as e:
@@ -149,15 +199,10 @@ class UserViewModel():
         doc_ref = db.collection(USER_COLLECTION).document(id)
         doc = doc_ref.get()
         if doc.exists:
-            doc_json = doc.to_dict()
-            return User(doc_json["id"],
-                        doc_json["email"],
-                        doc_json["first_name"],
-                        doc_json["last_name"],
-                        doc_json["joined_on"],
-                        doc_json["house_id"],
-                        doc_json["thumbnail"],
-                        doc_json["is_admin"])
+            doc_data = doc.to_dict()
+            if not doc_data or not doc_data.get("id", ""):
+                return None
+            return User().from_json(doc_data)
         else:
             print(f"Document {id} not found in collection {USER_COLLECTION}")
             return None
@@ -171,15 +216,9 @@ class UserViewModel():
             doc_list = list()
             for doc in docs:
                 doc_data = doc.to_dict()
-                user = User(doc_data["id"],
-                            doc_data["email"],
-                            doc_data["first_name"],
-                            doc_data["last_name"],
-                            doc_data["joined_on"],
-                            doc_data["house_id"],
-                            doc_data["thumbnail"],
-                            doc_data["is_admin"])
-
+                if doc_data is None or not doc_data.get("id", ""):
+                    return None
+                user = User().from_json(doc_data)
                 doc_list.append(user)
 
             return doc_list

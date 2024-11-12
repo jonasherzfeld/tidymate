@@ -38,17 +38,14 @@ export const load = async ({ locals, cookies }) => {
     const city_form = await superValidate(locals.house, zod(houseCitySchema));
     const country_form = await superValidate(locals.house, zod(houseCountrySchema));
     const joinid_form = await superValidate(locals.house, zod(houseJoinIdSchema));
-    const user_list = async () => {
-        return await get_house_members(cookies);
-    };
     return {
+        streamed: {
+            user_list: get_house_members(cookies)
+        },
         name_form,
         city_form,
         country_form,
-        joinid_form,
-        streamed: {
-            user_list: user_list()
-        }
+        joinid_form
     };
 };
 
