@@ -5,7 +5,7 @@
 
 <div class="flex flex-col flex-1 gap-5">
     <h1 class="text-5xl font-bold">{data.house.name}</h1>
-    <div class="stats stats-vertical md:stats-horizontal shadow">
+    <div class="stats stats-vertical md:stats-horizontal shadow bg-base-300">
         <div class="stat">
             <div class="stat-figure text-primary">
                 <svg

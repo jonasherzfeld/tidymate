@@ -86,10 +86,10 @@
 </script>
 
 <div class="flex flex-col flex-1 min-w-full">
-    <h1 class="text-5xl font-bold">{$name_form.name}</h1>
+    <h1 class="text-5xl font-bold text-accent">{$name_form.name}</h1>
     <p class="py-4">This is the settings page for your house!</p>
     <div class="flex flex-col flex-1 gap-3 min-w-full">
-        <div class="flex flex-col flex-1 gap-2 p-3 card bg-base-100">
+        <div class="flex flex-col flex-1 gap-2 p-3 card bg-base-200">
             {#if server_errors}
                 <h1 class="mt-2 step-subtitle warning">
                     {server_errors}
@@ -134,7 +134,7 @@
             </TextInput>
         </div>
 
-        <div class="flex flex-col flex-1 gap-2 p-3 card bg-base-100">
+        <div class="flex flex-col flex-1 gap-2 p-3 card bg-base-200">
             <h2 class="m-4 text-xl font-bold">House Members</h2>
             {#await data.streamed.user_list}
                 <div class="flex w-full flex-col gap-4">
@@ -177,11 +177,11 @@
                         <input
                             disabled={creating_join_id}
                             id="npm-install-copy-button"
-                            class="input input-bordered join-item"
+                            class="input input-bordered join-item bg-neutral text-base-300"
                             value={join_id_value}
                         />
                         <button
-                            class="btn join-item rounded-r-full btn-primary border-none"
+                            class="btn join-item rounded-r-full btn-accent border-none"
                             disabled={creating_join_id || !data.user.is_admin}
                         >
                             {#if !creating_join_id}
