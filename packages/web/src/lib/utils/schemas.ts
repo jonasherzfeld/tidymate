@@ -114,3 +114,14 @@ export const houseJoinIdSchema = z.object({
     join_id: z.string()
 });
 export type HouseJoinIdSchema = typeof houseJoinIdSchema;
+
+export const todoItemSchema = z.object({
+    id: z.string(),
+    data: z.string().min(1).max(255),
+    assignee: z.string(),
+    done: z.boolean(),
+    tags: z.array(z.string()),
+    created_on: z.string(),
+    deadline: z.string()
+});
+export type TodoItemSchema = typeof todoItemSchema;
