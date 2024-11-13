@@ -52,7 +52,12 @@
         </div>
     </div>
     <div class="flex flex-col flex-1 gap-3 min-w-full">
-        <input type="search" placeholder="Search" bind:value={searchText} />
+        <input
+            type="search"
+            class="input input-bordered bg-base-content text-neutral-content"
+            placeholder="Search"
+            bind:value={searchText}
+        />
         {#await data.streamed.todo_list}
             <div class="flex w-full flex-col gap-4">
                 <div class="skeleton h-32 w-full"></div>
