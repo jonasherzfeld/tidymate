@@ -16,7 +16,7 @@ app.config['SESSION_USE_SIGNER'] = True
 app.config['SESSION_REDIS'] = redis.from_url(os.environ['REDIS_URL'])
 server_session = Session(app)
 
-DEV_MODE = os.environ["DEV_MODE"] == 'True'
+DEV_MODE = os.environ["DEV_MODE"] == 'Local'
 
 if DEV_MODE:
     os.environ["FIREBASE_AUTH_EMULATOR_HOST"] = "127.0.0.1:9099"
