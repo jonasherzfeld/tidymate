@@ -1,7 +1,7 @@
 import { BASE_API_URI } from '$lib/utils/constants';
-import { fail } from '@sveltejs/kit';
 import type { Cookies } from '@sveltejs/kit';
 import type { Config } from '@sveltejs/adapter-vercel';
+import { fail } from '@sveltejs/kit';
 
 export const config: Config = {
     runtime: 'edge'
@@ -31,4 +31,32 @@ export const load = async ({ cookies }) => {
             todo_list: get_todos(cookies)
         }
     };
+};
+
+export const actions = {
+    delete_todo: async ({ request, fetch, cookies }) => {
+        const params = new URLSearchParams(request.url);
+        const todo_id = params.getAll('id')[0];
+
+        if (!todo_id) {
+            return fail(400, { error: 'Invalid Todo ID' });
+        }
+
+        let requestInitOptions: RequestInit = {
+            method: 'DELETE',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+                Cookie: `session=${cookies.get('session')}`
+            }
+        };
+
+        const res = await fetch(`${BASE_API_URI}/items/delete-todo/${todo_id}`, requestInitOptions);
+        const response = await res.json();
+        if (!res.ok) {
+            return fail(400, { error: response.error });
+        }
+
+        return { todo_id: todo_id };
+    }
 };
