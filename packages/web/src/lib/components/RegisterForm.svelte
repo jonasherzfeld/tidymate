@@ -12,7 +12,6 @@
         onUpdate: async ({ form, result }) => {
             is_loading = false;
             server_errors = result.data.errors;
-            form.data.is_join_home = true;
         }
     });
     let server_errors = $state();
@@ -36,7 +35,13 @@
     {/if}
 
     <div>
-        <TextInput type="text" name="email" placeholder="Email" bind:value={$form.email}>
+        <TextInput
+            type="text"
+            name="email"
+            placeholder="Email"
+            class_in={$errors.email ? 'input-error' : ''}
+            bind:value={$form.email}
+        >
             <path
                 d="M2.5 3A1.5 1.5 0 0 0 1 4.5v.793c.026.009.051.02.076.032L7.674 8.51c.206.1.446.1.652 0l6.598-3.185A.755.755 0 0 1 15 5.293V4.5A1.5 1.5 0 0 0 13.5 3h-11Z"
             />
@@ -44,7 +49,9 @@
                 d="M15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5V6.954Z"
             />
         </TextInput>
-        {#if $errors.email}<span class="invalid text-error">{$errors.email}</span>{/if}
+        {#if $errors.email}<span class="flex w-full ml-2 invalid text-start text-error text-sm"
+                >{$errors.email}</span
+            >{/if}
     </div>
 
     <div>
@@ -52,10 +59,13 @@
             type="text"
             name="first_name"
             placeholder="First name"
+            class_in={$errors.first_name ? 'input-error' : ''}
             bind:value={$form.first_name}
         />
         {#if $errors.first_name}
-            <span class="invalid text-error">{$errors.first_name}</span>
+            <span class="flex w-full ml-2 invalid text-start text-error text-sm"
+                >{$errors.first_name}</span
+            >
         {/if}
     </div>
     <div>
@@ -63,9 +73,12 @@
             type="text"
             name="last_name"
             placeholder="Last name"
+            class_in={$errors.last_name ? 'input-error' : ''}
             bind:value={$form.last_name}
         />
-        {#if $errors.last_name}<span class="invalid text-error">{$errors.last_name}</span>{/if}
+        {#if $errors.last_name}<span class="flex w-full ml-2 invalid text-start text-error text-sm"
+                >{$errors.last_name}</span
+            >{/if}
     </div>
 
     <div>
@@ -73,6 +86,7 @@
             type="password"
             name="password"
             placeholder="Password"
+            class_in={$errors.password ? 'input-error' : ''}
             bind:value={$form.password}
         >
             <path
@@ -81,7 +95,9 @@
                 clip-rule="evenodd"
             />
         </TextInput>
-        {#if $errors.password}<span class="invalid text-error">{$errors.password}</span>{/if}
+        {#if $errors.password}<span class="flex w-full ml-2 invalid text-start text-error text-sm"
+                >{$errors.password}</span
+            >{/if}
     </div>
 
     <div>
@@ -89,6 +105,7 @@
             type="password"
             name="confirm_password"
             placeholder="Confirm Password"
+            class_in={$errors.confirm_password ? 'input-error' : ''}
             bind:value={$form.confirm_password}
         >
             <path
@@ -97,7 +114,8 @@
                 clip-rule="evenodd"
             />
         </TextInput>
-        {#if $errors.confirm_password}<span class="invalid text-error"
+        {#if $errors.confirm_password}<span
+                class="flex w-full ml-2 invalid text-start text-error text-sm"
                 >{$errors.confirm_password}</span
             >{/if}
     </div>
@@ -108,10 +126,13 @@
                 type="text"
                 name="join_id"
                 placeholder="Join ID"
-                class_in="input input-bordered input-primary flex items-center gap-2"
+                class_in={`input input-bordered flex items-center gap-2 ${$errors.join_id ? 'input-error' : 'input-primary'}`}
                 bind:value={$form.join_id}
             />
-            {#if $errors.join_id}<span class="invalid text-error">{$errors.join_id}</span>{/if}
+            {#if $errors.join_id}<span
+                    class="flex w-full ml-2 invalid text-start text-error text-sm"
+                    >{$errors.join_id}</span
+                >{/if}
         </div>
     {/if}
 
