@@ -40,41 +40,39 @@
     });
 </script>
 
-<div class="flex flex-col flex-1 min-w-full">
-    <div class="flex mb-6 relative items-center justify-center">
-        <div class="flex justify-center items-center w-fit">
-            <h1 class="text-5xl font-bold">To-Dos</h1>
-        </div>
-        <div class="absolute right-3 items-center">
-            <a href="/home/todo/add"
-                ><button class="btn btn-circle btn-info btn-outline"><AddIcon /></button></a
-            >
-        </div>
+<div class="flex mb-6 relative items-center justify-center">
+    <div class="flex justify-center items-center w-fit">
+        <h1 class="text-5xl font-bold">To-Dos</h1>
     </div>
-    <div class="flex flex-col flex-1 gap-3 min-w-full">
-        <input
-            type="search"
-            class="input input-bordered bg-base-content text-neutral-content"
-            placeholder="Search"
-            bind:value={searchText}
-        />
-        {#await data.streamed.todo_list}
-            <div class="flex w-full flex-col gap-4">
-                <div class="skeleton h-32 w-full"></div>
-                <div class="skeleton h-4 w-28"></div>
-                <div class="skeleton h-4 w-full"></div>
-                <div class="skeleton h-4 w-full"></div>
+    <div class="absolute right-3 items-center">
+        <a href="/home/todo/add"
+            ><button class="btn btn-circle btn-info btn-outline"><AddIcon /></button></a
+        >
+    </div>
+</div>
+<div class="flex flex-col flex-1 gap-3 min-w-full">
+    <input
+        type="search"
+        class="input input-bordered bg-base-content text-neutral-content"
+        placeholder="Search"
+        bind:value={searchText}
+    />
+    {#await data.streamed.todo_list}
+        <div class="flex w-full flex-col gap-4">
+            <div class="skeleton h-32 w-full"></div>
+            <div class="skeleton h-4 w-28"></div>
+            <div class="skeleton h-4 w-full"></div>
+            <div class="skeleton h-4 w-full"></div>
+        </div>
+    {:then}
+        <form method="POST" use:enhance={handleSubmit}>
+            <div class=" flex flex-col flex-1 gap-2">
+                {#each filteredTodoList as todo}
+                    <TodoItem {todo} />
+                {/each}
             </div>
-        {:then}
-            <form method="POST" use:enhance={handleSubmit}>
-                <div class=" flex flex-col flex-1 gap-2 p-3 card bg-base-300">
-                    {#each filteredTodoList as todo}
-                        <TodoItem {todo} />
-                    {/each}
-                </div>
-            </form>
-        {:catch error}
-            <p>{error.message}</p>
-        {/await}
-    </div>
+        </form>
+    {:catch error}
+        <p>{error.message}</p>
+    {/await}
 </div>

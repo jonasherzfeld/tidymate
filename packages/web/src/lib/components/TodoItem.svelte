@@ -5,7 +5,7 @@
 
 <div class="flex w-full">
     <div
-        class={`card flex flex-row pt-5 pb-5 justify-between items-center w-full bg-base-100 text-base-30 border border-neutral`}
+        class={`card shadow-xl flex flex-row pt-5 pb-5 justify-between items-center w-full bg-base-300 border border-neutral`}
     >
         <div class="justify-left w-24">
             <input type="checkbox" class="checkbox-accent checkbox-md" bind:checked={todo.done} />
