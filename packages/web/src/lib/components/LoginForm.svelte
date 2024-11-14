@@ -31,7 +31,13 @@
         aria-invalid={$errors.email ? 'true' : undefined}
     />
     <div>
-        <IconTextInput bind:value={$form.email} type="text" name="email" placeholder="Email">
+        <IconTextInput
+            bind:value={$form.email}
+            type="text"
+            name="email"
+            placeholder="Email"
+            class_in={$errors.email ? 'input-error' : ''}
+        >
             <path
                 d="M2.5 3A1.5 1.5 0 0 0 1 4.5v.793c.026.009.051.02.076.032L7.674 8.51c.206.1.446.1.652 0l6.598-3.185A.755.755 0 0 1 15 5.293V4.5A1.5 1.5 0 0 0 13.5 3h-11Z"
             />
@@ -39,7 +45,9 @@
                 d="M15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5V6.954Z"
             />
         </IconTextInput>
-        {#if $errors.email}<span class="invalid text-error">{$errors.email}</span>{/if}
+        {#if $errors.email}<span class="flex w-full ml-2 invalid text-start text-error text-sm"
+                >{$errors.email}</span
+            >{/if}
     </div>
     <div>
         <IconTextInput
@@ -47,6 +55,7 @@
             type="password"
             name="password"
             placeholder="Password"
+            class_in={$errors.password ? 'input-error' : ''}
         >
             <path
                 fill-rule="evenodd"
@@ -54,7 +63,9 @@
                 clip-rule="evenodd"
             />
         </IconTextInput>
-        {#if $errors.password}<span class="invalid text-error">{$errors.password}</span>{/if}
+        {#if $errors.password}<span class="flex w-full ml-2 invalid text-start text-error text-sm"
+                >{$errors.password}</span
+            >{/if}
     </div>
     <div>
         <button class="btn btn-neutral w-full" disabled={is_loading}>

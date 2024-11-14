@@ -12,8 +12,14 @@ export const registerSchema = z
         email: z.string().email('Invalid email address'),
         first_name: z.string().min(3, 'First name should be at least 3 characters'),
         last_name: z.string().min(3, 'Last name should be at least 3 characters'),
-        password: z.string().min(8, 'Password should be at least 8 characters'),
-        confirm_password: z.string().min(8, 'Password should be at least 8 characters'),
+        password: z
+            .string()
+            .min(8, 'Password should be at least 8 to 60 characters')
+            .max(60, 'Password should be at least 8 to 60 characters'),
+        confirm_password: z
+            .string()
+            .min(8, 'Password should be at least 8 to 60 characters')
+            .max(60, 'Password should be at least 8 to 60 characters'),
         is_join_home: z.boolean().default(true),
         join_id: z
             .string()
@@ -25,7 +31,7 @@ export const registerSchema = z
         if (confirm_password !== password) {
             ctx.addIssue({
                 code: 'custom',
-                message: 'The passwords did not match',
+                message: ' The passwords did not match',
                 path: ['confirm_password']
             });
         }
@@ -36,36 +42,6 @@ export const registerSchema = z
                 code: 'custom',
                 message: 'Join ID is required',
                 path: ['join_id']
-            });
-        }
-    })
-    .superRefine(({ password }, ctx) => {
-        const containsUppercase = (ch: string) => /[A-Z]/.test(ch);
-        const containsLowercase = (ch: string) => /[a-z]/.test(ch);
-        const containsSpecialChar = (ch: string) =>
-            /[`!@#$%^&*()_\-+=\[\]{};':"\\|,.<>\/?~ ]/.test(ch);
-        let countOfUpperCase = 0,
-            countOfLowerCase = 0,
-            countOfNumbers = 0,
-            countOfSpecialChar = 0;
-        for (let i = 0; i < password.length; i++) {
-            let ch = password.charAt(i);
-            if (!isNaN(+ch)) countOfNumbers++;
-            else if (containsUppercase(ch)) countOfUpperCase++;
-            else if (containsLowercase(ch)) countOfLowerCase++;
-            else if (containsSpecialChar(ch)) countOfSpecialChar++;
-        }
-        if (
-            countOfLowerCase < 1 ||
-            countOfUpperCase < 1 ||
-            countOfSpecialChar < 1 ||
-            countOfNumbers < 1
-        ) {
-            ctx.addIssue({
-                code: 'custom',
-                message:
-                    ' Password should contain at least one uppercase, one lowercase, one number and one special character',
-                path: ['password']
             });
         }
     });
