@@ -34,6 +34,33 @@ export const load = async ({ cookies }) => {
 };
 
 export const actions = {
+    create_todo: async ({ request, fetch, cookies }) => {
+        const formData = await request.formData();
+        const todo_data = String(formData.get('todo_data'));
+
+        if (!todo_data) {
+            return fail(400, { error: 'Nothing submitted' });
+        }
+
+        let requestInitOptions: RequestInit = {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+                Cookie: `session=${cookies.get('session')}`
+            },
+            body: JSON.stringify({ data: todo_data })
+        };
+
+        const res = await fetch(`${BASE_API_URI}/items/create-todo`, requestInitOptions);
+        const response = await res.json();
+        if (!res.ok) {
+            return fail(400, { error: response.error });
+        }
+
+        return { todo: response.todo };
+    },
+
     delete_todo: async ({ request, fetch, cookies }) => {
         const params = new URLSearchParams(request.url);
         const todo_id = params.getAll('id')[0];

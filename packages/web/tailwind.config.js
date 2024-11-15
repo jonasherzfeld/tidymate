@@ -4,7 +4,12 @@ export default {
     theme: {
         extend: {}
     },
-    plugins: [require('daisyui')],
+    plugins: [
+        require('daisyui'),
+        require('tailwindcss/plugin')(({ addVariant }) => {
+            addVariant('search-cancel', '&::-webkit-search-cancel-button');
+        })
+    ],
     daisyui: {
         themes: [
             'light',

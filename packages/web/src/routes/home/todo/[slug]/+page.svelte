@@ -23,10 +23,7 @@
 
 <div class="flex mb-6 relative items-center justify-center">
     <div class="absolute left-0 items-center">
-        <a href="/home/todo"><button class="btn btn-ghost"><ChevronLeft />Back</button></a>
-    </div>
-    <div class="flex justify-center w-fit relative items-center">
-        <h1 class="text-5xl font-bold text-accent">To-Dos</h1>
+        <a href="/home/todo" class="flex items-center gap-1"><ChevronLeft />Back</a>
     </div>
 </div>
 <div class="flex flex-col flex-1 gap-3 min-w-full">
