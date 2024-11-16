@@ -49,21 +49,11 @@
     });
 </script>
 
-<div class="flex flex-col flex-1 gap-3 min-w-full">
-    <form method="POST" use:enhance={handleSubmit}>
-        <div class="flex flex-row flex-wrap gap-2">
-            <input
-                type="text"
-                class="input input-bordered grow"
-                placeholder="Create to-do"
-                name="todo_data"
-                bind:value={newTodoData}
-            />
-            <button formaction="?/create_todo" class="btn btn-primary">Add</button>
-        </div>
-    </form>
-    <div>
-        <label class="input input-bordered input-sm flex items-center gap-2">
+<div class="flex flex-col flex-1 gap-3 min-w-full h-full">
+    <div class="flex flex-row gap-2">
+        <button class="btn btn-neutral btn-sm">Filter</button>
+        <button class="btn btn-neutral btn-sm">Sort</button>
+        <label class="input input-bordered input-sm flex grow items-center gap-2">
             <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 16 16"
@@ -94,20 +84,28 @@
                 {/if}
             {/each}
         </div>
-        <details class="collapse collapse-arrow rounded-none m-0 p-0 mt-2">
-            <summary
-                class="collapse-title text-start text-md font-sans pt-4 mb-2 rounded-none border-b-2"
-                >Completed</summary
-            >
-            <div class="flex flex-col flex-1 gap-2">
-                {#each filteredTodoList as todo}
-                    {#if todo.done}
-                        <TodoItem {todo} bind:removedList />
-                    {/if}
-                {/each}
-            </div>
-        </details>
+        <div class="flex flex-col flex-1 gap-2">
+            {#each filteredTodoList as todo}
+                {#if todo.done}
+                    <TodoItem {todo} bind:removedList />
+                {/if}
+            {/each}
+        </div>
     {:catch error}
         <p>{error.message}</p>
     {/await}
+    <div class="card bg-base-300 rounded-lg p-2 sticky bottom-3">
+        <form method="POST" use:enhance={handleSubmit}>
+            <div class="flex flex-row flex-wrap gap-2">
+                <input
+                    type="text"
+                    class="input input-bordered grow"
+                    placeholder="Create to-do"
+                    name="todo_data"
+                    bind:value={newTodoData}
+                />
+                <button formaction="?/create_todo" class="btn btn-primary">Add</button>
+            </div>
+        </form>
+    </div>
 </div>
