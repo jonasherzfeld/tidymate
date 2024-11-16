@@ -36,8 +36,6 @@
         };
     };
 
-
-
     onMount(async () => {
         const getTodoList = async () => {
             const list = await data.streamed.todo_list;
@@ -89,26 +87,26 @@
             <div class="skeleton h-4 w-full"></div>
         </div>
     {:then}
+        <div class="flex flex-col flex-1 gap-2">
+            {#each filteredTodoList as todo}
+                {#if !todo.done}
+                    <TodoItem {todo} bind:removedList />
+                {/if}
+            {/each}
+        </div>
+        <details class="collapse collapse-arrow rounded-none m-0 p-0 mt-2">
+            <summary
+                class="collapse-title text-start text-md font-sans pt-4 mb-2 rounded-none border-b-2"
+                >Completed</summary
+            >
             <div class="flex flex-col flex-1 gap-2">
                 {#each filteredTodoList as todo}
-                    {#if !todo.done}
-                        <TodoItem {todo} bind:removedList={removedList}/>
+                    {#if todo.done}
+                        <TodoItem {todo} bind:removedList />
                     {/if}
                 {/each}
             </div>
-            <details class="collapse collapse-arrow rounded-none m-0 p-0 mt-2">
-                <summary
-                    class="collapse-title text-start text-md font-sans pt-4 mb-2 rounded-none border-b-2"
-                    >Completed</summary
-                >
-                <div class="flex flex-col flex-1 gap-2">
-                    {#each filteredTodoList as todo}
-                        {#if todo.done}
-                            <TodoItem {todo} bind:removedList={removedList} />
-                        {/if}
-                    {/each}
-                </div>
-            </details>
+        </details>
     {:catch error}
         <p>{error.message}</p>
     {/await}

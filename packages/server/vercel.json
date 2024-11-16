@@ -16,5 +16,6 @@
   ],
   "env": {
     "PYTHONPATH": "src/"
-  }
+  },
+  "regions": ["fra1"]
 }
