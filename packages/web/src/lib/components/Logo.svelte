@@ -8,10 +8,11 @@
     let { width = '30px' }: Props = $props();
 </script>
 
-<img alt="User" class="[[data-theme=light]_&]:hidden" src={Logo_Dark} {width} />
+<img alt="Logo" class="[[data-theme=light]_&]:hidden" src={Logo_Dark} {width} height={width} />
 <img
-    alt="User"
+    alt="Logo"
     class="[[data-theme=dark]_&]:hidden [[data-theme=default]_&]:hidden"
     src={Logo_Light}
     {width}
+    height={width}
 />
