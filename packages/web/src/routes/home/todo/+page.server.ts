@@ -85,5 +85,30 @@ export const actions = {
         }
 
         return { todo_id: todo_id };
+    },
+    check_todo: async ({ request, fetch, cookies }) => {
+        const params = new URLSearchParams(request.url);
+        const todo_id = params.getAll('id')[0];
+
+        if (!todo_id) {
+            return fail(400, { error: 'Invalid Todo ID' });
+        }
+
+        let requestInitOptions: RequestInit = {
+            method: 'PATCH',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+                Cookie: `session=${cookies.get('session')}`
+            }
+        };
+
+        const res = await fetch(`${BASE_API_URI}/items/check-todo/${todo_id}`, requestInitOptions);
+        const response = await res.json();
+        if (!res.ok) {
+            return fail(400, { error: response.error });
+        }
+
+        return { todo: response.todo };
     }
 };

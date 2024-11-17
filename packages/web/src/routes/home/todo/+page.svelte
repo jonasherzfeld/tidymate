@@ -3,10 +3,31 @@
     import { enhance } from '$app/forms';
     import { onMount } from 'svelte';
     import type { PageData } from './$types.js';
+    import { sort } from '$lib/utils/helpers';
+    import { Toggle } from '$lib/components/ui/toggle/index.js';
+    import DoneAllIcon from 'virtual:icons/mdi/done-all';
+    import SortDropDown from '$lib/components/SortDropDown.svelte';
+    import FilterDropDown from '$lib/components/FilterDropDown.svelte';
 
     type SearchableTodo = Todo & { searchTerms: string };
 
+    function dynamicSort(property) {
+        var sortOrder = 1;
+        if (property[0] === '-') {
+            sortOrder = -1;
+            property = property.substr(1);
+        }
+        return function (a, b) {
+            var result = a[property] < b[property] ? -1 : a[property] > b[property] ? 1 : 0;
+            return result * sortOrder;
+        };
+    }
+
     let { data }: { data: PageData } = $props();
+    let sortKey: string = $state('-created_on');
+    let filterKey: string = $state('assignee');
+    let filterValue: string[] = $state([]);
+    let showComplete: boolean = $state(false);
     let newTodoData: string = $state('');
     let fullTodoList: SearchableTodo[] = $state([]);
     let removedList: string[] = $state([]);
@@ -15,10 +36,16 @@
         const searchTerm = searchText.toLowerCase() || '';
         return fullTodoList.filter((item) => {
             const removed = removedList.includes(item.id);
-            return !removed && item.searchTerms.toLowerCase().includes(searchTerm);
+            let filtered = true;
+            if (filterKey && filterValue.length > 0) {
+                filtered = filterValue.includes(item[filterKey]);
+            }
+            return !removed && filtered && item.searchTerms.toLowerCase().includes(searchTerm);
         });
     };
-    let filteredTodoList: Todo[] = $derived(searchHandler());
+    let filteredTodoList: Todo[] = $derived(
+        searchHandler().sort(dynamicSort(sortKey)).sort(dynamicSort('done'))
+    );
 
     const handleSubmit = async ({}) => {
         return async ({ result, update }) => {
@@ -46,13 +73,18 @@
             fullTodoList = filtered;
         };
         await getTodoList();
+        sort(fullTodoList, 'done');
     });
 </script>
 
 <div class="flex flex-col flex-1 gap-3 min-w-full h-full">
     <div class="flex flex-row gap-2">
-        <button class="btn btn-neutral btn-sm">Filter</button>
-        <button class="btn btn-neutral btn-sm">Sort</button>
+        <FilterDropDown bind:filterValue />
+        <SortDropDown bind:sortKey />
+        <Toggle variant="outline" size="sm" aria-label="toggle" bind:pressed={showComplete}
+            ><DoneAllIcon class="h-4 w-4" /></Toggle
+        >
+
         <label class="input input-bordered input-sm flex grow items-center gap-2">
             <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -69,32 +101,32 @@
             <input type="search" class="grow" placeholder="Search" bind:value={searchText} />
         </label>
     </div>
-    {#await data.streamed.todo_list}
-        <div class="flex w-full flex-col gap-4">
-            <div class="skeleton h-32 w-full"></div>
-            <div class="skeleton h-4 w-28"></div>
-            <div class="skeleton h-4 w-full"></div>
-            <div class="skeleton h-4 w-full"></div>
+    <div class=" flex flex-col flex-1">
+        <div class="card bg-base-200 rounded-lg">
+            {#await data.streamed.todo_list}
+                <div class="flex w-full flex-col gap-4">
+                    <div class="skeleton h-32 w-full"></div>
+                    <div class="skeleton h-4 w-28"></div>
+                    <div class="skeleton h-4 w-full"></div>
+                    <div class="skeleton h-4 w-full"></div>
+                </div>
+            {:then}
+                <div class="flex flex-col flex-1">
+                    {#each filteredTodoList as todo, id}
+                        {#if !todo.done || (todo.done && showComplete)}
+                            {#if id !== 0}
+                                <div class="divider m-0 p-0 h-1"></div>
+                            {/if}
+                            <TodoItem {...todo} bind:removedList />
+                        {/if}
+                    {/each}
+                </div>
+            {:catch error}
+                <p>{error.message}</p>
+            {/await}
         </div>
-    {:then}
-        <div class="flex flex-col flex-1 gap-2">
-            {#each filteredTodoList as todo}
-                {#if !todo.done}
-                    <TodoItem {todo} bind:removedList />
-                {/if}
-            {/each}
-        </div>
-        <div class="flex flex-col flex-1 gap-2">
-            {#each filteredTodoList as todo}
-                {#if todo.done}
-                    <TodoItem {todo} bind:removedList />
-                {/if}
-            {/each}
-        </div>
-    {:catch error}
-        <p>{error.message}</p>
-    {/await}
-    <div class="card bg-base-300 rounded-lg p-2 sticky bottom-3">
+    </div>
+    <div class="flex card bg-base-300 rounded-lg p-2 sticky bottom-3">
         <form method="POST" use:enhance={handleSubmit}>
             <div class="flex flex-row flex-wrap gap-2">
                 <input

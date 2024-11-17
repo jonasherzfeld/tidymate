@@ -23,8 +23,8 @@
             ? { x: pageTransitionDistance, duration: pageTransitionDuration }
             : { x: -pageTransitionDistance, duration: pageTransitionDuration }}
     >
-        <div class="flex bg-base-100 min-h-screen w-full items-start justify-center">
-            <div class="flex flex-col justify-center text-center w-full max-w-screen-sm p-4">
+        <div class="flex bg-base-100 h-screen w-full items-start justify-center">
+            <div class="flex flex-col justify-center text-center w-full max-w-screen-sm h-full p-4">
                 {@render children?.()}
             </div>
         </div>

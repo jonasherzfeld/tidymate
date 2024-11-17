@@ -46,6 +46,23 @@ def get_todos(user):
     todos_json = [todo.to_json() for todo in todos]
     return jsonify({ "todos": todos_json })
 
+@items.route('/check-todo/<string:todo_id>', methods=['PATCH'])
+@login_required
+def check_todos(user, todo_id):
+    house = house_vm.get(user.house_id)
+    if not house:
+        return jsonify({"error": "House not found"}), 404
+
+    todo = todo_vm.get(house.id, todo_id)
+    if not todo:
+        return jsonify({"error": "Todo not found"}), 404
+
+    todo.done = not todo.done
+    todo_vm.update(house.id, todo_id, todo)
+    return jsonify({
+        "todo": todo.to_json(),
+    }), 200
+
 @items.route('/update-todo', methods=['PATCH'])
 @login_required
 def update_todos(user):
