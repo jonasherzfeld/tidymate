@@ -12,9 +12,15 @@ export default {
     ],
     daisyui: {
         themes: [
-            'light',
-            'dark',
             {
+                dark: {
+                    ...require('daisyui/src/theming/themes')['dark'],
+                    accent: '#a16207'
+                },
+                light: {
+                    ...require('daisyui/src/theming/themes')['light'],
+                    accent: '#eab308'
+                },
                 default: {
                     primary: '#38bdf8',
                     secondary: '#facc15',

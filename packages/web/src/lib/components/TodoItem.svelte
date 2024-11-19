@@ -48,11 +48,12 @@
 
 <div class="flex w-full">
     <div
-        class={`card rounded-lg flex flex-row p-2 justify-between items-center w-full bg-base-200 ${border ? 'border-t-2 border-neutral-400' : ''}`}
+        class={`card rounded-lg flex flex-row p-2 justify-between items-start w-full bg-base-200 ${border ? 'border-t-2 border-neutral-400' : ''} h-fit`}
     >
-        <div class="flex justify-left w-fit items-center h-full">
+        <div class="flex justify-start w-fit h-full">
             <form
                 bind:this={form}
+                class="flex"
                 action="/home/todo?/check_todo&id={id}"
                 method="POST"
                 use:enhance={handleChecked}
@@ -68,7 +69,9 @@
         </div>
 
         <div class="justify-left text-left grow pl-4 pr-2 pt-0 mt-0 h-fit">
-            <h2 class={`flex items-start pt-0 mt-0 ${done ? 'text-info' : ''}`}>{data}</h2>
+            <h2 class={`flex items-start pt-0 mt-0 ${done ? 'text-primary' : ''}`}>
+                {data}
+            </h2>
 
             <div class="flex">
                 {#if deadline}

@@ -3,6 +3,7 @@ export const PROTECTED_ROUTES_USER = ['/auth/logout', '/profile', '/home', '/aut
 export const PROTECTED_ROUTES_HOUSE = ['/profile/house', '/home'];
 
 export const HEADER_MAPPING = {
+    '/': '',
     '/home': '',
     '/home/todo': 'Todos',
     '/home/chores': 'Chores',
