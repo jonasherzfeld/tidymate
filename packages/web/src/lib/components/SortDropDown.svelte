@@ -3,7 +3,10 @@
     import { Button } from '$lib/components/ui/button/index.js';
     import SortIcon from 'virtual:icons/fluent/arrow-sort-16-filled';
 
-    let { sortKey = $bindable() }: { sortKey: string } = $props();
+    let {
+        sortKey = $bindable(),
+        sortOrder = $bindable()
+    }: { sortKey: string; sortOrder: boolean } = $props();
 </script>
 
 <DropdownMenu.Root>
@@ -13,7 +16,12 @@
         >
     </DropdownMenu.Trigger>
     <DropdownMenu.Content class="w-52 bg-base-100">
+        <DropdownMenu.Label>Sort</DropdownMenu.Label>
+        <DropdownMenu.Separator />
         <DropdownMenu.RadioGroup bind:value={sortKey}>
+            <DropdownMenu.CheckboxItemSort class="bg-primary text-white" bind:checked={sortOrder}
+                >{sortOrder ? 'Descending' : 'Ascending'}</DropdownMenu.CheckboxItemSort
+            >
             <DropdownMenu.RadioItem value="created_on">Created On</DropdownMenu.RadioItem>
             <DropdownMenu.RadioItem value="data">Text</DropdownMenu.RadioItem>
             <DropdownMenu.RadioItem value="assignee">Assignee</DropdownMenu.RadioItem>
