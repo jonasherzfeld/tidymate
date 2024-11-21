@@ -1,9 +1,13 @@
 <script lang="ts">
     import MenuDots from 'virtual:icons/mdi/dots-vertical';
     import { enhance } from '$app/forms';
+    import Dropdown from './dropdown/Dropdown.svelte';
+    import DropdownContent from './dropdown/DropdownContent.svelte';
+    import DropdownButton from './dropdown/DropdownTrigger.svelte';
+    import DropdownActionItem from './dropdown/DropdownActionItem.svelte';
+    import DropdownLinkItem from './dropdown/DropdownLinkItem.svelte';
 
     let {
-        form,
         id = $bindable(),
         data = $bindable(),
         assignee = $bindable(),
@@ -11,10 +15,9 @@
         tags = $bindable(),
         created_on = $bindable(),
         deadline = $bindable(),
-        removedList = $bindable(),
-        border = false
+        removedList = $bindable()
     }: {
-        form?: HTMLFormElement;
+        checkForm?: HTMLFormElement;
         id: string;
         data: string;
         assignee: string;
@@ -23,8 +26,8 @@
         created_on: string;
         deadline: string;
         removedList: string[];
-        border?: boolean;
     } = $props();
+
     let date = new Date(created_on);
 
     const handleChecked = async ({}) => {
@@ -48,11 +51,10 @@
 
 <div class="flex w-full">
     <div
-        class={`card rounded-lg flex flex-row p-2 justify-between items-start w-full bg-base-200 ${border ? 'border-t-2 border-neutral-400' : ''} h-fit`}
+        class="card rounded-lg flex flex-row p-2 justify-between items-start w-full bg-base-200 h-fit"
     >
         <div class="flex justify-start w-fit h-full">
             <form
-                bind:this={form}
                 class="flex"
                 action="/home/todo?/check_todo&id={id}"
                 method="POST"
@@ -62,7 +64,9 @@
                     type="checkbox"
                     name="check_todo"
                     class="checkbox checkbox-primary checkbox-md"
-                    onchange={() => form.requestSubmit()}
+                    onchange={(e) => {
+                        e.target.form.requestSubmit();
+                    }}
                     bind:checked={done}
                 />
             </form>
@@ -87,30 +91,19 @@
             </div>
         </div>
         <div class="flex justify-end w-fit h-full">
-            <div class="dropdown dropdown-bottom dropdown-end">
-                <div
-                    tabindex="0"
-                    role="button"
-                    class="btn btn-xs btn-square btn-outline rounded-md border-neutral-700"
-                >
+            <Dropdown>
+                <DropdownButton className="btn-xs btn-square">
                     <MenuDots />
-                </div>
-                <ul
-                    tabindex="-1"
-                    class="dropdown-content menu bg-base-100 rounded-box z-[1] w-24 p-2 shadow"
-                >
-                    <li><a href="/home/todo/{id}">Edit</a></li>
+                </DropdownButton>
+                <DropdownContent>
+                    <DropdownLinkItem href="/home/todo/{id}">Edit</DropdownLinkItem>
                     <form method="POST" use:enhance={handleRemove}>
-                        <li>
-                            <button
-                                type="submit"
-                                class="text-error"
-                                formaction="/home/todo?/delete_todo&id={id}">Delete</button
-                            >
-                        </li>
+                        <DropdownActionItem action="/home/todo?/delete_todo&id={id}"
+                            >Delete</DropdownActionItem
+                        >
                     </form>
-                </ul>
-            </div>
+                </DropdownContent>
+            </Dropdown>
         </div>
     </div>
 </div>
