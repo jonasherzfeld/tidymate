@@ -34,3 +34,14 @@ type FieldsError = {
     confirmPassword?: String;
     joinId?: String;
 };
+
+type SearchableTodo = Todo & { searchTerms: string };
+type SearchableTodoSortKey = keyof SearchableTodo | `-${string & keyof SearchableTodo}`;
+
+type FilterDescription<T> = {
+    property: keyof T;
+    values: string[];
+    filterValues: string[];
+};
+
+type sortArg<T> = keyof T | `-${string & keyof T}`;

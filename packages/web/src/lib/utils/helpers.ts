@@ -1,12 +1,5 @@
 type sortArg<T> = keyof T | `-${string & keyof T}`;
 
-/**
- * Returns a comparator for objects of type T that can be used by sort
- * functions, were T objects are compared by the specified T properties.
- *
- * @param sortBy - the names of the properties to sort by, in precedence order.
- *                 Prefix any name with `-` to sort it in descending order.
- */
 export function byPropertiesOf<T extends object>(sortBy: Array<sortArg<T>>) {
     function compareByProperty(arg: sortArg<T>) {
         let key: keyof T;
@@ -39,13 +32,21 @@ export function byPropertiesOf<T extends object>(sortBy: Array<sortArg<T>>) {
     };
 }
 
-/**
- * Sorts an array of T by the specified properties of T.
- *
- * @param arr - the array to be sorted, all of the same type T
- * @param sortBy - the names of the properties to sort by, in precedence order.
- *                 Prefix any name with `-` to sort it in descending order.
- */
-export function sort<T extends object>(arr: T[], ...sortBy: Array<sortArg<T>>) {
+export function sortBy<T extends object>(arr: T[], ...sortBy: Array<sortArg<T>>) {
     arr.sort(byPropertiesOf<T>(sortBy));
+}
+
+export function initializeFilterValues<T>(filters: FilterDescription<T>[], list: T[]) {
+    for (const todo of list) {
+        for (const filter of filters) {
+            const values = todo[filter.property] as string | string[];
+            if (values) {
+                if (Array.isArray(values)) {
+                    filter.values = [...filter.values, ...values];
+                } else {
+                    filter.values = [...filter.values, values];
+                }
+            }
+        }
+    }
 }

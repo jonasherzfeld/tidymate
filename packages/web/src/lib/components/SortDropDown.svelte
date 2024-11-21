@@ -1,30 +1,47 @@
 <script lang="ts">
-    import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
-    import { Button } from '$lib/components/ui/button/index.js';
+    import * as Dropdown from '$lib/components/dropdown/index.js';
     import SortIcon from 'virtual:icons/fluent/arrow-sort-16-filled';
-
     let {
         sortKey = $bindable(),
         sortOrder = $bindable()
     }: { sortKey: string; sortOrder: boolean } = $props();
+
+    function onChange(event) {
+        sortKey = event.currentTarget.value;
+    }
 </script>
 
-<DropdownMenu.Root>
-    <DropdownMenu.Trigger asChild let:builder>
-        <Button variant="outline" size="sm" builders={[builder]}
-            ><SortIcon class="h-4 w-4" /></Button
+<Dropdown.Root>
+    <Dropdown.Trigger className="btn-sm border-neutral-200">
+        <SortIcon class="h-4 w-4" />
+    </Dropdown.Trigger>
+    <Dropdown.Content>
+        <Dropdown.TextItem class="flex w-full justify-left font-bold pointer-events-none"
+            >Sort</Dropdown.TextItem
         >
-    </DropdownMenu.Trigger>
-    <DropdownMenu.Content class="w-52 bg-base-100">
-        <DropdownMenu.Label>Sort</DropdownMenu.Label>
-        <DropdownMenu.Separator />
-        <DropdownMenu.RadioGroup bind:value={sortKey}>
-            <DropdownMenu.CheckboxItemSort class="bg-primary text-white" bind:checked={sortOrder}
-                >{sortOrder ? 'Descending' : 'Ascending'}</DropdownMenu.CheckboxItemSort
-            >
-            <DropdownMenu.RadioItem value="created_on">Created On</DropdownMenu.RadioItem>
-            <DropdownMenu.RadioItem value="data">Text</DropdownMenu.RadioItem>
-            <DropdownMenu.RadioItem value="assignee">Assignee</DropdownMenu.RadioItem>
-        </DropdownMenu.RadioGroup>
-    </DropdownMenu.Content>
-</DropdownMenu.Root>
+        <Dropdown.CheckboxItem
+            checked={sortOrder}
+            onclick={() => {
+                sortOrder = !sortOrder;
+            }}>{sortOrder ? 'Descending' : 'Ascending'}</Dropdown.CheckboxItem
+        >
+        <Dropdown.RadioItem
+            radio_name="sort"
+            name="created_on"
+            onchange={onChange}
+            checked={sortKey.includes('created_on')}>Created On</Dropdown.RadioItem
+        >
+        <Dropdown.RadioItem
+            radio_name="sort"
+            name="assignee"
+            onchange={onChange}
+            checked={sortKey.includes('assignee')}>Assignee</Dropdown.RadioItem
+        >
+        <Dropdown.RadioItem
+            radio_name="sort"
+            name="data"
+            onchange={onChange}
+            checked={sortKey.includes('data')}>Text</Dropdown.RadioItem
+        >
+    </Dropdown.Content>
+</Dropdown.Root>

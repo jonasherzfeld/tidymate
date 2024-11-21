@@ -15,11 +15,25 @@ export default {
             {
                 dark: {
                     ...require('daisyui/src/theming/themes')['dark'],
-                    accent: '#a16207'
+                    accent: '#a16207',
+
+                    '--rounded-box': '0.25rem', // border radius rounded-box utility class, used in card and other large boxes
+                    '--rounded-btn': '0.25rem', // border radius rounded-btn utility class, used in buttons and similar element
+                    '--rounded-badge': '0.5rem', // border radius rounded-badge utility class, used in badges and similar
+                    '--border-btn': '1px', // border width of buttons
+                    '--tab-border': '1px', // border width of tabs
+                    '--tab-radius': '0.25rem' // border radius of tabs
                 },
                 light: {
                     ...require('daisyui/src/theming/themes')['light'],
-                    accent: '#eab308'
+                    accent: '#eab308',
+
+                    '--rounded-box': '0.25rem', // border radius rounded-box utility class, used in card and other large boxes
+                    '--rounded-btn': '0.25rem', // border radius rounded-btn utility class, used in buttons and similar element
+                    '--rounded-badge': '0.5rem', // border radius rounded-badge utility class, used in badges and similar
+                    '--border-btn': '1px', // border width of buttons
+                    '--tab-border': '1px', // border width of tabs
+                    '--tab-radius': '0.25rem' // border radius of tabs
                 },
                 default: {
                     primary: '#38bdf8',
@@ -30,7 +44,14 @@ export default {
                     info: '#38bdf8',
                     success: '#34d399',
                     warning: '#fdba74',
-                    error: '#f87171'
+                    error: '#f87171',
+
+                    '--rounded-box': '0.25rem', // border radius rounded-box utility class, used in card and other large boxes
+                    '--rounded-btn': '0.25rem', // border radius rounded-btn utility class, used in buttons and similar element
+                    '--rounded-badge': '0.5rem', // border radius rounded-badge utility class, used in badges and similar
+                    '--border-btn': '1px', // border width of buttons
+                    '--tab-border': '1px', // border width of tabs
+                    '--tab-radius': '0.25rem' // border radius of tabs
                 }
             }
         ]

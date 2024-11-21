@@ -1,6 +1,10 @@
 <script lang="ts">
-    import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
-    import { Button } from '$lib/components/ui/button/index.js';
+    import Dropdown from './dropdown/Dropdown.svelte';
+    import DropdownContent from './dropdown/DropdownContent.svelte';
+    import DropdownTrigger from './dropdown/DropdownTrigger.svelte';
+    import DropdownTextItem from './dropdown/DropdownTextItem.svelte';
+    import DropdownCheckboxItem from './dropdown/DropdownCheckboxItem.svelte';
+    import type { Snippet } from 'svelte';
 
     let {
         title,
@@ -10,30 +14,32 @@
     }: { title: string; values: string[]; filterValue: string[]; children?: Snippet } = $props();
 </script>
 
-<DropdownMenu.Root>
-    <DropdownMenu.Trigger asChild let:builder>
-        <Button variant="outline" size="sm" builders={[builder]}>
-            {@render children?.()}
-        </Button>
-    </DropdownMenu.Trigger>
-    <DropdownMenu.Content class="w-52 bg-base-100">
-        <DropdownMenu.Label>{title}</DropdownMenu.Label>
-        <DropdownMenu.Separator />
+<Dropdown>
+    <DropdownTrigger className="btn-sm border-neutral-200">
+        {@render children?.()}
+    </DropdownTrigger>
+    <DropdownContent>
+        <DropdownTextItem
+            class="flex w-full justify-left font-bold pointer-events-none
+">{title}</DropdownTextItem
+        >
         {#if values.length === 0}
-            <DropdownMenu.Item disabled class="flex w-full justify-center text-center"
-                >No {title}</DropdownMenu.Item
+            <DropdownTextItem
+                class="flex w-full justify-center text-center pointer-events-none
+">No {title}</DropdownTextItem
             >
         {:else}
             {#each values as value}
-                <DropdownMenu.CheckboxItem
+                <DropdownCheckboxItem
                     checked={filterValue.includes(value)}
                     onclick={() => {
+                        console.log(filterValue);
                         filterValue.includes(value)
                             ? (filterValue = filterValue.filter((item) => item !== value))
                             : (filterValue = [...filterValue, value]);
-                    }}>{value}</DropdownMenu.CheckboxItem
+                    }}>{value}</DropdownCheckboxItem
                 >
             {/each}
         {/if}
-    </DropdownMenu.Content>
-</DropdownMenu.Root>
+    </DropdownContent>
+</Dropdown>
