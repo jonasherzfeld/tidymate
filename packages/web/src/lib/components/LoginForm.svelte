@@ -16,8 +16,8 @@
             server_errors = result.data.errors;
         }
     });
-    let server_errors = $state();
-    let is_loading = $state(false);
+    let server_errors: string = $state('');
+    let is_loading: boolean = $state(false);
 </script>
 
 <form class="flex flex-col space-y-4" method="POST" action="?/login" use:enhance>

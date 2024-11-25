@@ -17,12 +17,6 @@ export async function load({ locals }) {
 }
 
 export const actions = {
-    /**
-     *
-     * @param request - The request object
-     * @param fetch - Fetch object from sveltekit
-     * @returns Error data or redirects user to the home page or the previous page
-     */
     register_house: async ({ request, fetch, locals, cookies }) => {
         const form = await superValidate(request, zod(registerHouseSchema));
 
