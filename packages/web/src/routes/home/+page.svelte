@@ -5,7 +5,7 @@
     let { data }: { data: PageData } = $props();
 </script>
 
-<div class="flex bg-base-100 min-h-screen w-full items-start justify-center">
+<div class="flex flex-1 bg-base-100 min-h-full w-full items-start justify-center">
     <div
         class="flex flex-col justify-center text-center w-full max-w-screen-lg flex-1 gap-5 p-4 mt-5"
     >

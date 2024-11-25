@@ -13,6 +13,7 @@
     import DoneAllIcon from 'virtual:icons/mdi/done-all';
     import SearchIcon from 'virtual:icons/mdi/search';
     import ToggleButton from '$lib/components/ToggleButton.svelte';
+    import { browser } from '$app/environment';
 
     let { data }: { data: PageData } = $props();
 
@@ -42,6 +43,12 @@
         )
     );
 
+    let isWebApp: boolean = $state(false);
+    if (browser) {
+        isWebApp =
+            window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+    }
+
     const handleSubmit = async ({}) => {
         return async ({ result, update }) => {
             server_errors = result.data.errors;
@@ -63,8 +70,8 @@
     });
 </script>
 
-<div class="flex flex-col gap-3 min-w-full min-h-screen justify-between">
-    <div class="flex flex-col gap-3">
+<div class="flex flex-col gap-3 min-w-full min-h-full justify-between">
+    <div class="flex flex-col gap-3 ">
         <div>
             <label class="input input-bordered input-sm flex grow items-center gap-2">
                 <SearchIcon />
@@ -135,7 +142,7 @@
             </div>
         </div>
     </div>
-    <div class="flex card bg-base-300 rounded-lg border-2 border-base-100 p-2 sticky bottom-3">
+    <div class={`flex card bg-base-300 w-full rounded-lg border-2 border-base-100 p-2 sticky ${isWebApp? "bottom-24" : "bottom-3" }`}>
         <form method="POST" use:enhance={handleSubmit}>
             <div class="flex flex-row flex-wrap gap-2">
                 <input
