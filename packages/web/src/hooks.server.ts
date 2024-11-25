@@ -44,7 +44,7 @@ export async function validateSession(event: RequestEvent) {
 }
 
 export async function handle({ event, resolve }) {
-    let theme: string | null = 'default';
+    let theme: string | null = 'light';
     const new_theme = event.url.searchParams.get('theme');
     const cookie_theme = event.cookies.get('colortheme');
     if (new_theme) {
