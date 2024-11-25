@@ -1,7 +1,9 @@
 <script lang="ts">
     import { superForm, type SuperValidated, type Infer } from 'sveltekit-superforms';
     import type { LoginSchema } from '$lib/utils/schemas';
-    import IconTextInput from '$lib/components/IconTextInput.svelte';
+    import TextInput from '$lib/components/TextInput.svelte';
+    import EmailIcon from 'virtual:icons/mdi/email';
+    import PasswordIcon from 'virtual:icons/mdi/password';
     import { page } from '$app/stores';
 
     let { login_form }: { login_form: SuperValidated<Infer<LoginSchema>> } = $props();
@@ -31,38 +33,29 @@
         aria-invalid={$errors.email ? 'true' : undefined}
     />
     <div>
-        <IconTextInput
+        <TextInput
             bind:value={$form.email}
             type="text"
             name="email"
             placeholder="Email"
             class_in={$errors.email ? 'input-error' : ''}
         >
-            <path
-                d="M2.5 3A1.5 1.5 0 0 0 1 4.5v.793c.026.009.051.02.076.032L7.674 8.51c.206.1.446.1.652 0l6.598-3.185A.755.755 0 0 1 15 5.293V4.5A1.5 1.5 0 0 0 13.5 3h-11Z"
-            />
-            <path
-                d="M15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5V6.954Z"
-            />
-        </IconTextInput>
+            <EmailIcon class="h-4 w-4 opacity-60" />
+        </TextInput>
         {#if $errors.email}<span class="flex w-full ml-2 invalid text-start text-error text-sm"
                 >{$errors.email}</span
             >{/if}
     </div>
     <div>
-        <IconTextInput
+        <TextInput
             bind:value={$form.password}
             type="password"
             name="password"
             placeholder="Password"
             class_in={$errors.password ? 'input-error' : ''}
         >
-            <path
-                fill-rule="evenodd"
-                d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z"
-                clip-rule="evenodd"
-            />
-        </IconTextInput>
+            <PasswordIcon class="h-4 w-4 opacity-60" />
+        </TextInput>
         {#if $errors.password}<span class="flex w-full ml-2 invalid text-start text-error text-sm"
                 >{$errors.password}</span
             >{/if}

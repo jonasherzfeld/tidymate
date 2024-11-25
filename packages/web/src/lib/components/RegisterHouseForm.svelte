@@ -15,8 +15,8 @@
             server_errors = result.data.errors;
         }
     });
-    let is_loading = $state(false);
-    let server_errors = $state();
+    let is_loading: boolean = $state(false);
+    let server_errors: string = $state('');
 </script>
 
 <form class="flex flex-col space-y-2 mt-4 m-2" action="?/register_house" method="POST" use:enhance>

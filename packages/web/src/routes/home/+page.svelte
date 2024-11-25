@@ -1,6 +1,8 @@
 <script lang="ts">
     import AvatarGraphic from '$lib/components/AvatarGraphic.svelte';
-    let { data } = $props();
+    import type { PageData } from '../$types';
+
+    let { data }: { data: PageData } = $props();
 </script>
 
 <div class="flex bg-base-100 min-h-screen w-full items-start justify-center">

@@ -1,5 +1,4 @@
-<script>
-    import { redirect } from '@sveltejs/kit';
+<script lang="ts">
 </script>
 
 <div class="hero bg-base-100 min-h-screen">

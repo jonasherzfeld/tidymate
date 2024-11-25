@@ -17,7 +17,6 @@
         deadline = $bindable(),
         removedList = $bindable()
     }: {
-        checkForm?: HTMLFormElement;
         id: string;
         data: string;
         assignee: string;
@@ -43,7 +42,7 @@
             if (result.status === 200) {
                 removedList.push(result.data.todo_id);
             } else {
-                update();
+                await update();
             }
         };
     };

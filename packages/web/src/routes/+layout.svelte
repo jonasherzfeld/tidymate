@@ -1,9 +1,10 @@
 <script lang="ts">
     import Drawer from '$lib/components/Drawer.svelte';
     import Footer from '$lib/components/Footer.svelte';
+    import type { Snippet } from 'svelte';
     import '../app.css';
 
-    let { children } = $props();
+    let { children }: { children: Snippet } = $props();
 
     let page_loaded = $state(false);
     const pageLoaded = ({}) => {

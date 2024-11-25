@@ -3,15 +3,6 @@
     import Unknown_Avatar from '$lib/img/Unknown_person.jpg';
     import type { Snippet } from 'svelte';
 
-    type Props = {
-        thumbnail: string;
-        height: string;
-        width: string;
-        text_size?: string;
-        first_name?: string;
-        last_name?: string;
-        children?: Snippet;
-    };
     let {
         thumbnail,
         height,
@@ -20,7 +11,15 @@
         first_name,
         last_name,
         children
-    }: Props = $props();
+    }: {
+        thumbnail: string;
+        height: string;
+        width: string;
+        text_size?: string;
+        first_name?: string;
+        last_name?: string;
+        children?: Snippet;
+    } = $props();
 
     let is_logged_in = $derived($page.data.user ? true : false);
 

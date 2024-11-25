@@ -17,11 +17,9 @@
     });
 
     let value: DateValue = $state(today(getLocalTimeZone()));
-
-    let { data } = $props();
 </script>
 
-<div class="flex mb-6 relative items-center justify-center">
+<div class="flex mt-3 mb-6 relative items-center justify-center">
     <div class="absolute left-0 items-center">
         <a href="/home/todo" class="flex items-center gap-1"><ChevronLeft />Back</a>
     </div>

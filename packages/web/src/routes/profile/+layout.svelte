@@ -1,5 +1,7 @@
 <script lang="ts">
-    let { children } = $props();
+    import type { Snippet } from 'svelte';
+
+    let { children }: { children: Snippet } = $props();
 </script>
 
 <div class="flex bg-base-100 min-h-screen w-full items-start justify-center">

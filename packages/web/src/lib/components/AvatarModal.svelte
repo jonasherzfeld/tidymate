@@ -1,14 +1,16 @@
 <script lang="ts">
-    import type { Snippet } from 'svelte';
+    import { enhance } from '$app/forms';
+    import AvatarGraphic from '$lib/components/AvatarGraphic.svelte';
+    import { page } from '$app/stores';
 
-    interface Props {
-        children: Snippet;
+    let {
+        showModal = $bindable()
+    }: {
         showModal: Boolean;
-    }
-
-    let { children, showModal = $bindable() }: Props = $props();
+    } = $props();
 
     let dialog: HTMLDialogElement;
+    let user = $derived($page.data.user);
 
     $effect(() => {
         if (showModal) dialog.showModal();
@@ -34,6 +36,44 @@
                 onclick={() => dialog.close()}>✕</button
             >
         </div>
-        {@render children?.()}
+
+        <div class="flex flex-col sm:flex-row items-center gap-3 mb-5">
+            <div class="avatar m-5">
+                <AvatarGraphic
+                    thumbnail={user.thumbnail}
+                    height="h-24"
+                    width="w-24"
+                    text_size="text-5xl font-bold"
+                />
+            </div>
+            <div>
+                <form method="POST" use:enhance enctype="multipart/form-data">
+                    <label class="form-control w-full max-w-xs mb-4">
+                        <input
+                            type="file"
+                            name="file"
+                            class="file-input file-input-bordered w-full max-w-xs"
+                            accept=".jpg, .jpeg, .png, .webp"
+                        />
+                    </label>
+                    <div class="grid sm:grid-cols-2 gap-3">
+                        <button
+                            class="btn"
+                            type="submit"
+                            formaction="?/upload_image"
+                            disabled={!!user.thumbnail}>Upload image</button
+                        >
+                        <button
+                            class="btn btn-error"
+                            formaction="?/delete_image"
+                            type="submit"
+                            disabled={!user.thumbnail}
+                        >
+                            Remove image
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 </dialog>

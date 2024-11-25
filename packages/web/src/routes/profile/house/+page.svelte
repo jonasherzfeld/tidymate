@@ -2,9 +2,11 @@
     import TextInput from '$lib/components/TextInput.svelte';
     import HouseMemberItem from '$lib/components/HouseMemberItem.svelte';
     import FormTextInput from '$lib/components/FormTextInput.svelte';
+    import JoinIdCreator from '$lib/components/JoinIdCreator.svelte';
     import { superForm } from 'sveltekit-superforms';
+    import type { PageData } from './$types';
 
-    let { data = $bindable() } = $props();
+    let { data }: { data: PageData } = $props();
     const {
         form: name_form,
         errors: name_errors,
@@ -57,32 +59,13 @@
         }
     });
 
-    const { enhance: joinid_enhance } = superForm(data.joinid_form, {
-        invalidateAll: false,
-        resetForm: false,
-        onSubmit: async () => {
-            creating_join_id = true;
-        },
-        onUpdate: async ({ form, result }) => {
-            const action = result.data;
-            server_errors = result.data.errors;
-            if (form.valid) {
-                join_id_value = action.join_id;
-            }
-            creating_join_id = false;
-        }
-    });
-
-    let server_errors = $state();
-    let edit_name = $state(false);
-    let edit_country = $state(false);
-    let edit_city = $state(false);
-    let creating_name = $state(false);
-    let creating_country = $state(false);
-    let creating_city = $state(false);
-    let creating_join_id = $state(false);
-    let join_id_value = $state(data.house.join_id);
-    let is_active_join_id = $derived(join_id_value);
+    let server_errors: string = $state('');
+    let edit_name: boolean = $state(false);
+    let edit_country: boolean = $state(false);
+    let edit_city: boolean = $state(false);
+    let creating_name: boolean = $state(false);
+    let creating_country: boolean = $state(false);
+    let creating_city: boolean = $state(false);
 </script>
 
 <div class="flex flex-col flex-1 min-w-full">
@@ -90,11 +73,6 @@
     <p class="py-4">This is the settings page for your house!</p>
     <div class="flex flex-col flex-1 gap-3 min-w-full">
         <div class="flex flex-col flex-1 gap-2 p-3 card bg-base-200">
-            {#if server_errors}
-                <h1 class="mt-2 step-subtitle warning">
-                    {server_errors}
-                </h1>
-            {/if}
             <form action="?/update_name" method="POST" use:name_enhance>
                 <FormTextInput
                     superform={data.name_form}
@@ -170,29 +148,10 @@
         </div>
 
         {#if data.user.is_admin}
-            <div>
-                <h2 class="mt-5 mb-2">Invite friends to your house</h2>
-                <form action="?/toggle_join_id" method="POST" use:joinid_enhance>
-                    <div class="join">
-                        <input
-                            disabled={creating_join_id}
-                            id="npm-install-copy-button"
-                            class="input input-bordered join-item bg-neutral text-base-300"
-                            value={join_id_value}
-                        />
-                        <button
-                            class="btn join-item rounded-r-full btn-accent border-none"
-                            disabled={creating_join_id || !data.user.is_admin}
-                        >
-                            {#if !creating_join_id}
-                                {is_active_join_id ? 'Delete' : 'Create'}
-                            {:else}
-                                <span class="loading loading-spinner loading-lg"></span>
-                            {/if}
-                        </button>
-                    </div>
-                </form>
-            </div>
+            <JoinIdCreator bind:server_errors />
+            {#if server_errors}
+                <span class="invalid text-error">{server_errors}</span>
+            {/if}
         {/if}
     </div>
 </div>

@@ -1,12 +1,13 @@
 <script lang="ts">
-    import Unknown_Avatar from '$lib/img/Unknown_person.jpg';
     import HouseMemberItem from './HouseMemberItem.svelte';
 
-    type Props = {
+    let {
+        user_list = $bindable([]),
+        change_enabled = false
+    }: {
         user_list: User[];
-        change_enabled: Boolean;
-    };
-    let { user_list = $bindable([]), change_enabled = false }: Props = $props();
+        change_enabled: boolean;
+    } = $props();
 </script>
 
 <div class="overflow-x-auto">

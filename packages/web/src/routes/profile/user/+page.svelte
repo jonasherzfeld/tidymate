@@ -1,23 +1,24 @@
 <script lang="ts">
-    import { enhance } from '$app/forms';
-    import AvatarGraphic from '$lib/components/AvatarGraphic.svelte';
     import TextInput from '$lib/components/TextInput.svelte';
+    import AvatarGraphic from '$lib/components/AvatarGraphic.svelte';
     import AvatarModal from '$lib/components/AvatarModal.svelte';
     import ThemeSwitch from '$lib/components/ThemeSwitch.svelte';
     import { superForm } from 'sveltekit-superforms';
     import FormTextInput from '$lib/components/FormTextInput.svelte';
+    import type { PageData } from './$types';
 
-    let { data = $bindable() } = $props();
-    let showModal = $state(false);
+    let { data }: { data: PageData } = $props();
 
-    let server_errors = $state();
-    let creating_email = $state(false);
-    let creating_first_name = $state(false);
-    let creating_last_name = $state(false);
-    let edit_email = $state(false);
-    let edit_first_name = $state(false);
-    let edit_last_name = $state(false);
-    let is_img_hover = $state(false);
+    let showModal: boolean = $state(false);
+
+    let server_errors: string = $state('');
+    let creating_email: boolean = $state(false);
+    let creating_first_name: boolean = $state(false);
+    let creating_last_name: boolean = $state(false);
+    let edit_email: boolean = $state(false);
+    let edit_first_name: boolean = $state(false);
+    let edit_last_name: boolean = $state(false);
+    let is_img_hover: boolean = $state(false);
     let handleImgHover = (value: boolean) => {
         is_img_hover = value;
     };
@@ -105,7 +106,7 @@
                             aria-label="Change Avatar"
                             style="display: {is_img_hover ? 'block' : 'none'}"
                         >
-                            <h2 class="text-sm text-base-300">Change</h2>
+                            <h2 class="text-sm">Change</h2>
                         </div>
                     </AvatarGraphic>
                 </button>
@@ -168,43 +169,4 @@
         <ThemeSwitch />
     </div>
 </div>
-<AvatarModal bind:showModal>
-    <div class="flex flex-col sm:flex-row items-center gap-3 mb-5">
-        <div class="avatar m-5">
-            <AvatarGraphic
-                thumbnail={data.user.thumbnail}
-                height="h-24"
-                width="w-24"
-                text_size="text-5xl font-bold"
-            />
-        </div>
-        <div>
-            <form method="POST" use:enhance enctype="multipart/form-data">
-                <label class="form-control w-full max-w-xs mb-4">
-                    <input
-                        type="file"
-                        name="file"
-                        class="file-input file-input-bordered w-full max-w-xs"
-                        accept=".jpg, .jpeg, .png, .webp"
-                    />
-                </label>
-                <div class="grid sm:grid-cols-2 gap-3">
-                    <button
-                        class="btn"
-                        type="submit"
-                        formaction="?/upload_image"
-                        disabled={!!data.user.thumbnail}>Upload image</button
-                    >
-                    <button
-                        class="btn btn-error"
-                        formaction="?/delete_image"
-                        type="submit"
-                        disabled={!data.user.thumbnail}
-                    >
-                        Remove image
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-</AvatarModal>
+<AvatarModal bind:showModal />

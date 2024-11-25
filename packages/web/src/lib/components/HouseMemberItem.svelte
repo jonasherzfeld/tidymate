@@ -4,7 +4,6 @@
     import AvatarGraphic from './AvatarGraphic.svelte';
 
     let {
-        form,
         user_id = '',
         is_admin = false,
         src = '',
@@ -12,6 +11,14 @@
         last_name = '',
         joined_on = '',
         change_enabled = false
+    }: {
+        user_id: string;
+        is_admin: boolean;
+        src: string;
+        first_name: string;
+        last_name: string;
+        joined_on: string;
+        change_enabled: boolean;
     } = $props();
 
     let is_calling_user = $state(user_id === $page.data.user.id);
@@ -22,8 +29,10 @@
     const handleIsAdmin = async () => {
         changing_admin_status = true;
 
-        return async ({ update }) => {
-            await update();
+        return async ({ result, update }) => {
+            if (result.status !== 200) {
+                await update();
+            }
             changing_admin_status = false;
         };
     };
@@ -50,18 +59,13 @@
         <div class="">{date.toLocaleDateString('en-GB')}</div>
     </td>
     <th>
-        <form
-            bind:this={form}
-            action="/profile/house?/set_admin"
-            method="POST"
-            use:enhance={handleIsAdmin}
-        >
+        <form action="/profile/house?/set_admin" method="POST" use:enhance={handleIsAdmin}>
             <input type="hidden" name="user_id" value={user_id} />
             <input
                 type="checkbox"
                 name="is_admin"
                 class="toggle toggle-primary cursor-pointer"
-                onchange={() => form.requestSubmit()}
+                onchange={(e) => e.target.form.requestSubmit()}
                 bind:checked={is_admin}
                 disabled={!change_enabled_var || changing_admin_status}
             />
