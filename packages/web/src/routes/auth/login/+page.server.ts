@@ -17,13 +17,6 @@ export async function load({ locals }) {
 }
 
 export const actions = {
-    /**
-     *
-     * @param request - The request object
-     * @param fetch - Fetch object from sveltekit
-     * @param cookies - SvelteKit's cookie object
-     * @returns Error data or redirects user to the home page or the previous page
-     */
     login: async ({ request, fetch, cookies }) => {
         const form = await superValidate(request, zod(loginSchema));
 

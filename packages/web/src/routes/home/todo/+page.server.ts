@@ -39,7 +39,7 @@ export const actions = {
         const todo_data = String(formData.get('todo_data'));
 
         if (!todo_data) {
-            return fail(400, { error: 'Nothing submitted' });
+            return fail(400, { errors: 'Nothing submitted' });
         }
 
         let requestInitOptions: RequestInit = {
@@ -55,7 +55,7 @@ export const actions = {
         const res = await fetch(`${BASE_API_URI}/items/create-todo`, requestInitOptions);
         const response = await res.json();
         if (!res.ok) {
-            return fail(400, { error: response.error });
+            return fail(400, { errors: response.error });
         }
 
         return { todo: response.todo };
@@ -66,7 +66,7 @@ export const actions = {
         const todo_id = params.getAll('id')[0];
 
         if (!todo_id) {
-            return fail(400, { error: 'Invalid Todo ID' });
+            return fail(400, { errors: 'Invalid Todo ID' });
         }
 
         let requestInitOptions: RequestInit = {
@@ -81,7 +81,7 @@ export const actions = {
         const res = await fetch(`${BASE_API_URI}/items/delete-todo/${todo_id}`, requestInitOptions);
         const response = await res.json();
         if (!res.ok) {
-            return fail(400, { error: response.error });
+            return fail(400, { errors: response.error });
         }
 
         return { todo_id: todo_id };
@@ -91,7 +91,7 @@ export const actions = {
         const todo_id = params.getAll('id')[0];
 
         if (!todo_id) {
-            return fail(400, { error: 'Invalid Todo ID' });
+            return fail(400, { errors: 'Invalid Todo ID' });
         }
 
         let requestInitOptions: RequestInit = {
@@ -106,7 +106,7 @@ export const actions = {
         const res = await fetch(`${BASE_API_URI}/items/check-todo/${todo_id}`, requestInitOptions);
         const response = await res.json();
         if (!res.ok) {
-            return fail(400, { error: response.error });
+            return fail(400, { errors: response.error });
         }
 
         return { todo: response.todo };

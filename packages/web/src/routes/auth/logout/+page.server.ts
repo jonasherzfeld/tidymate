@@ -1,11 +1,9 @@
 import { BASE_API_URI } from '$lib/utils/constants';
 import { fail, redirect } from '@sveltejs/kit';
 
-/** @type {import('./$types').Actions} */
 export const actions = {
     default: async ({ fetch, cookies }) => {
-        /** @type {RequestInit} */
-        const requestInitOptions = {
+        const requestInitOptions: RequestInit = {
             method: 'POST',
             credentials: 'include',
             headers: {

@@ -43,7 +43,7 @@ export const actions = {
         const res = await fetch(`${BASE_API_URI}/auth/update-user`, requestInitOptions);
         const response = await res.json();
         if (!res.ok) {
-            return fail(400, { email_form, error: response.error });
+            return fail(400, { email_form, errors: response.error });
         }
 
         return message(email_form, 'Email Updated!');
@@ -70,7 +70,7 @@ export const actions = {
         const res = await fetch(`${BASE_API_URI}/auth/update-user`, requestInitOptions);
         const response = await res.json();
         if (!res.ok) {
-            return fail(400, { first_name_form, error: response.error });
+            return fail(400, { first_name_form, errors: response.error });
         }
 
         return message(first_name_form, 'Email Updated!');
@@ -97,7 +97,7 @@ export const actions = {
         const res = await fetch(`${BASE_API_URI}/auth/update-user`, requestInitOptions);
         const response = await res.json();
         if (!res.ok) {
-            return fail(400, { last_name_form, error: response.error });
+            return fail(400, { last_name_form, errors: response.error });
         }
 
         return message(last_name_form, 'Email Updated!');
@@ -118,7 +118,7 @@ export const actions = {
 
         if (!res.ok) {
             const response = await res.json();
-            return fail(400, { error: response.error });
+            return fail(400, { errors: response.error });
         }
 
         const response = await res.json();

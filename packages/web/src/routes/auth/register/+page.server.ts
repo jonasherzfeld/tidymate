@@ -31,20 +31,18 @@ export const actions = {
             return fail(400, { form });
         }
 
-        const registrationBody = {
-            email: form.data.email,
-            first_name: form.data.first_name,
-            last_name: form.data.last_name,
-            join_id: form.data.is_join_home ? form.data.join_id : '',
-            password: form.data.password
-        };
-
-        const requestInitOptions = {
+        const requestInitOptions: RequestInit = {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(registrationBody)
+            body: JSON.stringify({
+                email: form.data.email,
+                first_name: form.data.first_name,
+                last_name: form.data.last_name,
+                join_id: form.data.is_join_home ? form.data.join_id : '',
+                password: form.data.password
+            })
         };
 
         const res = await fetch(`${BASE_API_URI}/auth/register`, requestInitOptions);

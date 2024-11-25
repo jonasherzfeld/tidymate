@@ -16,6 +16,8 @@
 
     let { data }: { data: PageData } = $props();
 
+    let server_errors: string = $state('');
+
     let sortKey: keyof SearchableTodo | `-${string & keyof SearchableTodo}` = $state('created_on');
     let sortOrder: boolean = $state(true);
 
@@ -42,6 +44,7 @@
 
     const handleSubmit = async ({}) => {
         return async ({ result, update }) => {
+            server_errors = result.data.errors;
             if (result.status === 200) {
                 newTodoData = '';
                 todoListHandler = new TodoListHandler([
@@ -102,6 +105,11 @@
             </div>
         </div>
         <div class="flex flex-col">
+            {#if server_errors}
+                <h1 class="mt-2 step-subtitle text-error">
+                    {server_errors}
+                </h1>
+            {/if}
             <div class="card bg-base-200 rounded-lg">
                 {#await data.streamed.todo_list}
                     <div class="flex w-full flex-col gap-4">
