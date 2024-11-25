@@ -14,8 +14,7 @@ export default {
         themes: [
             {
                 dark: {
-                    ...require('daisyui/src/theming/themes')['dark'],
-                    accent: '#a16207',
+                    ...require('daisyui/src/theming/themes')['coffee'],
 
                     '--rounded-box': '0.25rem', // border radius rounded-box utility class, used in card and other large boxes
                     '--rounded-btn': '0.25rem', // border radius rounded-btn utility class, used in buttons and similar element
@@ -25,8 +24,7 @@ export default {
                     '--tab-radius': '0.25rem' // border radius of tabs
                 },
                 light: {
-                    ...require('daisyui/src/theming/themes')['light'],
-                    accent: '#eab308',
+                    ...require('daisyui/src/theming/themes')['lemonade'],
 
                     '--rounded-box': '0.25rem', // border radius rounded-box utility class, used in card and other large boxes
                     '--rounded-btn': '0.25rem', // border radius rounded-btn utility class, used in buttons and similar element
