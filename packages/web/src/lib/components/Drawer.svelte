@@ -7,37 +7,34 @@
     import ChoresIcon from 'virtual:icons/fluent/calendar-arrow-counterclockwise-48-filled';
     import InfoIcon from 'virtual:icons/fluent/info-12-regular';
     import DocsIcon from 'virtual:icons/fluent/document-bullet-list-16-regular';
-    import { browser } from '$app/environment';
 
     let {
+        isWebApp,
         children
     }: {
+        isWebApp: boolean;
         children: Snippet;
     } = $props();
 
     let is_logged_in: boolean = $derived($page.data.user ? true : false);
     let is_in_house: boolean = $derived($page.data.house ? true : false);
     let checked: boolean = $state(false);
-    let is_web_app: boolean = $state(false);
 
     function handleClick() {
         checked = !checked;
     }
 
-    if (browser) {
-        is_web_app =
-            window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
-    }
+
 </script>
 
 <div class="drawer">
     <input id="my-drawer-3" type="checkbox" class="drawer-toggle" bind:checked />
-    <div class="drawer-content flex flex-col">
+    <div class="drawer-content flex flex-col min-h-screen">
         <!-- Navbar -->
         <div
-            class={`navbar w-full bg-base-300 text-shade-500 border-solid border-b border-shape-500 sticky top-0 z-10 shadow-md ${is_web_app ? 'pt-12' : ''}`}
+            class={`navbar w-full bg-base-300 text-shade-500 border-solid border-b border-shape-500 sticky top-0 z-10 shadow-md ${isWebApp ? 'pt-12' : ''}`}
         >
-            <div class="flex w-fit p-0 m-0 lg:hidden">
+            <div class={`flex w-fit p-0 m-0 lg:hidden ${isWebApp ? 'hidden' : ''}`}>
                 <button
                     onclick={handleClick}
                     class="btn btn-square btn-ghost w-fit ml-3"
@@ -66,7 +63,7 @@
     <div class="drawer-side z-20">
         <button onclick={handleClick} class="drawer-overlay" aria-label="Close Menu"></button>
         <ul
-            class={`menu bg-base-300 min-h-full w-80 p-4 rounded-md border ${is_web_app ? 'pt-12' : ''}`}
+            class={`menu bg-base-300 min-h-full w-80 p-4 rounded-md border ${isWebApp ? 'pt-12' : ''}`}
         >
             <!-- Sidebar content here -->
             <a

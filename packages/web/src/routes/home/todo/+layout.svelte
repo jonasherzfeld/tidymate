@@ -9,7 +9,7 @@
 </script>
 
 {#key data.url}
-    <div
+    <div class="flex flex-1 min-h-full"
         in:fly={data.url.endsWith('/todo')
             ? {
                   x: -pageTransitionDistance,
@@ -25,8 +25,8 @@
             ? { x: pageTransitionDistance, duration: pageTransitionDuration }
             : { x: -pageTransitionDistance, duration: pageTransitionDuration }}
     >
-        <div class="flex bg-base-100 min-h-screen w-full items-start justify-center">
-            <div class="flex-1 justify-center text-center max-w-screen-sm p-4 min-h-screen">
+        <div class="flex flex-1 w-full min-h-full items-start justify-center">
+            <div class="flex grow justify-center text-center max-w-screen-sm p-4 min-h-full">
                 {@render children?.()}
             </div>
         </div>
