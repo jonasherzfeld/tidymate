@@ -1,5 +1,3 @@
-type sortArg<T> = keyof T | `-${string & keyof T}`;
-
 export function byPropertiesOf<T extends object>(sortBy: Array<sortArg<T>>) {
     function compareByProperty(arg: sortArg<T>) {
         let key: keyof T;

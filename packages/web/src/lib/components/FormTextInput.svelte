@@ -6,20 +6,12 @@
     import {
         formFieldProxy,
         superForm,
-        type SuperForm,
+        type SuperValidated,
         type FormPathLeaves
     } from 'sveltekit-superforms';
     import EditIcon from 'virtual:icons/mdi/file-edit-outline';
     import SubmitIcon from 'virtual:icons/mdi/file-send-outline';
 
-    type Props = {
-        superform: SuperForm<T>;
-        field: FormPathLeaves<T>;
-        edit_value: boolean;
-        creating_value: boolean;
-        label: string;
-        disabled?: boolean;
-    };
     let {
         superform,
         field,
@@ -27,7 +19,14 @@
         creating_value = $bindable(),
         label = '',
         disabled = false
-    }: Props = $props();
+    }: {
+        superform: SuperValidated<T>;
+        field: FormPathLeaves<T>;
+        edit_value: boolean;
+        creating_value: boolean;
+        label: string;
+        disabled?: boolean;
+    } = $props();
 
     const form = superForm(superform);
     const { value, errors, constraints } = formFieldProxy(form, field);

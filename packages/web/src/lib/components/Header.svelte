@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import UserCircleOutline from '~icons/mdi/user-circle-outline';
     import HouseCircleOutline from '~icons/mdi/house-circle-outline';
     import InfoIcon from 'virtual:icons/fluent/info-12-regular';
@@ -12,13 +12,16 @@
     import { page } from '$app/stores';
     import Logo from './Logo.svelte';
     import AvatarGraphic from './AvatarGraphic.svelte';
-    import { HEADER_MAPPING } from '$lib/utils/constants';
+    import { HEADER_MAPPING, type HeaderMap } from '$lib/utils/constants';
 
-    let is_logged_in = $derived($page.data.user ? true : false);
-    let is_in_house = $derived($page.data.house ? true : false);
+    let is_logged_in: boolean = $derived($page.data.user ? true : false);
+    let is_in_house: boolean = $derived($page.data.house ? true : false);
+    let header_title: HeaderMap | undefined = $derived(
+        HEADER_MAPPING.find((item) => item.key === $page.route.id)
+    );
 </script>
 
-<div class="navbar p-0 pl-3 pr-3 min-h-0flex justify-between">
+<div class="navbar p-0 pl-3 pr-3 min-h-0 flex justify-between">
     <div class="flex w-fit">
         <a href={is_logged_in && is_in_house ? '/home' : '/'} class="btn btn-ghost text-xl p-0">
             <Logo width="30px" /><span class="hidden lg:block">Tidymate</span></a
@@ -37,8 +40,8 @@
         {/if}
     </div>
     <div class="flex-1 -z-10 pl-2 w-fit text-xl font-sans justify-left lg:hidden">
-        {#if $page.route.id}
-            {HEADER_MAPPING.hasOwnProperty($page.route.id) ? HEADER_MAPPING[$page.route.id] : ''}
+        {#if header_title}
+            {header_title.title}
         {/if}
     </div>
     <div class="flex-none gap-2">
@@ -60,7 +63,7 @@
             </div>
             <ul
                 tabindex="-1"
-                class="menu menu-xl dropdown-content bg-base-300 rounded-box z-[1] mt-3 w-52 p-2 shadow"
+                class="menu menu-xl dropdown-content bg-base-300 rounded-box border shadow-md z-[1] mt-3 w-52 p-2 shadow"
             >
                 {#if !is_logged_in}
                     <li class="text-base">

@@ -4,7 +4,6 @@
     import { onMount } from 'svelte';
     import { TodoListHandler } from '$lib/utils/todo-list-handler';
     import { initializeFilterValues } from '$lib/utils/helpers';
-    import { Toggle } from '$lib/components/ui/toggle/index.js';
     import TodoItem from '$lib/components/TodoItem.svelte';
     import SortDropDown from '$lib/components/SortDropDown.svelte';
     import FilterDropDown from '$lib/components/FilterDropDown.svelte';
@@ -62,7 +61,7 @@
 </script>
 
 <div class="flex flex-col gap-3 min-w-full min-h-screen justify-between">
-    <div class="flex flex-col gap-2">
+    <div class="flex flex-col gap-3">
         <div>
             <label class="input input-bordered input-sm flex grow items-center gap-2">
                 <SearchIcon />

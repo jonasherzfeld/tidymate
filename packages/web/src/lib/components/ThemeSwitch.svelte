@@ -9,6 +9,10 @@
             document.documentElement.setAttribute('data-theme', theme);
         }
     };
+
+    function getCapitalized(str: string) {
+        return str.charAt(0).toUpperCase() + str.slice(1);
+    }
 </script>
 
 <form method="POST" use:enhance={submitSetTheme}>
@@ -18,36 +22,18 @@
             tabindex="-1"
             class="dropdown-content bg-base-300 rounded-box z-[1] w-52 p-2 shadow-2xl"
         >
-            <li>
-                <button
-                    type="submit"
-                    formaction="/?/set_theme&theme=default&redirectTo={$page.url.pathname}"
-                    name="theme-dropdown"
-                    class="theme-controller btn btn-sm btn-block btn-ghost justify-start"
-                    aria-label="Default"
-                    value="default">Default</button
-                >
-            </li>
-            <li>
-                <button
-                    type="submit"
-                    formaction="/?/set_theme&theme=dark&redirectTo={$page.url.pathname}"
-                    name="theme-dropdown"
-                    class="theme-controller btn btn-sm btn-block btn-ghost justify-start"
-                    aria-label="Dark"
-                    value="dark">Dark</button
-                >
-            </li>
-            <li>
-                <button
-                    type="submit"
-                    formaction="/?/set_theme&theme=light&redirectTo={$page.url.pathname}"
-                    name="theme-dropdown"
-                    class="theme-controller btn btn-sm btn-block btn-ghost justify-start"
-                    aria-label="Light"
-                    value="light">Light</button
-                >
-            </li>
+            {#each ['dark', 'light'] as theme}
+                <li>
+                    <button
+                        type="submit"
+                        formaction="/?/set_theme&theme={theme}&redirectTo={$page.url.pathname}"
+                        name="theme-dropdown"
+                        class="theme-controller btn btn-sm btn-block btn-ghost justify-start"
+                        aria-label={getCapitalized(theme)}
+                        value={theme}>{getCapitalized(theme)}</button
+                    >
+                </li>
+            {/each}
         </ul>
     </div>
 </form>

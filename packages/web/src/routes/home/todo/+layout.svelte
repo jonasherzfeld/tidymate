@@ -1,9 +1,11 @@
 <script lang="ts">
     import { fly } from 'svelte/transition';
+    import type { PageData } from './$types';
+    import type { Snippet } from 'svelte';
 
-    let { data, children } = $props();
-    const pageTransitionDuration = 300;
-    const pageTransitionDistance = 100;
+    let { data, children }: { data: PageData; children: Snippet } = $props();
+    const pageTransitionDuration: number = 300;
+    const pageTransitionDistance: number = 100;
 </script>
 
 {#key data.url}

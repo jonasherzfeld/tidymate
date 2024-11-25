@@ -1,7 +1,6 @@
 <script lang="ts">
     import type { Snippet } from 'svelte';
     import { page } from '$app/stores';
-
     import Header from '$lib/components/Header.svelte';
     import Logo from './Logo.svelte';
     import TodoIcon from 'virtual:icons/fluent/task-list-square-16-filled';
@@ -10,20 +9,21 @@
     import DocsIcon from 'virtual:icons/fluent/document-bullet-list-16-regular';
     import { browser } from '$app/environment';
 
-    type Props = {
+    let {
+        children
+    }: {
         children: Snippet;
-    };
-    let { children }: Props = $props();
+    } = $props();
 
-    let is_logged_in = $derived($page.data.user ? true : false);
-    let is_in_house = $derived($page.data.house ? true : false);
+    let is_logged_in: boolean = $derived($page.data.user ? true : false);
+    let is_in_house: boolean = $derived($page.data.house ? true : false);
+    let checked: boolean = $state(false);
+    let is_web_app: boolean = $state(false);
 
-    let checked = $state('');
     function handleClick() {
-        checked === 'checked' ? (checked = '') : (checked = 'checked');
+        checked = !checked;
     }
 
-    let is_web_app: boolean = $state(false);
     if (browser) {
         is_web_app =
             window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
@@ -35,12 +35,12 @@
     <div class="drawer-content flex flex-col">
         <!-- Navbar -->
         <div
-            class={`navbar w-full bg-base-300 text-shade-500 border-solid border-b border-shape-500 sticky top-0 z-10 ${is_web_app ? 'pt-12' : ''}`}
+            class={`navbar w-full bg-base-300 text-shade-500 border-solid border-b border-shape-500 sticky top-0 z-10 shadow-md ${is_web_app ? 'pt-12' : ''}`}
         >
-            <div class="flex-none lg:hidden">
+            <div class="flex w-fit p-0 m-0 lg:hidden">
                 <button
                     onclick={handleClick}
-                    class="btn btn-square btn-ghost"
+                    class="btn btn-square btn-ghost w-fit ml-3"
                     aria-label="Open Menu"
                 >
                     <svg
@@ -65,7 +65,9 @@
 
     <div class="drawer-side z-20">
         <button onclick={handleClick} class="drawer-overlay" aria-label="Close Menu"></button>
-        <ul class={`menu bg-base-300 min-h-full w-80 p-4  ${is_web_app ? 'pt-12' : ''}`}>
+        <ul
+            class={`menu bg-base-300 min-h-full w-80 p-4 rounded-md border ${is_web_app ? 'pt-12' : ''}`}
+        >
             <!-- Sidebar content here -->
             <a
                 href={is_logged_in && is_in_house ? '/home' : '/'}
