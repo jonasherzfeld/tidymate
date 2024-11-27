@@ -32,33 +32,39 @@
     </div>
 {/if}
 <Drawer {isWebApp}>
-        <div class={`flex grow ${isWebApp? "" : "min-h-screen"} min-w-full`}>
-            {@render children?.()}
-        </div>
-        {#if isWebApp}
-            <ul
-                class="menu menu-horizontal justify-center bg-base-300 h-20 sticky border-t-[1px] bottom-0 shadow-md gap-3 "
-            >
+    <div class={`flex grow ${isWebApp ? '' : 'min-h-screen'} min-w-full`}>
+        {@render children?.()}
+    </div>
+    {#if isWebApp}
+        <ul
+            class="menu menu-horizontal justify-center bg-base-300 h-20 sticky border-t-[1px] bottom-0 shadow-md gap-3"
+        >
             {#if is_logged_in && is_in_house}
-            <li class="text-base">
-                <a href="/home" class="p-0"
-                    ><button class="btn btn-md btn-square " ><HouseIcon style="font-size:1.2rem" /></button></a
-                >
-            </li>
-            <li class="text-base">
-                <a href="/home/todo" class="p-0"
-                    ><button class="btn btn-md btn-square " ><TodoIcon style="font-size:1.2rem" /></button></a
-                >
-            </li>
-            <li class="text-base">
-                <a href="/home/chores" class="p-0"
-                    ><button class="btn btn-md btn-square " ><ChoresIcon style="font-size:1.2rem" /></button></a
-                >
-            </li>
-            <div class="divider"></div>
-        {/if}
-            </ul>
-        {:else}
-            <Footer />
-        {/if}
+                <li class="text-base">
+                    <a href="/home" class="p-0"
+                        ><button class="btn btn-md btn-square"
+                            ><HouseIcon style="font-size:1.2rem" /></button
+                        ></a
+                    >
+                </li>
+                <li class="text-base">
+                    <a href="/home/todo" class="p-0"
+                        ><button class="btn btn-md btn-square"
+                            ><TodoIcon style="font-size:1.2rem" /></button
+                        ></a
+                    >
+                </li>
+                <li class="text-base">
+                    <a href="/home/chores" class="p-0"
+                        ><button class="btn btn-md btn-square"
+                            ><ChoresIcon style="font-size:1.2rem" /></button
+                        ></a
+                    >
+                </li>
+                <div class="divider"></div>
+            {/if}
+        </ul>
+    {:else}
+        <Footer />
+    {/if}
 </Drawer>

@@ -3,10 +3,8 @@
     import { page } from '$app/stores';
     import Header from '$lib/components/Header.svelte';
     import Logo from './Logo.svelte';
-    import TodoIcon from 'virtual:icons/fluent/task-list-square-16-filled';
-    import ChoresIcon from 'virtual:icons/fluent/calendar-arrow-counterclockwise-48-filled';
-    import InfoIcon from 'virtual:icons/fluent/info-12-regular';
-    import DocsIcon from 'virtual:icons/fluent/document-bullet-list-16-regular';
+    import MenuIcon from 'virtual:icons/mdi/menu';
+    import MenuBlock from './MenuBlock.svelte';
 
     let {
         isWebApp,
@@ -18,13 +16,18 @@
 
     let is_logged_in: boolean = $derived($page.data.user ? true : false);
     let is_in_house: boolean = $derived($page.data.house ? true : false);
+    let menu_restriction: RestrictionType[] = $derived(
+        is_logged_in && is_in_house
+            ? ['logged_in', 'house_member']
+            : is_logged_in
+              ? ['logged_in', 'no_house_member']
+              : ['logged_out']
+    );
     let checked: boolean = $state(false);
 
     function handleClick() {
         checked = !checked;
     }
-
-
 </script>
 
 <div class="drawer">
@@ -40,19 +43,7 @@
                     class="btn btn-square btn-ghost w-fit ml-3"
                     aria-label="Open Menu"
                 >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        class="inline-block h-6 w-6 stroke-current"
-                    >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M4 6h16M4 12h16M4 18h16"
-                        />
-                    </svg>
+                    <MenuIcon />
                 </button>
             </div>
             <Header />
@@ -73,29 +64,9 @@
             >
                 <Logo width="30px" />Tidymate</a
             >
-            {#if is_logged_in && is_in_house}
-                <li class="text-base">
-                    <a href="/home/todo" onclick={handleClick}
-                        ><TodoIcon style="font-size:1.2rem" />To-Dos</a
-                    >
-                </li>
-                <li class="text-base">
-                    <a href="/home/chores" onclick={handleClick}
-                        ><ChoresIcon style="font-size:1.2rem" />Chores</a
-                    >
-                </li>
-                <div class="divider"></div>
-            {/if}
-            <li>
-                <a href="/about" onclick={handleClick}
-                    ><InfoIcon style="font-size:1.2rem" /> About</a
-                >
-            </li>
-            <li>
-                <a href="https://tidymate-docs.vercel.app" onclick={handleClick} target="_blank"
-                    ><DocsIcon style="font-size:1.2rem" />Documention ↗</a
-                >
-            </li>
+            <MenuBlock position="drawer_top" restricted={menu_restriction} {handleClick} />
+            <div class="divider"></div>
+            <MenuBlock position="drawer_bottom" restricted={['none']} {handleClick} />
         </ul>
     </div>
 </div>
