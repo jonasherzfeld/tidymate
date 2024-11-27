@@ -1,3 +1,14 @@
+import TodoIcon from 'virtual:icons/fluent/task-list-square-16-filled';
+import ChoresIcon from 'virtual:icons/fluent/calendar-arrow-counterclockwise-48-filled';
+import InfoIcon from 'virtual:icons/fluent/info-12-regular';
+import DocsIcon from 'virtual:icons/fluent/document-bullet-list-16-regular';
+import UserCircleOutline from '~icons/mdi/user-circle-outline';
+import HouseCircleOutline from '~icons/mdi/house-circle-outline';
+import SignOut from 'virtual:icons/mdi/sign-out';
+import SignIn from 'virtual:icons/mdi/sign-in';
+import RegisterIcon from 'virtual:icons/mdi/register-outline';
+import type { Component } from 'svelte';
+
 export const BASE_API_URI = import.meta.env.VITE_BASE_API_URI;
 export const PROTECTED_ROUTES_USER = ['/auth/logout', '/profile', '/home', '/auth/register/house'];
 export const PROTECTED_ROUTES_HOUSE = ['/profile/house', '/home'];
@@ -16,4 +27,101 @@ export const HEADER_MAPPING: HeaderMap[] = [
     { key: '/auth/register/house', title: 'Register House' },
     { key: '/auth/register/user', title: 'Register' },
     { key: '/auth/logout', title: 'Logout' }
+];
+
+export type RouteLinkPosition =
+    | 'header_left'
+    | 'header_right'
+    | 'drawer_top'
+    | 'drawer_bottom'
+    | 'menu'
+    | 'avatar_dropdown';
+export type RestrictionType =
+    | 'none'
+    | 'logged_in'
+    | 'logged_out'
+    | 'house_member'
+    | 'no_house_member';
+export type RouteMap = {
+    url: string;
+    title: string;
+    position: RouteLinkPosition[];
+    icon: Component;
+    restricted: RestrictionType;
+    external?: boolean;
+};
+
+export const ROUTE_MAPPING: RouteMap[] = [
+    { url: '/home', title: 'Home', position: ['menu'], icon: InfoIcon, restricted: 'house_member' },
+    {
+        url: '/home/todo',
+        title: 'Todos',
+        position: ['header_left', 'drawer_top', 'menu'],
+        icon: TodoIcon,
+        restricted: 'house_member'
+    },
+    {
+        url: '/home/chores',
+        title: 'Chores',
+        position: ['header_left', 'drawer_top', 'menu'],
+        icon: ChoresIcon,
+        restricted: 'house_member'
+    },
+    {
+        url: '/about',
+        title: 'About',
+        position: ['header_right', 'drawer_bottom'],
+        icon: DocsIcon,
+        restricted: 'none'
+    },
+    {
+        url: 'https://tidymate-docs.vercel.app/',
+        title: 'Documentation',
+        position: ['header_right', 'drawer_bottom'],
+        icon: InfoIcon,
+        restricted: 'none',
+        external: true
+    },
+    {
+        url: '/profile/user',
+        title: 'Your Profile',
+        position: ['avatar_dropdown'],
+        icon: UserCircleOutline,
+        restricted: 'logged_in'
+    },
+    {
+        url: '/profile/house',
+        title: 'Your House',
+        position: ['avatar_dropdown'],
+        icon: HouseCircleOutline,
+        restricted: 'house_member'
+    },
+    {
+        url: '/auth/login',
+        title: 'Login',
+        position: ['avatar_dropdown'],
+        icon: SignIn,
+        restricted: 'logged_out'
+    },
+    {
+        url: '/auth/register/house',
+        title: 'Register House',
+        position: ['avatar_dropdown'],
+        icon: RegisterIcon,
+        restricted: 'no_house_member'
+    },
+    {
+        url: '/auth/register',
+        title: 'Register',
+        position: ['avatar_dropdown'],
+        icon: InfoIcon,
+        restricted: 'logged_out'
+    },
+    {
+        url: '/auth/logout',
+        title: 'Logout',
+        position: ['avatar_dropdown'],
+        icon: SignOut,
+        restricted: 'logged_in'
+    }
 ];
