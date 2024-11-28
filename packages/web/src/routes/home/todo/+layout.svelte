@@ -9,8 +9,7 @@
 </script>
 
 {#key data.url}
-    <div
-        class="flex flex-1 min-h-full">
+    <div class="flex flex-1 min-h-full">
         <!-- in:fly={data.url.endsWith('/todo')
             ? {
                   x: -pageTransitionDistance,

@@ -11,7 +11,17 @@ import HouseIcon from 'virtual:icons/fluent/home-20-filled';
 import type { Component } from 'svelte';
 
 export const BASE_API_URI = import.meta.env.VITE_BASE_API_URI;
-export const PROTECTED_ROUTES_USER = ['/auth/logout', '/profile', '/home', '/auth/register/house'];
+
+// Routes that are protected and need a user to be logged in
+export const PROTECTED_ROUTES_USER = [
+    '/auth/logout',
+    '/profile',
+    '/home',
+    '/auth/register/house',
+    '/auth/register' // TODO: This is to prevent users to register at the moment (see: /about)
+];
+
+// Routes that are protected and need a user to be assigned to a house
 export const PROTECTED_ROUTES_HOUSE = ['/profile/house', '/home'];
 
 export type HeaderMap = {

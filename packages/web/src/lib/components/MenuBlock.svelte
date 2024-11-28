@@ -32,9 +32,9 @@
                     {/if}
                 {:else}
                     <a href={item.url} target={item.target} class="p-0"
-                    ><button class="btn btn-md btn-square btn-ghost text-xs p-0 gap-0"
-                        ><item.icon class="w-6 h-6"/>{item.title}</button
-                    ></a
+                        ><button class="btn btn-md btn-square btn-ghost text-xs p-0 gap-0"
+                            ><item.icon class="w-6 h-6" />{item.title}</button
+                        ></a
                     >
                 {/if}
             </li>
