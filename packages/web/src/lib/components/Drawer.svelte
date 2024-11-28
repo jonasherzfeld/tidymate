@@ -51,7 +51,7 @@
     <div class="drawer-side z-20">
         <button onclick={handleClick} class="drawer-overlay" aria-label="Close Menu"></button>
         <ul
-            class={`menu bg-base-300 min-h-full w-80 p-4 rounded-md border ${isWebApp ? 'pt-12' : ''}`}
+            class={`menu bg-base-300 min-h-full w-80 p-4 pl-7 -ml-3 rounded-md border-r-[1px] ${isWebApp ? 'pt-12' : ''}`}
         >
             <!-- Sidebar content here -->
             <a

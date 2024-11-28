@@ -10,8 +10,8 @@
 
 {#key data.url}
     <div
-        class="flex flex-1 min-h-full"
-        in:fly={data.url.endsWith('/todo')
+        class="flex flex-1 min-h-full">
+        <!-- in:fly={data.url.endsWith('/todo')
             ? {
                   x: -pageTransitionDistance,
                   duration: pageTransitionDuration,
@@ -25,7 +25,7 @@
         out:fly={data.url.endsWith('/todo')
             ? { x: pageTransitionDistance, duration: pageTransitionDuration }
             : { x: -pageTransitionDistance, duration: pageTransitionDuration }}
-    >
+    > -->
         <div class="flex flex-1 w-full min-h-full items-start justify-center">
             <div class="flex grow justify-center text-center max-w-screen-sm p-4 min-h-full">
                 {@render children?.()}
