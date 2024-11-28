@@ -17,7 +17,7 @@ Tidymate is a lean web app that helps you organize your household. It can be use
 
 - [x] Create a household for you and your mates
 - [x] Invite people to your household by creating a `Join ID`
-- [ ] Add To-Do list feature for household
+- [x] Add To-Do list feature for household
 - [ ] Add Chores feature for household
 - [ ] Add Chat feature for household
 
