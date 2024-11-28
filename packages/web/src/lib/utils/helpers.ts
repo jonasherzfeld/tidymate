@@ -1,17 +1,23 @@
+import { ROUTE_MAPPING, type RestrictionType } from './constants';
+
 export function byPropertiesOf<T extends object>(sortBy: Array<sortArg<T>>) {
     function compareByProperty(arg: sortArg<T>) {
         let key: keyof T;
         let sortOrder = 1;
         if (typeof arg === 'string' && arg.startsWith('-')) {
             sortOrder = -1;
-            // Typescript is not yet smart enough to infer that substring is keyof T
-            key = arg.substr(1) as keyof T;
+            key = arg.substring(1) as keyof T;
         } else {
-            // Likewise it is not yet smart enough to infer that arg here is keyof T
             key = arg as keyof T;
         }
         return function (a: T, b: T) {
-            const result = a[key] < b[key] ? -1 : a[key] > b[key] ? 1 : 0;
+            let valA = a[key];
+            let valB = b[key];
+            if (typeof valA === 'string' && typeof valB === 'string') {
+                valA = valA.toLowerCase() as T[keyof T];
+                valB = valB.toLowerCase() as T[keyof T];
+            }
+            const result = valA < valB ? -1 : valA > valB ? 1 : 0;
 
             return result * sortOrder;
         };
@@ -47,4 +53,20 @@ export function initializeFilterValues<T>(filters: FilterDescription<T>[], list:
             }
         }
     }
+}
+
+export function getRestrictionType(is_logged_in: boolean, is_in_house: boolean): RestrictionType[] {
+    return is_logged_in && is_in_house
+        ? ['logged_in', 'house_member']
+        : is_logged_in
+          ? ['logged_in', 'no_house_member']
+          : ['logged_out'];
+}
+
+export function getRouteTitle(url: string | null): string | undefined {
+    if (!url) {
+        return undefined;
+    }
+    let item = ROUTE_MAPPING.find((item) => item.url === url);
+    return item?.title;
 }
