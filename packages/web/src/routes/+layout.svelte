@@ -29,7 +29,7 @@
     </div>
 {/if}
 <Drawer {isWebApp}>
-    <div class={`flex grow ${isWebApp ? '' : 'min-h-screen'} min-w-full`}>
+    <div class={`flex grow ${isWebApp ? '' : 'min-h-[92vh]'} min-w-full`}>
         {@render children?.()}
     </div>
     {#if isWebApp}
