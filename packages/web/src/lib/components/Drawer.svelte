@@ -5,7 +5,8 @@
     import Logo from './Logo.svelte';
     import MenuIcon from 'virtual:icons/mdi/menu';
     import MenuBlock from './MenuBlock.svelte';
-
+    import type { RestrictionType } from '$lib/utils/constants';
+    import { getRestrictionType } from '$lib/utils/helpers';
     let {
         isWebApp,
         children
@@ -14,24 +15,18 @@
         children: Snippet;
     } = $props();
 
-    let is_logged_in: boolean = $derived($page.data.user ? true : false);
-    let is_in_house: boolean = $derived($page.data.house ? true : false);
-    let menu_restriction: RestrictionType[] = $derived(
-        is_logged_in && is_in_house
-            ? ['logged_in', 'house_member']
-            : is_logged_in
-              ? ['logged_in', 'no_house_member']
-              : ['logged_out']
-    );
-    let checked: boolean = $state(false);
+    let isLogged_in: boolean = $derived($page.data.user ? true : false);
+    let isHouseMember: boolean = $derived($page.data.house ? true : false);
+    let menuRestriction: RestrictionType[] = $derived(getRestrictionType(isLogged_in, isHouseMember));
+    let isDrawerOpen: boolean = $state(false);
 
     function handleClick() {
-        checked = !checked;
+        isDrawerOpen = !isDrawerOpen;
     }
 </script>
 
 <div class="drawer">
-    <input id="my-drawer-3" type="checkbox" class="drawer-toggle" bind:checked />
+    <input id="my-drawer-3" type="checkbox" class="drawer-toggle" bind:checked={isDrawerOpen} />
     <div class="drawer-content flex flex-col min-h-screen">
         <!-- Navbar -->
         <div
@@ -58,13 +53,13 @@
         >
             <!-- Sidebar content here -->
             <a
-                href={is_logged_in && is_in_house ? '/home' : '/'}
+                href={isLogged_in && isHouseMember ? '/home' : '/'}
                 class="btn btn-ghost text-xl"
                 onclick={handleClick}
             >
                 <Logo width="30px" />Tidymate</a
             >
-            <MenuBlock position="drawer_top" restricted={menu_restriction} {handleClick} />
+            <MenuBlock position="drawer_top" restricted={menuRestriction} {handleClick} />
             <div class="divider"></div>
             <MenuBlock position="drawer_bottom" restricted={['none']} {handleClick} />
         </ul>
