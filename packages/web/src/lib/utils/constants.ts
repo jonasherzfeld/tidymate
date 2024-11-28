@@ -52,7 +52,13 @@ export type RouteMap = {
 };
 
 export const ROUTE_MAPPING: RouteMap[] = [
-    { url: '/home', title: 'Home', position: ['menu'], icon: InfoIcon, restricted: 'house_member' },
+    {
+        url: '/home',
+        title: 'Home',
+        position: ['menu'],
+        icon: InfoIcon,
+        restricted: 'house_member'
+    },
     {
         url: '/home/todo',
         title: 'Todos',

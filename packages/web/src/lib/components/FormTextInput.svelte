@@ -15,15 +15,15 @@
     let {
         superform,
         field,
-        edit_value = $bindable(),
-        creating_value = $bindable(),
+        editValue = $bindable(),
+        creatingValue = $bindable(),
         label = '',
         disabled = false
     }: {
         superform: SuperValidated<T>;
         field: FormPathLeaves<T>;
-        edit_value: boolean;
-        creating_value: boolean;
+        editValue: boolean;
+        creatingValue: boolean;
         label: string;
         disabled?: boolean;
     } = $props();
@@ -31,36 +31,36 @@
     const form = superForm(superform);
     const { value, errors, constraints } = formFieldProxy(form, field);
 
-    let change_mode_bg = $derived(edit_value ? 'bg-neutral text-base-300' : 'bg-base-100');
+    let changeModeBg = $derived(editValue ? 'bg-neutral text-base-300' : 'bg-base-100');
 </script>
 
 <div class="flex join w-full">
     <div
-        class={`input input-bordered flex pl-0 pr-0 justify-between items-center w-full ${change_mode_bg}`}
+        class={`input input-bordered flex pl-0 pr-0 justify-between items-center w-full ${changeModeBg}`}
     >
-        <span class={`label label-text text-left m-2 w-24 h-full join-item ${change_mode_bg}`}
+        <span class={`label label-text text-left m-2 w-24 h-full join-item ${changeModeBg}`}
             ><b>{label}</b></span
         >
-        {#if edit_value}
+        {#if editValue}
             <input
                 type="text"
                 name={field}
                 size="1"
-                class={`label label-text grow text-right join-item mr-3 ${change_mode_bg}`}
+                class={`label label-text grow text-right join-item mr-3 ${changeModeBg}`}
                 bind:value={$value}
             />
         {:else}
-            <span class={`label label-text grow justify-end join-item mr-3 ${change_mode_bg}`}
+            <span class={`label label-text grow justify-end join-item mr-3 ${changeModeBg}`}
                 >{$value}</span
             >
         {/if}
-        {#if edit_value}
+        {#if editValue}
             <button
                 type="submit"
                 class="btn -mr-px h-full join-item btn-secondary input-bordered disabled:bg-base-300"
-                disabled={creating_value}
+                disabled={creatingValue}
             >
-                {#if !creating_value}
+                {#if !creatingValue}
                     <SubmitIcon style="font-size:1.2em" />
                 {:else}
                     <span class="loading loading-spinner loading-sm"></span>
@@ -72,7 +72,7 @@
                 class="btn -mr-px h-full join-item bg-primary input-bordered"
                 {disabled}
                 onclick={() => {
-                    edit_value = true;
+                    editValue = true;
                 }}
             >
                 <EditIcon style="font-size:1.2em" />

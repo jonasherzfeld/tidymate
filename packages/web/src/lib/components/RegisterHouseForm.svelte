@@ -3,26 +3,25 @@
     import { superForm, type SuperValidated, type Infer } from 'sveltekit-superforms';
     import type { RegisterHouseSchema } from '$lib/utils/schemas';
 
-    let {
-        register_house_form
-    }: { register_house_form: SuperValidated<Infer<RegisterHouseSchema>> } = $props();
-    const { form, errors, enhance } = superForm(register_house_form, {
+    let { registerHouseForm }: { registerHouseForm: SuperValidated<Infer<RegisterHouseSchema>> } =
+        $props();
+    const { form, errors, enhance } = superForm(registerHouseForm, {
         onSubmit: async () => {
-            is_loading = true;
+            isLoading = true;
         },
         onUpdate: async ({ form, result }) => {
-            is_loading = false;
-            server_errors = result.data.errors;
+            isLoading = false;
+            serverErrors = result.data.errors;
         }
     });
-    let is_loading: boolean = $state(false);
-    let server_errors: string = $state('');
+    let isLoading: boolean = $state(false);
+    let serverErrors: string = $state('');
 </script>
 
 <form class="flex flex-col space-y-2 mt-4 m-2" action="?/register_house" method="POST" use:enhance>
-    {#if server_errors}
+    {#if serverErrors}
         <h1 class="mt-2 step-subtitle warning">
-            {server_errors}
+            {serverErrors}
         </h1>
     {/if}
 
@@ -58,8 +57,8 @@
     </div>
 
     <div class="btn-container">
-        <button class="btn btn-neutral w-full" disabled={is_loading}>
-            {#if !is_loading}
+        <button class="btn btn-neutral w-full" disabled={isLoading}>
+            {#if !isLoading}
                 Register
             {:else}
                 <span class="loading loading-spinner loading-lg"></span>

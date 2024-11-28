@@ -10,9 +10,9 @@ export async function load({ locals }) {
         redirect(302, '/');
     }
 
-    const login_form = await superValidate(locals.user, zod(loginSchema));
+    const loginForm = await superValidate(locals.user, zod(loginSchema));
     return {
-        login_form
+        loginForm
     };
 }
 

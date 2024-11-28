@@ -17,7 +17,7 @@
 
     let { data }: { data: PageData } = $props();
 
-    let server_errors: string = $state('');
+    let serverErrors: string = $state('');
 
     let sortKey: keyof SearchableTodo | `-${string & keyof SearchableTodo}` = $state('created_on');
     let sortOrder: boolean = $state(true);
@@ -51,7 +51,7 @@
 
     const handleSubmit = async ({}) => {
         return async ({ result, update }) => {
-            server_errors = result.data.errors;
+            serverErrors = result.data.errors;
             if (result.status === 200) {
                 newTodoData = '';
                 todoListHandler = new TodoListHandler([
@@ -71,7 +71,7 @@
 </script>
 
 <div class="flex flex-col gap-3 min-w-full min-h-full justify-between">
-    <div class="flex flex-col gap-3 ">
+    <div class="flex flex-col gap-3">
         <div>
             <label class="input input-bordered input-sm flex grow items-center gap-2">
                 <SearchIcon />
@@ -112,9 +112,9 @@
             </div>
         </div>
         <div class="flex flex-col">
-            {#if server_errors}
+            {#if serverErrors}
                 <h1 class="mt-2 step-subtitle text-error">
-                    {server_errors}
+                    {serverErrors}
                 </h1>
             {/if}
             <div class="card bg-base-200 rounded-lg">
@@ -142,7 +142,9 @@
             </div>
         </div>
     </div>
-    <div class={`flex card bg-base-300 w-full rounded-lg border-2 border-base-100 p-2 sticky ${isWebApp? "bottom-24" : "bottom-3" }`}>
+    <div
+        class={`flex card bg-base-300 w-full rounded-lg border-2 border-base-100 p-2 sticky ${isWebApp ? 'bottom-24' : 'bottom-3'}`}
+    >
         <form method="POST" use:enhance={handleSubmit}>
             <div class="flex flex-row flex-wrap gap-2">
                 <input

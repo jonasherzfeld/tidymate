@@ -55,10 +55,10 @@ export function initializeFilterValues<T>(filters: FilterDescription<T>[], list:
     }
 }
 
-export function getRestrictionType(is_logged_in: boolean, is_in_house: boolean): RestrictionType[] {
-    return is_logged_in && is_in_house
+export function getRestrictionType(isLoggedIn: boolean, isHouseMember: boolean): RestrictionType[] {
+    return isLoggedIn && isHouseMember
         ? ['logged_in', 'house_member']
-        : is_logged_in
+        : isLoggedIn
           ? ['logged_in', 'no_house_member']
           : ['logged_out'];
 }

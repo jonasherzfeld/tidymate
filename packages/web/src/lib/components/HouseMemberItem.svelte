@@ -4,54 +4,48 @@
     import AvatarGraphic from './AvatarGraphic.svelte';
 
     let {
-        user_id = '',
-        is_admin = false,
+        userId = '',
+        isAdmin = false,
         src = '',
-        first_name = '',
-        last_name = '',
-        joined_on = '',
-        change_enabled = false
+        firstName = '',
+        lastName = '',
+        joinedOn = '',
+        changeEnabled = false
     }: {
-        user_id: string;
-        is_admin: boolean;
+        userId: string;
+        isAdmin: boolean;
         src: string;
-        first_name: string;
-        last_name: string;
-        joined_on: string;
-        change_enabled: boolean;
+        firstName: string;
+        lastName: string;
+        joinedOn: string;
+        changeEnabled: boolean;
     } = $props();
 
-    let is_calling_user = $state(user_id === $page.data.user.id);
-    let change_enabled_var = $derived(change_enabled && !is_calling_user);
-    let date = new Date(joined_on);
-    let changing_admin_status = $state(false);
+    let isCallingUser = $state(userId === $page.data.user.id);
+    let isChangeEnabledForOthers = $derived(changeEnabled && !isCallingUser);
+    let date = new Date(joinedOn);
+    let changingAdminStatus = $state(false);
 
     const handleIsAdmin = async () => {
-        changing_admin_status = true;
+        changingAdminStatus = true;
 
         return async ({ result, update }) => {
             if (result.status !== 200) {
                 await update();
             }
-            changing_admin_status = false;
+            changingAdminStatus = false;
         };
     };
 </script>
 
-<tr class={is_calling_user ? 'bg-base-100' : ''}>
+<tr class={isCallingUser ? 'bg-base-100' : ''}>
     <td>
         <div class="flex items-center gap-3">
             <div class="avatar">
-                <AvatarGraphic
-                    height="h-10"
-                    width="w-10"
-                    {first_name}
-                    {last_name}
-                    thumbnail={src}
-                />
+                <AvatarGraphic height="h-10" width="w-10" {firstName} {lastName} thumbnail={src} />
             </div>
             <div>
-                <div class="font-bold">{first_name} {last_name}</div>
+                <div class="font-bold">{firstName} {lastName}</div>
             </div>
         </div>
     </td>
@@ -60,14 +54,14 @@
     </td>
     <th>
         <form action="/profile/house?/set_admin" method="POST" use:enhance={handleIsAdmin}>
-            <input type="hidden" name="user_id" value={user_id} />
+            <input type="hidden" name="user_id" value={userId} />
             <input
                 type="checkbox"
                 name="is_admin"
                 class="toggle toggle-primary cursor-pointer"
                 onchange={(e) => e.target.form.requestSubmit()}
-                bind:checked={is_admin}
-                disabled={!change_enabled_var || changing_admin_status}
+                bind:checked={isAdmin}
+                disabled={!isChangeEnabledForOthers || changingAdminStatus}
             />
         </form>
     </th>

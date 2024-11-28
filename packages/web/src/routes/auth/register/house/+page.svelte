@@ -8,5 +8,5 @@
     <div>
         <h1 class="text-4xl">Register House</h1>
     </div>
-    <RegisterHouseForm register_house_form={data.register_house_form} />
+    <RegisterHouseForm registerHouseForm={data.register_house_form} />
 </div>

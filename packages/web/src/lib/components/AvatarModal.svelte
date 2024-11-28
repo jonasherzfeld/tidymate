@@ -43,7 +43,7 @@
                     thumbnail={user.thumbnail}
                     height="h-24"
                     width="w-24"
-                    text_size="text-5xl font-bold"
+                    textSize="text-5xl font-bold"
                 />
             </div>
             <div>

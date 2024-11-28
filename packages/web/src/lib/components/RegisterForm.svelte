@@ -3,19 +3,19 @@
     import { superForm, type SuperValidated, type Infer } from 'sveltekit-superforms';
     import type { RegisterSchema } from '$lib/utils/schemas';
 
-    let { register_form }: { register_form: SuperValidated<Infer<RegisterSchema>> } = $props();
+    let { registerForm }: { registerForm: SuperValidated<Infer<RegisterSchema>> } = $props();
 
-    const { form, errors, enhance } = superForm(register_form, {
+    const { form, errors, enhance } = superForm(registerForm, {
         onSubmit: async () => {
-            is_loading = true;
+            isLoading = true;
         },
         onUpdate: async ({ form, result }) => {
-            is_loading = false;
-            server_errors = result.data.errors;
+            isLoading = false;
+            serverErrors = result.data.errors;
         }
     });
-    let server_errors: string = $state('');
-    let is_loading: boolean = $state(false);
+    let serverErrors: string = $state('');
+    let isLoading: boolean = $state(false);
 </script>
 
 <form class="flex flex-col space-y-2 mt-4 m-2" action="?/register" method="POST" use:enhance>
@@ -28,9 +28,9 @@
         />
         <span class="label-text ml-3">Join an existing home</span>
     </div>
-    {#if server_errors}
+    {#if serverErrors}
         <h1 class="mt-2 step-subtitle text-error">
-            {server_errors}
+            {serverErrors}
         </h1>
     {/if}
 
@@ -39,7 +39,7 @@
             type="text"
             name="email"
             placeholder="Email"
-            class_in={$errors.email ? 'input-error' : ''}
+            classIn={$errors.email ? 'input-error' : ''}
             bind:value={$form.email}
         />
         {#if $errors.email}<span class="flex w-full ml-2 invalid text-start text-error text-sm"
@@ -52,7 +52,7 @@
             type="text"
             name="first_name"
             placeholder="First name"
-            class_in={$errors.first_name ? 'input-error' : ''}
+            classIn={$errors.first_name ? 'input-error' : ''}
             bind:value={$form.first_name}
         />
         {#if $errors.first_name}
@@ -66,7 +66,7 @@
             type="text"
             name="last_name"
             placeholder="Last name"
-            class_in={$errors.last_name ? 'input-error' : ''}
+            classIn={$errors.last_name ? 'input-error' : ''}
             bind:value={$form.last_name}
         />
         {#if $errors.last_name}<span class="flex w-full ml-2 invalid text-start text-error text-sm"
@@ -79,7 +79,7 @@
             type="password"
             name="password"
             placeholder="Password"
-            class_in={$errors.password ? 'input-error' : ''}
+            classIn={$errors.password ? 'input-error' : ''}
             bind:value={$form.password}
         />
         {#if $errors.password}<span class="flex w-full ml-2 invalid text-start text-error text-sm"
@@ -92,7 +92,7 @@
             type="password"
             name="confirm_password"
             placeholder="Confirm Password"
-            class_in={$errors.confirm_password ? 'input-error' : ''}
+            classIn={$errors.confirm_password ? 'input-error' : ''}
             bind:value={$form.confirm_password}
         />
         {#if $errors.confirm_password}<span
@@ -107,7 +107,7 @@
                 type="text"
                 name="join_id"
                 placeholder="Join ID"
-                class_in={`input input-bordered flex items-center gap-2 ${$errors.join_id ? 'input-error' : 'input-primary'}`}
+                classIn={`input input-bordered flex items-center gap-2 ${$errors.join_id ? 'input-error' : 'input-primary'}`}
                 bind:value={$form.join_id}
             />
             {#if $errors.join_id}<span
@@ -118,8 +118,8 @@
     {/if}
 
     <div class="btn-container">
-        <button class="btn btn-neutral w-full" disabled={is_loading}>
-            {#if !is_loading}
+        <button class="btn btn-neutral w-full" disabled={isLoading}>
+            {#if !isLoading}
                 {!$form.is_join_home ? 'Continue' : 'Register'}
             {:else}
                 <span class="loading loading-spinner loading-lg"></span>

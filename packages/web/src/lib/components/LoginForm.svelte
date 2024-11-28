@@ -6,24 +6,24 @@
     import PasswordIcon from 'virtual:icons/mdi/password';
     import { page } from '$app/stores';
 
-    let { login_form }: { login_form: SuperValidated<Infer<LoginSchema>> } = $props();
-    const { form, errors, enhance } = superForm(login_form, {
+    let { loginForm }: { loginForm: SuperValidated<Infer<LoginSchema>> } = $props();
+    const { form, errors, enhance } = superForm(loginForm, {
         onSubmit: async () => {
-            is_loading = true;
+            isLoading = true;
         },
         onUpdate: async ({ form, result }) => {
-            is_loading = false;
-            server_errors = result.data.errors;
+            isLoading = false;
+            serverErrors = result.data.errors;
         }
     });
-    let server_errors: string = $state('');
-    let is_loading: boolean = $state(false);
+    let serverErrors: string = $state('');
+    let isLoading: boolean = $state(false);
 </script>
 
 <form class="flex flex-col space-y-4" method="POST" action="?/login" use:enhance>
-    {#if server_errors}
+    {#if serverErrors}
         <h1 class="mt-2 step-subtitle text-error">
-            {server_errors}
+            {serverErrors}
         </h1>
     {/if}
     <input
@@ -38,7 +38,7 @@
             type="text"
             name="email"
             placeholder="Email"
-            class_in={$errors.email ? 'input-error' : ''}
+            classIn={$errors.email ? 'input-error' : ''}
         >
             <EmailIcon class="h-4 w-4 opacity-60" />
         </TextInput>
@@ -52,7 +52,7 @@
             type="password"
             name="password"
             placeholder="Password"
-            class_in={$errors.password ? 'input-error' : ''}
+            classIn={$errors.password ? 'input-error' : ''}
         >
             <PasswordIcon class="h-4 w-4 opacity-60" />
         </TextInput>
@@ -61,8 +61,8 @@
             >{/if}
     </div>
     <div>
-        <button class="btn btn-neutral w-full" disabled={is_loading}>
-            {#if !is_loading}
+        <button class="btn btn-neutral w-full" disabled={isLoading}>
+            {#if !isLoading}
                 Login
             {:else}
                 <span class="loading loading-spinner loading-lg"></span>

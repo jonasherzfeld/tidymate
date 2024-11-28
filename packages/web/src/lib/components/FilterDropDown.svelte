@@ -33,7 +33,6 @@
                 <DropdownCheckboxItem
                     checked={filterValue.includes(value)}
                     onclick={() => {
-                        console.log(filterValue);
                         filterValue.includes(value)
                             ? (filterValue = filterValue.filter((item) => item !== value))
                             : (filterValue = [...filterValue, value]);

@@ -8,10 +8,10 @@ export const config: Config = {
 };
 
 export const load = async ({ params }) => {
-    const todo_item_form = await superValidate(zod(todoItemSchema));
+    const todoItemForm = await superValidate(zod(todoItemSchema));
 
     return {
         slug: params.slug,
-        todo_item_form
+        todoItemForm
     };
 };

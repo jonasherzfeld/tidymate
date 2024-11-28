@@ -26,19 +26,19 @@
             }}>{sortOrder ? 'Descending' : 'Ascending'}</Dropdown.CheckboxItem
         >
         <Dropdown.RadioItem
-            radio_name="sort"
+            radioName="sort"
             name="created_on"
             onchange={onChange}
             checked={sortKey.includes('created_on')}>Created On</Dropdown.RadioItem
         >
         <Dropdown.RadioItem
-            radio_name="sort"
+            radioName="sort"
             name="assignee"
             onchange={onChange}
             checked={sortKey.includes('assignee')}>Assignee</Dropdown.RadioItem
         >
         <Dropdown.RadioItem
-            radio_name="sort"
+            radioName="sort"
             name="data"
             onchange={onChange}
             checked={sortKey.includes('data')}>Text</Dropdown.RadioItem

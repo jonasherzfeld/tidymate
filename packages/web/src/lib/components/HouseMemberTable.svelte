@@ -2,11 +2,11 @@
     import HouseMemberItem from './HouseMemberItem.svelte';
 
     let {
-        user_list = $bindable([]),
-        change_enabled = false
+        userList = $bindable([]),
+        changeEnabled = false
     }: {
-        user_list: User[];
-        change_enabled: boolean;
+        userList: User[];
+        changeEnabled: boolean;
     } = $props();
 </script>
 
@@ -21,15 +21,15 @@
             </tr>
         </thead>
         <tbody>
-            {#each user_list as user}
+            {#each userList as user}
                 <HouseMemberItem
-                    user_id={user.id}
-                    first_name={user.first_name}
-                    last_name={user.last_name}
-                    is_admin={user.is_admin}
-                    joined_on={user.joined_on}
+                    userId={user.id}
+                    firstName={user.first_name}
+                    lastName={user.last_name}
+                    isAdmin={user.is_admin}
+                    joinedOn={user.joined_on}
                     src={user.thumbnail ? user.thumbnail : ''}
-                    {change_enabled}
+                    {changeEnabled}
                 />
             {/each}
         </tbody>
