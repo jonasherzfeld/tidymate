@@ -3,11 +3,9 @@
     import Footer from '$lib/components/Footer.svelte';
     import type { Snippet } from 'svelte';
     import { browser } from '$app/environment';
-    import TodoIcon from 'virtual:icons/fluent/task-list-square-16-filled';
-    import ChoresIcon from 'virtual:icons/fluent/calendar-arrow-counterclockwise-48-filled';
-    import HouseIcon from 'virtual:icons/fluent/home-20-filled';
     import '../app.css';
     import { page } from '$app/stores';
+    import WebAppMenuBar from '$lib/components/WebAppMenuBar.svelte';
 
     let isLoggedIn: boolean = $derived($page.data.user ? true : false);
     let isInHouse: boolean = $derived($page.data.house ? true : false);
@@ -19,7 +17,6 @@
         isWebApp =
             window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
     }
-
     let isPageLoaded = $state(false);
     const handlePageLoaded = ({}) => {
         isPageLoaded = true;
@@ -36,34 +33,7 @@
         {@render children?.()}
     </div>
     {#if isWebApp}
-        <ul
-            class="menu menu-horizontal justify-center bg-base-300 h-20 sticky border-t-[1px] bottom-0 shadow-md gap-3"
-        >
-            {#if isLoggedIn && isInHouse}
-                <li class="text-base">
-                    <a href="/home" class="p-0"
-                        ><button class="btn btn-md btn-square"
-                            ><HouseIcon style="font-size:1.2rem" /></button
-                        ></a
-                    >
-                </li>
-                <li class="text-base">
-                    <a href="/home/todo" class="p-0"
-                        ><button class="btn btn-md btn-square"
-                            ><TodoIcon style="font-size:1.2rem" /></button
-                        ></a
-                    >
-                </li>
-                <li class="text-base">
-                    <a href="/home/chores" class="p-0"
-                        ><button class="btn btn-md btn-square"
-                            ><ChoresIcon style="font-size:1.2rem" /></button
-                        ></a
-                    >
-                </li>
-                <div class="divider"></div>
-            {/if}
-        </ul>
+        <WebAppMenuBar />
     {:else}
         <Footer />
     {/if}

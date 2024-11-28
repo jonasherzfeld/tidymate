@@ -7,6 +7,7 @@ import HouseCircleOutline from '~icons/mdi/house-circle-outline';
 import SignOut from 'virtual:icons/mdi/sign-out';
 import SignIn from 'virtual:icons/mdi/sign-in';
 import RegisterIcon from 'virtual:icons/mdi/register-outline';
+import HouseIcon from 'virtual:icons/fluent/home-20-filled';
 import type { Component } from 'svelte';
 
 export const BASE_API_URI = import.meta.env.VITE_BASE_API_URI;
@@ -48,7 +49,7 @@ export type RouteMap = {
     position: RouteLinkPosition[];
     icon: Component;
     restricted: RestrictionType;
-    external?: boolean;
+    target: '_blank' | '_self' | '';
 };
 
 export const ROUTE_MAPPING: RouteMap[] = [
@@ -56,29 +57,33 @@ export const ROUTE_MAPPING: RouteMap[] = [
         url: '/home',
         title: 'Home',
         position: ['menu'],
-        icon: InfoIcon,
-        restricted: 'house_member'
+        icon: HouseIcon,
+        restricted: 'house_member',
+        target: ''
     },
     {
         url: '/home/todo',
         title: 'Todos',
         position: ['header_left', 'drawer_top', 'menu'],
         icon: TodoIcon,
-        restricted: 'house_member'
+        restricted: 'house_member',
+        target: ''
     },
     {
         url: '/home/chores',
         title: 'Chores',
         position: ['header_left', 'drawer_top', 'menu'],
         icon: ChoresIcon,
-        restricted: 'house_member'
+        restricted: 'house_member',
+        target: ''
     },
     {
         url: '/about',
         title: 'About',
         position: ['header_right', 'drawer_bottom'],
         icon: DocsIcon,
-        restricted: 'none'
+        restricted: 'none',
+        target: ''
     },
     {
         url: 'https://tidymate-docs.vercel.app/',
@@ -86,48 +91,54 @@ export const ROUTE_MAPPING: RouteMap[] = [
         position: ['header_right', 'drawer_bottom'],
         icon: InfoIcon,
         restricted: 'none',
-        external: true
+        target: '_blank'
     },
     {
         url: '/profile/user',
         title: 'Your Profile',
         position: ['avatar_dropdown'],
         icon: UserCircleOutline,
-        restricted: 'logged_in'
+        restricted: 'logged_in',
+        target: ''
     },
     {
         url: '/profile/house',
         title: 'Your House',
         position: ['avatar_dropdown'],
         icon: HouseCircleOutline,
-        restricted: 'house_member'
+        restricted: 'house_member',
+        target: ''
     },
     {
         url: '/auth/login',
         title: 'Login',
         position: ['avatar_dropdown'],
         icon: SignIn,
-        restricted: 'logged_out'
+        restricted: 'logged_out',
+        target: ''
     },
     {
         url: '/auth/register/house',
         title: 'Register House',
         position: ['avatar_dropdown'],
         icon: RegisterIcon,
-        restricted: 'no_house_member'
+        restricted: 'no_house_member',
+        target: ''
     },
     {
         url: '/auth/register',
         title: 'Register',
         position: ['avatar_dropdown'],
         icon: InfoIcon,
-        restricted: 'logged_out'
+        restricted: 'logged_out',
+        target: ''
     },
     {
         url: '/auth/logout',
         title: 'Logout',
         position: ['avatar_dropdown'],
         icon: SignOut,
-        restricted: 'logged_in'
+        restricted: 'logged_in',
+        target: '_self'
     }
 ];
