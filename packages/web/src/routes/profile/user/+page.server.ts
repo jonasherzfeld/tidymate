@@ -10,21 +10,21 @@ export const config: Config = {
 };
 
 export const load = async ({ locals }) => {
-    const email_form = await superValidate(locals.user, zod(emailSchema));
-    const first_name_form = await superValidate(locals.user, zod(firstNameSchema));
-    const last_name_form = await superValidate(locals.user, zod(lastNameSchema));
+    const emailForm = await superValidate(locals.user, zod(emailSchema));
+    const firstNameForm = await superValidate(locals.user, zod(firstNameSchema));
+    const lastNameForm = await superValidate(locals.user, zod(lastNameSchema));
 
     return {
-        email_form,
-        first_name_form,
-        last_name_form
+        emailForm,
+        firstNameForm,
+        lastNameForm
     };
 };
 
 export const actions = {
     update_email: async ({ request, fetch, cookies }) => {
-        const email_form = await superValidate(request, zod(emailSchema));
-        if (!email_form.valid) return fail(400, { email_form });
+        const emailForm = await superValidate(request, zod(emailSchema));
+        if (!emailForm.valid) return fail(400, { emailForm });
 
         let requestInitOptions: RequestInit = {
             method: 'PATCH',
@@ -34,7 +34,7 @@ export const actions = {
                 Cookie: `session=${cookies.get('session')}`
             },
             body: JSON.stringify({
-                email: email_form.data.email,
+                email: emailForm.data.email,
                 first_name: '',
                 last_name: ''
             })
@@ -43,15 +43,15 @@ export const actions = {
         const res = await fetch(`${BASE_API_URI}/auth/update-user`, requestInitOptions);
         const response = await res.json();
         if (!res.ok) {
-            return fail(400, { email_form, errors: response.error });
+            return fail(400, { emailForm, errors: response.error });
         }
 
-        return message(email_form, 'Email Updated!');
+        return message(emailForm, 'Email Updated!');
     },
 
     update_first_name: async ({ request, fetch, cookies }) => {
-        const first_name_form = await superValidate(request, zod(firstNameSchema));
-        if (!first_name_form.valid) return fail(400, { first_name_form });
+        const firstNameForm = await superValidate(request, zod(firstNameSchema));
+        if (!firstNameForm.valid) return fail(400, { firstNameForm });
 
         let requestInitOptions: RequestInit = {
             method: 'PATCH',
@@ -62,7 +62,7 @@ export const actions = {
             },
             body: JSON.stringify({
                 email: '',
-                first_name: first_name_form.data.first_name,
+                first_name: firstNameForm.data.first_name,
                 last_name: ''
             })
         };
@@ -70,15 +70,15 @@ export const actions = {
         const res = await fetch(`${BASE_API_URI}/auth/update-user`, requestInitOptions);
         const response = await res.json();
         if (!res.ok) {
-            return fail(400, { first_name_form, errors: response.error });
+            return fail(400, { firstNameForm, errors: response.error });
         }
 
-        return message(first_name_form, 'Email Updated!');
+        return message(firstNameForm, 'Email Updated!');
     },
 
     update_last_name: async ({ request, fetch, cookies }) => {
-        const last_name_form = await superValidate(request, zod(lastNameSchema));
-        if (!last_name_form.valid) return fail(400, { last_name_form });
+        const lastNameForm = await superValidate(request, zod(lastNameSchema));
+        if (!lastNameForm.valid) return fail(400, { lastNameForm });
 
         let requestInitOptions: RequestInit = {
             method: 'PATCH',
@@ -90,17 +90,17 @@ export const actions = {
             body: JSON.stringify({
                 email: '',
                 first_name: '',
-                last_name: last_name_form.data.last_name
+                last_name: lastNameForm.data.last_name
             })
         };
 
         const res = await fetch(`${BASE_API_URI}/auth/update-user`, requestInitOptions);
         const response = await res.json();
         if (!res.ok) {
-            return fail(400, { last_name_form, errors: response.error });
+            return fail(400, { lastNameForm, errors: response.error });
         }
 
-        return message(last_name_form, 'Email Updated!');
+        return message(lastNameForm, 'Email Updated!');
     },
 
     upload_image: async ({ request, fetch, cookies }) => {

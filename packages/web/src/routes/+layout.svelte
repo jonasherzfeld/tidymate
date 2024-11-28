@@ -9,8 +9,8 @@
     import '../app.css';
     import { page } from '$app/stores';
 
-    let is_logged_in: boolean = $derived($page.data.user ? true : false);
-    let is_in_house: boolean = $derived($page.data.house ? true : false);
+    let isLoggedIn: boolean = $derived($page.data.user ? true : false);
+    let isInHouse: boolean = $derived($page.data.house ? true : false);
 
     let { children }: { children: Snippet } = $props();
 
@@ -20,14 +20,14 @@
             window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
     }
 
-    let page_loaded = $state(false);
-    const pageLoaded = ({}) => {
-        page_loaded = true;
+    let isPageLoaded = $state(false);
+    const handlePageLoaded = ({}) => {
+        isPageLoaded = true;
     };
 </script>
 
-{#if !page_loaded}
-    <div class="flex justify-center items-center h-screen" use:pageLoaded>
+{#if !isPageLoaded}
+    <div class="flex justify-center items-center h-screen" use:handlePageLoaded>
         <span class="loading loading-spinner loading-lg"></span>
     </div>
 {/if}
@@ -39,7 +39,7 @@
         <ul
             class="menu menu-horizontal justify-center bg-base-300 h-20 sticky border-t-[1px] bottom-0 shadow-md gap-3"
         >
-            {#if is_logged_in && is_in_house}
+            {#if isLoggedIn && isInHouse}
                 <li class="text-base">
                     <a href="/home" class="p-0"
                         ><button class="btn btn-md btn-square"

@@ -60,7 +60,7 @@
                             thumbnail={data.user?.thumbnail}
                             height="h-24"
                             width="w-24"
-                            text_size="text-xl"
+                            textSize="text-xl"
                         />
                     </div>
                 </div>

@@ -36,9 +36,9 @@ export const load = async ({ cookies }) => {
 export const actions = {
     create_todo: async ({ request, fetch, cookies }) => {
         const formData = await request.formData();
-        const todo_data = String(formData.get('todo_data'));
+        const todoTextData = String(formData.get('todo_data'));
 
-        if (!todo_data) {
+        if (!todoTextData) {
             return fail(400, { errors: 'Nothing submitted' });
         }
 
@@ -49,7 +49,7 @@ export const actions = {
                 'Content-Type': 'application/json',
                 Cookie: `session=${cookies.get('session')}`
             },
-            body: JSON.stringify({ data: todo_data })
+            body: JSON.stringify({ data: todoTextData })
         };
 
         const res = await fetch(`${BASE_API_URI}/items/create-todo`, requestInitOptions);
@@ -63,9 +63,9 @@ export const actions = {
 
     delete_todo: async ({ request, fetch, cookies }) => {
         const params = new URLSearchParams(request.url);
-        const todo_id = params.getAll('id')[0];
+        const todoId = params.getAll('id')[0];
 
-        if (!todo_id) {
+        if (!todoId) {
             return fail(400, { errors: 'Invalid Todo ID' });
         }
 
@@ -78,19 +78,19 @@ export const actions = {
             }
         };
 
-        const res = await fetch(`${BASE_API_URI}/items/delete-todo/${todo_id}`, requestInitOptions);
+        const res = await fetch(`${BASE_API_URI}/items/delete-todo/${todoId}`, requestInitOptions);
         const response = await res.json();
         if (!res.ok) {
             return fail(400, { errors: response.error });
         }
 
-        return { todo_id: todo_id };
+        return { todo_id: todoId };
     },
     check_todo: async ({ request, fetch, cookies }) => {
         const params = new URLSearchParams(request.url);
-        const todo_id = params.getAll('id')[0];
+        const todoId = params.getAll('id')[0];
 
-        if (!todo_id) {
+        if (!todoId) {
             return fail(400, { errors: 'Invalid Todo ID' });
         }
 
@@ -103,7 +103,7 @@ export const actions = {
             }
         };
 
-        const res = await fetch(`${BASE_API_URI}/items/check-todo/${todo_id}`, requestInitOptions);
+        const res = await fetch(`${BASE_API_URI}/items/check-todo/${todoId}`, requestInitOptions);
         const response = await res.json();
         if (!res.ok) {
             return fail(400, { errors: response.error });

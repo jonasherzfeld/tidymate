@@ -15,9 +15,11 @@
         children: Snippet;
     } = $props();
 
-    let isLogged_in: boolean = $derived($page.data.user ? true : false);
+    let isLoggedIn: boolean = $derived($page.data.user ? true : false);
     let isHouseMember: boolean = $derived($page.data.house ? true : false);
-    let menuRestriction: RestrictionType[] = $derived(getRestrictionType(isLogged_in, isHouseMember));
+    let menuRestriction: RestrictionType[] = $derived(
+        getRestrictionType(isLoggedIn, isHouseMember)
+    );
     let isDrawerOpen: boolean = $state(false);
 
     function handleClick() {
@@ -53,7 +55,7 @@
         >
             <!-- Sidebar content here -->
             <a
-                href={isLogged_in && isHouseMember ? '/home' : '/'}
+                href={isLoggedIn && isHouseMember ? '/home' : '/'}
                 class="btn btn-ghost text-xl"
                 onclick={handleClick}
             >

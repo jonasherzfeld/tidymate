@@ -13,7 +13,7 @@
         assignee = $bindable(),
         done = $bindable(),
         tags = $bindable(),
-        created_on = $bindable(),
+        createdOn = $bindable(),
         deadline = $bindable(),
         removedList = $bindable()
     }: {
@@ -22,12 +22,13 @@
         assignee: string;
         done: boolean;
         tags: string[];
-        created_on: string;
+        createdOn: string;
         deadline: string;
         removedList: string[];
     } = $props();
 
-    let date = new Date(created_on);
+    let createdOnDate = new Date(createdOn);
+    let deadlineDate = new Date(deadline);
 
     const handleChecked = async ({}) => {
         return async ({ result, update }) => {
@@ -78,8 +79,8 @@
 
             <div class="flex">
                 {#if deadline}
-                    <span class="justify-left w-fit pr-3 text-xs"
-                        >{date.toLocaleDateString('en-GB')}</span
+                    <span class="justify-left w-fit pr-3 text-xs text-warning"
+                        >{deadlineDate.toLocaleDateString('en-GB')}</span
                     >
                 {/if}
                 {#if assignee}

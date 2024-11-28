@@ -34,26 +34,26 @@ async function get_house_members(cookies: Cookies) {
 }
 
 export const load = async ({ locals, cookies }) => {
-    const name_form = await superValidate(locals.house, zod(houseNamechema));
-    const city_form = await superValidate(locals.house, zod(houseCitySchema));
-    const country_form = await superValidate(locals.house, zod(houseCountrySchema));
-    const joinid_form = await superValidate(locals.house, zod(houseJoinIdSchema));
+    const nameForm = await superValidate(locals.house, zod(houseNamechema));
+    const cityForm = await superValidate(locals.house, zod(houseCitySchema));
+    const countryForm = await superValidate(locals.house, zod(houseCountrySchema));
+    const joinIdForm = await superValidate(locals.house, zod(houseJoinIdSchema));
     return {
         streamed: {
             user_list: get_house_members(cookies)
         },
-        name_form,
-        city_form,
-        country_form,
-        joinid_form
+        nameForm,
+        cityForm,
+        countryForm,
+        joinIdForm
     };
 };
 
 export const actions = {
     update_name: async ({ request, fetch, cookies }) => {
-        const name_form = await superValidate(request, zod(houseNamechema));
+        const nameForm = await superValidate(request, zod(houseNamechema));
 
-        if (!name_form.valid) return fail(400, { name_form });
+        if (!nameForm.valid) return fail(400, { nameForm });
 
         let requestInitOptions: RequestInit = {
             method: 'PATCH',
@@ -63,7 +63,7 @@ export const actions = {
                 Cookie: `session=${cookies.get('session')}`
             },
             body: JSON.stringify({
-                name: name_form.data.name,
+                name: nameForm.data.name,
                 city: '',
                 country: ''
             })
@@ -72,16 +72,16 @@ export const actions = {
         const res = await fetch(`${BASE_API_URI}/auth/update-house`, requestInitOptions);
         const response = await res.json();
         if (!res.ok) {
-            return fail(400, { name_form, errors: response.error });
+            return fail(400, { nameForm, errors: response.error });
         }
 
-        return message(name_form, 'Name Updated!');
+        return message(nameForm, 'Name Updated!');
     },
 
     update_city: async ({ request, fetch, cookies }) => {
-        const city_form = await superValidate(request, zod(houseCitySchema));
+        const cityForm = await superValidate(request, zod(houseCitySchema));
 
-        if (!city_form.valid) return fail(400, { city_form });
+        if (!cityForm.valid) return fail(400, { cityForm });
 
         let requestInitOptions: RequestInit = {
             method: 'PATCH',
@@ -92,7 +92,7 @@ export const actions = {
             },
             body: JSON.stringify({
                 name: '',
-                city: city_form.data.city,
+                city: cityForm.data.city,
                 country: ''
             })
         };
@@ -100,16 +100,16 @@ export const actions = {
         const res = await fetch(`${BASE_API_URI}/auth/update-house`, requestInitOptions);
         const response = await res.json();
         if (!res.ok) {
-            return fail(400, { city_form, errors: response.error });
+            return fail(400, { cityForm, errors: response.error });
         }
 
-        return message(city_form, 'City updated!');
+        return message(cityForm, 'City updated!');
     },
 
     update_country: async ({ request, fetch, cookies }) => {
-        const country_form = await superValidate(request, zod(houseCountrySchema));
+        const countryForm = await superValidate(request, zod(houseCountrySchema));
 
-        if (!country_form.valid) return fail(400, { country_form });
+        if (!countryForm.valid) return fail(400, { countryForm });
 
         let requestInitOptions: RequestInit = {
             method: 'PATCH',
@@ -121,21 +121,21 @@ export const actions = {
             body: JSON.stringify({
                 name: '',
                 city: '',
-                country: country_form.data.country
+                country: countryForm.data.country
             })
         };
 
         const res = await fetch(`${BASE_API_URI}/auth/update-house`, requestInitOptions);
         const response = await res.json();
         if (!res.ok) {
-            return fail(400, { country_form, errors: response.error });
+            return fail(400, { countryForm, errors: response.error });
         }
 
-        return message(country_form, 'Country updated!');
+        return message(countryForm, 'Country updated!');
     },
 
     toggle_join_id: async ({ request, locals, cookies }) => {
-        const joinid_form = await superValidate(request, zod(houseJoinIdSchema));
+        const joinIdForm = await superValidate(request, zod(houseJoinIdSchema));
 
         let requestInitOptions: RequestInit = {
             method: 'POST',
@@ -160,9 +160,9 @@ export const actions = {
 
         const response = await res.json();
         if (!res.ok) {
-            return fail(400, { joinid_form, errors: response.error });
+            return fail(400, { joinIdForm, errors: response.error });
         }
-        return { joinid_form, join_id: response.join_id };
+        return { joinIdForm, join_id: response.join_id };
     },
 
     set_admin: async ({ request, fetch, cookies }) => {

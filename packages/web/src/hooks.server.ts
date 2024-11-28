@@ -3,17 +3,15 @@ import { redirect } from '@sveltejs/kit';
 import type { RequestEvent } from '@sveltejs/kit';
 
 export function isAccessValid(path: String, user: User, house: House) {
-    const is_protecte_route_user = PROTECTED_ROUTES_USER.filter((option) =>
-        path.startsWith(option)
-    );
-    if (!user && is_protecte_route_user.length >= 1) {
+    const isProtecteRouteByUser = PROTECTED_ROUTES_USER.filter((option) => path.startsWith(option));
+    if (!user && isProtecteRouteByUser.length >= 1) {
         return false;
     }
 
-    const is_protecte_route_house = PROTECTED_ROUTES_HOUSE.filter((option) =>
+    const isProtectedRouteByHouse = PROTECTED_ROUTES_HOUSE.filter((option) =>
         path.startsWith(option)
     );
-    if (!house && is_protecte_route_house.length >= 1) {
+    if (!house && isProtectedRouteByHouse.length >= 1) {
         return false;
     }
 
@@ -45,24 +43,24 @@ export async function validateSession(event: RequestEvent) {
 
 export async function handle({ event, resolve }) {
     let theme: string | null = 'light';
-    const new_theme = event.url.searchParams.get('theme');
-    const cookie_theme = event.cookies.get('colortheme');
-    if (new_theme) {
-        theme = new_theme;
-    } else if (cookie_theme) {
-        theme = cookie_theme;
+    const newTheme = event.url.searchParams.get('theme');
+    const cookieTheme = event.cookies.get('colortheme');
+    if (newTheme) {
+        theme = newTheme;
+    } else if (cookieTheme) {
+        theme = cookieTheme;
     }
 
-    let add_theme_config = {};
+    let addThemeConfig = {};
     if (theme) {
-        add_theme_config = {
+        addThemeConfig = {
             transformPageChunk: ({ html }) => html.replace('data-theme=""', `data-theme="${theme}"`)
         };
     }
 
     if (event.locals.user) {
         // if there is already a user in session load page as normal
-        return await resolve(event, add_theme_config);
+        return await resolve(event, addThemeConfig);
     }
 
     const res = await validateSession(event);
@@ -73,11 +71,11 @@ export async function handle({ event, resolve }) {
         event.locals.house = response.house;
     }
 
-    const is_valid = isAccessValid(event.url.pathname, event.locals.user, event.locals.house);
-    if (!is_valid) {
+    const isValid = isAccessValid(event.url.pathname, event.locals.user, event.locals.house);
+    if (!isValid) {
         redirect(303, '/');
     }
 
     // load page as normal
-    return await resolve(event, add_theme_config);
+    return await resolve(event, addThemeConfig);
 }

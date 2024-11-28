@@ -11,74 +11,70 @@
 
     let showModal: boolean = $state(false);
 
-    let server_errors: string = $state('');
-    let creating_email: boolean = $state(false);
-    let creating_first_name: boolean = $state(false);
-    let creating_last_name: boolean = $state(false);
-    let edit_email: boolean = $state(false);
-    let edit_first_name: boolean = $state(false);
-    let edit_last_name: boolean = $state(false);
-    let is_img_hover: boolean = $state(false);
+    let serverErrors: string = $state('');
+    let creatingEmail: boolean = $state(false);
+    let creatingFirstName: boolean = $state(false);
+    let creatingLastName: boolean = $state(false);
+    let editEmail: boolean = $state(false);
+    let editFirstName: boolean = $state(false);
+    let editLastName: boolean = $state(false);
+    let isImgHover: boolean = $state(false);
     let handleImgHover = (value: boolean) => {
-        is_img_hover = value;
+        isImgHover = value;
     };
 
-    const { enhance: email_enhance, errors: email_errors } = superForm(data.email_form, {
+    const { enhance: emailEnhance, errors: emailErrors } = superForm(data.emailForm, {
         invalidateAll: false,
         resetForm: false,
         onSubmit: async () => {
-            creating_email = true;
+            creatingEmail = true;
         },
         onUpdate: async ({ form, result }) => {
-            server_errors = result.data.errors;
+            serverErrors = result.data.errors;
             if (form.valid) {
-                edit_email = false;
+                editEmail = false;
             } else {
-                edit_email = true;
+                editEmail = true;
             }
-            creating_email = false;
+            creatingEmail = false;
         }
     });
 
     const {
-        form: first_name_form,
-        errors: first_name_errors,
-        enhance: first_name_enhance
-    } = superForm(data.first_name_form, {
+        form: firstNameForm,
+        errors: firstNameErrors,
+        enhance: firstNameEnhance
+    } = superForm(data.firstNameForm, {
         invalidateAll: false,
         resetForm: false,
         onSubmit: async () => {
-            creating_first_name = true;
+            creatingFirstName = true;
         },
         onUpdate: async ({ form }) => {
             if (form.valid) {
-                edit_first_name = false;
+                editFirstName = false;
             } else {
-                edit_first_name = true;
+                editFirstName = true;
             }
-            creating_first_name = false;
+            creatingFirstName = false;
         }
     });
 
-    const { errors: last_name_errors, enhance: last_name_enhance } = superForm(
-        data.last_name_form,
-        {
-            invalidateAll: false,
-            resetForm: false,
-            onSubmit: async () => {
-                creating_last_name = true;
-            },
-            onUpdate: async ({ form }) => {
-                console.log(form.valid);
-                if (form.valid) {
-                    edit_last_name = false;
-                } else {
-                    edit_last_name = true;
-                }
-                creating_last_name = false;
+    const { errors: lastNameErrors, enhance: lastNameEnhance } = superForm(data.lastNameForm, {
+        invalidateAll: false,
+        resetForm: false,
+        onSubmit: async () => {
+            creatingLastName = true;
+        },
+        onUpdate: async ({ form }) => {
+            if (form.valid) {
+                editLastName = false;
+            } else {
+                editLastName = true;
             }
+            creatingLastName = false;
         }
-    );
+    });
 </script>
 
 <div class="flex flex-col flex-1 min-w-full">
@@ -99,12 +95,12 @@
                         thumbnail={data.user.thumbnail}
                         height="h-24"
                         width="w-24"
-                        text_size="text-5xl font-bold"
+                        textSize="text-5xl font-bold"
                     >
                         <div
                             class="w-full absolute bottom-0 left-0 text-center h-6 bg-white bg-opacity-60"
                             aria-label="Change Avatar"
-                            style="display: {is_img_hover ? 'block' : 'none'}"
+                            style="display: {isImgHover ? 'block' : 'none'}"
                         >
                             <h2 class="text-sm">Change</h2>
                         </div>
@@ -115,52 +111,52 @@
 
         <h1 class="text-4xl text-center font-bold">
             <span>Hi, </span>
-            <span class="text-accent">{$first_name_form.first_name}</span>
+            <span class="text-accent">{$firstNameForm.first_name}</span>
             <span>!</span>
         </h1>
     </div>
     <p class="py-6">This is your profile page. Here you can see your details.</p>
 
     <div class="flex flex-col flex-1 gap-2 p-3 card bg-base-200">
-        {#if server_errors}
+        {#if serverErrors}
             <h1 class="mt-2 step-subtitle warning">
-                {server_errors}
+                {serverErrors}
             </h1>
         {/if}
-        <form action="?/update_email" method="POST" use:email_enhance>
+        <form action="?/update_email" method="POST" use:emailEnhance>
             <FormTextInput
-                superform={data.email_form}
+                superform={data.emailForm}
                 field="email"
                 label="Email"
                 disabled={true}
-                bind:edit_value={edit_email}
-                bind:creating_value={creating_email}
+                bind:editValue={editEmail}
+                bind:creatingValue={creatingEmail}
             />
-            {#if $email_errors.email}<span class="invalid text-error">{$email_errors.email}</span
+            {#if $emailErrors.email}<span class="invalid text-error">{$emailErrors.email}</span
                 >{/if}
         </form>
-        <form action="?/update_first_name" method="POST" use:first_name_enhance>
+        <form action="?/update_first_name" method="POST" use:firstNameEnhance>
             <FormTextInput
-                superform={data.first_name_form}
+                superform={data.firstNameForm}
                 field="first_name"
                 label="First Name"
-                bind:edit_value={edit_first_name}
-                bind:creating_value={creating_first_name}
+                bind:editValue={editFirstName}
+                bind:creatingValue={creatingFirstName}
             />
-            {#if $first_name_errors.first_name}<span class="invalid text-error"
-                    >{$first_name_errors.first_name}</span
+            {#if $firstNameErrors.first_name}<span class="invalid text-error"
+                    >{$firstNameErrors.first_name}</span
                 >{/if}
         </form>
-        <form action="?/update_last_name" method="POST" use:last_name_enhance>
+        <form action="?/update_last_name" method="POST" use:lastNameEnhance>
             <FormTextInput
-                superform={data.last_name_form}
+                superform={data.lastNameForm}
                 field="last_name"
                 label="Last Name"
-                bind:edit_value={edit_last_name}
-                bind:creating_value={creating_last_name}
+                bind:editValue={editLastName}
+                bind:creatingValue={creatingLastName}
             />
-            {#if $last_name_errors.last_name}<span class="invalid text-error"
-                    >{$last_name_errors.last_name}</span
+            {#if $lastNameErrors.last_name}<span class="invalid text-error"
+                    >{$lastNameErrors.last_name}</span
                 >{/if}
         </form>
         <TextInput name="joined_on" value={data.user.joined_on} disabled={true}

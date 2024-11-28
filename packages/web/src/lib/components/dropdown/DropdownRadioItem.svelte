@@ -5,11 +5,11 @@
     interface Props extends HTMLButtonAttributes {
         children: Snippet;
         name: string;
-        radio_name: string;
+        radioName: string;
         checked?: boolean;
         onchange?: (event) => void;
     }
-    let { children, name, radio_name, checked, onchange }: Props = $props();
+    let { children, name, radioName, checked, onchange }: Props = $props();
 </script>
 
 <li>
@@ -17,7 +17,7 @@
         <label class="flex w-full h-fit justify-start items-center">
             <input
                 type="radio"
-                name={radio_name}
+                name={radioName}
                 {onchange}
                 class="radio radio-sm radio-primary"
                 value={name}

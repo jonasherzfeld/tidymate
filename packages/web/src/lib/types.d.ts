@@ -1,3 +1,4 @@
+// Interfaces and types used in frontend and backend
 interface Todo {
     id: string;
     data: string;
@@ -28,13 +29,7 @@ interface House {
     members: string[];
 }
 
-type FieldsError = {
-    email?: String;
-    password?: String;
-    confirmPassword?: String;
-    joinId?: String;
-};
-
+// Internal types
 type SearchableTodo = Todo & { searchTerms: string };
 type SearchableTodoSortKey = keyof SearchableTodo | `-${string & keyof SearchableTodo}`;
 

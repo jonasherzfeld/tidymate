@@ -8,103 +8,103 @@
 
     let { data }: { data: PageData } = $props();
     const {
-        form: name_form,
-        errors: name_errors,
-        enhance: name_enhance
-    } = superForm(data.name_form, {
+        form: nameForm,
+        errors: nameErrors,
+        enhance: nameEnhance
+    } = superForm(data.nameForm, {
         invalidateAll: false,
         resetForm: false,
         onSubmit: async () => {
-            creating_name = true;
+            creatingName = true;
         },
         onUpdate: async ({ form }) => {
             if (form.valid) {
-                edit_name = false;
+                editName = false;
             } else {
-                edit_name = true;
+                editName = true;
             }
-            creating_name = false;
+            creatingName = false;
         }
     });
 
-    const { errors: city_errors, enhance: city_enhance } = superForm(data.city_form, {
+    const { errors: cityErrors, enhance: cityEnhance } = superForm(data.cityForm, {
         invalidateAll: false,
         resetForm: false,
         onSubmit: async () => {
-            creating_city = true;
+            creatingCity = true;
         },
         onUpdate: async ({ form }) => {
             if (form.valid) {
-                edit_city = false;
+                editCity = false;
             } else {
-                edit_city = true;
+                editCity = true;
             }
-            creating_city = false;
+            creatingCity = false;
         }
     });
 
-    const { errors: country_errors, enhance: country_enhance } = superForm(data.country_form, {
+    const { errors: countryErrors, enhance: countryEnhance } = superForm(data.countryForm, {
         invalidateAll: false,
         resetForm: false,
         onSubmit: async () => {
-            creating_country = true;
+            creatingCountry = true;
         },
         onUpdate: async ({ form }) => {
             if (form.valid) {
-                edit_country = false;
+                editCountry = false;
             } else {
-                edit_country = true;
+                editCountry = true;
             }
-            creating_country = false;
+            creatingCountry = false;
         }
     });
 
-    let server_errors: string = $state('');
-    let edit_name: boolean = $state(false);
-    let edit_country: boolean = $state(false);
-    let edit_city: boolean = $state(false);
-    let creating_name: boolean = $state(false);
-    let creating_country: boolean = $state(false);
-    let creating_city: boolean = $state(false);
+    let serverErrors: string = $state('');
+    let editName: boolean = $state(false);
+    let editCountry: boolean = $state(false);
+    let editCity: boolean = $state(false);
+    let creatingName: boolean = $state(false);
+    let creatingCountry: boolean = $state(false);
+    let creatingCity: boolean = $state(false);
 </script>
 
 <div class="flex flex-col flex-1 min-w-full">
-    <h1 class="text-5xl font-bold text-accent">{$name_form.name}</h1>
+    <h1 class="text-5xl font-bold text-accent">{$nameForm.name}</h1>
     <p class="py-4">This is the settings page for your house!</p>
     <div class="flex flex-col flex-1 gap-3 min-w-full">
         <div class="flex flex-col flex-1 gap-2 p-3 card bg-base-200">
-            <form action="?/update_name" method="POST" use:name_enhance>
+            <form action="?/update_name" method="POST" use:nameEnhance>
                 <FormTextInput
-                    superform={data.name_form}
+                    superform={data.nameForm}
                     field="name"
                     label="Name"
-                    bind:edit_value={edit_name}
-                    bind:creating_value={creating_name}
+                    bind:editValue={editName}
+                    bind:creatingValue={creatingName}
                 />
-                {#if $name_errors.name}<span class="invalid text-error">{$name_errors.name}</span
+                {#if $nameErrors.name}<span class="invalid text-error">{$nameErrors.name}</span
                     >{/if}
             </form>
-            <form action="?/update_city" method="POST" use:city_enhance>
+            <form action="?/update_city" method="POST" use:cityEnhance>
                 <FormTextInput
-                    superform={data.city_form}
+                    superform={data.cityForm}
                     field="city"
                     label="City"
-                    bind:edit_value={edit_city}
-                    bind:creating_value={creating_city}
+                    bind:editValue={editCity}
+                    bind:creatingValue={creatingCity}
                 />
-                {#if $city_errors.city}<span class="invalid text-error">{$city_errors.city}</span
+                {#if $cityErrors.city}<span class="invalid text-error">{$cityErrors.city}</span
                     >{/if}
             </form>
-            <form action="?/update_country" method="POST" use:country_enhance>
+            <form action="?/update_country" method="POST" use:countryEnhance>
                 <FormTextInput
-                    superform={data.country_form}
+                    superform={data.countryForm}
                     field="country"
                     label="Country"
-                    bind:edit_value={edit_country}
-                    bind:creating_value={creating_country}
+                    bind:editValue={editCountry}
+                    bind:creatingValue={creatingCountry}
                 />
-                {#if $country_errors.country}<span class="invalid text-error"
-                        >{$country_errors.country}</span
+                {#if $countryErrors.country}<span class="invalid text-error"
+                        >{$countryErrors.country}</span
                     >{/if}
             </form>
             <TextInput name="joined_on" value={data.house.created_on} disabled={true}
@@ -133,13 +133,13 @@
                     <tbody>
                         {#each user_list as user}
                             <HouseMemberItem
-                                user_id={user.id}
-                                first_name={user.first_name}
-                                last_name={user.last_name}
-                                is_admin={user.is_admin}
-                                joined_on={user.joined_on}
+                                userId={user.id}
+                                firstName={user.first_name}
+                                lastName={user.last_name}
+                                isAdmin={user.is_admin}
+                                joinedOn={user.joined_on}
                                 src={user.thumbnail ? user.thumbnail : ''}
-                                change_enabled={data.user.is_admin}
+                                changeEnabled={data.user.is_admin}
                             />
                         {/each}
                     </tbody>
@@ -148,9 +148,9 @@
         </div>
 
         {#if data.user.is_admin}
-            <JoinIdCreator bind:server_errors />
-            {#if server_errors}
-                <span class="invalid text-error">{server_errors}</span>
+            <JoinIdCreator bind:serverErrors />
+            {#if serverErrors}
+                <span class="invalid text-error">{serverErrors}</span>
             {/if}
         {/if}
     </div>

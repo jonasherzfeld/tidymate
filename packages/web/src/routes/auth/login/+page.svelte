@@ -9,6 +9,6 @@
     <div>
         <h1 class="text-4xl">Login</h1>
     </div>
-    <LoginForm login_form={data.login_form} />
+    <LoginForm loginForm={data.loginForm} />
     <p class="mt-2">Have no account? <a href="/auth/register">Register here</a>.</p>
 </div>
