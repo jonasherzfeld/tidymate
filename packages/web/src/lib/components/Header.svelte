@@ -5,6 +5,7 @@
     import { type RestrictionType } from '$lib/utils/constants';
     import MenuBlock from './MenuBlock.svelte';
     import { getRouteTitle, getRestrictionType } from '$lib/utils/helpers';
+    import RainbowText from './RainbowText.svelte';
 
     let isLoggedIn: boolean = $derived($page.data.user ? true : false);
     let isHouseMember: boolean = $derived($page.data.house ? true : false);
@@ -20,7 +21,7 @@
             href={menuRestriction.includes('house_member') ? '/home' : '/'}
             class="btn btn-ghost hover:bg-transparent text-xl p-0 mr-2"
         >
-            <Logo width="30px" /><span class="hidden lg:block">Tidymate</span></a
+            <Logo width="30px" /><span class="hidden lg:block"><RainbowText>Tidymate</RainbowText></span></a
         >
         <div class="hidden lg:block">
             <ul class="menu menu-horizontal m-0 p-0">

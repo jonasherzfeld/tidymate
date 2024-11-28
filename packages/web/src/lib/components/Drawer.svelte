@@ -7,6 +7,7 @@
     import MenuBlock from './MenuBlock.svelte';
     import type { RestrictionType } from '$lib/utils/constants';
     import { getRestrictionType } from '$lib/utils/helpers';
+    import RainbowText from './RainbowText.svelte';
     let {
         isWebApp,
         children
@@ -59,7 +60,7 @@
                 class="btn btn-ghost text-xl"
                 onclick={handleClick}
             >
-                <Logo width="30px" />Tidymate</a
+                <Logo width="30px" /><RainbowText>Tidymate</RainbowText></a
             >
             <MenuBlock position="drawer_top" restricted={menuRestriction} {handleClick} />
             <div class="divider"></div>
