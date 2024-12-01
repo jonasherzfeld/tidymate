@@ -2,8 +2,8 @@
     import { superForm, type SuperValidated, type Infer } from 'sveltekit-superforms';
     import type { LoginSchema } from '$lib/utils/schemas';
     import TextInput from '$lib/components/TextInput.svelte';
-    import EmailIcon from 'virtual:icons/mdi/email';
-    import PasswordIcon from 'virtual:icons/mdi/password';
+    import { EmailIcon, PasswordIcon } from '$lib/utils/icons';
+
     import { page } from '$app/stores';
 
     let { loginForm }: { loginForm: SuperValidated<Infer<LoginSchema>> } = $props();

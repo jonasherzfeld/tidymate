@@ -1,8 +1,9 @@
 <script lang="ts">
     import { Calendar as CalendarPrimitive } from 'bits-ui';
-    import ChevronLeft from 'virtual:icons/fluent/chevron-left-28-filled';
+    import { ChevronLeft } from '$lib/utils/icons';
+
     import { buttonVariants } from '$lib/components/ui/button/index.js';
-    import { cn } from '$lib/utils.ts';
+    import { cn } from '$lib/utils';
 
     type $$Props = CalendarPrimitive.PrevButtonProps;
     type $$Events = CalendarPrimitive.PrevButtonEvents;

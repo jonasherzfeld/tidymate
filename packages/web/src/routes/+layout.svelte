@@ -7,18 +7,16 @@
     import { page } from '$app/stores';
     import WebAppMenuBar from '$lib/components/WebAppMenuBar.svelte';
 
-    let isLoggedIn: boolean = $derived($page.data.user ? true : false);
-    let isInHouse: boolean = $derived($page.data.house ? true : false);
-
     let { children }: { children: Snippet } = $props();
 
     let isWebApp: boolean = $state(false);
     if (browser) {
         isWebApp =
-            window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+            window.matchMedia('(display-mode: standalone)').matches ||
+            (window.navigator as any).standalone;
     }
     let isPageLoaded = $state(false);
-    const handlePageLoaded = ({}) => {
+    const handlePageLoaded = (e: HTMLDivElement) => {
         isPageLoaded = true;
     };
 </script>

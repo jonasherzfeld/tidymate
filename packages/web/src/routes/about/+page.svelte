@@ -1,11 +1,4 @@
 <script lang="ts">
-    import HtmlIcon from 'virtual:icons/skill-icons/html';
-    import CssIcon from 'virtual:icons/skill-icons/css';
-    import JSIcon from 'virtual:icons/skill-icons/javascript';
-    import TSIcon from 'virtual:icons/skill-icons/typescript';
-    import SvelteIcon from 'virtual:icons/skill-icons/svelte';
-    import GithubIcon from 'virtual:icons/skill-icons/github-dark';
-    import LinkedInIcon from 'virtual:icons/skill-icons/linkedin';
     import RainbowText from '$lib/components/RainbowText.svelte';
 </script>
 
@@ -16,9 +9,10 @@
             <div
                 class="flex flex-col card max-w-screen-sm h-fit gap-4 p-5 justify-center bg-base-300"
             >
-                <div class="text-error">This documentation is still under construction, Sorry :)</div>
+                <div class="text-error">
+                    This documentation is still under construction, Sorry :)
+                </div>
                 <div class="text-md text-justify">
-
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus maximus,
                     libero ut vulputate imperdiet, massa nisi tempor nisi, sed tristique metus lorem
                     ut lectus. Maecenas lacinia sapien quis lacus consectetur, et molestie felis

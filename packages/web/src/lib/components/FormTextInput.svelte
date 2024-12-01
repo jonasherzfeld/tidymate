@@ -9,8 +9,7 @@
         type SuperValidated,
         type FormPathLeaves
     } from 'sveltekit-superforms';
-    import EditIcon from 'virtual:icons/mdi/file-edit-outline';
-    import SubmitIcon from 'virtual:icons/mdi/file-send-outline';
+    import { EditIcon, SubmitIcon } from '$lib/utils/icons';
 
     let {
         superform,

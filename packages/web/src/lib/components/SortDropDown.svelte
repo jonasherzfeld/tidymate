@@ -1,6 +1,6 @@
 <script lang="ts">
     import * as Dropdown from '$lib/components/dropdown/index.js';
-    import SortIcon from 'virtual:icons/fluent/arrow-sort-16-filled';
+    import { SortIcon } from '$lib/utils/icons';
     let {
         sortKey = $bindable(),
         sortOrder = $bindable()

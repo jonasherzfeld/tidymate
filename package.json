@@ -11,6 +11,7 @@
     "format": "prettier --write ."
   },
   "devDependencies": {
+    "@babel/eslint-parser": "^7.25.9",
     "@iconify-json/fluent": "^1.2.5",
     "@iconify-json/mdi": "^1.2.1",
     "@iconify-json/skill-icons": "^1.2.0",
