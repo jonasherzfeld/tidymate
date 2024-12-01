@@ -41,6 +41,16 @@ def validate_house_member(user, house):
 
     return jsonify({}), 200
 
+def get_members_by_house_id(house: House):
+    house_member_list = user_vm.filter("house_id", house.id)
+    house_member_list_json = []
+    for house_mate in house_member_list:
+        response, ret = validate_house_member(house_mate, house)
+        if ret != 200:
+            return response, ret
+        house_member_list_json.append(house_mate.to_json())
+    return house_member_list_json
+
 @auth.route('/login', methods=['POST'])
 def login():
     try:
@@ -231,13 +241,7 @@ def get_house_members(user):
     if ret != 200:
         return response, ret
 
-    house_member_list = user_vm.filter("house_id", user.house_id)
-    house_member_list_json = []
-    for house_mate in house_member_list:
-        response, ret = validate_house_member(house_mate, house)
-        if ret != 200:
-            return response, ret
-        house_member_list_json.append(house_mate.to_json())
+    house_member_list_json = get_members_by_house_id(house)
 
     return jsonify({
         "user_list": house_member_list_json,
@@ -337,9 +341,12 @@ def get_current_user(user):
             if ret != 200:
                 return response, ret
 
+        house_json = house.to_json() if house else None
+        if house_json:
+            house_json["members"] = get_members_by_house_id(house)
         return jsonify({
             "user": user.to_json(),
-            "house": house.to_json() if house else None
+            "house": house_json
         }), 200
 
     return jsonify({

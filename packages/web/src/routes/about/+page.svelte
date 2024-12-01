@@ -16,9 +16,10 @@
             <div
                 class="flex flex-col card max-w-screen-sm h-fit gap-4 p-5 justify-center bg-base-300"
             >
-                <div class="text-error">This documentation is still under construction, Sorry :)</div>
+                <div class="text-error">
+                    This documentation is still under construction, Sorry :)
+                </div>
                 <div class="text-md text-justify">
-
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus maximus,
                     libero ut vulputate imperdiet, massa nisi tempor nisi, sed tristique metus lorem
                     ut lectus. Maecenas lacinia sapien quis lacus consectetur, et molestie felis

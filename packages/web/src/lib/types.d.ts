@@ -26,7 +26,7 @@ interface House {
     country: string;
     created_on: string;
     join_id: string;
-    members: string[];
+    members: User[];
 }
 
 // Internal types

@@ -21,7 +21,9 @@
             href={menuRestriction.includes('house_member') ? '/home' : '/'}
             class="btn btn-ghost hover:bg-transparent text-xl p-0 mr-2"
         >
-            <Logo width="30px" /><span class="hidden lg:block"><RainbowText>Tidymate</RainbowText></span></a
+            <Logo width="30px" /><span class="hidden lg:block"
+                ><RainbowText>Tidymate</RainbowText></span
+            ></a
         >
         <div class="hidden lg:block">
             <ul class="menu menu-horizontal m-0 p-0">
