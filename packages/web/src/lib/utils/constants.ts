@@ -1,13 +1,15 @@
-import TodoIcon from 'virtual:icons/fluent/task-list-square-16-filled';
-import ChoresIcon from 'virtual:icons/fluent/calendar-arrow-counterclockwise-48-filled';
-import InfoIcon from 'virtual:icons/fluent/info-12-regular';
-import DocsIcon from 'virtual:icons/fluent/document-bullet-list-16-regular';
-import UserCircleOutline from '~icons/mdi/user-circle-outline';
-import HouseCircleOutline from '~icons/mdi/house-circle-outline';
-import SignOut from 'virtual:icons/mdi/sign-out';
-import SignIn from 'virtual:icons/mdi/sign-in';
-import RegisterIcon from 'virtual:icons/mdi/register-outline';
-import HouseIcon from 'virtual:icons/fluent/home-20-filled';
+import {
+    HouseIcon,
+    TodoIcon,
+    ChoresIcon,
+    DocsIcon,
+    InfoIcon,
+    UserCircleOutline,
+    HouseCircleOutline,
+    SignIn,
+    RegisterIcon,
+    SignOut
+} from '$lib/utils/icons';
 import type { Component } from 'svelte';
 
 export const BASE_API_URI = import.meta.env.VITE_BASE_API_URI;
@@ -139,7 +141,7 @@ export const ROUTE_MAPPING: RouteMap[] = [
         url: '/auth/register',
         title: 'Register',
         position: ['avatar_dropdown'],
-        icon: InfoIcon,
+        icon: RegisterIcon,
         restricted: 'logged_out',
         target: ''
     },

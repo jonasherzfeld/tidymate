@@ -5,6 +5,8 @@
     import DropdownTextItem from './dropdown/DropdownTextItem.svelte';
     import DropdownCheckboxItem from './dropdown/DropdownCheckboxItem.svelte';
     import type { Snippet } from 'svelte';
+    import { getUsernameById } from '$lib/utils/helpers';
+    import { page } from '$app/stores';
 
     let {
         title,
@@ -36,7 +38,7 @@
                         filterValue.includes(value)
                             ? (filterValue = filterValue.filter((item) => item !== value))
                             : (filterValue = [...filterValue, value]);
-                    }}>{value}</DropdownCheckboxItem
+                    }}>{getUsernameById(value, $page.data.house.members)}</DropdownCheckboxItem
                 >
             {/each}
         {/if}

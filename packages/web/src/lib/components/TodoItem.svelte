@@ -1,11 +1,14 @@
 <script lang="ts">
-    import MenuDots from 'virtual:icons/mdi/dots-vertical';
+    import { MenuDots } from '$lib/utils/icons';
     import { enhance } from '$app/forms';
     import Dropdown from './dropdown/Dropdown.svelte';
     import DropdownContent from './dropdown/DropdownContent.svelte';
     import DropdownButton from './dropdown/DropdownTrigger.svelte';
     import DropdownActionItem from './dropdown/DropdownActionItem.svelte';
     import DropdownLinkItem from './dropdown/DropdownLinkItem.svelte';
+    import { getUsernameById } from '$lib/utils/helpers';
+    import { page } from '$app/stores';
+    import { cn } from '$lib/utils';
 
     let {
         id = $bindable(),
@@ -13,7 +16,7 @@
         assignee = $bindable(),
         done = $bindable(),
         tags = $bindable(),
-        createdOn = $bindable(),
+        created_on = $bindable(),
         deadline = $bindable(),
         removedList = $bindable()
     }: {
@@ -22,13 +25,19 @@
         assignee: string;
         done: boolean;
         tags: string[];
-        createdOn: string;
+        created_on: string;
         deadline: string;
         removedList: string[];
     } = $props();
 
-    let createdOnDate = new Date(createdOn);
-    let deadlineDate = new Date(deadline);
+    console.log(data, assignee, deadline);
+    let assigneeName = $derived(getUsernameById(assignee, $page.data.house.members));
+
+    let deadlineDate: Date = $derived(new Date(deadline));
+    let deadlineWarningDate: Date = new Date();
+    deadlineWarningDate.setDate(new Date().getDate() + 1);
+    let deadlineErrorDate: Date = new Date();
+    deadlineErrorDate.setDate(new Date().getDate() + 0);
 
     const handleChecked = async ({}) => {
         return async ({ result, update }) => {
@@ -79,13 +88,17 @@
 
             <div class="flex">
                 {#if deadline}
-                    <span class="justify-left w-fit pr-3 text-xs text-warning"
-                        >{deadlineDate.toLocaleDateString('en-GB')}</span
+                    <span
+                        class={cn(
+                            'justify-left w-fit pr-3 text-xs text-info',
+                            deadlineDate <= deadlineWarningDate && 'text-warning',
+                            deadlineDate <= deadlineErrorDate && 'text-error'
+                        )}>{deadlineDate.toDateString()}</span
                     >
                 {/if}
-                {#if assignee}
+                {#if assigneeName}
                     <h2 class="card-compact text-xs">
-                        {assignee ? assignee : 'Not assigned'}
+                        {assigneeName}
                     </h2>
                 {/if}
             </div>

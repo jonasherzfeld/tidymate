@@ -70,3 +70,11 @@ export function getRouteTitle(url: string | null): string | undefined {
     let item = ROUTE_MAPPING.find((item) => item.url === url);
     return item?.title;
 }
+
+export function getUsernameById(id: string, userList: User[]): string | undefined {
+    const member = userList.find((member) => member.id === id);
+    if (member) {
+        return `${member.first_name} ${member.last_name}`;
+    }
+    return undefined;
+}

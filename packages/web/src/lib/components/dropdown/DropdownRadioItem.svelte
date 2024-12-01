@@ -4,7 +4,7 @@
 
     interface Props extends HTMLButtonAttributes {
         children: Snippet;
-        name: string;
+        name?: string;
         radioName: string;
         checked?: boolean;
         onchange?: (event) => void;
@@ -13,8 +13,8 @@
 </script>
 
 <li>
-    <div class="form-control flex w-full h-fit justify-start items-center p-2">
-        <label class="flex w-full h-fit justify-start items-center">
+    <div class="form-control flex w-full h-fit justify-start items-center p-0">
+        <label class="flex w-full h-fit justify-start items-center p-2">
             <input
                 type="radio"
                 name={radioName}

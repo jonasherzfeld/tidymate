@@ -3,7 +3,7 @@
     import { page } from '$app/stores';
     import Header from '$lib/components/Header.svelte';
     import Logo from './Logo.svelte';
-    import MenuIcon from 'virtual:icons/mdi/menu';
+    import { MenuIcon } from '$lib/utils/icons';
     import MenuBlock from './MenuBlock.svelte';
     import type { RestrictionType } from '$lib/utils/constants';
     import { getRestrictionType } from '$lib/utils/helpers';

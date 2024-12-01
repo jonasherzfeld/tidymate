@@ -7,11 +7,7 @@
     import TodoItem from '$lib/components/TodoItem.svelte';
     import SortDropDown from '$lib/components/SortDropDown.svelte';
     import FilterDropDown from '$lib/components/FilterDropDown.svelte';
-    import ReloadIcon from 'virtual:icons/fluent/arrow-clockwise-24-filled';
-    import TagIcon from 'virtual:icons/fluent/tag-16-filled';
-    import UserIcon from 'virtual:icons/fluent/person-24-filled';
-    import DoneAllIcon from 'virtual:icons/mdi/done-all';
-    import SearchIcon from 'virtual:icons/mdi/search';
+    import { ReloadIcon, TagIcon, UserIcon, DoneAllIcon, SearchIcon } from '$lib/utils/icons';
     import ToggleButton from '$lib/components/ToggleButton.svelte';
     import { browser } from '$app/environment';
 

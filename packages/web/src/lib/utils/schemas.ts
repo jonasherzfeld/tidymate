@@ -1,3 +1,4 @@
+import { getLocalTimeZone, now, ZonedDateTime } from '@internationalized/date';
 import { z } from 'zod';
 
 export const loginSchema = z.object({
@@ -91,13 +92,21 @@ export const houseJoinIdSchema = z.object({
 });
 export type HouseJoinIdSchema = typeof houseJoinIdSchema;
 
-export const todoItemSchema = z.object({
-    id: z.string(),
-    data: z.string().min(1).max(255),
-    assignee: z.string(),
-    done: z.boolean(),
-    tags: z.array(z.string()),
-    created_on: z.string(),
-    deadline: z.string()
-});
+export const todoItemSchema = z
+    .object({
+        id: z.string(),
+        data: z.string().min(1).max(255),
+        assignee: z.string().optional(),
+        deadline: z.date().optional()
+    })
+    .superRefine(({ deadline }, ctx) => {
+        let current_date: Date = new Date(new Date().toDateString());
+        if (deadline && deadline < current_date) {
+            ctx.addIssue({
+                code: 'custom',
+                path: ['deadline'],
+                message: 'Deadline must be before today'
+            });
+        }
+    });
 export type TodoItemSchema = typeof todoItemSchema;
