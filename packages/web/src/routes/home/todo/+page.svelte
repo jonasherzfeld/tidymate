@@ -2,7 +2,7 @@
     import type { PageData } from './$types.js';
     import { enhance } from '$app/forms';
     import { onMount } from 'svelte';
-    import { TodoListHandler } from '$lib/utils/todo-list-handler';
+    import { ListHandler } from '$lib/utils/list_handler';
     import { initializeFilterValues } from '$lib/utils/helpers';
     import TodoItem from '$lib/components/TodoItem.svelte';
     import SortDropDown from '$lib/components/SortDropDown.svelte';
@@ -15,7 +15,7 @@
 
     let serverErrors: string = $state('');
 
-    let sortKey: keyof SearchableTodo | `-${string & keyof SearchableTodo}` = $state('created_on');
+    let sortKey: SearchableItemSortKey<Todo> = $state('created_on');
     let sortOrder: boolean = $state(true);
 
     let filters: FilterDescription<Todo>[] = $state([
@@ -28,7 +28,8 @@
     let removedList: string[] = $state([]);
     let searchText: string = $state('');
 
-    let todoListHandler: TodoListHandler = $state(new TodoListHandler());
+    let todoListHandler: ListHandler<Todo> = $state(new ListHandler());
+    const searchableProperties: (keyof Todo)[] = ['data', 'assignee', 'tags'];
     let todoList: Todo[] = $derived(
         todoListHandler.getSortedAndFilteredList(
             searchText,
@@ -50,10 +51,11 @@
             serverErrors = result.data.errors;
             if (result.status === 200) {
                 newTodoData = '';
-                todoListHandler = new TodoListHandler([
-                    ...todoListHandler.getFullList(),
-                    result.data.todo
-                ]);
+                todoListHandler = new ListHandler(
+                    [...todoListHandler.getFullList(), result.data.todo],
+                    searchableProperties,
+                    data.house.members
+                );
             } else {
                 update();
             }
@@ -61,7 +63,11 @@
     };
 
     onMount(async () => {
-        todoListHandler = new TodoListHandler(await data.streamed.todo_list);
+        todoListHandler = new ListHandler(
+            await data.streamed.todo_list,
+            searchableProperties,
+            data.house.members
+        );
         initializeFilterValues<Todo>(filters, todoListHandler.getFullList());
     });
 </script>
