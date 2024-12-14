@@ -42,7 +42,6 @@ export const actions = {
     change_todo: async ({ request, fetch, cookies }) => {
         const changeTodoForm = await superValidate(request, zod(todoItemSchema));
         if (!changeTodoForm.valid) return fail(400, { changeTodoForm });
-        console.log(changeTodoForm.data);
         let requestInitOptions: RequestInit = {
             method: 'PATCH',
             credentials: 'include',
@@ -61,7 +60,6 @@ export const actions = {
         const res = await fetch(`${BASE_API_URI}/items/update-todo`, requestInitOptions);
         const response = await res.json();
         if (!res.ok) {
-            console.log(response.error);
             return fail(400, { changeTodoForm, errors: response.error });
         }
 

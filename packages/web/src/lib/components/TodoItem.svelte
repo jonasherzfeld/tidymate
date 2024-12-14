@@ -30,7 +30,6 @@
         removedList: string[];
     } = $props();
 
-    console.log(data, assignee, deadline);
     let assigneeName = $derived(getUsernameById(assignee, $page.data.house.members));
 
     let deadlineDate: Date = $derived(new Date(deadline));
