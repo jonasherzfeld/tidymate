@@ -27,7 +27,7 @@
                         ></path>
                     </svg>
                 </div>
-                <div class="stat-title">Total Likes</div>
+                <div class="stat-title">Total Chores</div>
                 <div class="stat-value text-primary">25.6K</div>
                 <div class="stat-desc">21% more than last month</div>
             </div>
@@ -48,7 +48,7 @@
                         ></path>
                     </svg>
                 </div>
-                <div class="stat-title">Page Views</div>
+                <div class="stat-title">Chores this year</div>
                 <div class="stat-value text-secondary">2.6M</div>
                 <div class="stat-desc">21% more than last month</div>
             </div>

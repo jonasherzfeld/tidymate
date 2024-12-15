@@ -33,6 +33,7 @@ import SearchIcon from 'virtual:icons/mdi/search';
 import CheckIcon from 'virtual:icons/fluent/checkmark-12-filled';
 import CalendarIcon from 'virtual:icons/fluent/calendar-24-regular';
 import TextIcon from 'virtual:icons/fluent/code-text-16-filled';
+import BedroomIcon from 'virtual:icons/fluent/bed-16-filled';
 
 export {
     HtmlIcon,
@@ -68,5 +69,6 @@ export {
     SearchIcon,
     CheckIcon,
     CalendarIcon,
-    TextIcon
+    TextIcon,
+    BedroomIcon
 };

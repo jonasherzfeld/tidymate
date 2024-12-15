@@ -34,7 +34,7 @@
     let noInitials = $derived(!inputNameInitials && !derivedNameInitials);
 </script>
 
-<div class={`mask mask-squircle ${height} ${width}`}>
+<div class={`mask mask-circle ${height} ${width}`}>
     {#if !isLoggedIn || (isLoggedIn && noInitials)}
         <img alt="User" src={UnknownAvatar} />
     {:else if thumbnail}

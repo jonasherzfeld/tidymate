@@ -5,6 +5,7 @@ import { todoItemSchema } from '$lib/utils/schemas';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { fail, redirect } from '@sveltejs/kit';
+import type { PageServerLoad } from './$types.js';
 
 export const config: Config = {
     runtime: 'edge'
@@ -29,7 +30,7 @@ async function get_todo(todoId: string, cookies: Cookies): Promise<Todo> {
     return response.todo as Todo;
 }
 
-export const load = async ({ params, cookies }) => {
+export const load: PageServerLoad = async ({ params, cookies }) => {
     const todoItemForm = await superValidate(zod(todoItemSchema));
 
     return {

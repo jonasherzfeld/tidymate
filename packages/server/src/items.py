@@ -90,9 +90,9 @@ def update_todos(user):
 
     if todo_text:
         todo.data = todo_text
-    if todo_assignee:
+    if todo_assignee is not None:
         todo.assignee = todo_assignee
-    if todo_deadline:
+    if todo_deadline is not None:
         todo.deadline = todo_deadline
 
     todo_vm.update(house.id, todo.id, todo)

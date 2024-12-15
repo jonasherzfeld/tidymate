@@ -15,6 +15,7 @@ export default {
             {
                 dark: {
                     ...require('daisyui/src/theming/themes')['dracula'],
+                    neutral: '#4b5563',
 
                     '--rounded-box': '0.25rem', // border radius rounded-box utility class, used in card and other large boxes
                     '--rounded-btn': '0.25rem', // border radius rounded-btn utility class, used in buttons and similar element
@@ -25,6 +26,7 @@ export default {
                 },
                 light: {
                     ...require('daisyui/src/theming/themes')['cupcake'],
+                    neutral: '#d1d5db',
 
                     '--rounded-box': '0.25rem', // border radius rounded-box utility class, used in card and other large boxes
                     '--rounded-btn': '0.25rem', // border radius rounded-btn utility class, used in buttons and similar element

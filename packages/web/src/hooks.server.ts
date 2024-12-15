@@ -2,7 +2,7 @@ import { BASE_API_URI, PROTECTED_ROUTES_HOUSE, PROTECTED_ROUTES_USER } from '$li
 import { redirect } from '@sveltejs/kit';
 import type { RequestEvent } from '@sveltejs/kit';
 
-export function isAccessValid(path: String, user: User, house: House) {
+export function isAccessValid(path: String, user: User, house: House): boolean {
     const isProtecteRouteByUser = PROTECTED_ROUTES_USER.filter((option) => path.startsWith(option));
     if (!user && isProtecteRouteByUser.length >= 1) {
         return false;
@@ -18,7 +18,7 @@ export function isAccessValid(path: String, user: User, house: House) {
     return true;
 }
 
-export async function validateSession(event: RequestEvent) {
+export async function validateSession(event: RequestEvent): Promise<Response | null> {
     // get cookies from browser
     const session = event.cookies.get('session');
     if (!session) {

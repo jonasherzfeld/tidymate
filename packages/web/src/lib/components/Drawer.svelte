@@ -33,7 +33,7 @@
     <div class="drawer-content flex flex-col min-h-screen">
         <!-- Navbar -->
         <div
-            class={`navbar w-full bg-base-300 text-shade-500 border-solid border-b border-shape-500 sticky top-0 z-10 shadow-md ${isWebApp ? 'pt-12' : ''}`}
+            class={`navbar w-full bg-base-300 text-shade-500 border-solid border-b border-neutral sticky top-0 z-10 shadow-md ${isWebApp ? 'pt-12' : ''}`}
         >
             <div class={`flex w-fit p-0 m-0 lg:hidden ${isWebApp ? 'hidden' : ''}`}>
                 <button

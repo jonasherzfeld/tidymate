@@ -38,7 +38,6 @@
     "type": "module",
     "dependencies": {
         "class-variance-authority": "^0.7.0",
-        "lucide-react": "^0.456.0",
         "postcss-normalize": "^13.0.1",
         "tailwindcss-animate": "^1.0.7"
     }

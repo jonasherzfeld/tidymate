@@ -1,12 +1,13 @@
 import { redirect } from '@sveltejs/kit';
 import type { Actions } from '@sveltejs/kit';
+import type { PageServerLoad } from './$types';
 
-export async function load({ locals }) {
+export const load: PageServerLoad = async ({ locals }) => {
     // redirect user if logged in
     if (locals.user && locals.house) {
         redirect(302, '/home');
     }
-}
+};
 
 export const actions: Actions = {
     set_theme: async ({ url, cookies }) => {

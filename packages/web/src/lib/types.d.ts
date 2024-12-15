@@ -9,6 +9,18 @@ interface Todo {
     deadline: string;
 }
 
+type ChoreSeverity = {
+    LOW: 0;
+    MEDIUM: 1;
+    HIGH: 2;
+};
+interface Chore extends Todo {
+    frequency: number;
+    last_done: string;
+    room: string;
+    severity: ChoreSeverity;
+}
+
 interface User {
     id: string;
     email: string;
@@ -27,6 +39,7 @@ interface House {
     created_on: string;
     join_id: string;
     members: User[];
+    rooms: string[];
 }
 
 // Internal types

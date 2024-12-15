@@ -50,10 +50,10 @@ class Chore(Todo):
     severity : int = ChoreSeverity.LOW
 
     def __init__(self, id: str = None, data: str = None, assignee: str = None,
-                    tags: list = None, created_on: str = None, deadline: str = None,
+                    done = False, tags: list = None, created_on: str = None, deadline: str = None,
                     frequency: int = None, last_done: str = None, room: str = None,
                     severity: int = None):
-        super().__init__(id, data, assignee, tags, created_on, deadline)
+        super().__init__(id, data, assignee, done, tags, created_on, deadline)
         self.frequency = frequency
         self.last_done = last_done
         self.room = room

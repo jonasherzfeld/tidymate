@@ -98,7 +98,7 @@
                         textSize="text-5xl font-bold"
                     >
                         <div
-                            class="w-full absolute bottom-0 left-0 text-center h-6 bg-white bg-opacity-60"
+                            class="w-full absolute bottom-0 left-0 text-center h-7 bg-base-300 bg-opacity-60"
                             aria-label="Change Avatar"
                             style="display: {isImgHover ? 'block' : 'none'}"
                         >
