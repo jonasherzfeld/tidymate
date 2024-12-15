@@ -5,6 +5,7 @@
     import JoinIdCreator from '$lib/components/JoinIdCreator.svelte';
     import { superForm } from 'sveltekit-superforms';
     import type { PageData } from './$types';
+    import HouseMemberTable from '$lib/components/HouseMemberTable.svelte';
 
     let { data }: { data: PageData } = $props();
     const {
@@ -122,28 +123,7 @@
                     <div class="skeleton h-4 w-full"></div>
                 </div>
             {:then user_list}
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>User</th>
-                            <th>Joined On</th>
-                            <th>Admin</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {#each user_list as user}
-                            <HouseMemberItem
-                                userId={user.id}
-                                firstName={user.first_name}
-                                lastName={user.last_name}
-                                isAdmin={user.is_admin}
-                                joinedOn={user.joined_on}
-                                src={user.thumbnail ? user.thumbnail : ''}
-                                changeEnabled={data.user.is_admin}
-                            />
-                        {/each}
-                    </tbody>
-                </table>
+                <HouseMemberTable userList={user_list} changeEnabled={data.user.is_admin} />
             {/await}
         </div>
 

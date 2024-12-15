@@ -119,7 +119,7 @@
                     {serverErrors}
                 </h1>
             {/if}
-            <div class="card bg-base-200 rounded-lg">
+            <div class="card bg-base-300 rounded-lg card-bordered border-neutral shadow-md">
                 {#await data.streamed.todo_list}
                     <div class="flex w-full flex-col gap-4">
                         <div class="skeleton h-32 w-full"></div>

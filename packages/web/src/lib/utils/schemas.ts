@@ -110,3 +110,26 @@ export const todoItemSchema = z
         }
     });
 export type TodoItemSchema = typeof todoItemSchema;
+
+export const choreItemSchema = z
+    .object({
+        id: z.string(),
+        data: z.string().min(1).max(255),
+        frequency: z.number().int().min(1).max(365).optional(),
+        assignee: z.string().optional(),
+        deadline: z.date().optional(),
+        last_done: z.date().optional(),
+        room: z.string().optional(),
+        severity: z.number().int().min(0).max(2).optional()
+    })
+    .superRefine(({ deadline }, ctx) => {
+        let current_date: Date = new Date(new Date().toDateString());
+        if (deadline && deadline < current_date) {
+            ctx.addIssue({
+                code: 'custom',
+                path: ['deadline'],
+                message: 'Deadline must be before today'
+            });
+        }
+    });
+export type ChoreItemSchema = typeof choreItemSchema;

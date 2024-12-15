@@ -37,8 +37,8 @@
             >
         </div>
 
-        <div class="flex flex-col sm:flex-row items-center gap-3 mb-5">
-            <div class="avatar m-5">
+        <div class="flex flex-col sm:flex-row items-center gap-3 ml-4 mr-4">
+            <div class="avatar m-5 ml-0">
                 <AvatarGraphic
                     thumbnail={user.thumbnail}
                     height="h-24"

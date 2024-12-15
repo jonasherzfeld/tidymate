@@ -2,12 +2,13 @@ import { BASE_API_URI } from '$lib/utils/constants';
 import type { Cookies } from '@sveltejs/kit';
 import type { Config } from '@sveltejs/adapter-vercel';
 import { fail } from '@sveltejs/kit';
+import type { PageServerLoad } from './$types.js';
 
 export const config: Config = {
     runtime: 'edge'
 };
 
-async function get_todos(cookies: Cookies) {
+async function get_todos(cookies: Cookies): Promise<Todo[]> {
     let requestInitOptions: RequestInit = {
         method: 'GET',
         credentials: 'include',
@@ -20,12 +21,12 @@ async function get_todos(cookies: Cookies) {
     const res = await fetch(`${BASE_API_URI}/items/get-todos`, requestInitOptions);
     const response = await res.json();
     if (!res.ok) {
-        return null;
+        return [] as Todo[];
     }
     return response.todos;
 }
 
-export const load = async ({ cookies }) => {
+export const load: PageServerLoad = async ({ cookies }) => {
     return {
         streamed: {
             todo_list: get_todos(cookies)

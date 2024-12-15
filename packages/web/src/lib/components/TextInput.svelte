@@ -14,7 +14,7 @@
         name: string;
         placeholder?: string;
         classIn?: string;
-        value?: string;
+        value?: string | number;
         disabled?: boolean;
         children?: Snippet;
     } = $props();

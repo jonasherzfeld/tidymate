@@ -15,7 +15,7 @@ export const config: Config = {
     runtime: 'edge'
 };
 
-async function get_house_members(cookies: Cookies) {
+async function get_house_members(cookies: Cookies): Promise<User[]> {
     let requestInitOptions: RequestInit = {
         method: 'GET',
         credentials: 'include',
@@ -28,7 +28,7 @@ async function get_house_members(cookies: Cookies) {
     const res = await fetch(`${BASE_API_URI}/auth/get-house-members`, requestInitOptions);
     const response = await res.json();
     if (!res.ok) {
-        return null;
+        return [] as User[];
     }
     return response.user_list;
 }

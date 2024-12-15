@@ -49,7 +49,7 @@
     const handleRemove = async ({}) => {
         return async ({ result, update }) => {
             if (result.status === 200) {
-                removedList.push(result.data.todo_id);
+                removedList.push(result.data.chore_id);
             } else {
                 await update();
             }
@@ -59,18 +59,18 @@
 
 <div class="flex w-full">
     <div
-        class="card rounded-lg flex flex-row p-2 justify-between items-start w-full bg-base-300 h-fit"
+        class="card card-bordered border-neutral rounded-lg flex flex-row p-2 justify-between items-start w-full bg-base-300 shadow-sm h-fit"
     >
         <div class="flex justify-start w-fit h-full">
             <form
                 class="flex"
-                action="/home/todo?/check_todo&id={id}"
+                action="/home/chores?/check_chore&id={id}"
                 method="POST"
                 use:enhance={handleChecked}
             >
                 <input
                     type="checkbox"
-                    name="check_todo"
+                    name="check_chore"
                     class="checkbox checkbox-primary checkbox-md"
                     onchange={(e) => {
                         e.target.form.requestSubmit();
@@ -108,9 +108,9 @@
                     <MenuDots />
                 </DropdownButton>
                 <DropdownContent>
-                    <DropdownLinkItem href="/home/todo/{id}">Edit</DropdownLinkItem>
+                    <DropdownLinkItem href="/home/chores/{id}">Edit</DropdownLinkItem>
                     <form method="POST" use:enhance={handleRemove}>
-                        <DropdownActionItem action="/home/todo?/delete_todo&id={id}"
+                        <DropdownActionItem action="/home/chores?/delete_chore&id={id}"
                             >Delete</DropdownActionItem
                         >
                     </form>
