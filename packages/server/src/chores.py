@@ -18,6 +18,9 @@ def create_chore(user):
     assignee = request.json.get("assignee", "")
     tags = request.json.get("tags", [])
     deadline = request.json.get("deadline", "")
+
+
+
     frequency = request.json.get("frequency", "")
     last_done = request.json.get("last_done", "")
     room = request.json.get("room", "")

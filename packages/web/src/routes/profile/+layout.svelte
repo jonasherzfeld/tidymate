@@ -1,11 +1,11 @@
 <script lang="ts">
-    import type { Snippet } from 'svelte';
+  import type { Snippet } from "svelte";
 
-    let { children }: { children: Snippet } = $props();
+  let { children }: { children: Snippet } = $props();
 </script>
 
-<div class="flex bg-base-100 min-h-full w-full items-start justify-center">
-    <div class="flex justify-center text-center w-full max-w-screen-sm p-4 mt-5">
-        {@render children?.()}
-    </div>
+<div class="bg-base-100 flex min-h-full w-full items-start justify-center">
+  <div class="mt-5 flex w-full max-w-screen-sm justify-center p-4 text-center">
+    {@render children?.()}
+  </div>
 </div>

@@ -1,6 +1,6 @@
-import { defineConfig } from "vite";
-import { sveltepress } from "@sveltepress/vite";
 import { defaultTheme } from "@sveltepress/theme-default";
+import { sveltepress } from "@sveltepress/vite";
+import { defineConfig } from "vite";
 
 const config = defineConfig({
   plugins: [
@@ -28,8 +28,8 @@ const config = defineConfig({
           {
             title: "App",
             to: "https://tidymate.vercel.app/",
-            external: true,
-          },
+            external: true
+          }
         ],
         sidebar: {
           // '/': [
@@ -54,14 +54,14 @@ const config = defineConfig({
           // ]
         },
         github: "https://github.com/jonasherzfeld/tidymate",
-        logo: "/tidymate_logo.png",
+        logo: "/tidymate_logo.png"
       }),
       siteConfig: {
         title: "Tidymate",
-        description: "A lean organizer app for you and your mates!",
-      },
-    }),
-  ],
+        description: "A lean organizer app for you and your mates!"
+      }
+    })
+  ]
 });
 
 export default config;
