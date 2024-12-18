@@ -1,0 +1,24 @@
+# IDE configuration and artifacts
+.vscode
+
+# Build artifacts
+build
+dist
+out
+node_modules
+console/**/*.js
+.turbo
+.next
+.svelte-kit
+.sveltepress
+*.log
+venv
+__pycache__
+.vercel
+*.rdb
+
+# Environment variables
+.env*
+
+# Misc
+.DS_Store
