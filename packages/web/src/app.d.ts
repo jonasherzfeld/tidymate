@@ -2,15 +2,15 @@
 // for information about these interfaces
 
 declare global {
-    namespace App {
-        // interface Error {}
-        interface Locals {
-            user: User;
-            house: House;
-        }
-        // interface PageData {}
-        // interface Platform {}
+  namespace App {
+    // interface Error {}
+    interface Locals {
+      user: User;
+      house: House;
     }
+    // interface PageData {}
+    // interface Platform {}
+  }
 }
 
 export {};

@@ -1,0 +1,22 @@
+name: Fix formatting
+on:
+  pull_request:
+    branches: [master]
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+      - name: Setup environment
+        uses: ./.github/actions/npm-install
+      - name: Format code
+        uses: creyD/prettier_action@v4.3
+        with:
+          prettier_options: --config .prettierrc --write "**/{*.css,*.json,*.html,*.md,*.js,*.ts,*.svelte}"
+          prettier_plugins: "prettier-plugin-svelte"
+          same_commit: True
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

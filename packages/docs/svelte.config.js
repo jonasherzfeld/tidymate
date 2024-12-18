@@ -10,9 +10,9 @@ const config = {
   kit: {
     adapter: adapter({
       runtime: "edge",
-      pages: "dist",
-    }),
-  },
+      pages: "dist"
+    })
+  }
 };
 
 export default config;
