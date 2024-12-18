@@ -34,7 +34,6 @@
   ],
   "dependencies": {
     "autoprefixer": "^10.4.20",
-    "lucide-svelte": "^0.456.0",
     "prettier-plugin-organize-imports": "^4.1.0",
     "prettier-plugin-svelte": "^3.2.2",
     "prettier-plugin-tailwindcss": "^0.6.9",

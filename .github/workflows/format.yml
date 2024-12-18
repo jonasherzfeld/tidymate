@@ -1,22 +1,29 @@
 name: Fix formatting
-on:
-  pull_request:
-    branches: [master]
+on: pull_request
+permissions:
+  contents: write
+  pull-requests: write
 jobs:
   format:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.pull_request.head.ref }}
-      - name: Setup environment
-        uses: ./.github/actions/npm-install
+          ref: ${{ github.head_ref }}
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+      - name: Install dependencies
+        run: npm ci
+        shell: bash
       - name: Format code
         uses: creyD/prettier_action@v4.3
         with:
           prettier_options: --config .prettierrc --write "**/{*.css,*.json,*.html,*.md,*.js,*.ts,*.svelte}"
-          prettier_plugins: "prettier-plugin-svelte"
-          same_commit: True
+          same_commit: false
+          commit_message: "Style-fix: format code"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
