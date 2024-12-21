@@ -3,7 +3,8 @@ import {
   houseCitySchema,
   houseCountrySchema,
   houseJoinIdSchema,
-  houseNamechema
+  houseNamechema,
+  houseRoomSchema
 } from "$lib/utils/schemas";
 import type { Config } from "@sveltejs/adapter-vercel";
 import type { Cookies } from "@sveltejs/kit";
@@ -43,6 +44,8 @@ export const load = async ({ locals, cookies }) => {
     locals.house,
     zod(houseCountrySchema)
   );
+  const newRoomForm = await superValidate(zod(houseRoomSchema));
+  const editRoomForm = await superValidate(zod(houseRoomSchema));
   const joinIdForm = await superValidate(locals.house, zod(houseJoinIdSchema));
   return {
     streamed: {
@@ -51,7 +54,10 @@ export const load = async ({ locals, cookies }) => {
     nameForm,
     cityForm,
     countryForm,
-    joinIdForm
+    newRoomForm,
+    editRoomForm,
+    joinIdForm,
+    house: locals.house
   };
 };
 
@@ -147,6 +153,64 @@ export const actions = {
     }
 
     return message(countryForm, "Country updated!");
+  },
+
+  create_room: async ({ request, fetch, cookies }) => {
+    const roomForm = await superValidate(request, zod(houseRoomSchema));
+
+    if (!roomForm.valid) return fail(400, { roomForm });
+
+    let requestInitOptions: RequestInit = {
+      method: "PATCH",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: `session=${cookies.get("session")}`
+      },
+      body: JSON.stringify({
+        name: roomForm.data.room,
+      })
+    };
+
+    const res = await fetch(
+      `${BASE_API_URI}/auth/create-room`,
+      requestInitOptions
+    );
+    const response = await res.json();
+    if (!res.ok) {
+      return fail(400, { roomForm, errors: response.error });
+    }
+
+    return { roomForm };
+  },
+
+  edit_room: async ({ request, fetch, cookies }) => {
+    const roomForm = await superValidate(request, zod(houseRoomSchema));
+
+    if (!roomForm.valid) return fail(400, { roomForm });
+
+    let requestInitOptions: RequestInit = {
+      method: "PATCH",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: `session=${cookies.get("session")}`
+      },
+      body: JSON.stringify({
+        name: roomForm.data.room,
+      })
+    };
+
+    const res = await fetch(
+      `${BASE_API_URI}/auth/create-room`,
+      requestInitOptions
+    );
+    const response = await res.json();
+    if (!res.ok) {
+      return fail(400, { roomForm, errors: response.error });
+    }
+
+    return { roomForm };
   },
 
   toggle_join_id: async ({ request, locals, cookies }) => {

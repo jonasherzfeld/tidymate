@@ -107,6 +107,7 @@ export const actions = {
         id: changeChoreForm.data.id,
         data: changeChoreForm.data.data,
         frequency: changeChoreForm.data.frequency,
+        room: changeChoreForm.data.room ?? "",
         assignee: changeChoreForm.data.assignee ?? "",
         deadline: changeChoreForm.data.deadline ?? ""
       })

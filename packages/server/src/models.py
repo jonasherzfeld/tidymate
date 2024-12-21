@@ -139,10 +139,11 @@ class House():
     created_on : str = ""
     join_id : str = ""
     members : list = []
+    rooms : list = []
 
     def __init__(self, id: str = None, name: str = None, city: str = None,
                  country: str = None, created_on: str = None, join_id: str = None,
-                 members: list = None):
+                 members: list = None, rooms: list = None):
         self.id = id
         self.name = name
         self.city = city
@@ -150,6 +151,7 @@ class House():
         self.created_on = created_on
         self.join_id = join_id
         self.members = members
+        self.rooms = rooms
 
     def from_json(self, data: dict):
         self.id = data.get("id", "")
@@ -159,6 +161,7 @@ class House():
         self.created_on = data.get("created_on", "")
         self.join_id = data.get("join_id", "")
         self.members = data.get("members", [])
+        self.rooms = data.get("rooms", [])
         return self
 
     def to_json(self) -> dict:
@@ -170,4 +173,5 @@ class House():
             "created_on": self.created_on,
             "members": self.members,
             "join_id": self.join_id,
+            "rooms": self.rooms
         }
