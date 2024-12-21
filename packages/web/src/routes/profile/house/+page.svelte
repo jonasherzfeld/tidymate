@@ -1,11 +1,11 @@
 <script lang="ts">
   import TextInput from "$lib/components/TextInput.svelte";
-  import HouseMemberItem from "$lib/components/HouseMemberItem.svelte";
   import FormTextInput from "$lib/components/FormTextInput.svelte";
   import JoinIdCreator from "$lib/components/JoinIdCreator.svelte";
   import { superForm } from "sveltekit-superforms";
   import type { PageData } from "./$types";
   import HouseMemberTable from "$lib/components/HouseMemberTable.svelte";
+  import { EditIcon, DeleteIcon, SubmitIcon } from "$lib/utils/icons";
 
   let { data }: { data: PageData } = $props();
   const {
@@ -66,6 +66,34 @@
     }
   );
 
+  const { errors: newRoomErrors, enhance: newRoomEnhance } = superForm(
+    data.newRoomForm,
+    {
+      invalidateAll: false,
+      resetForm: false,
+      onSubmit: async () => {
+        creatingRoom = true;
+      },
+      onUpdate: async ({ form }) => {
+        creatingRoom = false;
+      }
+    }
+  );
+
+  const { errors: editRoomErrors, enhance: editRoomEnhance } = superForm(
+    data.editRoomForm,
+    {
+      invalidateAll: false,
+      resetForm: false,
+      onSubmit: async () => {
+        editingRoom = true;
+      },
+      onUpdate: async ({ form }) => {
+        editingRoom = false;
+      }
+    }
+  );
+
   let serverErrors: string = $state("");
   let editName: boolean = $state(false);
   let editCountry: boolean = $state(false);
@@ -73,6 +101,11 @@
   let creatingName: boolean = $state(false);
   let creatingCountry: boolean = $state(false);
   let creatingCity: boolean = $state(false);
+
+  let listOfRooms: string[] = data.house.rooms;
+  let creatingRoom: boolean = $state(false);
+  let editingRoom: boolean = $state(false);
+  let editedRoomName: string = $state("");
 </script>
 
 <div class="flex min-w-full flex-1 flex-col">
@@ -116,6 +149,48 @@
       <TextInput name="joined_on" value={data.house.created_on} disabled={true}
         ><b>Created On</b>
       </TextInput>
+    </div>
+
+    <div class="card bg-base-200 flex flex-1 flex-col gap-2 p-3">
+      <h2 class="m-4 text-xl font-bold">Rooms</h2>
+      <div class="flex card p-2 bg-base-300">
+        {#each data.house.rooms as room, i}
+          <form class="flex grow w-full" method="POST">
+            <div class="flex grow w-full join bordered">
+              <input
+                type="text"
+                name="room"
+                class="input join-item grow input-bordered"
+                bind:value={data.house.rooms[i]}
+                onchange={() => {
+                  editedRoomName = this.value;
+                }} />
+              <button
+                class="btn btn-secondary join-item"
+                type="submit"
+                formaction="/profile/house?/edit_room?name={data.house.rooms[
+                  i
+                ]}"><EditIcon /></button>
+              <button
+                type="submit"
+                class="btn btn-error join-item"
+                formaction="/profile/house?/delete_room"><DeleteIcon /></button>
+            </div>
+          </form>
+        {/each}
+      </div>
+      <form class="flex grow w-full" method="POST">
+        <div class="flex grow w-full join bordered pl-2 pr-2">
+          <input
+            type="text"
+            name="room"
+            class="input join-item grow input-bordered" />
+          <button
+            type="button"
+            class="btn btn-primary join-item"
+            formaction="/profile/house?/create_room"><SubmitIcon /></button>
+        </div>
+      </form>
     </div>
 
     <div class="card bg-base-200 flex flex-1 flex-col gap-2 p-3">

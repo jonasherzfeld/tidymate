@@ -100,6 +100,7 @@ def update_chores(user):
     chore_assignee = request.json.get("assignee", None)
     chore_deadline = request.json.get("deadline", None)
     chore_frequency = request.json.get("frequency", None)
+    chore_room = request.json.get("room", None)
 
     if chore_text:
         chore.data = chore_text
@@ -109,6 +110,8 @@ def update_chores(user):
         chore.deadline = chore_deadline
     if chore_frequency is not None:
         chore.frequency = chore_frequency
+    if chore_room is not None:
+        chore.room = chore_room
 
     chore_vm.update(house.id, chore)
     return jsonify({
