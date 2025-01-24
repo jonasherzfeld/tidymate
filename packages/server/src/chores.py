@@ -1,8 +1,8 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from flask import Blueprint, request, jsonify, render_template
 import uuid
 
-from models import Chore
+from models import Chore, ChoreSeverity
 from view_models import ChoreViewModel, HouseViewModel
 from auth import login_required, validate_house_member
 
@@ -11,6 +11,7 @@ chores = Blueprint('chores', __name__)
 house_vm = HouseViewModel()
 chore_vm = ChoreViewModel()
 
+
 @chores.route('/create-chore', methods=["POST"])
 @login_required
 def create_chore(user):
@@ -18,35 +19,37 @@ def create_chore(user):
     assignee = request.json.get("assignee", "")
     tags = request.json.get("tags", [])
     deadline = request.json.get("deadline", "")
-
-
-
-    frequency = request.json.get("frequency", "")
+    frequency = request.json.get("frequency", 0)
     last_done = request.json.get("last_done", "")
     room = request.json.get("room", "")
-    severity = request.json.get("severity", "")
+    severity = ChoreSeverity.from_int(request.json.get("severity", 0))
 
     house = house_vm.get(user.house_id)
     if not house:
         return jsonify({"error": "House not found"}), 404
 
+    if deadline == "":
+        deadline = (datetime.now() +
+                    datetime.timedelta(days=frequency)).strftime("%Y-%m-%d")
+
     chore = Chore(id=str(uuid.uuid4()),
-                data=data,
-                assignee=assignee,
-                done=False,
-                tags=tags,
-                created_on=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                deadline=deadline,
-                frequency=frequency,
-                last_done=last_done,
-                room=room,
-                severity=severity
-                )
+                  data=data,
+                  assignee=assignee,
+                  done=False,
+                  tags=tags,
+                  created_on=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                  deadline=deadline,
+                  frequency=frequency,
+                  last_done=last_done,
+                  room=room,
+                  severity=severity
+                  )
     ret = chore_vm.set(user.house_id, chore)
     if ret:
-        return jsonify({ "chore": chore.to_json() }), 200
+        return jsonify({"chore": chore.to_json()}), 200
 
     return jsonify({"error": "Could not create chore"}), 500
+
 
 @chores.route('/get-chores', methods=['GET'])
 @login_required
@@ -56,7 +59,8 @@ def get_chores(user):
         return jsonify({"error": "House not found"}), 404
     chores = chore_vm.get_all(user.house_id)
     chores_json = [chore.to_json() for chore in chores]
-    return jsonify({ "chores": chores_json })
+    return jsonify({"chores": chores_json})
+
 
 @chores.route("/get-chore/<string:chore_id>", methods=["GET"])
 @login_required
@@ -65,7 +69,8 @@ def get_chore(user, chore_id):
     if not house:
         return jsonify({"error": "House not found"}), 404
     chore = chore_vm.get(user.house_id, chore_id)
-    return jsonify({ "chore": chore.to_json() })
+    return jsonify({"chore": chore.to_json()})
+
 
 @chores.route('/check-chore/<string:chore_id>', methods=['PATCH'])
 @login_required
@@ -78,11 +83,14 @@ def check_chores(user, chore_id):
     if not chore:
         return jsonify({"error": "Chore not found"}), 404
 
-    chore.done = not chore.done
+    chore.last_done = datetime.now().strftime("%Y-%m-%d"),
+    chore.deadline = (
+        datetime.now() + timedelta(days=chore.frequency)).strftime("%Y-%m-%d")
     chore_vm.update(house.id, chore)
     return jsonify({
         "chore": chore.to_json(),
     }), 200
+
 
 @chores.route('/update-chore', methods=['PATCH'])
 @login_required

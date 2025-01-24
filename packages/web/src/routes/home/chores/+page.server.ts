@@ -66,6 +66,7 @@ export const actions = {
 
     return { chore_id: choreId };
   },
+  
   check_chore: async ({ request, fetch, cookies }) => {
     const params = new URLSearchParams(request.url);
     const choreId = params.getAll("id")[0];

@@ -20,7 +20,7 @@
 
   let serverErrors: string = $state("");
 
-  let sortKey: SearchableItemSortKey<Chore> = $state("created_on");
+  let sortKey: SearchableItemSortKey<Chore> = $state("last_done");
   let sortOrder: boolean = $state(true);
 
   let filters: FilterDescription<Chore>[] = $state([
@@ -29,12 +29,12 @@
     { property: "room", values: [], filterValues: [] }
   ]);
 
-  let showComplete: boolean = $state(false);
-  let newChoreData: string = $state("");
   let removedList: string[] = $state([]);
   let searchText: string = $state("");
 
-  let choreListHandler: ListHandler<Chore> = $state(new ListHandler());
+  let choreListHandler: ListHandler<Chore> = $state(
+    new ListHandler("deadline")
+  );
   const searchableProperties: (keyof Chore)[] = ["data", "assignee", "tags"];
   let choreList: Chore[] = $derived(
     choreListHandler.getSortedAndFilteredList(
@@ -53,27 +53,12 @@
       window.navigator.standalone;
   }
 
-  const handleSubmit = async ({}) => {
-    return async ({ result, update }) => {
-      serverErrors = result.data.errors;
-      if (result.status === 200) {
-        newChoreData = "";
-        choreListHandler = new ListHandler(
-          [...choreListHandler.getFullList(), result.data.chore],
-          searchableProperties,
-          data.house.members
-        );
-      } else {
-        update();
-      }
-    };
-  };
-
   onMount(async () => {
     choreListHandler = new ListHandler(
-      await data.streamed.chore_list,
+      "deadline",
       searchableProperties,
-      data.house.members
+      data.house.members,
+      await data.streamed.chore_list
     );
     initializeFilterValues<Chore>(filters, choreListHandler.getFullList());
   });
@@ -145,7 +130,19 @@
         {:then}
           <div class="flex flex-1 flex-col gap-2">
             {#each choreList as chore, id}
-              <ChoreItem {...chore} bind:removedList />
+              <p>{chore.deadline}</p>
+              <ChoreItem
+                {...chore}
+                bind:removedList
+                onchange={(deadline: string) => {
+                  choreListHandler.fullList[id].deadline = deadline;
+                  choreListHandler = new ListHandler<Chore>(
+                    "deadline",
+                    searchableProperties,
+                    data.house.members,
+                    choreListHandler.fullList
+                  );
+                }} />
             {/each}
           </div>
         {:catch error}
