@@ -1,5 +1,6 @@
 from google.cloud.firestore_v1.base_query import FieldFilter
 
+
 class Database():
     def __init__(self, db):
         self.db = db

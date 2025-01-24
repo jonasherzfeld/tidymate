@@ -11,6 +11,7 @@ items = Blueprint('items', __name__)
 house_vm = HouseViewModel()
 todo_vm = TodoViewModel()
 
+
 @items.route('/create-todo', methods=["POST"])
 @login_required
 def create_todo(user):
@@ -32,9 +33,10 @@ def create_todo(user):
                 deadline=deadline)
     ret = todo_vm.set(user.house_id, todo.id, todo)
     if ret:
-        return jsonify({ "todo": todo.to_json() }), 200
+        return jsonify({"todo": todo.to_json()}), 200
 
     return jsonify({"error": "Could not create todo"}), 500
+
 
 @items.route('/get-todos', methods=['GET'])
 @login_required
@@ -44,7 +46,8 @@ def get_todos(user):
         return jsonify({"error": "House not found"}), 404
     todos = todo_vm.get_all(user.house_id)
     todos_json = [todo.to_json() for todo in todos]
-    return jsonify({ "todos": todos_json })
+    return jsonify({"todos": todos_json})
+
 
 @items.route("/get-todo/<string:todo_id>", methods=["GET"])
 @login_required
@@ -53,7 +56,8 @@ def get_todo(user, todo_id):
     if not house:
         return jsonify({"error": "House not found"}), 404
     todo = todo_vm.get(user.house_id, todo_id)
-    return jsonify({ "todo": todo.to_json() })
+    return jsonify({"todo": todo.to_json()})
+
 
 @items.route('/check-todo/<string:todo_id>', methods=['PATCH'])
 @login_required
@@ -71,6 +75,7 @@ def check_todos(user, todo_id):
     return jsonify({
         "todo": todo.to_json(),
     }), 200
+
 
 @items.route('/update-todo', methods=['PATCH'])
 @login_required

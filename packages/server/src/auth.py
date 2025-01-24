@@ -16,6 +16,7 @@ auth = Blueprint('auth', __name__)
 user_vm = UserViewModel()
 house_vm = HouseViewModel()
 
+
 def login_required(function_to_protect):
     @wraps(function_to_protect)
     def wrapper(*args, **kwargs):
@@ -31,6 +32,7 @@ def login_required(function_to_protect):
             return jsonify({"error": "Unauthorized"}), 401
     return wrapper
 
+
 def validate_house_member(user, house):
     if not house:
         return House(), jsonify({
@@ -41,6 +43,7 @@ def validate_house_member(user, house):
 
     return jsonify({}), 200
 
+
 def get_members_by_house_id(house: House):
     house_member_list = user_vm.filter("house_id", house.id)
     house_member_list_json = []
@@ -50,6 +53,7 @@ def get_members_by_house_id(house: House):
             return response, ret
         house_member_list_json.append(house_mate.to_json())
     return house_member_list_json
+
 
 @auth.route('/login', methods=['POST'])
 def login():
@@ -67,7 +71,7 @@ def login():
         json={
             "email": email,
             "password": password,
-            "returnSecureToken":True
+            "returnSecureToken": True
         }
     )
 
@@ -131,7 +135,7 @@ def register():
     else:
         full_name = first_name + " " + last_name
         fb_user = fb_auth.create_user(email=email, password=password,
-                                        display_name=full_name)
+                                      display_name=full_name)
         new_user = User(id=fb_user.uid,
                         email=email,
                         first_name=first_name,
@@ -149,7 +153,6 @@ def register():
             session["user_id"] = fb_user.uid
         except ConnectionError:
             return jsonify({"error": "Connection error on internal Session DB"}), 500
-
 
     return jsonify({
         "id": fb_user.uid,
@@ -173,7 +176,7 @@ def register_house(user):
                       city=house_city,
                       country=house_country,
                       created_on=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                      join_id= "",
+                      join_id="",
                       members=[user.id])
     house_vm.set(new_house.id, new_house)
 
@@ -230,6 +233,7 @@ def deactivate_join(user):
         "join_id": house.join_id
     }), 200
 
+
 @auth.route('/get-house-members', methods=['GET'])
 @login_required
 def get_house_members(user):
@@ -246,6 +250,7 @@ def get_house_members(user):
     return jsonify({
         "user_list": house_member_list_json,
     }), 200
+
 
 @auth.route('/set-admin/<string:update_user_id>', methods=['PATCH'])
 @login_required

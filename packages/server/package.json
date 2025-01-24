@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "python3 src/index.py",
-    "dev": "python3 src/index.py"
+    "dev": "python3 src/index.py",
+    "format": "autopep8 -i -r ."
   },
   "browserslist": {
     "production": [

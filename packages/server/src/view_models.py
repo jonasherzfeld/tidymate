@@ -5,10 +5,11 @@ from google.cloud.firestore_v1.base_query import FieldFilter
 from config import db
 from models import Todo, User, House, Chore
 
-USER_COLLECTION : str = "user"
-HOUSE_COLLECTION : str = "house"
-TODOS_COLLECTION : str = "todos"
-CHORES_COLLECTION : str = "chores"
+USER_COLLECTION: str = "user"
+HOUSE_COLLECTION: str = "house"
+TODOS_COLLECTION: str = "todos"
+CHORES_COLLECTION: str = "chores"
+
 
 class BaseViewModel():
 
@@ -30,7 +31,6 @@ class BaseViewModel():
         else:
             print("Document could not be set collection")
             return False
-
 
     def update_data(self, doc_ref, data) -> bool:
         if doc_ref.get().exists:
@@ -61,8 +61,8 @@ class ChoreViewModel(BaseViewModel):
 
     def get_all(self, house_id: str) -> list:
         docs = (
-            db.collection(HOUSE_COLLECTION).document(house_id) \
-                    .collection(CHORES_COLLECTION).stream()
+            db.collection(HOUSE_COLLECTION).document(house_id)
+            .collection(CHORES_COLLECTION).stream()
         )
 
         chore_list = list()
@@ -90,6 +90,7 @@ class ChoreViewModel(BaseViewModel):
                     .collection(CHORES_COLLECTION).document(chore_id)
         return self.delete_data(doc_ref)
 
+
 class TodoViewModel(BaseViewModel):
 
     def get(self, house_id: str, todo_id: str) -> Todo:
@@ -102,8 +103,8 @@ class TodoViewModel(BaseViewModel):
 
     def get_all(self, house_id: str) -> list:
         docs = (
-            db.collection(HOUSE_COLLECTION).document(house_id) \
-                    .collection(TODOS_COLLECTION).stream())
+            db.collection(HOUSE_COLLECTION).document(house_id)
+            .collection(TODOS_COLLECTION).stream())
 
         todo_list = list()
         for doc in docs:
@@ -115,17 +116,17 @@ class TodoViewModel(BaseViewModel):
 
         return todo_list
 
-    def set(self, house_id: str, todo_id : str, data : Todo) -> bool:
+    def set(self, house_id: str, todo_id: str, data: Todo) -> bool:
         doc_ref = db.collection(HOUSE_COLLECTION).document(house_id) \
                     .collection(TODOS_COLLECTION).document(todo_id)
         return self.set_data(doc_ref, data)
 
-    def update(self, house_id : str, todo_id : str, todo : Todo) -> bool:
+    def update(self, house_id: str, todo_id: str, todo: Todo) -> bool:
         doc_ref = db.collection(HOUSE_COLLECTION).document(house_id) \
                     .collection(TODOS_COLLECTION).document(todo_id)
         return self.update_data(doc_ref, todo)
 
-    def delete(self, house_id : str, todo_id : str) -> bool:
+    def delete(self, house_id: str, todo_id: str) -> bool:
         doc_ref = db.collection(HOUSE_COLLECTION).document(house_id) \
                     .collection(TODOS_COLLECTION).document(todo_id)
         return self.delete_data(doc_ref)
@@ -164,7 +165,7 @@ class HouseViewModel():
             print(f"Error retrieving documents: {str(e)}")
             return None
 
-    def set(self, id: str, data : House) -> bool:
+    def set(self, id: str, data: House) -> bool:
         doc_ref = db.collection(HOUSE_COLLECTION).document(id)
         doc_ref.set(data.to_json())
         if doc_ref.get().exists:
@@ -173,8 +174,7 @@ class HouseViewModel():
             print(f"Document could not be set collection {HOUSE_COLLECTION}")
             return False
 
-
-    def update(self, id: str, data : House) -> bool:
+    def update(self, id: str, data: House) -> bool:
         doc_ref = db.collection(HOUSE_COLLECTION).document(id)
         if doc_ref.get().exists:
             doc_ref.update(data.to_json())
@@ -207,7 +207,7 @@ class UserViewModel():
             print(f"Document {id} not found in collection {USER_COLLECTION}")
             return None
 
-    def filter(self, filter_field : str, data: str) -> list:
+    def filter(self, filter_field: str, data: str) -> list:
         try:
             doc_ref = db.collection(USER_COLLECTION)
             query = doc_ref.where(filter=FieldFilter(filter_field, "==", data))
@@ -226,7 +226,7 @@ class UserViewModel():
             print(f"Error retrieving documents: {str(e)}")
             return None
 
-    def set(self, id: str, data : User) -> bool:
+    def set(self, id: str, data: User) -> bool:
         doc_ref = db.collection(USER_COLLECTION).document(id)
         doc_ref.set(data.to_json())
         if doc_ref.get().exists:
@@ -235,8 +235,7 @@ class UserViewModel():
             print(f"Document could not be set collection {USER_COLLECTION}")
             return False
 
-
-    def update(self, id: str, data : User) -> bool:
+    def update(self, id: str, data: User) -> bool:
         doc_ref = db.collection(USER_COLLECTION).document(id)
         if doc_ref.get().exists:
             doc_ref.update(data.to_json())

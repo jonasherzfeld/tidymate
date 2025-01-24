@@ -7,7 +7,8 @@ import redis
 import os
 
 app = Flask(__name__, template_folder='public')
-CORS(app, resources={r"/*": {"origins": ["http://localhost:3000", "http://localhost:5173", os.environ['FRONTEND_URL']]}})
+CORS(app, resources={
+     r"/*": {"origins": ["http://localhost:3000", "http://localhost:5173", os.environ['FRONTEND_URL']]}})
 
 app.config['SECRET_KEY'] = os.environ['FLASK_SECRET_KEY']
 app.config['SESSION_TYPE'] = 'redis'
@@ -37,7 +38,7 @@ service_account = {
     "auth_provider_x509_cert_url": os.environ['AUTH_PROVIDER_X509_CERT_URL'],
     "client_x509_cert_url": os.environ['CLIENT_X509_CERT_URL'],
     "universe_domain": os.environ['UNIVERSE_DOMAIN']
-    }
+}
 cred = credentials.Certificate(service_account)
 firebase_admin.initialize_app(cred)
 
