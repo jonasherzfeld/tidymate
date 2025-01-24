@@ -1,19 +1,30 @@
-class ChoreSeverity():
+from enum import Enum
+
+
+class ChoreSeverity(Enum):
     LOW = 0
     MEDIUM = 1
     HIGH = 2
 
+    def from_int(severity: int) -> 'ChoreSeverity':
+        try:
+            output = ChoreSeverity(severity)
+        except:
+            output = None
+        return output
+
+
 class Todo():
-    id : str = ""
-    data : str = ""
-    assignee : str = ""
+    id: str = ""
+    data: str = ""
+    assignee: str = ""
     done = False
     tags: list = []
-    created_on : str = ""
+    created_on: str = ""
     deadline: str = ""
 
-    def __init__(self, id: str = None, data: str = None, assignee: str = None, done = False,
-                    tags: list = None, created_on: str = None, deadline: str = None):
+    def __init__(self, id: str = None, data: str = None, assignee: str = None, done=False,
+                 tags: list = None, created_on: str = None, deadline: str = None):
         self.id = id
         self.data = data
         self.assignee = assignee
@@ -43,16 +54,17 @@ class Todo():
             "deadline": self.deadline
         }
 
+
 class Chore(Todo):
-    frequency : int = 0 # Days
-    last_done : str = ""
-    room : str = ""
-    severity : int = ChoreSeverity.LOW
+    frequency: int = 0  # Days
+    last_done: str = ""
+    room: str = ""
+    severity: int = ChoreSeverity.LOW
 
     def __init__(self, id: str = None, data: str = None, assignee: str = None,
-                    done = False, tags: list = None, created_on: str = None, deadline: str = None,
-                    frequency: int = None, last_done: str = None, room: str = None,
-                    severity: int = None):
+                 done=False, tags: list = None, created_on: str = None, deadline: str = None,
+                 frequency: int = None, last_done: str = None, room: str = None,
+                 severity: ChoreSeverity = None):
         super().__init__(id, data, assignee, done, tags, created_on, deadline)
         self.frequency = frequency
         self.last_done = last_done
@@ -69,7 +81,7 @@ class Chore(Todo):
         self.frequency = data.get("frequency", 0)
         self.last_done = data.get("last_done", "")
         self.room = data.get("room", "")
-        self.severity = data.get("severity", 0)
+        self.severity = ChoreSeverity.from_int(data.get("severity", 0))
         return self
 
     def to_json(self) -> dict:
@@ -83,17 +95,18 @@ class Chore(Todo):
             "frequency": self.frequency,
             "last_done": self.last_done,
             "room": self.room,
-            "severity": self.severity
+            "severity": self.severity.value if self.severity else 0
         }
 
+
 class User():
-    id : str = ""
-    email : str = ""
-    first_name : str = ""
-    last_name : str = ""
-    joined_on : str = ""
-    house_id : str = ""
-    is_admin : bool = False
+    id: str = ""
+    email: str = ""
+    first_name: str = ""
+    last_name: str = ""
+    joined_on: str = ""
+    house_id: str = ""
+    is_admin: bool = False
 
     def __init__(self, id: str = None, email: str = None, first_name: str = None,
                  last_name: str = None, joined_on: str = None, house_id: str = None,
@@ -132,14 +145,14 @@ class User():
 
 
 class House():
-    id : str = ""
-    name : str = ""
-    city : str = ""
-    country : str = ""
-    created_on : str = ""
-    join_id : str = ""
-    members : list = []
-    rooms : list = []
+    id: str = ""
+    name: str = ""
+    city: str = ""
+    country: str = ""
+    created_on: str = ""
+    join_id: str = ""
+    members: list = []
+    rooms: list = []
 
     def __init__(self, id: str = None, name: str = None, city: str = None,
                  country: str = None, created_on: str = None, join_id: str = None,

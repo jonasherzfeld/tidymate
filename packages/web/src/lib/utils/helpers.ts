@@ -90,3 +90,14 @@ export function getUsernameById(
   }
   return undefined;
 }
+
+export function getThumbnailById(
+  id: string,
+  userList: User[]
+): string | undefined {
+  const member = userList.find((member) => member.id === id);
+  if (member) {
+    return member.thumbnail;
+  }
+  return undefined;
+}

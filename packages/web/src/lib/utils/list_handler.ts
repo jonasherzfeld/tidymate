@@ -4,19 +4,22 @@ export class ListHandler<T> {
   public fullList: SearchableItem<T>[] = [];
   searchableProperties: (keyof T)[] = [];
   houseMembers: User[] = [];
+  baseSortKey: keyof T
 
   constructor(
-    initialList?: T[],
+    baseSortKey: keyof T,
     properties: (keyof T)[] = [],
-    houseMembers: User[] = []
+    houseMembers: User[] = [],
+    initialList?: T[]
   ) {
+    this.baseSortKey = baseSortKey;
     if (initialList) {
-      this.initList(initialList, properties, houseMembers);
+      this.initList(properties, houseMembers, initialList);
       this.sortList(true, "assignee");
     }
   }
 
-  initList(initialList: T[], properties: (keyof T)[], houseMembers: User[]) {
+  initList(properties: (keyof T)[], houseMembers: User[], initialList: T[]) {
     this.searchableProperties = properties;
     this.houseMembers = houseMembers;
     this.fullList = initialList.map((item) => ({
@@ -51,7 +54,7 @@ export class ListHandler<T> {
     sortOrder: boolean,
     sortKey: string,
     filters: FilterDescription<T>[],
-    removedList: string[]
+    removedList: string[],
   ): SearchableItem<T>[] {
     this.sortList(sortOrder, sortKey);
     return this.filterList(searchText, filters, removedList);
@@ -64,7 +67,7 @@ export class ListHandler<T> {
   sortList(sortOrder: boolean, sortKey: string): void {
     this.fullList.sort(
       byPropertiesOf<SearchableItem<T>>([
-        "done" as keyof SearchableItem<T>,
+        this.baseSortKey as sortArg<SearchableItem<T>>,
         ((sortOrder ? "" : "-") + sortKey) as sortArg<SearchableItem<T>>
       ])
     );

@@ -26,7 +26,7 @@
         lastName={user.last_name}
         isAdmin={user.is_admin}
         joinedOn={user.joined_on}
-        src={user.thumbnail ? user.thumbnail : ""}
+        src={user.thumbnail ?? ""}
         {changeEnabled} />
     {/each}
   </tbody>

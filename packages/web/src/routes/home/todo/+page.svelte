@@ -34,7 +34,7 @@
   let removedList: string[] = $state([]);
   let searchText: string = $state("");
 
-  let todoListHandler: ListHandler<Todo> = $state(new ListHandler());
+  let todoListHandler: ListHandler<Todo> = $state(new ListHandler("done"));
   const searchableProperties: (keyof Todo)[] = ["data", "assignee", "tags"];
   let todoList: Todo[] = $derived(
     todoListHandler.getSortedAndFilteredList(
@@ -59,9 +59,10 @@
       if (result.status === 200) {
         newTodoData = "";
         todoListHandler = new ListHandler(
-          [...todoListHandler.getFullList(), result.data.todo],
+          "done",
           searchableProperties,
-          data.house.members
+          data.house.members,
+          [...todoListHandler.getFullList(), result.data.todo]
         );
       } else {
         update();
@@ -71,9 +72,10 @@
 
   onMount(async () => {
     todoListHandler = new ListHandler(
-      await data.streamed.todo_list,
+      "done",
       searchableProperties,
-      data.house.members
+      data.house.members,
+      await data.streamed.todo_list
     );
     initializeFilterValues<Todo>(filters, todoListHandler.getFullList());
   });
