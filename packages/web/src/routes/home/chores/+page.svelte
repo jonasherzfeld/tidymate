@@ -130,7 +130,6 @@
         {:then}
           <div class="flex flex-1 flex-col gap-2">
             {#each choreList as chore, id}
-              <p>{chore.deadline}</p>
               <ChoreItem
                 {...chore}
                 bind:removedList
