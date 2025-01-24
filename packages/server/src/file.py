@@ -10,13 +10,14 @@ file = Blueprint('file', __name__)
 user_vm = UserViewModel()
 house_vm = HouseViewModel()
 
+
 @file.route('/upload', methods=['POST'])
 @login_required
 def upload_image(user):
     if 'file' not in request.files:
         return jsonify({
-        "error": "No file part in POST"
-    }), 401
+            "error": "No file part in POST"
+        }), 401
 
     if 'file' not in request.files:
         return jsonify({
@@ -56,7 +57,8 @@ def delete_image(user):
     # Optional: set a generation-match precondition to avoid potential race conditions
     # and data corruptions. The request to delete is aborted if the object's
     # generation number does not match your precondition.
-    blob.reload()  # Fetch blob metadata to use in generation_match_precondition.
+    # Fetch blob metadata to use in generation_match_precondition.
+    blob.reload()
     generation_match_precondition = None
     generation_match_precondition = blob.generation
 
