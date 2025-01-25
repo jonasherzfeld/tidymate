@@ -37,7 +37,7 @@ def validate_house_member(user, house):
     if not house:
         return House(), jsonify({
             "error": "House not found"}), 400
-    if not house.members or not user.id in house.members:
+    if not house.members or user.id not in house.members:
         return House(), jsonify({
             "error": "User not found in house"}), 402
 
@@ -76,14 +76,16 @@ def login():
     )
 
     if user_auth_response.status_code != 200:
-        return jsonify({"error": "Incorrect credentials"}), user_auth_response.status_code
+        return jsonify({"error": "Incorrect credentials"}
+                       ), user_auth_response.status_code
 
     user_data = fb_auth.get_user_by_email(email)
     if user_data:
         try:
             session["user_id"] = user_data.uid
         except ConnectionError:
-            return jsonify({"error": "Connection error on internal Session DB"}), 500
+            return jsonify(
+                {"error": "Connection error on internal Session DB"}), 500
 
         return jsonify({
             "id": user_data.uid,
@@ -98,7 +100,8 @@ def logout():
     try:
         session.clear()
     except ConnectionError:
-        return jsonify({"error": "Connection error on internal Session DB"}), 500
+        return jsonify(
+            {"error": "Connection error on internal Session DB"}), 500
 
     return jsonify({}), 200
 
@@ -152,7 +155,8 @@ def register():
         try:
             session["user_id"] = fb_user.uid
         except ConnectionError:
-            return jsonify({"error": "Connection error on internal Session DB"}), 500
+            return jsonify(
+                {"error": "Connection error on internal Session DB"}), 500
 
     return jsonify({
         "id": fb_user.uid,
@@ -194,7 +198,8 @@ def register_house(user):
 @login_required
 def activate_join(user):
     if not user.is_admin:
-        return jsonify({"error": "User not unauthorized to make changes."}), 401
+        return jsonify(
+            {"error": "User not unauthorized to make changes."}), 401
 
     # Check if user already exists in Database ort Authentication
     if not user.house_id:
@@ -217,7 +222,8 @@ def activate_join(user):
 @login_required
 def deactivate_join(user):
     if not user.is_admin:
-        return jsonify({"error": "User not unauthorized to make changes."}), 401
+        return jsonify(
+            {"error": "User not unauthorized to make changes."}), 401
 
     if not user.house_id:
         return jsonify({"error": "User not assigned to house."}), 401
@@ -276,7 +282,8 @@ def set_admin(user, update_user_id):
     if user.is_admin and is_admin is not None:
         updated_user.is_admin = is_admin
     else:
-        return jsonify({"error": "User not unauthorized to make changes."}), 401
+        return jsonify(
+            {"error": "User not unauthorized to make changes."}), 401
 
     user_vm.update(updated_user.id, updated_user)
     return jsonify({

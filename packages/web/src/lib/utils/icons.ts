@@ -32,9 +32,9 @@ import JSIcon from "virtual:icons/skill-icons/javascript";
 import LinkedInIcon from "virtual:icons/skill-icons/linkedin";
 import SvelteIcon from "virtual:icons/skill-icons/svelte";
 import TSIcon from "virtual:icons/skill-icons/typescript";
+import DeleteIcon from "~icons/fluent/delete-12-filled";
 import HouseCircleOutline from "~icons/mdi/house-circle-outline";
 import UserCircleOutline from "~icons/mdi/user-circle-outline";
-import DeleteIcon from "~icons/fluent/delete-12-filled";
 
 export {
   BedroomIcon,
@@ -44,6 +44,7 @@ export {
   ChevronRight,
   ChoresIcon,
   CssIcon,
+  DeleteIcon,
   DocsIcon,
   DoneAllIcon,
   EditIcon,
@@ -71,6 +72,5 @@ export {
   TextIcon,
   TodoIcon,
   UserCircleOutline,
-  UserIcon,
-  DeleteIcon
+  UserIcon
 };

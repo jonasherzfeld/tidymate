@@ -7,8 +7,10 @@ import redis
 import os
 
 app = Flask(__name__, template_folder='public')
-CORS(app, resources={
-     r"/*": {"origins": ["http://localhost:3000", "http://localhost:5173", os.environ['FRONTEND_URL']]}})
+CORS(app,
+     resources={r"/*": {"origins": ["http://localhost:3000",
+                                    "http://localhost:5173",
+                                    os.environ['FRONTEND_URL']]}})
 
 app.config['SECRET_KEY'] = os.environ['FLASK_SECRET_KEY']
 app.config['SESSION_TYPE'] = 'redis'

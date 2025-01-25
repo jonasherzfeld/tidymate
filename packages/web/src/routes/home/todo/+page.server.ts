@@ -96,7 +96,7 @@ export const actions = {
 
     return { todo_id: todoId };
   },
-  
+
   check_todo: async ({ request, fetch, cookies }) => {
     const params = new URLSearchParams(request.url);
     const todoId = params.getAll("id")[0];

@@ -4,7 +4,7 @@ export class ListHandler<T> {
   public fullList: SearchableItem<T>[] = [];
   searchableProperties: (keyof T)[] = [];
   houseMembers: User[] = [];
-  baseSortKey: keyof T
+  baseSortKey: keyof T;
 
   constructor(
     baseSortKey: keyof T,
@@ -54,7 +54,7 @@ export class ListHandler<T> {
     sortOrder: boolean,
     sortKey: string,
     filters: FilterDescription<T>[],
-    removedList: string[],
+    removedList: string[]
   ): SearchableItem<T>[] {
     this.sortList(sortOrder, sortKey);
     return this.filterList(searchText, filters, removedList);
