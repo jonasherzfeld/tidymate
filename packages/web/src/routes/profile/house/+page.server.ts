@@ -168,7 +168,7 @@ export const actions = {
         Cookie: `session=${cookies.get("session")}`
       },
       body: JSON.stringify({
-        name: roomForm.data.room,
+        name: roomForm.data.room
       })
     };
 
@@ -197,7 +197,7 @@ export const actions = {
         Cookie: `session=${cookies.get("session")}`
       },
       body: JSON.stringify({
-        name: roomForm.data.room,
+        name: roomForm.data.room
       })
     };
 

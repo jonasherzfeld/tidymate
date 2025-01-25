@@ -9,7 +9,7 @@ class ChoreSeverity(Enum):
     def from_int(severity: int) -> 'ChoreSeverity':
         try:
             output = ChoreSeverity(severity)
-        except:
+        except BaseException:
             output = None
         return output
 
@@ -23,8 +23,15 @@ class Todo():
     created_on: str = ""
     deadline: str = ""
 
-    def __init__(self, id: str = None, data: str = None, assignee: str = None, done=False,
-                 tags: list = None, created_on: str = None, deadline: str = None):
+    def __init__(
+            self,
+            id: str = None,
+            data: str = None,
+            assignee: str = None,
+            done=False,
+            tags: list = None,
+            created_on: str = None,
+            deadline: str = None):
         self.id = id
         self.data = data
         self.assignee = assignee
@@ -61,10 +68,19 @@ class Chore(Todo):
     room: str = ""
     severity: int = ChoreSeverity.LOW
 
-    def __init__(self, id: str = None, data: str = None, assignee: str = None,
-                 done=False, tags: list = None, created_on: str = None, deadline: str = None,
-                 frequency: int = None, last_done: str = None, room: str = None,
-                 severity: ChoreSeverity = None):
+    def __init__(
+            self,
+            id: str = None,
+            data: str = None,
+            assignee: str = None,
+            done=False,
+            tags: list = None,
+            created_on: str = None,
+            deadline: str = None,
+            frequency: int = None,
+            last_done: str = None,
+            room: str = None,
+            severity: ChoreSeverity = None):
         super().__init__(id, data, assignee, done, tags, created_on, deadline)
         self.frequency = frequency
         self.last_done = last_done
@@ -108,9 +124,16 @@ class User():
     house_id: str = ""
     is_admin: bool = False
 
-    def __init__(self, id: str = None, email: str = None, first_name: str = None,
-                 last_name: str = None, joined_on: str = None, house_id: str = None,
-                 thumbnail: str = None, is_admin: bool = False):
+    def __init__(
+            self,
+            id: str = None,
+            email: str = None,
+            first_name: str = None,
+            last_name: str = None,
+            joined_on: str = None,
+            house_id: str = None,
+            thumbnail: str = None,
+            is_admin: bool = False):
         self.id = id
         self.email = email
         self.first_name = first_name
@@ -154,9 +177,16 @@ class House():
     members: list = []
     rooms: list = []
 
-    def __init__(self, id: str = None, name: str = None, city: str = None,
-                 country: str = None, created_on: str = None, join_id: str = None,
-                 members: list = None, rooms: list = None):
+    def __init__(
+            self,
+            id: str = None,
+            name: str = None,
+            city: str = None,
+            country: str = None,
+            created_on: str = None,
+            join_id: str = None,
+            members: list = None,
+            rooms: list = None):
         self.id = id
         self.name = name
         self.city = city

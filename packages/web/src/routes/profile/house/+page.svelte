@@ -153,14 +153,14 @@
 
     <div class="card bg-base-200 flex flex-1 flex-col gap-2 p-3">
       <h2 class="m-4 text-xl font-bold">Rooms</h2>
-      <div class="flex card p-2 bg-base-300">
+      <div class="card bg-base-300 flex p-2">
         {#each data.house.rooms as room, i}
-          <form class="flex grow w-full" method="POST">
-            <div class="flex grow w-full join bordered">
+          <form class="flex w-full grow" method="POST">
+            <div class="join bordered flex w-full grow">
               <input
                 type="text"
                 name="room"
-                class="input join-item grow input-bordered"
+                class="input join-item input-bordered grow"
                 bind:value={data.house.rooms[i]}
                 onchange={() => {
                   editedRoomName = this.value;
@@ -179,12 +179,12 @@
           </form>
         {/each}
       </div>
-      <form class="flex grow w-full" method="POST">
-        <div class="flex grow w-full join bordered pl-2 pr-2">
+      <form class="flex w-full grow" method="POST">
+        <div class="join bordered flex w-full grow pl-2 pr-2">
           <input
             type="text"
             name="room"
-            class="input join-item grow input-bordered" />
+            class="input join-item input-bordered grow" />
           <button
             type="button"
             class="btn btn-primary join-item"
