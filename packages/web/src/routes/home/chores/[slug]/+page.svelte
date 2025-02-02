@@ -24,6 +24,7 @@
     BedroomIcon
   } from "$lib/utils/icons";
   import { getUsernameById } from "$lib/utils/helpers";
+  import { FREQUENCY_INTERVALS } from "$lib/utils/constants";
 
   let { data }: { data: PageData } = $props();
   let choreItem = $state(data.chore);
@@ -35,6 +36,11 @@
 
   let assigneeName: string | undefined = $derived(
     getUsernameById(choreItem.assignee, data.house.members)
+  );
+  let frequencyDescription: string | undefined = $derived(
+    FREQUENCY_INTERVALS.find(
+      (frequency) => frequency.value === choreItem.frequency
+    )?.description
   );
   let deadline: CalendarDate | undefined = $state(
     choreItem.deadline
@@ -101,14 +107,34 @@
             >{$errors.data}</span
           >{/if}
 
-        <TextInput
-          name="frequency"
-          bind:value={choreItem.frequency}
-          placeholder="Enter a Chore frequency">
-          <div class="flex w-24 items-center gap-2 font-normal">
-            <TextIcon class="h-4 w-4" />Frequency
-          </div>
-        </TextInput>
+        <Dropdown.Root>
+          <button
+            type="button"
+            tabindex="0"
+            class="btn btn-outline bg-base-100 input-bordered text-normal w-full rounded-md">
+            <div class="flex w-24 items-center gap-2 font-normal">
+              <UserIcon class="h-4 w-4" />Frequency
+            </div>
+            <span class="grow text-right font-normal">
+              {frequencyDescription ? frequencyDescription : "Set frequency"}
+            </span>
+          </button>
+          <input class="hidden" name="frequency" value={choreItem.frequency} />
+          <Dropdown.Content>
+            <Dropdown.TextItem
+              class="justify-left pointer-events-none flex w-full font-bold"
+              >Frequency</Dropdown.TextItem>
+            {#each FREQUENCY_INTERVALS as interval}
+              <Dropdown.RadioItem
+                radioName="intervalRadio"
+                checked={choreItem.frequency === interval.value}
+                onchange={() => {
+                  choreItem.frequency = interval.value;
+                }}>{interval.description}</Dropdown.RadioItem>
+            {/each}
+          </Dropdown.Content>
+        </Dropdown.Root>
+
         {#if $errors.frequency}<span
             class="invalid text-error ml-2 flex w-full text-start text-sm"
             >{$errors.frequency}</span

@@ -154,3 +154,28 @@ export const ROUTE_MAPPING: RouteMap[] = [
     target: "_self"
   }
 ];
+
+export type FrequencyOption = {
+  value: number;
+  description: string;
+};
+
+export const FREQUENCY_INTERVALS: FrequencyOption[] = [
+  { value: 1, description: "Daily" },
+  { value: 2, description: "Every other day" },
+  { value: 3, description: "Every three days" },
+  { value: 4, description: "Every four days" },
+  { value: 5, description: "Every five days" },
+  { value: 6, description: "Every six days" },
+  { value: 7, description: "Weekly" },
+  { value: 10, description: "Every ten days" },
+  { value: 14, description: "Every other week" },
+  { value: 21, description: "Every three weeks" },
+  { value: 28, description: "Monthly" },
+  { value: 35, description: "Every five weeks" },
+  { value: 42, description: "Every six weeks" },
+  { value: 56, description: "Every two months" },
+  { value: 84, description: "Every three months" },
+  { value: 112, description: "Every four months" },
+  { value: 182, description: "Every six months" },
+  { value: 365, description: "Yearly" }];

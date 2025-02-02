@@ -35,6 +35,8 @@ import TSIcon from "virtual:icons/skill-icons/typescript";
 import DeleteIcon from "~icons/fluent/delete-12-filled";
 import HouseCircleOutline from "~icons/mdi/house-circle-outline";
 import UserCircleOutline from "~icons/mdi/user-circle-outline";
+import CircleIcon from "virtual:icons/fluent/circle-20-filled";
+import RedoIcon from "virtual:icons/fluent/approvals-app-32-filled";
 
 export {
   BedroomIcon,
@@ -72,5 +74,7 @@ export {
   TextIcon,
   TodoIcon,
   UserCircleOutline,
-  UserIcon
+  UserIcon,
+  CircleIcon,
+  RedoIcon
 };

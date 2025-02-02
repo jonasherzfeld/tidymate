@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { MenuDots } from "$lib/utils/icons";
+  import { MenuDots, HouseIcon, CircleIcon, RedoIcon } from "$lib/utils/icons";
   import { enhance } from "$app/forms";
   import Dropdown from "./dropdown/Dropdown.svelte";
   import DropdownContent from "./dropdown/DropdownContent.svelte";
@@ -11,6 +11,7 @@
   import { cn } from "$lib/utils";
   import AvatarGraphic from "./AvatarGraphic.svelte";
   import UnknownAvatar from "$lib/img/Unknown_person.jpg";
+  import { FREQUENCY_INTERVALS } from "$lib/utils/constants";
 
   let {
     id = $bindable(),
@@ -19,6 +20,7 @@
     done = $bindable(),
     tags = $bindable(),
     deadline = $bindable(),
+    frequency = $bindable(),
     last_done = $bindable(),
     room = $bindable(),
     severity = $bindable(),
@@ -45,12 +47,20 @@
   let assigneeThumbnail = $derived(
     getThumbnailById(assignee, $page.data.house.members) ?? ""
   );
+  let frequencyDescription: string | undefined = $derived(
+    FREQUENCY_INTERVALS.find((item) => item.value === frequency)?.description
+  );
 
   let deadlineDate: Date = $derived(new Date(deadline));
   let deadlineWarningDate: Date = new Date();
   deadlineWarningDate.setDate(new Date().getDate() + 1);
   let deadlineErrorDate: Date = new Date();
   deadlineErrorDate.setDate(new Date().getDate() + 0);
+  let daysToDoChore: number = $derived(
+    Math.ceil(
+      (deadlineDate.getTime() - new Date().getTime()) / (1000 * 3600 * 24)
+    )
+  );
 
   let checkboxState = $state(false);
 
@@ -96,38 +106,63 @@
       </form>
     </div>
 
-    <div class="justify-left mt-0 h-fit grow gap-2 pl-4 pr-2 pt-0 text-left">
-      <h2 class={`mt-0 flex items-start pt-0 ${done ? "text-primary" : ""}`}>
-        {data}
-      </h2>
+    <div
+      class="justify-left mt-0 flex h-fit grow flex-col gap-1 pl-4 pr-2 pt-0 text-left">
+      <div class="flex flex-row items-center gap-2">
+        <div class="badge badge-info gap-2">
+          <HouseIcon />
+          {room ? room : "General"}
+        </div>
+        <h2 class="mt-0 flex items-start pt-0 text-xl">
+          {data}
+        </h2>
+      </div>
 
-      <div class="flex">
+      <div class="flex flex-row items-center">
         {#if deadline}
-          <span
+          <CircleIcon
             class={cn(
-              "justify-left text-info w-fit pr-3 text-xs",
+              "mr-1 h-3 w-3",
               deadlineDate <= deadlineWarningDate && "text-warning",
               deadlineDate <= deadlineErrorDate && "text-error"
-            )}>{deadlineDate.toDateString()}</span>
+            )} />
+          <span
+            class={cn(
+              "justify-left text-info w-fit text-xs",
+              deadlineDate <= deadlineWarningDate && "text-warning",
+              deadlineDate <= deadlineErrorDate && "text-error"
+            )}>
+            {daysToDoChore > 0
+              ? `In ${daysToDoChore} days`
+              : `${-daysToDoChore} days due"`}
+          </span>
+          <div class="divider divider-horizontal m-0 p-0"></div>
+        {/if}
+        {#if assignee && assigneeName}
+          <AvatarGraphic
+            thumbnail={assigneeThumbnail}
+            height="h-4"
+            width="w-4"
+            textSize="text-[0.4rem]"
+            firstName={assigneeName.split(" ")[0]}
+            lastName={assigneeName.split(" ")[1]} />
+          <span class="pl-2 text-xs text-neutral-500">{assigneeName}</span>
+        {:else}
+          <img alt="User" src={UnknownAvatar} />
         {/if}
       </div>
+      <div class="flex flex-row items-center">
+        <RedoIcon class="mr-1 h-3 w-3 text-neutral-500" />
+
+        <h2 class="mt-0 flex items-start pt-0 text-xs text-neutral-500">
+          {frequencyDescription}
+        </h2>
+      </div>
     </div>
-    <div class="flex h-full items-center pl-1 pr-2">
-      {#if assignee && assigneeName}
-        <AvatarGraphic
-          thumbnail={assigneeThumbnail}
-          height="h-8"
-          width="w-8"
-          textSize="text-sm"
-          firstName={assigneeName.split(" ")[0]}
-          lastName={assigneeName.split(" ")[1]} />
-      {:else}
-        <img alt="User" src={UnknownAvatar} />
-      {/if}
-    </div>
+
     <div class="flex h-full w-fit justify-end">
       <Dropdown>
-        <DropdownButton className="btn-xs btn-square">
+        <DropdownButton className="btn-xs btn-square border-neutral">
           <MenuDots />
         </DropdownButton>
         <DropdownContent>
