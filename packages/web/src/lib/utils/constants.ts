@@ -178,4 +178,5 @@ export const FREQUENCY_INTERVALS: FrequencyOption[] = [
   { value: 84, description: "Every three months" },
   { value: 112, description: "Every four months" },
   { value: 182, description: "Every six months" },
-  { value: 365, description: "Yearly" }];
+  { value: 365, description: "Yearly" }
+];

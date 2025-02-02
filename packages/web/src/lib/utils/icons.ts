@@ -1,4 +1,5 @@
 // @ts-nocheck
+import RedoIcon from "virtual:icons/fluent/approvals-app-32-filled";
 import ReloadIcon from "virtual:icons/fluent/arrow-clockwise-24-filled";
 import SortIcon from "virtual:icons/fluent/arrow-sort-16-filled";
 import BedroomIcon from "virtual:icons/fluent/bed-16-filled";
@@ -7,6 +8,7 @@ import ChoresIcon from "virtual:icons/fluent/calendar-arrow-counterclockwise-48-
 import CheckIcon from "virtual:icons/fluent/checkmark-12-filled";
 import ChevronLeft from "virtual:icons/fluent/chevron-left-28-filled";
 import ChevronRight from "virtual:icons/fluent/chevron-right-28-filled";
+import CircleIcon from "virtual:icons/fluent/circle-20-filled";
 import TextIcon from "virtual:icons/fluent/code-text-16-filled";
 import DocsIcon from "virtual:icons/fluent/document-bullet-list-16-regular";
 import HouseIcon from "virtual:icons/fluent/home-20-filled";
@@ -35,8 +37,6 @@ import TSIcon from "virtual:icons/skill-icons/typescript";
 import DeleteIcon from "~icons/fluent/delete-12-filled";
 import HouseCircleOutline from "~icons/mdi/house-circle-outline";
 import UserCircleOutline from "~icons/mdi/user-circle-outline";
-import CircleIcon from "virtual:icons/fluent/circle-20-filled";
-import RedoIcon from "virtual:icons/fluent/approvals-app-32-filled";
 
 export {
   BedroomIcon,
@@ -45,6 +45,7 @@ export {
   ChevronLeft,
   ChevronRight,
   ChoresIcon,
+  CircleIcon,
   CssIcon,
   DeleteIcon,
   DocsIcon,
@@ -61,6 +62,7 @@ export {
   MenuDots,
   MenuIcon,
   PasswordIcon,
+  RedoIcon,
   RegisterIcon,
   ReloadIcon,
   SearchIcon,
@@ -74,7 +76,5 @@ export {
   TextIcon,
   TodoIcon,
   UserCircleOutline,
-  UserIcon,
-  CircleIcon,
-  RedoIcon
+  UserIcon
 };

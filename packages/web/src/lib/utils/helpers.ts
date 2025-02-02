@@ -53,10 +53,14 @@ export function initializeFilterValues<T>(
       if (values) {
         if (Array.isArray(values)) {
           for (const value of values) {
-            filter.values.indexOf(value) === -1 ? filter.values.push(value) : null;
+            filter.values.indexOf(value) === -1
+              ? filter.values.push(value)
+              : null;
           }
         } else {
-          filter.values.indexOf(values) === -1 ? filter.values.push(values) : null;
+          filter.values.indexOf(values) === -1
+            ? filter.values.push(values)
+            : null;
         }
       }
     }
