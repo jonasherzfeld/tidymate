@@ -52,9 +52,11 @@ export function initializeFilterValues<T>(
       const values = todo[filter.property] as string | string[];
       if (values) {
         if (Array.isArray(values)) {
-          filter.values = [...filter.values, ...values];
+          for (const value of values) {
+            filter.values.indexOf(value) === -1 ? filter.values.push(value) : null;
+          }
         } else {
-          filter.values = [...filter.values, values];
+          filter.values.indexOf(values) === -1 ? filter.values.push(values) : null;
         }
       }
     }
