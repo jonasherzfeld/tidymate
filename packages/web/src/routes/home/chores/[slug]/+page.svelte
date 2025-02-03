@@ -82,7 +82,7 @@
     </div>
 
     <div class="flex h-fit min-w-full flex-1 flex-col gap-3">
-      <div class="card-h-fit bg-base-300 flex flex-col gap-2 p-3">
+      <div class="card h-fit bg-base-300 flex flex-col gap-2 p-3">
         <div class="text-conter mb-2 text-2xl font-bold">
           {isCreatingNewChore ? "Create" : "Edit"} Chore
         </div>
@@ -144,7 +144,7 @@
           <button
             type="button"
             tabindex="0"
-            class="btn btn-outline bg-base-100 input-bordered text-normal w-full rounded-md">
+            class="btn btn-outline bg-base-100 no-animation input-bordered text-normal w-full animate-none rounded-md">
             <div class="flex w-24 items-center gap-2 font-normal">
               <UserIcon class="h-4 w-4" />Assignee
             </div>
@@ -185,7 +185,7 @@
           <button
             type="button"
             tabindex="0"
-            class="btn btn-outline bg-base-100 input-bordered text-normal w-full rounded-md">
+            class="btn btn-outline bg-base-100 no-animation input-bordered text-normal w-full animate-none rounded-md">
             <div class="flex w-24 items-center gap-2 font-normal">
               <RoomFilterIcon class="h-4 w-4" />Room
             </div>
@@ -221,7 +221,7 @@
             <Button
               variant="outline"
               class={cn(
-                "btn btn-outline bg-base-100 input-bordered w-full justify-between rounded-md text-left font-normal hover:bg-[var(--fallback-bc,oklch(var(--bc)/var(--tw-bg-opacity)))]",
+                "btn btn-outline bg-base-100 no-animation input-bordered  w-full animate-none justify-between rounded-md text-left font-normal hover:bg-[var(--fallback-bc,oklch(var(--bc)/var(--tw-bg-opacity)))]",
                 !deadline && "text-muted-foreground",
                 isDeadlineInPast && "input-error"
               )}
