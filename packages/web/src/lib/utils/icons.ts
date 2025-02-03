@@ -38,18 +38,19 @@ import DeleteIcon from "~icons/fluent/delete-12-filled";
 import HouseCircleOutline from "~icons/mdi/house-circle-outline";
 import UserCircleOutline from "~icons/mdi/user-circle-outline";
 
-// Room icons 
-import GeneralIcon from "virtual:icons/mdi/tools"
+// Room icons
 import BathroomIcon from "virtual:icons/mdi/bathroom";
 import BedroomIcon from "virtual:icons/mdi/bedroom";
 import KitchenIcon from "virtual:icons/mdi/kitchen";
-import OfficeIcon from "virtual:icons/mdi/work";
 import LivingRoomIcon from "virtual:icons/mdi/living-room";
 import OutdoorIcon from "virtual:icons/mdi/plant";
+import GeneralIcon from "virtual:icons/mdi/tools";
+import OfficeIcon from "virtual:icons/mdi/work";
 // import HouseIcon from "virtual:icons/mdi/house";
 
 export {
-  RoomFilterIcon,
+  BathroomIcon,
+  BedroomIcon,
   CalendarIcon,
   CheckIcon,
   ChevronLeft,
@@ -62,19 +63,25 @@ export {
   DoneAllIcon,
   EditIcon,
   EmailIcon,
+  GeneralIcon,
   GithubIcon,
   HouseCircleOutline,
   HouseIcon,
   HtmlIcon,
   InfoIcon,
   JSIcon,
+  KitchenIcon,
   LinkedInIcon,
+  LivingRoomIcon,
   MenuDots,
   MenuIcon,
+  OfficeIcon,
+  OutdoorIcon,
   PasswordIcon,
   RedoIcon,
   RegisterIcon,
   ReloadIcon,
+  RoomFilterIcon,
   SearchIcon,
   SignIn,
   SignOut,
@@ -86,14 +93,5 @@ export {
   TextIcon,
   TodoIcon,
   UserCircleOutline,
-  UserIcon,
-  CircleIcon,
-  RedoIcon,
-  BathroomIcon,
-  BedroomIcon,
-  GeneralIcon,
-  KitchenIcon,
-  OfficeIcon,
-  LivingRoomIcon,
-  OutdoorIcon,
+  UserIcon
 };

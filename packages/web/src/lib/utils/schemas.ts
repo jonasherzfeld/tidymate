@@ -118,7 +118,10 @@ export const choreItemSchema = z
     assignee: z.string().optional(),
     deadline: z.date(),
     last_done: z.date().optional(),
-    room: z.string().min(1, "A room must be assigned").max(255, "Invalid room name"),
+    room: z
+      .string()
+      .min(1, "A room must be assigned")
+      .max(255, "Invalid room name"),
     severity: z.number().int().min(0).max(2).optional()
   })
   .superRefine(({ deadline }, ctx) => {
