@@ -114,11 +114,11 @@ export const choreItemSchema = z
   .object({
     id: z.string(),
     data: z.string().min(1).max(255),
-    frequency: z.number().int().min(1).max(365).optional(),
+    frequency: z.number().int().min(1).max(365),
     assignee: z.string().optional(),
-    deadline: z.date().optional(),
+    deadline: z.date(),
     last_done: z.date().optional(),
-    room: z.string().optional(),
+    room: z.string().min(1, "A room must be assigned").max(255, "Invalid room name"),
     severity: z.number().int().min(0).max(2).optional()
   })
   .superRefine(({ deadline }, ctx) => {
@@ -127,7 +127,7 @@ export const choreItemSchema = z
       ctx.addIssue({
         code: "custom",
         path: ["deadline"],
-        message: "Deadline must be before today"
+        message: "Deadline must be later than today"
       });
     }
   });

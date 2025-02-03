@@ -7,11 +7,12 @@
   import ChoreItem from "$lib/components/ChoreItem.svelte";
   import SortDropDown from "$lib/components/SortDropDown.svelte";
   import FilterDropDown from "$lib/components/FilterDropDown.svelte";
+  import { getUsernameById } from "$lib/utils/helpers";
   import {
     ReloadIcon,
     TagIcon,
     UserIcon,
-    BedroomIcon,
+    RoomFilterIcon,
     SearchIcon
   } from "$lib/utils/icons";
   import { browser } from "$app/environment";
@@ -20,7 +21,7 @@
 
   let serverErrors: string = $state("");
 
-  let sortKey: SearchableItemSortKey<Chore> = $state("last_done");
+  let sortKey: SearchableItemSortKey<Chore> = $state("-deadline");
   let sortOrder: boolean = $state(true);
 
   let filters: FilterDescription<Chore>[] = $state([
@@ -28,6 +29,10 @@
     { property: "tags", values: [], filterValues: [] },
     { property: "room", values: [], filterValues: [] }
   ]);
+  let nameFilterFn: (value: string) => string = (value) => {
+    console.log(value);
+    return getUsernameById(value, data.house.members);
+  };
 
   let removedList: string[] = $state([]);
   let searchText: string = $state("");
@@ -95,7 +100,7 @@
           title="Room"
           values={filters[2].values}
           bind:filterValue={filters[2].filterValues}>
-          <BedroomIcon class="h-4 w-4" />
+          <RoomFilterIcon class="h-4 w-4" />
         </FilterDropDown>
         <FilterDropDown
           title="Tags"
@@ -106,6 +111,7 @@
         <FilterDropDown
           title="Assignee"
           values={filters[0].values}
+          valueFn={nameFilterFn}
           bind:filterValue={filters[0].filterValues}>
           <UserIcon class="h-4 w-4" />
         </FilterDropDown>

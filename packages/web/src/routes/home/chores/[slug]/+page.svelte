@@ -21,10 +21,10 @@
     UserIcon,
     CheckIcon,
     TextIcon,
-    BedroomIcon
+    RoomFilterIcon
   } from "$lib/utils/icons";
   import { getUsernameById } from "$lib/utils/helpers";
-  import { FREQUENCY_INTERVALS } from "$lib/utils/constants";
+  import { FREQUENCY_INTERVALS, ROOM_CONFIG } from "$lib/utils/constants";
 
   let { data }: { data: PageData } = $props();
   let choreItem = $state(data.chore);
@@ -187,7 +187,7 @@
             tabindex="0"
             class="btn btn-outline bg-base-100 input-bordered text-normal w-full rounded-md">
             <div class="flex w-24 items-center gap-2 font-normal">
-              <BedroomIcon class="h-4 w-4" />Room
+              <RoomFilterIcon class="h-4 w-4" />Room
             </div>
             <span class="grow text-right font-normal">
               {choreItem.room ? choreItem.room : "Set room"}
@@ -198,19 +198,15 @@
             <Dropdown.TextItem
               class="justify-left pointer-events-none flex w-full font-bold"
               >Room</Dropdown.TextItem>
-            <Dropdown.RadioItem
-              radioName="roomRadio"
-              checked={choreItem.room === ""}
-              onchange={() => {
-                choreItem.room = "";
-              }}>None</Dropdown.RadioItem>
-            {#each data.house.rooms as room}
+            <!-- TODO: Enable handling of rooms for each house
+             {#each data.house.rooms as room} -->
+            {#each ROOM_CONFIG as room}
               <Dropdown.RadioItem
                 radioName="roomRadio"
-                checked={choreItem.room === room}
+                checked={choreItem.room === room.name}
                 onchange={() => {
-                  choreItem.room = room;
-                }}>{room}</Dropdown.RadioItem>
+                  choreItem.room = room.name;
+                }}>{room.name}</Dropdown.RadioItem>
             {/each}
           </Dropdown.Content>
         </Dropdown.Root>
@@ -243,7 +239,10 @@
           </Popover.Content>
         </Popover.Root>
         {#if isDeadlineInPast || $errors.deadline}
-          <span class="text-error">Deadline must be in the future</span>
+          {#if $errors.data}<span
+              class="invalid text-error ml-2 flex w-full text-start text-sm"
+              >Deadline must be in the future</span
+            >{/if}
         {/if}
         <button
           class={cn(
