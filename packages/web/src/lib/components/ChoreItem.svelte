@@ -11,7 +11,11 @@
   import { cn } from "$lib/utils";
   import AvatarGraphic from "./AvatarGraphic.svelte";
   import UnknownAvatar from "$lib/img/Unknown_person.jpg";
-  import { FREQUENCY_INTERVALS } from "$lib/utils/constants";
+  import {
+    FREQUENCY_INTERVALS,
+    ROOM_CONFIG,
+    type RoomConfig
+  } from "$lib/utils/constants";
 
   let {
     id = $bindable(),
@@ -49,6 +53,12 @@
   );
   let frequencyDescription: string | undefined = $derived(
     FREQUENCY_INTERVALS.find((item) => item.value === frequency)?.description
+  );
+  let defaultRoomConfig: RoomConfig | undefined = $derived(
+    ROOM_CONFIG.find((item) => item.name === "General")
+  );
+  let roomConfig: RoomConfig | undefined = $derived(
+    ROOM_CONFIG.find((item) => item.name === room)
   );
 
   let deadlineDate: Date = $derived(new Date(deadline));
@@ -109,9 +119,15 @@
     <div
       class="justify-left mt-0 flex h-fit grow flex-col gap-1 pl-4 pr-2 pt-0 text-left">
       <div class="flex flex-row items-center gap-2">
-        <div class="badge badge-info gap-2">
-          <HouseIcon />
-          {room ? room : "General"}
+        <div
+          class={`badge badge-info gap-2 ${roomConfig ? roomConfig.color : defaultRoomConfig?.color}`}>
+          {#if roomConfig}
+            <roomConfig.icon />
+            {roomConfig.name}
+          {:else if defaultRoomConfig}
+            <defaultRoomConfig.icon />
+            {defaultRoomConfig.name}
+          {/if}
         </div>
         <h2 class="mt-0 flex items-start pt-0 text-xl">
           {data}
@@ -136,9 +152,10 @@
               ? `In ${daysToDoChore} days`
               : `${-daysToDoChore} days due"`}
           </span>
-          <div class="divider divider-horizontal m-0 p-0"></div>
         {/if}
         {#if assignee && assigneeName}
+          <div class="divider divider-horizontal m-0 p-0"></div>
+
           <AvatarGraphic
             thumbnail={assigneeThumbnail}
             height="h-4"
@@ -147,8 +164,6 @@
             firstName={assigneeName.split(" ")[0]}
             lastName={assigneeName.split(" ")[1]} />
           <span class="pl-2 text-xs text-neutral-500">{assigneeName}</span>
-        {:else}
-          <img alt="User" src={UnknownAvatar} />
         {/if}
       </div>
       <div class="flex flex-row items-center">

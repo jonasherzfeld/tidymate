@@ -5,17 +5,17 @@
   import DropdownTextItem from "./dropdown/DropdownTextItem.svelte";
   import DropdownCheckboxItem from "./dropdown/DropdownCheckboxItem.svelte";
   import type { Snippet } from "svelte";
-  import { getUsernameById } from "$lib/utils/helpers";
-  import { page } from "$app/stores";
 
   let {
     title,
     values,
+    valueFn,
     filterValue = $bindable(),
     children
   }: {
     title: string;
     values: string[];
+    valueFn?: (value: string) => string;
     filterValue: string[];
     children?: Snippet;
   } = $props();
@@ -41,11 +41,13 @@
             filterValue.includes(value)
               ? (filterValue = filterValue.filter((item) => item !== value))
               : (filterValue = [...filterValue, value]);
-          }}
-          >{getUsernameById(
-            value,
-            $page.data.house.members
-          )}</DropdownCheckboxItem>
+          }}>
+          {#if valueFn}
+            {valueFn(value)}
+          {:else}
+            {value}
+          {/if}
+        </DropdownCheckboxItem>
       {/each}
     {/if}
   </DropdownContent>

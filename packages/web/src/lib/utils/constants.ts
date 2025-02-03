@@ -8,7 +8,14 @@ import {
   SignIn,
   SignOut,
   TodoIcon,
-  UserCircleOutline
+  UserCircleOutline,
+  BathroomIcon,
+  GeneralIcon,
+  BedroomIcon,
+  KitchenIcon,
+  LivingRoomIcon,
+  OfficeIcon,
+  OutdoorIcon
 } from "$lib/utils/icons";
 import type { Component } from "svelte";
 
@@ -178,5 +185,22 @@ export const FREQUENCY_INTERVALS: FrequencyOption[] = [
   { value: 84, description: "Every three months" },
   { value: 112, description: "Every four months" },
   { value: 182, description: "Every six months" },
-  { value: 365, description: "Yearly" }
+  { value: 365, description: "Yearly" }];
+
+
+export type RoomConfig = {
+    name: string,
+    icon: Component,
+    color: string
+  };
+export const ROOM_CONFIG: RoomConfig[] = [
+  { name: "General", icon: GeneralIcon, color: "bg-stone-500" },
+  { name: "Bathroom", icon: BathroomIcon, color: "bg-blue-500" },
+  { name: "Bedroom", icon: BedroomIcon, color: "bg-amber-400"  },
+  { name: "Kitchen", icon: KitchenIcon, color: "bg-violet-500"  },
+  { name: "Living Room", icon: LivingRoomIcon, color: "bg-lime-400"  },
+  { name: "Office", icon: OfficeIcon, color: "bg-rose-400"  },
+  { name: "Outdoor", icon: OutdoorIcon, color: "bg-indogo-700"  },
+  { name: "House", icon: HouseIcon, color: "bg-primary"  }
 ];
+  

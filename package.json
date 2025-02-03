@@ -15,6 +15,7 @@
     "@iconify-json/fluent": "^1.2.5",
     "@iconify-json/mdi": "^1.2.1",
     "@iconify-json/skill-icons": "^1.2.0",
+    "@iconify-json/material-symbols": "^1.2.14",
     "daisyui": "^4.12.13",
     "postcss-normalize": "^13.0.1",
     "prettier": "^3.2.5",

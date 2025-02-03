@@ -2,7 +2,7 @@
 import RedoIcon from "virtual:icons/fluent/approvals-app-32-filled";
 import ReloadIcon from "virtual:icons/fluent/arrow-clockwise-24-filled";
 import SortIcon from "virtual:icons/fluent/arrow-sort-16-filled";
-import BedroomIcon from "virtual:icons/fluent/bed-16-filled";
+import RoomFilterIcon from "virtual:icons/fluent/bed-16-filled";
 import CalendarIcon from "virtual:icons/fluent/calendar-24-regular";
 import ChoresIcon from "virtual:icons/fluent/calendar-arrow-counterclockwise-48-filled";
 import CheckIcon from "virtual:icons/fluent/checkmark-12-filled";
@@ -38,8 +38,18 @@ import DeleteIcon from "~icons/fluent/delete-12-filled";
 import HouseCircleOutline from "~icons/mdi/house-circle-outline";
 import UserCircleOutline from "~icons/mdi/user-circle-outline";
 
+// Room icons 
+import GeneralIcon from "virtual:icons/mdi/tools"
+import BathroomIcon from "virtual:icons/mdi/bathroom";
+import BedroomIcon from "virtual:icons/mdi/bedroom";
+import KitchenIcon from "virtual:icons/mdi/kitchen";
+import OfficeIcon from "virtual:icons/mdi/work";
+import LivingRoomIcon from "virtual:icons/mdi/living-room";
+import OutdoorIcon from "virtual:icons/mdi/plant";
+// import HouseIcon from "virtual:icons/mdi/house";
+
 export {
-  BedroomIcon,
+  RoomFilterIcon,
   CalendarIcon,
   CheckIcon,
   ChevronLeft,
@@ -76,5 +86,14 @@ export {
   TextIcon,
   TodoIcon,
   UserCircleOutline,
-  UserIcon
+  UserIcon,
+  CircleIcon,
+  RedoIcon,
+  BathroomIcon,
+  BedroomIcon,
+  GeneralIcon,
+  KitchenIcon,
+  OfficeIcon,
+  LivingRoomIcon,
+  OutdoorIcon,
 };
