@@ -82,7 +82,7 @@
     </div>
 
     <div class="flex h-fit min-w-full flex-1 flex-col gap-3">
-      <div class="card h-fit bg-base-300 flex flex-col gap-2 p-3">
+      <div class="card bg-base-300 flex h-fit flex-col gap-2 p-3">
         <div class="text-conter mb-2 text-2xl font-bold">
           {isCreatingNewChore ? "Create" : "Edit"} Chore
         </div>
