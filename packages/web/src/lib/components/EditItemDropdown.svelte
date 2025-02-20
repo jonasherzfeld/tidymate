@@ -1,7 +1,6 @@
 <script lang="ts" generics="T">
   import * as Dropdown from "$lib/components/dropdown/index.js";
   import type { Component } from "svelte";
-  import { aS } from "vitest/dist/reporters-yx5ZTtEV.js";
 
   let {
     itemList,

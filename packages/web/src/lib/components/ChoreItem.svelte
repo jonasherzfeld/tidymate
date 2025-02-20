@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { MenuDots, HouseIcon, CircleIcon, RedoIcon } from "$lib/utils/icons";
+  import { MenuDots, CircleIcon, RedoIcon } from "$lib/utils/icons";
   import { enhance } from "$app/forms";
   import Dropdown from "./dropdown/Dropdown.svelte";
   import DropdownContent from "./dropdown/DropdownContent.svelte";
@@ -10,7 +10,6 @@
   import { page } from "$app/stores";
   import { cn } from "$lib/utils";
   import AvatarGraphic from "./AvatarGraphic.svelte";
-  import UnknownAvatar from "$lib/img/Unknown_person.jpg";
   import {
     FREQUENCY_INTERVALS,
     ROOM_CONFIG,
@@ -120,16 +119,16 @@
       class="justify-left mt-0 flex h-fit grow flex-col gap-1 pl-4 pr-2 pt-0 text-left">
       <div class="flex flex-row items-center gap-2">
         <div
-          class={`badge badge-info gap-2 ${roomConfig ? roomConfig.color : defaultRoomConfig?.color}`}>
+          class={`badge badge-info gap-1 items-center h-6 ${roomConfig ? roomConfig.color : defaultRoomConfig?.color}`}>
           {#if roomConfig}
-            <roomConfig.icon />
+            <roomConfig.icon/>
             {roomConfig.name}
           {:else if defaultRoomConfig}
             <defaultRoomConfig.icon />
             {defaultRoomConfig.name}
           {/if}
         </div>
-        <h2 class="mt-0 flex items-start pt-0 text-xl">
+        <h2 class="mt-0 flex items-start pt-0 text-x">
           {data}
         </h2>
       </div>
@@ -144,13 +143,14 @@
             )} />
           <span
             class={cn(
-              "justify-left text-info w-fit text-xs",
+              "justify-left text-info  w-fit text-xs font-medium",
               deadlineDate <= deadlineWarningDate && "text-warning",
               deadlineDate <= deadlineErrorDate && "text-error"
             )}>
-            {daysToDoChore > 0
-              ? `In ${daysToDoChore} days`
-              : `${-daysToDoChore} days due"`}
+            {daysToDoChore > 1 ? `In ${daysToDoChore} days`
+              : daysToDoChore == 1 ? `Due tomorrow`
+              : daysToDoChore == 0 ? "Due today"
+              : `${-daysToDoChore} days due`}
           </span>
         {/if}
         {#if assignee && assigneeName}
@@ -163,13 +163,13 @@
             textSize="text-[0.4rem]"
             firstName={assigneeName.split(" ")[0]}
             lastName={assigneeName.split(" ")[1]} />
-          <span class="pl-2 text-xs text-neutral-500">{assigneeName}</span>
+          <span class="pl-2 text-xs text-neutral-500 font-medium">{assigneeName}</span>
         {/if}
       </div>
       <div class="flex flex-row items-center">
         <RedoIcon class="mr-1 h-3 w-3 text-neutral-500" />
 
-        <h2 class="mt-0 flex items-start pt-0 text-xs text-neutral-500">
+        <h2 class="mt-0 flex items-start pt-0 text-xs font-medium text-neutral-500">
           {frequencyDescription}
         </h2>
       </div>
