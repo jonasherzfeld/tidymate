@@ -21,7 +21,8 @@
     UserIcon,
     CheckIcon,
     TextIcon,
-    RoomFilterIcon
+    RoomFilterIcon,
+    RedoIcon
   } from "$lib/utils/icons";
   import { getUsernameById } from "$lib/utils/helpers";
   import { FREQUENCY_INTERVALS, ROOM_CONFIG } from "$lib/utils/constants";
@@ -111,9 +112,9 @@
           <button
             type="button"
             tabindex="0"
-            class="btn btn-outline bg-base-100 input-bordered text-normal w-full rounded-md">
+            class="btn btn-outline bg-base-100 no-animation input-bordered text-normal w-full animate-none rounded-md ">
             <div class="flex w-24 items-center gap-2 font-normal">
-              <UserIcon class="h-4 w-4" />Frequency
+              <RedoIcon class="h-4 w-4" />Frequency
             </div>
             <span class="grow text-right font-normal">
               {frequencyDescription ? frequencyDescription : "Set frequency"}
@@ -246,7 +247,7 @@
         {/if}
         <button
           class={cn(
-            "btn btn-primary text-white",
+            "btn btn-primary text-white no-animation animate-none",
             isChangingChore && "btn-disabled"
           )}>
           {#if !isChangingChore}

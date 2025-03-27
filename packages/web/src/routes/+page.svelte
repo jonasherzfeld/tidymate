@@ -10,6 +10,24 @@
   } from "$lib/utils/icons";
   import RainbowText from "$lib/components/RainbowText.svelte";
   import { ROUTE_MAPPING } from "$lib/utils/constants";
+  import { page } from "$app/state";
+  import { onMount } from "svelte";
+    import { redirect } from "@sveltejs/kit";
+
+  let showModal = $state(false);
+
+  onMount(() => {
+    console.log( page.data.from);
+    if (page.data.from === "register") {
+      showModal = true;
+    }
+  });
+  $effect(() => {
+    console.log( page.data.from);
+    if (page.data.from === "register") {
+      showModal = true;
+    }
+  });
 
   const aboutRoute = ROUTE_MAPPING.find((route) => route.title === "About");
   const docRoute = ROUTE_MAPPING.find(
@@ -18,12 +36,11 @@
 </script>
 
 <div class="bg-base-100 flex min-h-full w-full justify-center">
-  <div
-    class="flex min-h-full max-w-screen-sm flex-col items-center justify-center p-4 text-center">
-    <h3 class="text-3xl">Welcome to</h3>
-    <RainbowText classIn="text-5xl font-bold pb-10">Tidymate</RainbowText>
-    <div
-      class="card bg-base-300 flex h-fit max-w-screen-sm flex-col justify-center gap-4 rounded-lg p-6">
+  <!-- Modal -->
+  {#if showModal}
+    <div class="modal modal-open">
+      <div class="modal-box">
+        <h3 class="font-bold text-lg">Registration Information</h3>
       <div class="text-md text-justify">
         This web app is a hobby project that I started to learn more about Full
         Stack development and dive into some technologies that I had not used
@@ -81,7 +98,21 @@
           target="_blank"
           rel="noopener noreferrer">
           <GithubIcon class="h-6 w-6 " /></a>
+    </div>
+        <div class="modal-action">
+          <a href="/"><button class="btn" on:click={() => (showModal = false)}>Close</button></a>
+        </div>
       </div>
+    </div>
+  {/if}
+
+  <div
+    class="flex min-h-full max-w-screen-sm flex-col items-center justify-center p-4 text-center">
+    <h3 class="text-4xl">Welcome to</h3>
+    <RainbowText classIn="text-5xl font-bold pb-10">Tidymate</RainbowText>
+    <div
+      class="flex h-fit max-w-screen-sm flex-col justify-center gap-4 rounded-lg p-6">
+      Lorep Ipsum
     </div>
   </div>
 </div>

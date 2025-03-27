@@ -2,11 +2,12 @@ import type { Actions } from "@sveltejs/kit";
 import { redirect } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
 
-export const load: PageServerLoad = async ({ locals }) => {
+export const load: PageServerLoad = async ({ locals, url }) => {
   // redirect user if logged in
   if (locals.user && locals.house) {
     redirect(302, "/home");
   }
+  return { from: url.searchParams.get("from") };
 };
 
 export const actions: Actions = {

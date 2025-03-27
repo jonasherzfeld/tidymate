@@ -152,48 +152,6 @@
     </div>
 
     <div class="card bg-base-200 flex flex-1 flex-col gap-2 p-3">
-      <h2 class="m-4 text-xl font-bold">Rooms</h2>
-      <div class="card bg-base-300 flex p-2">
-        {#each data.house.rooms as room, i}
-          <form class="flex w-full grow" method="POST">
-            <div class="join bordered flex w-full grow">
-              <input
-                type="text"
-                name="room"
-                class="input join-item input-bordered grow"
-                bind:value={data.house.rooms[i]}
-                onchange={() => {
-                  editedRoomName = this.value;
-                }} />
-              <button
-                class="btn btn-secondary join-item"
-                type="submit"
-                formaction="/profile/house?/edit_room?name={data.house.rooms[
-                  i
-                ]}"><EditIcon /></button>
-              <button
-                type="submit"
-                class="btn btn-error join-item"
-                formaction="/profile/house?/delete_room"><DeleteIcon /></button>
-            </div>
-          </form>
-        {/each}
-      </div>
-      <form class="flex w-full grow" method="POST">
-        <div class="join bordered flex w-full grow pl-2 pr-2">
-          <input
-            type="text"
-            name="room"
-            class="input join-item input-bordered grow" />
-          <button
-            type="button"
-            class="btn btn-primary join-item"
-            formaction="/profile/house?/create_room"><SubmitIcon /></button>
-        </div>
-      </form>
-    </div>
-
-    <div class="card bg-base-200 flex flex-1 flex-col gap-2 p-3">
       <h2 class="m-4 text-xl font-bold">House Members</h2>
       {#await data.streamed.user_list}
         <div class="flex w-full flex-col gap-4">
