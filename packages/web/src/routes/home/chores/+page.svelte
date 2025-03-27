@@ -1,16 +1,13 @@
 <script lang="ts">
   import type { PageData } from "./$types.js";
-  import { enhance } from "$app/forms";
   import { onMount } from "svelte";
   import { ListHandler } from "$lib/utils/list_handler";
   import { initializeFilterValues } from "$lib/utils/helpers";
   import ChoreItem from "$lib/components/ChoreItem.svelte";
-  import SortDropDown from "$lib/components/SortDropDown.svelte";
   import FilterDropDown from "$lib/components/FilterDropDown.svelte";
   import { getUsernameById } from "$lib/utils/helpers";
   import {
     ReloadIcon,
-    TagIcon,
     UserIcon,
     RoomFilterIcon,
     SearchIcon
@@ -29,7 +26,7 @@
     { property: "tags", values: [], filterValues: [] },
     { property: "room", values: [], filterValues: [] }
   ]);
-  let nameFilterFn: (value: string) => string = (value) => {
+  let nameFilterFn: (value: string) => string | undefined = (value) => {
     console.log(value);
     return getUsernameById(value, data.house.members);
   };
@@ -103,20 +100,12 @@
           <RoomFilterIcon class="h-4 w-4" />
         </FilterDropDown>
         <FilterDropDown
-          title="Tags"
-          values={filters[1].values}
-          bind:filterValue={filters[1].filterValues}>
-          <TagIcon class="h-4 w-4" />
-        </FilterDropDown>
-        <FilterDropDown
           title="Assignee"
           values={filters[0].values}
           valueFn={nameFilterFn}
           bind:filterValue={filters[0].filterValues}>
           <UserIcon class="h-4 w-4" />
         </FilterDropDown>
-
-        <SortDropDown bind:sortKey bind:sortOrder />
       </div>
     </div>
     <div class="flex flex-col">

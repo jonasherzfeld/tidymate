@@ -119,7 +119,7 @@
       class="justify-left mt-0 flex h-fit grow flex-col gap-1 pl-4 pr-2 pt-0 text-left">
       <div class="flex flex-row items-center gap-2">
         <div
-          class={`badge badge-info gap-1 items-center h-6 ${roomConfig ? roomConfig.color : defaultRoomConfig?.color}`}>
+          class={`badge badge-info gap-1 text-white items-center h-6 ${roomConfig ? roomConfig.color : defaultRoomConfig?.color}`}>
           {#if roomConfig}
             <roomConfig.icon/>
             {roomConfig.name}
@@ -137,7 +137,7 @@
         {#if deadline}
           <CircleIcon
             class={cn(
-              "mr-1 h-3 w-3",
+              "mr-1 h-3 w-3 text-info",
               deadlineDate <= deadlineWarningDate && "text-warning",
               deadlineDate <= deadlineErrorDate && "text-error"
             )} />

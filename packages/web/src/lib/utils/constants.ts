@@ -26,8 +26,7 @@ export const PROTECTED_ROUTES_USER = [
   "/auth/logout",
   "/profile",
   "/home",
-  "/auth/register/house",
-  "/auth/register" // TODO: This is to prevent users to register at the moment (see: /about)
+  "/auth/register/house"
 ];
 
 // Routes that are protected and need a user to be assigned to a house
@@ -37,17 +36,6 @@ export type HeaderMap = {
   key: string;
   title: string;
 };
-export const HEADER_MAPPING: HeaderMap[] = [
-  { key: "/home", title: "" },
-  { key: "/home/todo", title: "Todos" },
-  { key: "/home/chores", title: "Chores" },
-  { key: "/profile/user", title: "Your Profile" },
-  { key: "/profile/house", title: "Your House" },
-  { key: "/auth/login", title: "Login" },
-  { key: "/auth/register/house", title: "Register House" },
-  { key: "/auth/register/user", title: "Register" },
-  { key: "/auth/logout", title: "Logout" }
-];
 
 export type RouteLinkPosition =
   | "header_left"
@@ -62,6 +50,7 @@ export type RestrictionType =
   | "logged_out"
   | "house_member"
   | "no_house_member";
+
 export type RouteMap = {
   url: string;
   title: string;

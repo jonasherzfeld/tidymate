@@ -15,7 +15,7 @@
   }: {
     title: string;
     values: string[];
-    valueFn?: (value: string) => string;
+    valueFn?: (value: string) => string | undefined;
     filterValue: string[];
     children?: Snippet;
   } = $props();
