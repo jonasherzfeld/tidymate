@@ -119,16 +119,16 @@
       class="justify-left mt-0 flex h-fit grow flex-col gap-1 pl-4 pr-2 pt-0 text-left">
       <div class="flex flex-row items-center gap-2">
         <div
-          class={`badge badge-info gap-1 text-white items-center h-6 ${roomConfig ? roomConfig.color : defaultRoomConfig?.color}`}>
+          class={`badge badge-info h-6 items-center gap-1 text-white ${roomConfig ? roomConfig.color : defaultRoomConfig?.color}`}>
           {#if roomConfig}
-            <roomConfig.icon/>
+            <roomConfig.icon />
             {roomConfig.name}
           {:else if defaultRoomConfig}
             <defaultRoomConfig.icon />
             {defaultRoomConfig.name}
           {/if}
         </div>
-        <h2 class="mt-0 flex items-start pt-0 text-x">
+        <h2 class="text-x mt-0 flex items-start pt-0">
           {data}
         </h2>
       </div>
@@ -137,7 +137,7 @@
         {#if deadline}
           <CircleIcon
             class={cn(
-              "mr-1 h-3 w-3 text-info",
+              "text-info mr-1 h-3 w-3",
               deadlineDate <= deadlineWarningDate && "text-warning",
               deadlineDate <= deadlineErrorDate && "text-error"
             )} />
@@ -147,10 +147,13 @@
               deadlineDate <= deadlineWarningDate && "text-warning",
               deadlineDate <= deadlineErrorDate && "text-error"
             )}>
-            {daysToDoChore > 1 ? `In ${daysToDoChore} days`
-              : daysToDoChore == 1 ? `Due tomorrow`
-              : daysToDoChore == 0 ? "Due today"
-              : `${-daysToDoChore} days due`}
+            {daysToDoChore > 1
+              ? `In ${daysToDoChore} days`
+              : daysToDoChore == 1
+                ? `Due tomorrow`
+                : daysToDoChore == 0
+                  ? "Due today"
+                  : `${-daysToDoChore} days due`}
           </span>
         {/if}
         {#if assignee && assigneeName}
@@ -163,13 +166,15 @@
             textSize="text-[0.4rem]"
             firstName={assigneeName.split(" ")[0]}
             lastName={assigneeName.split(" ")[1]} />
-          <span class="pl-2 text-xs text-neutral-500 font-medium">{assigneeName}</span>
+          <span class="pl-2 text-xs font-medium text-neutral-500"
+            >{assigneeName}</span>
         {/if}
       </div>
       <div class="flex flex-row items-center">
         <RedoIcon class="mr-1 h-3 w-3 text-neutral-500" />
 
-        <h2 class="mt-0 flex items-start pt-0 text-xs font-medium text-neutral-500">
+        <h2
+          class="mt-0 flex items-start pt-0 text-xs font-medium text-neutral-500">
           {frequencyDescription}
         </h2>
       </div>

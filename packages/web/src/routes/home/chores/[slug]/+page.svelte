@@ -112,7 +112,7 @@
           <button
             type="button"
             tabindex="0"
-            class="btn btn-outline bg-base-100 no-animation input-bordered text-normal w-full animate-none rounded-md ">
+            class="btn btn-outline bg-base-100 no-animation input-bordered text-normal w-full animate-none rounded-md">
             <div class="flex w-24 items-center gap-2 font-normal">
               <RedoIcon class="h-4 w-4" />Frequency
             </div>
@@ -247,7 +247,7 @@
         {/if}
         <button
           class={cn(
-            "btn btn-primary text-white no-animation animate-none",
+            "btn btn-primary no-animation animate-none text-white",
             isChangingChore && "btn-disabled"
           )}>
           {#if !isChangingChore}
