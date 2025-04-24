@@ -2,9 +2,9 @@ from datetime import datetime
 from flask import Blueprint, request, jsonify, render_template
 import uuid
 
-from models import Todo
-from view_models import TodoViewModel, HouseViewModel
-from auth import login_required, validate_house_member
+from models.models import Todo
+from models.view_models import TodoViewModel, HouseViewModel
+from utils.utils import login_required
 
 items = Blueprint('items', __name__)
 

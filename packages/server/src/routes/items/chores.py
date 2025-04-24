@@ -1,10 +1,10 @@
 from datetime import datetime, timedelta
-from flask import Blueprint, request, jsonify, render_template
+from flask import Blueprint, request, jsonify
 import uuid
 
-from models import Chore, ChoreSeverity
-from view_models import ChoreViewModel, HouseViewModel
-from auth import login_required, validate_house_member
+from models.models import Todo, User, House, Chore
+from models.view_models import ChoreViewModel, HouseViewModel
+from utils.utils import login_required
 
 chores = Blueprint('chores', __name__)
 

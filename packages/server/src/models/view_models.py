@@ -1,15 +1,18 @@
-from datetime import datetime
-import uuid
 from google.cloud.firestore_v1.base_query import FieldFilter
 
-from config import db
-from models import Todo, User, House, Chore
+from db.database import db
+from models.models import Todo, User, House, Chore
 
 USER_COLLECTION: str = "user"
 HOUSE_COLLECTION: str = "house"
 TODOS_COLLECTION: str = "todos"
 CHORES_COLLECTION: str = "chores"
+STATS_COLLECTION: str = "stats"
 
+class Statistics():
+    STAT_OPEN: str = "open"
+    STAT_COMPLETED: str = "completed"
+    STAT_USER: str = "user"
 
 class BaseViewModel():
 
@@ -192,6 +195,22 @@ class HouseViewModel():
             print(f"Error deleting document: {str(e)}")
             return False
 
+    def add_stats(self, id: str, stats: any) -> bool:
+        data_ref: str = None
+        if type(stats) is Todo:
+            data_ref = ""
+        elif type(stats) is Chore:
+            pass
+        doc_ref = db.collection(HOUSE_COLLECTION).document(id)
+        doc = doc_ref.get()
+        if doc.exists:
+            doc_data = doc.to_dict()
+            doc_data["stats"].append(stats)
+            doc_ref.update(doc_data.to_json())
+            return True
+        else:
+            print(f"Document {id} not found in collection {HOUSE_COLLECTION}")
+            return False
 
 class UserViewModel():
 
