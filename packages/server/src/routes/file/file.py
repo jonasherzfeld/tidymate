@@ -1,9 +1,9 @@
 from flask import Blueprint, request, jsonify
 import shortuuid
 
-from config import bucket
-from auth import login_required
-from view_models import UserViewModel, HouseViewModel
+from db.database import bucket
+from utils.utils import login_required
+from models.view_models import UserViewModel, HouseViewModel
 
 file = Blueprint('file', __name__)
 

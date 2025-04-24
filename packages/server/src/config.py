@@ -1,5 +1,5 @@
 import firebase_admin
-from firebase_admin import credentials, firestore, storage
+from firebase_admin import credentials
 from flask import Flask
 from flask_cors import CORS
 from flask_session import Session
@@ -43,6 +43,3 @@ service_account = {
 }
 cred = credentials.Certificate(service_account)
 firebase_admin.initialize_app(cred)
-
-db = firestore.client()
-bucket = storage.bucket(os.environ['STORAGE_BUCKET'])

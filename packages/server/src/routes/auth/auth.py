@@ -1,15 +1,14 @@
 from datetime import datetime
 from firebase_admin import auth as fb_auth
 from flask import Blueprint, request, jsonify, session
-from functools import wraps
 import os
 import requests
 import shortuuid
 import uuid
 
-from config import bucket
-from models import User, House
-from view_models import UserViewModel, HouseViewModel
+from models.models import User, House
+from models.view_models import UserViewModel, HouseViewModel
+from utils.utils import login_required
 
 auth = Blueprint('auth', __name__)
 
@@ -17,20 +16,6 @@ user_vm = UserViewModel()
 house_vm = HouseViewModel()
 
 
-def login_required(function_to_protect):
-    @wraps(function_to_protect)
-    def wrapper(*args, **kwargs):
-        user_id = session.get('user_id')
-        if user_id:
-            user = user_vm.get(user_id)
-            if user:
-                # Success!
-                return function_to_protect(user, *args, **kwargs)
-            else:
-                return jsonify({"error": "Invalid user"}), 401
-        else:
-            return jsonify({"error": "Unauthorized"}), 401
-    return wrapper
 
 
 def validate_house_member(user, house):
