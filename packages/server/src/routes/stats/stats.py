@@ -17,4 +17,3 @@ def get_todo_stats(user):
     chores = chore_vm.get_all(user.house_id)
     chores_json = [chore.to_json() for chore in chores]
     return jsonify({"chores": chores_json})
-
