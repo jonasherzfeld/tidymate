@@ -9,10 +9,12 @@ TODOS_COLLECTION: str = "todos"
 CHORES_COLLECTION: str = "chores"
 STATS_COLLECTION: str = "stats"
 
+
 class Statistics():
     STAT_OPEN: str = "open"
     STAT_COMPLETED: str = "completed"
     STAT_USER: str = "user"
+
 
 class BaseViewModel():
 
@@ -211,6 +213,7 @@ class HouseViewModel():
         else:
             print(f"Document {id} not found in collection {HOUSE_COLLECTION}")
             return False
+
 
 class UserViewModel():
 

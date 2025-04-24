@@ -16,8 +16,6 @@ user_vm = UserViewModel()
 house_vm = HouseViewModel()
 
 
-
-
 def validate_house_member(user, house):
     if not house:
         return House(), jsonify({
