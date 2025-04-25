@@ -4,15 +4,11 @@ import {
   firstNameSchema,
   lastNameSchema
 } from "$lib/utils/schemas";
-import type { Config } from "@sveltejs/adapter-vercel";
 import { fail } from "@sveltejs/kit";
 import { message, superValidate } from "sveltekit-superforms";
 import { zod } from "sveltekit-superforms/adapters";
 import type { PageServerLoad } from "./$types.js";
 
-export const config: Config = {
-  runtime: "edge"
-};
 
 export const load: PageServerLoad = async ({ locals }) => {
   const emailForm = await superValidate(locals.user, zod(emailSchema));
