@@ -1,5 +1,5 @@
-from firebase_admin import firestore, storage
+from firebase_admin import storage
+
 import os
 
-db = firestore.client()
 bucket = storage.bucket(os.environ['STORAGE_BUCKET'])

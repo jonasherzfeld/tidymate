@@ -1,6 +1,6 @@
 from flask import jsonify, session
 from functools import wraps
-from models.view_models import UserViewModel
+from models.models import Users
 
 
 def login_required(function_to_protect):
@@ -8,7 +8,7 @@ def login_required(function_to_protect):
     def wrapper(*args, **kwargs):
         user_id = session.get('user_id')
         if user_id:
-            user = UserViewModel().get(user_id)
+            user = Users.query.filter_by(id=user_id).first()
             if user:
                 # Success!
                 return function_to_protect(user, *args, **kwargs)

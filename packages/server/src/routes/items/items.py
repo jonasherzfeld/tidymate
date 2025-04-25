@@ -2,14 +2,11 @@ from datetime import datetime
 from flask import Blueprint, request, jsonify, render_template
 import uuid
 
-from models.models import Todo
-from models.view_models import TodoViewModel, HouseViewModel
+from config import db
+from models.models import Todo, House
 from utils.utils import login_required
 
 items = Blueprint('items', __name__)
-
-house_vm = HouseViewModel()
-todo_vm = TodoViewModel()
 
 
 @items.route('/create-todo', methods=["POST"])
@@ -17,77 +14,72 @@ todo_vm = TodoViewModel()
 def create_todo(user):
     data = request.json.get("data", "")
     assignee = request.json.get("assignee", "")
-    tags = request.json.get("tags", [])
+    # tags = request.json.get("tags", [])
     deadline = request.json.get("deadline", "")
 
-    house = house_vm.get(user.house_id)
+    house = House.query.filter_by(id=user.house_id).first()
     if not house:
         return jsonify({"error": "House not found"}), 404
 
-    todo = Todo(id=str(uuid.uuid4()),
-                data=data,
+    todo = Todo(data=data,
                 assignee=assignee,
                 done=False,
-                tags=tags,
                 created_on=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                deadline=deadline)
-    ret = todo_vm.set(user.house_id, todo.id, todo)
-    if ret:
-        return jsonify({"todo": todo.to_json()}), 200
-
-    return jsonify({"error": "Could not create todo"}), 500
+                deadline=deadline,
+                house=house)
+    db.session.add(todo)
+    db.session.commit()
+    return jsonify({"todo": todo.to_dict()})
 
 
 @items.route('/get-todos', methods=['GET'])
 @login_required
 def get_todos(user):
-    house = house_vm.get(user.house_id)
-    if not house:
-        return jsonify({"error": "House not found"}), 404
-    todos = todo_vm.get_all(user.house_id)
-    todos_json = [todo.to_json() for todo in todos]
+    todos = Todo.query.filter_by(house_id=user.house_id)
+    todos_json = [todo.to_dict() for todo in todos] if todos else []
     return jsonify({"todos": todos_json})
 
 
 @items.route("/get-todo/<string:todo_id>", methods=["GET"])
 @login_required
 def get_todo(user, todo_id):
-    house = house_vm.get(user.house_id)
-    if not house:
-        return jsonify({"error": "House not found"}), 404
-    todo = todo_vm.get(user.house_id, todo_id)
-    return jsonify({"todo": todo.to_json()})
+    todo = Todo.query.filter_by(id=todo_id).first()
+    if not todo:
+        return jsonify({"error": "Chore not found"}), 404
+    elif not todo.house_id == user.house_id:
+        return jsonify({"error": "Unauthorized"}), 401
+    return jsonify({"todo": todo.to_dict()})
 
 
 @items.route('/check-todo/<string:todo_id>', methods=['PATCH'])
 @login_required
 def check_todos(user, todo_id):
-    house = house_vm.get(user.house_id)
-    if not house:
-        return jsonify({"error": "House not found"}), 404
-
-    todo = todo_vm.get(house.id, todo_id)
+    todo = Todo.query.filter_by(id=todo_id).first()
     if not todo:
         return jsonify({"error": "Todo not found"}), 404
+    elif not todo.house_id == user.house_id:
+        return jsonify({"error": "Unauthorized"}), 401
 
     todo.done = not todo.done
-    todo_vm.update(house.id, todo_id, todo)
+    db.session.commit()
+
     return jsonify({
-        "todo": todo.to_json(),
+        "todo": todo.to_dict(),
     }), 200
 
 
 @items.route('/update-todo', methods=['PATCH'])
 @login_required
 def update_todos(user):
-    house = house_vm.get(user.house_id)
-    if not house:
-        return jsonify({"error": "House not found"}), 404
-
     todo_id = request.json.get("id", None)
     if not todo_id:
         return jsonify({"error": "Todo ID not provided"}), 400
-    todo = todo_vm.get(house.id, todo_id)
+
+    todo = Todo.query.filter_by(id=todo_id).first()
+    if not todo:
+        return jsonify({"error": "Todo not found"}), 404
+    elif not todo.house_id == user.house_id:
+        return jsonify({"error": "Unauthorized"}), 401
 
     todo_text = request.json.get("data", None)
     todo_assignee = request.json.get("assignee", None)
@@ -100,19 +92,18 @@ def update_todos(user):
     if todo_deadline is not None:
         todo.deadline = todo_deadline
 
-    todo_vm.update(house.id, todo.id, todo)
+    db.session.commit()
     return jsonify({
-        "todo": todo.to_json(),
+        "todo": todo.to_dict(),
     }), 200
 
 
 @items.route("/delete-todo/<string:todo_id>", methods=["DELETE"])
 @login_required
 def delete_todo(user, todo_id):
-    house = house_vm.get(user.house_id)
+    house = House.query.filter_by(id=user.house_id).first()
     if not house:
         return jsonify({"error": "House not found"}), 404
-    ret = todo_vm.delete(user.house_id, todo_id)
-    if ret:
-        return jsonify({"message": "Todo deleted successfully"})
+    Todo.query.filter_by(id=todo_id).delete()
+    db.session.commit()
     return jsonify({"error": "Todo not found"}), 404

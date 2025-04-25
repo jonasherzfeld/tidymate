@@ -5,11 +5,9 @@ import { superValidate } from "sveltekit-superforms";
 import { zod } from "sveltekit-superforms/adapters";
 
 export async function load({ locals }) {
-  // TODO Only redirect user if logged in
-  // if (locals.user) {
-  //   redirect(302, "/");
-  // }
-  throw redirect(303, "/?from=register");
+  if (locals.user) {
+    redirect(302, "/");
+  }
 
   const register_form = await superValidate(locals.user, zod(registerSchema));
   return {

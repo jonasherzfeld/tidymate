@@ -3,6 +3,9 @@ from firebase_admin import credentials
 from flask import Flask
 from flask_cors import CORS
 from flask_session import Session
+from flask_sqlalchemy import SQLAlchemy
+from flask_bcrypt import Bcrypt
+
 import redis
 import os
 
@@ -17,7 +20,12 @@ app.config['SESSION_TYPE'] = 'redis'
 app.config['SESSION_PERMANENT'] = False
 app.config['SESSION_USE_SIGNER'] = True
 app.config['SESSION_REDIS'] = redis.from_url(os.environ['REDIS_URL'])
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['SQLLITE_DATABASE_URL']
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
 server_session = Session(app)
+db = SQLAlchemy(app)
+bcrypt = Bcrypt(app)
 
 DEV_MODE = os.environ["DEV_MODE"] == 'Local'
 
