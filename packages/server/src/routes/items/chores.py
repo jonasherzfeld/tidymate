@@ -8,6 +8,7 @@ from utils.utils import login_required
 
 chores = Blueprint('chores', __name__)
 
+
 @chores.route('/create-chore', methods=["POST"])
 @login_required
 def create_chore(user):
