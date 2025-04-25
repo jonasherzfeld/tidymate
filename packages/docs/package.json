@@ -8,9 +8,6 @@
     "dev": "vite dev",
     "build": "vite build"
   },
-  "engines": {
-    "node": ">=18.0.0 <=20.18.1"
-  },
   "devDependencies": {
     "@sveltejs/adapter-static": "^3.0.1",
     "@sveltejs/kit": "^2.5.1",

@@ -1,12 +1,7 @@
 import { BASE_API_URI } from "$lib/utils/constants";
-import type { Config } from "@sveltejs/adapter-vercel";
 import type { Cookies } from "@sveltejs/kit";
 import { fail } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types.js";
-
-export const config: Config = {
-  runtime: "edge"
-};
 
 async function get_todos(cookies: Cookies): Promise<Todo[]> {
   let requestInitOptions: RequestInit = {

@@ -1,15 +1,11 @@
 import { BASE_API_URI } from "$lib/utils/constants";
 import { todoItemSchema } from "$lib/utils/schemas";
-import type { Config } from "@sveltejs/adapter-vercel";
 import type { Cookies } from "@sveltejs/kit";
 import { fail, redirect } from "@sveltejs/kit";
 import { superValidate } from "sveltekit-superforms";
 import { zod } from "sveltekit-superforms/adapters";
 import type { PageServerLoad } from "./$types.js";
 
-export const config: Config = {
-  runtime: "edge"
-};
 
 async function get_todo(todoId: string, cookies: Cookies): Promise<Todo> {
   let requestInitOptions: RequestInit = {

@@ -6,15 +6,11 @@ import {
   houseNamechema,
   houseRoomSchema
 } from "$lib/utils/schemas";
-import type { Config } from "@sveltejs/adapter-vercel";
 import type { Cookies } from "@sveltejs/kit";
 import { fail } from "@sveltejs/kit";
 import { message, superValidate } from "sveltekit-superforms";
 import { zod } from "sveltekit-superforms/adapters";
 
-export const config: Config = {
-  runtime: "edge"
-};
 
 async function get_house_members(cookies: Cookies): Promise<User[]> {
   let requestInitOptions: RequestInit = {
