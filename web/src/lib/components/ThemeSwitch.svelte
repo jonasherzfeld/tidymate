@@ -20,7 +20,7 @@
     <div tabindex="0" role="button" class="btn btn-primary m-1">Theme</div>
     <ul
       tabindex="-1"
-      class="dropdown-content bg-base-300 rounded-box z-[1] w-52 p-2 shadow-2xl">
+      class="dropdown-content z-[1] w-52 rounded-box bg-base-300 p-2 shadow-2xl">
       {#each ["dark", "light"] as theme}
         <li>
           <button
@@ -28,7 +28,7 @@
             formaction="/?/set_theme&theme={theme}&redirectTo={$page.url
               .pathname}"
             name="theme-dropdown"
-            class="theme-controller btn btn-sm btn-block btn-ghost justify-start"
+            class="theme-controller btn btn-ghost btn-sm btn-block justify-start"
             aria-label={getCapitalized(theme)}
             value={theme}>{getCapitalized(theme)}</button>
         </li>

@@ -1,7 +1,7 @@
 export default {
   plugins: {
-    'postcss-normalize': {},
-    'tailwindcss': {},
-    'autoprefixer': {},
-  },
+    "postcss-normalize": {},
+    tailwindcss: {},
+    autoprefixer: {}
+  }
 };

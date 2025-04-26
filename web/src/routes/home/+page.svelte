@@ -6,11 +6,11 @@
 </script>
 
 <div
-  class="bg-base-100 flex min-h-full w-full flex-1 items-start justify-center">
+  class="flex min-h-full w-full flex-1 items-start justify-center bg-base-100">
   <div
     class="mt-5 flex w-full max-w-screen-lg flex-1 flex-col justify-center gap-5 p-4 text-center">
     <h1 class="text-5xl font-bold">{data.house.name}</h1>
-    <div class="stats stats-vertical md:stats-horizontal bg-base-300 shadow">
+    <div class="stats stats-vertical bg-base-300 shadow md:stats-horizontal">
       <div class="stat">
         <div class="stat-figure text-primary">
           <svg

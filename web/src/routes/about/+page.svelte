@@ -2,12 +2,12 @@
   import RainbowText from "$lib/components/RainbowText.svelte";
 </script>
 
-<div class="bg-base-100 flex min-h-full w-full items-start justify-center">
+<div class="flex min-h-full w-full items-start justify-center bg-base-100">
   <div class="flex min-h-full max-w-screen-sm grow flex-col gap-8 p-4">
     <div class="flex flex-col items-center text-center">
       <RainbowText classIn="text-4xl font-bold pb-3">About</RainbowText>
       <div
-        class="card bg-base-300 flex h-fit max-w-screen-sm flex-col justify-center gap-4 p-5">
+        class="card flex h-fit max-w-screen-sm flex-col justify-center gap-4 bg-base-300 p-5">
         <div class="text-error">
           This documentation is still under construction, Sorry :)
         </div>
@@ -28,7 +28,7 @@
     <div class="flex flex-col items-center text-center">
       <RainbowText classIn="text-4xl font-bold pb-3">Features</RainbowText>
       <div
-        class="card bg-base-300 flex h-fit max-w-screen-sm flex-col justify-center gap-4 p-5">
+        class="card flex h-fit max-w-screen-sm flex-col justify-center gap-4 bg-base-300 p-5">
         <div class="text-md text-justify">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus
           maximus, libero ut vulputate imperdiet, massa nisi tempor nisi, sed
@@ -46,7 +46,7 @@
     <div class="flex flex-col items-center text-center">
       <RainbowText classIn="text-4xl font-bold pb-3">Plan</RainbowText>
       <div
-        class="card bg-base-300 flex h-fit max-w-screen-sm flex-col justify-center gap-4 p-5">
+        class="card flex h-fit max-w-screen-sm flex-col justify-center gap-4 bg-base-300 p-5">
         <div class="text-md text-justify">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus
           maximus, libero ut vulputate imperdiet, massa nisi tempor nisi, sed

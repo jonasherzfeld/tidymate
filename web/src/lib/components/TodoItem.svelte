@@ -61,7 +61,7 @@
 
 <div class="flex w-full">
   <div
-    class="card bg-base-300 flex h-fit w-full flex-row items-start justify-between rounded-lg p-2">
+    class="card flex h-fit w-full flex-row items-start justify-between rounded-lg bg-base-300 p-2">
     <div class="flex h-full w-fit justify-start">
       <form
         class="flex"
@@ -71,7 +71,7 @@
         <input
           type="checkbox"
           name="check_todo"
-          class="checkbox checkbox-primary checkbox-md"
+          class="checkbox-primary checkbox checkbox-md"
           onchange={(e) => {
             e.target.form.requestSubmit();
           }}
@@ -88,7 +88,7 @@
         {#if deadline}
           <span
             class={cn(
-              "justify-left text-info w-fit pr-3 text-xs",
+              "justify-left w-fit pr-3 text-xs text-info",
               deadlineDate <= deadlineWarningDate && "text-warning",
               deadlineDate <= deadlineErrorDate && "text-error"
             )}>{deadlineDate.toDateString()}</span>

@@ -9,7 +9,6 @@ import { message, superValidate } from "sveltekit-superforms";
 import { zod } from "sveltekit-superforms/adapters";
 import type { PageServerLoad } from "./$types.js";
 
-
 export const load: PageServerLoad = async ({ locals }) => {
   const emailForm = await superValidate(locals.user, zod(emailSchema));
   const firstNameForm = await superValidate(locals.user, zod(firstNameSchema));

@@ -42,7 +42,7 @@
     <img alt="User" src={thumbnail} />
   {:else}
     <div
-      class={`bg-primary flex items-center justify-center text-white ${height} ${width} ${textSize}`}>
+      class={`flex items-center justify-center bg-primary text-white ${height} ${width} ${textSize}`}>
       {inputNameInitials ? inputNameInitials : derivedNameInitials}
     </div>
   {/if}

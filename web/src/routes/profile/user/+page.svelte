@@ -102,7 +102,7 @@
             width="w-24"
             textSize="text-5xl font-bold">
             <div
-              class="bg-base-300 absolute bottom-0 left-0 h-7 w-full bg-opacity-60 text-center"
+              class="absolute bottom-0 left-0 h-7 w-full bg-base-300 bg-opacity-60 text-center"
               aria-label="Change Avatar"
               style="display: {isImgHover ? 'block' : 'none'}">
               <h2 class="text-sm">Change</h2>
@@ -120,7 +120,7 @@
   </div>
   <p class="py-6">This is your profile page. Here you can see your details.</p>
 
-  <div class="card bg-base-200 flex flex-1 flex-col gap-2 p-3">
+  <div class="card flex flex-1 flex-col gap-2 bg-base-200 p-3">
     {#if serverErrors}
       <h1 class="step-subtitle warning mt-2">
         {serverErrors}

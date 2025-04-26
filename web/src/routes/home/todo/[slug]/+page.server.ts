@@ -6,7 +6,6 @@ import { superValidate } from "sveltekit-superforms";
 import { zod } from "sveltekit-superforms/adapters";
 import type { PageServerLoad } from "./$types.js";
 
-
 async function get_todo(todoId: string, cookies: Cookies): Promise<Todo> {
   let requestInitOptions: RequestInit = {
     method: "GET",

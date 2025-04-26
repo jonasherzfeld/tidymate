@@ -2,6 +2,6 @@
   let { children } = $props();
 </script>
 
-<div class="dropdown dropdown-bottom dropdown-end">
+<div class="dropdown dropdown-end dropdown-bottom">
   {@render children?.()}
 </div>

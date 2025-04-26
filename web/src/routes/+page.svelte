@@ -35,7 +35,7 @@
   );
 </script>
 
-<div class="bg-base-100 flex min-h-full w-full justify-center">
+<div class="flex min-h-full w-full justify-center bg-base-100">
   <!-- Modal -->
   {#if showModal}
     <div class="modal modal-open">

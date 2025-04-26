@@ -37,7 +37,7 @@
   <div class="drawer-content flex min-h-screen flex-col">
     <!-- Navbar -->
     <div
-      class={`navbar bg-base-300 text-shade-500 border-neutral sticky top-0 z-10 w-full border-b border-solid shadow-md ${isWebApp ? "pt-12" : ""}`}>
+      class={`text-shade-500 navbar sticky top-0 z-10 w-full border-b border-solid border-neutral bg-base-300 shadow-md ${isWebApp ? "pt-12" : ""}`}>
       <div class={`m-0 flex w-fit p-0 lg:hidden ${isWebApp ? "hidden" : ""}`}>
         <button
           onclick={handleClick}
@@ -55,7 +55,7 @@
     <button onclick={handleClick} class="drawer-overlay" aria-label="Close Menu"
     ></button>
     <ul
-      class={`menu bg-base-300 -ml-3 min-h-full w-80 rounded-md border-r-[1px] p-4 pl-7 ${isWebApp ? "pt-12" : ""}`}>
+      class={`menu -ml-3 min-h-full w-80 rounded-md border-r-[1px] bg-base-300 p-4 pl-7 ${isWebApp ? "pt-12" : ""}`}>
       <!-- Sidebar content here -->
       <a
         href={isLoggedIn && isHouseMember ? "/home" : "/"}

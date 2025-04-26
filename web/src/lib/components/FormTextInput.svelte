@@ -39,24 +39,24 @@
   <div
     class={`input input-bordered flex w-full items-center justify-between pl-0 pr-0 ${changeModeBg}`}>
     <span
-      class={`label label-text join-item m-2 h-full w-24 text-left ${changeModeBg}`}
+      class={`label join-item label-text m-2 h-full w-24 text-left ${changeModeBg}`}
       ><b>{label}</b></span>
     {#if editValue}
       <input
         type="text"
         name={field}
         size="1"
-        class={`label label-text join-item mr-3 grow text-right ${changeModeBg}`}
+        class={`label join-item label-text mr-3 grow text-right ${changeModeBg}`}
         bind:value={$value} />
     {:else}
       <span
-        class={`label label-text join-item mr-3 grow justify-end ${changeModeBg}`}
+        class={`label join-item label-text mr-3 grow justify-end ${changeModeBg}`}
         >{$value}</span>
     {/if}
     {#if editValue}
       <button
         type="submit"
-        class="btn join-item btn-secondary input-bordered disabled:bg-base-300 -mr-px h-full"
+        class="btn btn-secondary join-item input-bordered -mr-px h-full disabled:bg-base-300"
         disabled={creatingValue}>
         {#if !creatingValue}
           <SubmitIcon style="font-size:1.2em" />
@@ -67,7 +67,7 @@
     {:else}
       <button
         type="button"
-        class="btn join-item bg-primary input-bordered -mr-px h-full"
+        class="btn join-item input-bordered -mr-px h-full bg-primary"
         {disabled}
         onclick={() => {
           editValue = true;
