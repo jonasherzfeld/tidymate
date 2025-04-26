@@ -19,7 +19,7 @@ import {
 } from "$lib/utils/icons";
 import type { Component } from "svelte";
 
-export const BASE_API_URI = import.meta.env.VITE_BASE_API_URI;
+export const BASE_API_URI = "http://localhost:5000";
 
 // Routes that are protected and need a user to be logged in
 export const PROTECTED_ROUTES_USER = [

@@ -15,9 +15,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache-dependency-path: web/package-lock.json
           cache: "npm"
       - name: Install dependencies
-        run: npm ci
+        run: npm --prefix web ci
         shell: bash
       - name: Install Python
         uses: actions/setup-python@v4
@@ -29,11 +30,12 @@ jobs:
       - name: Format python code
         run: |
           autopep8 --verbose --recursive --in-place --aggressive --aggressive .
-      - name: Format other code
-        uses: creyD/prettier_action@v4.3
+      - name: Format frontend code
+        run: |
+          npm --prefix web run format
+      - name: Run the Action
+        uses: devops-infra/action-commit-push@master
         with:
-          prettier_options: --config .prettierrc --write "**/{*.css,*.json,*.html,*.md,*.js,*.ts,*.svelte}"
-          same_commit: false
+          github_token: "${{ secrets.GITHUB_TOKEN }}"
+          commit_prefix: "[AUTO]"
           commit_message: "Style-fix: format code"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

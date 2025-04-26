@@ -24,6 +24,5 @@ def site_map():
     return {"links": links}
 
 
-DEV_MODE = os.environ["DEV_MODE"] != 'False'
 if __name__ == "__main__":
-    app.run(debug=DEV_MODE)
+    app.run()
