@@ -1,11 +1,11 @@
 <div align="center">
-  <img src="./packages/web/src/lib/img/tidymate_logo_white.png#gh-dark-mode-only" style="width: 30%;">
-  <img src="./packages/web/src/lib/img/tidymate_logo.png#gh-light-mode-only" style="width: 30%;">
+  <img src="./web/src/lib/img/tidymate_logo_white.png#gh-dark-mode-only" style="width: 30%;">
+  <img src="./web/src/lib/img/tidymate_logo.png#gh-light-mode-only" style="width: 30%;">
   <p style="text-align:center;">
-    <strong>A lean organizer app for you and your flatmates!</strong>
+    <strong>A self-hosted lean organizer app for you and your flatmates!</strong>
   </p>
   <p style="text-align:center;">
-    <a href="https://tidymate.vercel.app">Website</a> | <a href="https://tidymate-docs.vercel.app">Documentation</a>
+    <a href="">Documentation TBD</a>
   </p>
 </div>
 
@@ -18,8 +18,27 @@ Tidymate is a lean web app that helps you organize your household. It can be use
 - [x] Create a household for you and your mates
 - [x] Invite people to your household by creating a `Join ID`
 - [x] Add To-Do list feature for household
-- [ ] Add Chores feature for household
+- [x] Add Chores feature for household
 - [ ] Add Chat feature for household
+
+## Getting Started
+
+The easiest way to get started is by using `docker-compose.yaml`. Below is an example configuration:
+
+```yaml
+services:
+  tidymate:
+    container_name: tidymate
+    image: ghcr.io/jonasherzfeld/tidymate:latest
+    restart: unless-stopped
+    volumes:
+      - ./data:/app/data
+    ports:
+      - 3000:3000
+    environment:
+      FLASK_SECRET_KEY: "your_secret_key"
+      BASE_URL: "http://localhost:3000"
+```
 
 ## Contribute
 
