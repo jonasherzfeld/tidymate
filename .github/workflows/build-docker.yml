@@ -1,4 +1,4 @@
-name: BUild and publish docker image to Github
+name: Build and publish docker image to Github
 on:
   [workflow_dispatch]
 
@@ -18,7 +18,7 @@ jobs:
           password: ${{secrets.GITHUB_TOKEN}}
       - name: Build Docker image
         run: |
-          docker build -t tidymate:latest -f docker/Dockerfile .
+          docker build -t ghcr.io/jonasherzfeld/tidymate:latest -f docker/Dockerfile .
       - name: Push Docker image
         run: |
-          docker push ghcr.io/${{github.actor}}/tidymate:latest
+          docker push ghcr.io/jonasherzfeld/tidymate:latest
