@@ -1,6 +1,9 @@
 # IDE configuration and artifacts
 .vscode
 
+# Data
+*.sqlite3
+
 # Build artifacts
 build
 dist

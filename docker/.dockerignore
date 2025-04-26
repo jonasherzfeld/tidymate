@@ -1,0 +1,16 @@
+**/.git
+**/.gitignore
+**/.vscode
+**/node_modules
+**/venv
+**/__pycache__
+**/*.pyc
+**/*.pyo
+**/*.pyd
+**/.pytest_cache
+**/.coverage
+**/coverage
+**/dist
+**/.DS_Store
+**/.env
+**/.env.*
