@@ -1,4 +1,5 @@
 name: Build and publish docker image to Github
+permissions: write-all
 on:
   [workflow_dispatch]
 
