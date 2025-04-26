@@ -96,7 +96,7 @@
 
 <div class="flex w-full">
   <div
-    class="card card-bordered border-neutral bg-base-300 flex h-fit w-full flex-row items-start justify-between rounded-lg p-2 shadow-sm">
+    class="card card-bordered flex h-fit w-full flex-row items-start justify-between rounded-lg border-neutral bg-base-300 p-2 shadow-sm">
     <div class="flex h-full w-fit justify-start">
       <form
         class="flex"
@@ -106,7 +106,7 @@
         <input
           type="checkbox"
           name="check_chore"
-          class="checkbox checkbox-primary checkbox-md"
+          class="checkbox-primary checkbox checkbox-md"
           onchange={(e) => {
             e.target.form.requestSubmit();
             checkboxState = false;
@@ -137,13 +137,13 @@
         {#if deadline}
           <CircleIcon
             class={cn(
-              "text-info mr-1 h-3 w-3",
+              "mr-1 h-3 w-3 text-info",
               deadlineDate <= deadlineWarningDate && "text-warning",
               deadlineDate <= deadlineErrorDate && "text-error"
             )} />
           <span
             class={cn(
-              "justify-left text-info  w-fit text-xs font-medium",
+              "justify-left w-fit  text-xs font-medium text-info",
               deadlineDate <= deadlineWarningDate && "text-warning",
               deadlineDate <= deadlineErrorDate && "text-error"
             )}>

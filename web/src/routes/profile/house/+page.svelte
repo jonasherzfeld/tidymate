@@ -109,10 +109,10 @@
 </script>
 
 <div class="flex min-w-full flex-1 flex-col">
-  <h1 class="text-accent text-5xl font-bold">{$nameForm.name}</h1>
+  <h1 class="text-5xl font-bold text-accent">{$nameForm.name}</h1>
   <p class="py-4">This is the settings page for your house!</p>
   <div class="flex min-w-full flex-1 flex-col gap-3">
-    <div class="card bg-base-200 flex flex-1 flex-col gap-2 p-3">
+    <div class="card flex flex-1 flex-col gap-2 bg-base-200 p-3">
       <form action="?/update_name" method="POST" use:nameEnhance>
         <FormTextInput
           superform={data.nameForm}
@@ -151,7 +151,7 @@
       </TextInput>
     </div>
 
-    <div class="card bg-base-200 flex flex-1 flex-col gap-2 p-3">
+    <div class="card flex flex-1 flex-col gap-2 bg-base-200 p-3">
       <h2 class="m-4 text-xl font-bold">House Members</h2>
       {#await data.streamed.user_list}
         <div class="flex w-full flex-col gap-4">

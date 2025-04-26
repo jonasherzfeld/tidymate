@@ -21,7 +21,7 @@
   <button
     type="button"
     tabindex="0"
-    class="btn btn-outline bg-base-100 input-bordered text-normal w-full rounded-md">
+    class="text-normal btn btn-outline input-bordered w-full rounded-md bg-base-100">
     <div class="flex w-24 items-center gap-2 font-normal">
       <Icon class="h-4 w-4" />Room
     </div>

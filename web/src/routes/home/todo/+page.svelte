@@ -84,7 +84,7 @@
 <div class="flex min-h-full min-w-full flex-col justify-between gap-3">
   <div class="flex flex-col gap-3">
     <div>
-      <label class="input input-bordered input-sm flex grow items-center gap-2">
+      <label class="input input-sm input-bordered flex grow items-center gap-2">
         <SearchIcon />
         <input
           type="search"
@@ -97,7 +97,7 @@
       <div>
         <a href="/home/todo" data-sveltekit-reload>
           <button
-            class="btn btn-sm btn-outline rounded-md border-neutral-200 shadow-sm">
+            class="btn btn-outline btn-sm rounded-md border-neutral-200 shadow-sm">
             <ReloadIcon class="h-4 w-4" />
           </button>
         </a>
@@ -126,12 +126,12 @@
     </div>
     <div class="flex flex-col">
       {#if serverErrors}
-        <h1 class="step-subtitle text-error mt-2">
+        <h1 class="step-subtitle mt-2 text-error">
           {serverErrors}
         </h1>
       {/if}
       <div
-        class="card bg-base-300 card-bordered border-neutral rounded-lg shadow-md">
+        class="card card-bordered rounded-lg border-neutral bg-base-300 shadow-md">
         {#await data.streamed.todo_list}
           <div class="flex w-full flex-col gap-4">
             <div class="skeleton h-32 w-full"></div>
@@ -157,7 +157,7 @@
     </div>
   </div>
   <div
-    class={`card bg-base-300 border-base-100 sticky flex w-full rounded-lg border-2 p-2 ${isWebApp ? "bottom-24" : "bottom-3"}`}>
+    class={`card sticky flex w-full rounded-lg border-2 border-base-100 bg-base-300 p-2 ${isWebApp ? "bottom-24" : "bottom-3"}`}>
     <form method="POST" use:enhance={handleSubmit}>
       <div class="flex flex-row flex-wrap gap-2">
         <input

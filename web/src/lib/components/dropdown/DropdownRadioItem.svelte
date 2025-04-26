@@ -19,7 +19,7 @@
         type="radio"
         name={radioName}
         {onchange}
-        class="radio radio-sm radio-primary"
+        class="radio-primary radio radio-sm"
         value={name}
         {checked} />
       <span class="ml-3 h-fit text-start">

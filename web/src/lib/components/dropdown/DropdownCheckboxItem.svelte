@@ -16,7 +16,7 @@
       <input
         type="checkbox"
         bind:checked
-        class="checkbox checkbox-sm checkbox-primary"
+        class="checkbox-primary checkbox checkbox-sm"
         {...others} />
       <span class=" ml-3 text-start" {...others}>
         {@render children?.()}

@@ -31,7 +31,7 @@
   action="?/login"
   use:enhance>
   {#if serverErrors}
-    <h1 class="step-subtitle text-error mt-2">
+    <h1 class="step-subtitle mt-2 text-error">
       {serverErrors}
     </h1>
   {/if}
@@ -50,7 +50,7 @@
       <EmailIcon class="h-4 w-4 opacity-60" />
     </TextInput>
     {#if $errors.email}<span
-        class="invalid text-error ml-2 flex w-full text-start text-sm"
+        class="invalid ml-2 flex w-full text-start text-sm text-error"
         >{$errors.email}</span
       >{/if}
   </div>
@@ -64,7 +64,7 @@
       <PasswordIcon class="h-4 w-4 opacity-60" />
     </TextInput>
     {#if $errors.password}<span
-        class="invalid text-error ml-2 flex w-full text-start text-sm"
+        class="invalid ml-2 flex w-full text-start text-sm text-error"
         >{$errors.password}</span
       >{/if}
   </div>

@@ -32,10 +32,10 @@
       <input
         disabled={creatingJoinId}
         id="npm-install-copy-button"
-        class="input input-bordered join-item bg-neutral text-base-300"
+        class="input join-item input-bordered bg-neutral text-base-300"
         value={joinIdValue} />
       <button
-        class="btn join-item btn-accent rounded-r-full border-none"
+        class="btn btn-accent join-item rounded-r-full border-none"
         disabled={creatingJoinId || !$page.data.user.is_admin}>
         {#if !creatingJoinId}
           {isActiveJoinId ? "Delete" : "Create"}

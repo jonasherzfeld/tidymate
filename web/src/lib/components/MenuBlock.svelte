@@ -32,7 +32,7 @@
           {/if}
         {:else}
           <a href={item.url} target={item.target} class="p-0"
-            ><button class="btn btn-md btn-square btn-ghost gap-0 p-0 text-xs"
+            ><button class="btn btn-square btn-ghost btn-md gap-0 p-0 text-xs"
               ><item.icon class="h-6 w-6" />{item.title}</button
             ></a>
         {/if}

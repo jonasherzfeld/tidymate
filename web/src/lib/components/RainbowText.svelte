@@ -9,6 +9,6 @@
 </script>
 
 <h3
-  class={`from-primary via-secondary to-warning w-fit bg-gradient-to-r ${plain ? "" : "text-transparent"} bg-clip-text ${classIn}`}>
+  class={`w-fit bg-gradient-to-r from-primary via-secondary to-warning ${plain ? "" : "text-transparent"} bg-clip-text ${classIn}`}>
   {@render children?.()}
 </h3>

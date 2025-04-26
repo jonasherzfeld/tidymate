@@ -31,7 +31,7 @@
   <div class="modal-box">
     <div class="modal-title">
       <button
-        class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+        class="btn btn-circle btn-ghost btn-sm absolute right-2 top-2"
         onclick={() => dialog.close()}>✕</button>
     </div>
 

@@ -11,7 +11,6 @@ import { fail } from "@sveltejs/kit";
 import { message, superValidate } from "sveltekit-superforms";
 import { zod } from "sveltekit-superforms/adapters";
 
-
 async function get_house_members(cookies: Cookies): Promise<User[]> {
   let requestInitOptions: RequestInit = {
     method: "GET",

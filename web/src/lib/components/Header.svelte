@@ -44,7 +44,7 @@
       <div
         tabindex="0"
         role="button"
-        class="btn btn-ghost btn-circle avatar hover:bg-secondary">
+        class="avatar btn btn-circle btn-ghost hover:bg-secondary">
         <AvatarGraphic
           thumbnail={$page.data.user?.thumbnail}
           height="h-10"
@@ -52,7 +52,7 @@
       </div>
       <ul
         tabindex="-1"
-        class="menu menu-xl dropdown-content bg-base-300 rounded-box border-neutral z-[1] mt-3 w-52 border p-2 shadow-md">
+        class="menu-xl menu dropdown-content z-[1] mt-3 w-52 rounded-box border border-neutral bg-base-300 p-2 shadow-md">
         <MenuBlock position="avatar_dropdown" restricted={menuRestriction} />
       </ul>
     </div>

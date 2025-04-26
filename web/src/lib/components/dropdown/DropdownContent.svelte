@@ -4,6 +4,6 @@
 
 <ul
   tabindex="-1"
-  class="dropdown-content menu bg-base-200 border-neutral z-[1] w-52 rounded-md border-[1px] p-2 shadow-md">
+  class="menu dropdown-content z-[1] w-52 rounded-md border-[1px] border-neutral bg-base-200 p-2 shadow-md">
   {@render children?.()}
 </ul>

@@ -69,7 +69,7 @@
 <div class="flex min-h-full min-w-full flex-col justify-between gap-3">
   <div class="flex flex-col gap-3">
     <div class="flex gap-2">
-      <label class="input input-bordered input-sm flex grow items-center gap-2">
+      <label class="input input-sm input-bordered flex grow items-center gap-2">
         <SearchIcon />
         <input
           type="search"
@@ -110,7 +110,7 @@
     </div>
     <div class="flex flex-col">
       {#if serverErrors}
-        <h1 class="step-subtitle text-error mt-2">
+        <h1 class="step-subtitle mt-2 text-error">
           {serverErrors}
         </h1>
       {/if}
