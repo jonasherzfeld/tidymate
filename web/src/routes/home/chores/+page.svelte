@@ -27,7 +27,6 @@
     { property: "room", values: [], filterValues: [] }
   ]);
   let nameFilterFn: (value: string) => string | undefined = (value) => {
-    console.log(value);
     return getUsernameById(value, data.house.members);
   };
 

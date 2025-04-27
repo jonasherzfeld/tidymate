@@ -1,8 +1,7 @@
 from datetime import datetime, timedelta
 from flask import Blueprint, request, jsonify
-import uuid
 
-from config import db
+from db.db import db
 from models.models import House, Chore, ChoreSeverity
 from utils.utils import login_required
 

@@ -37,7 +37,7 @@ services:
       - 3000:3000
     environment:
       FLASK_SECRET_KEY: "your_secret_key"
-      BASE_URL: "http://localhost:3000"
+      LOG_DEBUG: False
 ```
 
 ## Contribute

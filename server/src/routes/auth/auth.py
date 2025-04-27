@@ -2,7 +2,7 @@ from datetime import datetime
 from flask import Blueprint, request, jsonify, session
 import shortuuid
 
-from config import db
+from db.db import db
 from models.models import Users, House
 from utils.utils import login_required
 
