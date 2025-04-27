@@ -1,4 +1,4 @@
-import { BASE_API_URI } from "$lib/utils/constants";
+import { BASE_API_URI, FETCH_ABORT_TIMEOUT_MS } from "$lib/utils/constants";
 import {
   houseCitySchema,
   houseCountrySchema,
@@ -18,18 +18,25 @@ async function get_house_members(cookies: Cookies): Promise<User[]> {
     headers: {
       "Content-Type": "application/json",
       Cookie: `session=${cookies.get("session")}`
-    }
+    },
+    signal: AbortSignal.timeout(FETCH_ABORT_TIMEOUT_MS)
   };
 
   const res = await fetch(
     `${BASE_API_URI}/auth/get-house-members`,
     requestInitOptions
   );
-  const response = await res.json();
+
   if (!res.ok) {
     return [] as User[];
   }
-  return response.user_list;
+
+  try {
+    const response = await res.json();
+    return response.chores;
+  } catch {
+    return [] as User[];
+  }
 }
 
 export const load = async ({ locals, cookies }) => {
@@ -73,16 +80,22 @@ export const actions = {
         name: nameForm.data.name,
         city: "",
         country: ""
-      })
+      }),
+      signal: AbortSignal.timeout(FETCH_ABORT_TIMEOUT_MS)
     };
 
     const res = await fetch(
       `${BASE_API_URI}/auth/update-house`,
       requestInitOptions
     );
-    const response = await res.json();
+
     if (!res.ok) {
-      return fail(400, { nameForm, errors: response.error });
+      try {
+        const response = await res.json();
+        return fail(400, { nameForm, errors: response.error });
+      } catch {
+        return fail(500, { nameForm, errors: "Internal Error" });
+      }
     }
 
     return message(nameForm, "Name Updated!");
@@ -104,16 +117,22 @@ export const actions = {
         name: "",
         city: cityForm.data.city,
         country: ""
-      })
+      }),
+      signal: AbortSignal.timeout(FETCH_ABORT_TIMEOUT_MS)
     };
 
     const res = await fetch(
       `${BASE_API_URI}/auth/update-house`,
       requestInitOptions
     );
-    const response = await res.json();
+
     if (!res.ok) {
-      return fail(400, { cityForm, errors: response.error });
+      try {
+        const response = await res.json();
+        return fail(400, { cityForm, errors: response.error });
+      } catch {
+        return fail(500, { cityForm, errors: "Internal Error" });
+      }
     }
 
     return message(cityForm, "City updated!");
@@ -135,16 +154,22 @@ export const actions = {
         name: "",
         city: "",
         country: countryForm.data.country
-      })
+      }),
+      signal: AbortSignal.timeout(FETCH_ABORT_TIMEOUT_MS)
     };
 
     const res = await fetch(
       `${BASE_API_URI}/auth/update-house`,
       requestInitOptions
     );
-    const response = await res.json();
+
     if (!res.ok) {
-      return fail(400, { countryForm, errors: response.error });
+      try {
+        const response = await res.json();
+        return fail(400, { countryForm, errors: response.error });
+      } catch {
+        return fail(500, { countryForm, errors: "Internal Error" });
+      }
     }
 
     return message(countryForm, "Country updated!");
@@ -164,16 +189,22 @@ export const actions = {
       },
       body: JSON.stringify({
         name: roomForm.data.room
-      })
+      }),
+      signal: AbortSignal.timeout(FETCH_ABORT_TIMEOUT_MS)
     };
 
     const res = await fetch(
       `${BASE_API_URI}/auth/create-room`,
       requestInitOptions
     );
-    const response = await res.json();
+
     if (!res.ok) {
-      return fail(400, { roomForm, errors: response.error });
+      try {
+        const response = await res.json();
+        return fail(400, { roomForm, errors: response.error });
+      } catch {
+        return fail(500, { roomForm, errors: "Internal Error" });
+      }
     }
 
     return { roomForm };
@@ -193,16 +224,22 @@ export const actions = {
       },
       body: JSON.stringify({
         name: roomForm.data.room
-      })
+      }),
+      signal: AbortSignal.timeout(FETCH_ABORT_TIMEOUT_MS)
     };
 
     const res = await fetch(
       `${BASE_API_URI}/auth/create-room`,
       requestInitOptions
     );
-    const response = await res.json();
+
     if (!res.ok) {
-      return fail(400, { roomForm, errors: response.error });
+      try {
+        const response = await res.json();
+        return fail(400, { roomForm, errors: response.error });
+      } catch {
+        return fail(500, { roomForm, errors: "Internal Error" });
+      }
     }
 
     return { roomForm };
@@ -220,7 +257,8 @@ export const actions = {
       },
       body: JSON.stringify({
         house_id: locals.house.id
-      })
+      }),
+      signal: AbortSignal.timeout(FETCH_ABORT_TIMEOUT_MS)
     };
 
     let route;
@@ -232,11 +270,15 @@ export const actions = {
     }
     const res = await fetch(route, requestInitOptions);
 
-    const response = await res.json();
-    if (!res.ok) {
-      return fail(400, { joinIdForm, errors: response.error });
+    try {
+      const response = await res.json();
+      if (!res.ok) {
+        return fail(400, { joinIdForm, errors: response.error });
+      }
+      return { joinIdForm, join_id: response.join_id };
+    } catch {
+      return fail(500, { joinIdForm, errors: "Internal Error" });
     }
-    return { joinIdForm, join_id: response.join_id };
   },
 
   set_admin: async ({ request, fetch, cookies }) => {
@@ -253,7 +295,8 @@ export const actions = {
       },
       body: JSON.stringify({
         is_admin: is_admin
-      })
+      }),
+      signal: AbortSignal.timeout(FETCH_ABORT_TIMEOUT_MS)
     };
 
     const res = await fetch(
@@ -264,7 +307,14 @@ export const actions = {
     if (!res.ok) {
       return fail(400, { error: response.error });
     }
-
-    return { user: response.user, success: res.ok };
+    try {
+      const response = await res.json();
+      if (!res.ok) {
+        return fail(400, { errors: response.error });
+      }
+      return { user: response.user, success: res.ok };
+    } catch {
+      return fail(500, { errors: "Internal Error" });
+    }
   }
 };

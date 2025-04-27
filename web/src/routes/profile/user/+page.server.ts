@@ -1,4 +1,4 @@
-import { BASE_API_URI } from "$lib/utils/constants";
+import { BASE_API_URI, FETCH_ABORT_TIMEOUT_MS } from "$lib/utils/constants";
 import {
   emailSchema,
   firstNameSchema,
@@ -37,16 +37,22 @@ export const actions = {
         email: emailForm.data.email,
         first_name: "",
         last_name: ""
-      })
+      }),
+      signal: AbortSignal.timeout(FETCH_ABORT_TIMEOUT_MS)
     };
 
     const res = await fetch(
       `${BASE_API_URI}/auth/update-user`,
       requestInitOptions
     );
-    const response = await res.json();
+
     if (!res.ok) {
-      return fail(400, { emailForm, errors: response.error });
+      try {
+        const response = await res.json();
+        return fail(400, { emailForm, errors: response.error });
+      } catch {
+        return fail(500, { emailForm, errors: "Internal Error" });
+      }
     }
 
     return message(emailForm, "Email Updated!");
@@ -67,16 +73,22 @@ export const actions = {
         email: "",
         first_name: firstNameForm.data.first_name,
         last_name: ""
-      })
+      }),
+      signal: AbortSignal.timeout(FETCH_ABORT_TIMEOUT_MS)
     };
 
     const res = await fetch(
       `${BASE_API_URI}/auth/update-user`,
       requestInitOptions
     );
-    const response = await res.json();
+
     if (!res.ok) {
-      return fail(400, { firstNameForm, errors: response.error });
+      try {
+        const response = await res.json();
+        return fail(400, { firstNameForm, errors: response.error });
+      } catch {
+        return fail(500, { firstNameForm, errors: "Internal Error" });
+      }
     }
 
     return message(firstNameForm, "Email Updated!");
@@ -97,16 +109,22 @@ export const actions = {
         email: "",
         first_name: "",
         last_name: lastNameForm.data.last_name
-      })
+      }),
+      signal: AbortSignal.timeout(FETCH_ABORT_TIMEOUT_MS)
     };
 
     const res = await fetch(
       `${BASE_API_URI}/auth/update-user`,
       requestInitOptions
     );
-    const response = await res.json();
+
     if (!res.ok) {
-      return fail(400, { lastNameForm, errors: response.error });
+      try {
+        const response = await res.json();
+        return fail(400, { lastNameForm, errors: response.error });
+      } catch {
+        return fail(500, { lastNameForm, errors: "Internal Error" });
+      }
     }
 
     return message(lastNameForm, "Email Updated!");
@@ -120,22 +138,24 @@ export const actions = {
       headers: {
         Cookie: `session=${cookies.get("session")}`
       },
-      body: formData
+      body: formData,
+      signal: AbortSignal.timeout(FETCH_ABORT_TIMEOUT_MS)
     };
 
     const res = await fetch(`${BASE_API_URI}/file/upload`, requestInitOptions);
 
-    if (!res.ok) {
+    try {
       const response = await res.json();
-      return fail(400, { errors: response.error });
+      if (!res.ok) {
+        return fail(400, { errors: response.error });
+      }
+      return {
+        success: true,
+        thumbnail: response.thumbnail
+      };
+    } catch {
+      return fail(500, { errors: "Internal Error" });
     }
-
-    const response = await res.json();
-
-    return {
-      success: true,
-      thumbnail: response.thumbnail
-    };
   },
 
   delete_image: async ({ fetch, cookies }) => {
@@ -143,19 +163,23 @@ export const actions = {
       method: "DELETE",
       headers: {
         Cookie: `session=${cookies.get("session")}`
-      }
+      },
+      signal: AbortSignal.timeout(FETCH_ABORT_TIMEOUT_MS)
     };
 
     const res = await fetch(`${BASE_API_URI}/file/delete`, requestInitOptions);
 
-    if (!res.ok) {
+    try {
       const response = await res.json();
-      return fail(400, { errors: response.error });
+      if (!res.ok) {
+        return fail(400, { errors: response.error });
+      }
+      return {
+        success: true,
+        thumbnail: ""
+      };
+    } catch {
+      return fail(500, { errors: "Internal Error" });
     }
-
-    return {
-      success: true,
-      thumbnail: ""
-    };
   }
 };

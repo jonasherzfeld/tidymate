@@ -1,4 +1,4 @@
-import { BASE_API_URI } from "$lib/utils/constants";
+import { BASE_API_URI, FETCH_ABORT_TIMEOUT_MS } from "$lib/utils/constants";
 import type { Cookies } from "@sveltejs/kit";
 import { fail } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types.js";
@@ -10,18 +10,25 @@ async function get_chores(cookies: Cookies): Promise<Chore[]> {
     headers: {
       "Content-Type": "application/json",
       Cookie: `session=${cookies.get("session")}`
-    }
+    },
+    signal: AbortSignal.timeout(FETCH_ABORT_TIMEOUT_MS)
   };
 
   const res = await fetch(
     `${BASE_API_URI}/chores/get-chores`,
     requestInitOptions
   );
+
   if (!res.ok) {
     return [] as Chore[];
   }
-  const response = await res.json();
-  return response.chores;
+
+  try {
+    const response = await res.json();
+    return response.chores;
+  } catch {
+    return [] as Chore[];
+  }
 }
 
 export const load: PageServerLoad = async ({ cookies }) => {
@@ -47,16 +54,22 @@ export const actions = {
       headers: {
         "Content-Type": "application/json",
         Cookie: `session=${cookies.get("session")}`
-      }
+      },
+      signal: AbortSignal.timeout(FETCH_ABORT_TIMEOUT_MS)
     };
 
     const res = await fetch(
       `${BASE_API_URI}/chores/delete-chore/${choreId}`,
       requestInitOptions
     );
-    const response = await res.json();
+
     if (!res.ok) {
-      return fail(400, { errors: response.error });
+      try {
+        const response = await res.json();
+        return fail(400, { errors: response.error });
+      } catch {
+        return fail(500, { errors: "Internal Error" });
+      }
     }
 
     return { chore_id: choreId };
@@ -76,18 +89,23 @@ export const actions = {
       headers: {
         "Content-Type": "application/json",
         Cookie: `session=${cookies.get("session")}`
-      }
+      },
+      signal: AbortSignal.timeout(FETCH_ABORT_TIMEOUT_MS)
     };
 
     const res = await fetch(
       `${BASE_API_URI}/chores/check-chore/${choreId}`,
       requestInitOptions
     );
-    const response = await res.json();
-    if (!res.ok) {
-      return fail(400, { errors: response.error });
-    }
 
-    return { chore: response.chore };
+    try {
+      const response = await res.json();
+      if (!res.ok) {
+        return fail(400, { errors: response.error });
+      }
+      return { chore: response.chore };
+    } catch {
+      return fail(500, { errors: "Internal Error" });
+    }
   }
 };

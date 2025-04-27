@@ -1,4 +1,4 @@
-import { BASE_API_URI } from "$lib/utils/constants";
+import { BASE_API_URI, FETCH_ABORT_TIMEOUT_MS } from "$lib/utils/constants";
 import { registerHouseSchema } from "$lib/utils/schemas";
 import { fail, redirect } from "@sveltejs/kit";
 import { superValidate } from "sveltekit-superforms";
@@ -38,7 +38,8 @@ export const actions = {
         "Content-Type": "application/json",
         Cookie: `session=${cookies.get("session")}`
       },
-      body: JSON.stringify(registrationBody)
+      body: JSON.stringify(registrationBody),
+      signal: AbortSignal.timeout(FETCH_ABORT_TIMEOUT_MS)
     };
 
     const res = await fetch(
@@ -47,8 +48,12 @@ export const actions = {
     );
 
     if (!res.ok) {
-      const response = await res.json();
-      return fail(400, { form, errors: response.error });
+      try {
+        const response = await res.json();
+        return fail(400, { form, errors: response.error });
+      } catch {
+        return fail(500, { form, errors: "Internal Error" });
+      }
     }
 
     redirect(303, "/");
