@@ -1,4 +1,4 @@
-import { BASE_API_URI } from "$lib/utils/constants";
+import { BASE_API_URI, FETCH_ABORT_TIMEOUT_MS } from "$lib/utils/constants";
 import type { Cookies } from "@sveltejs/kit";
 import { fail } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types.js";
@@ -10,18 +10,25 @@ async function get_todos(cookies: Cookies): Promise<Todo[]> {
     headers: {
       "Content-Type": "application/json",
       Cookie: `session=${cookies.get("session")}`
-    }
+    },
+    signal: AbortSignal.timeout(FETCH_ABORT_TIMEOUT_MS)
   };
 
   const res = await fetch(
     `${BASE_API_URI}/items/get-todos`,
     requestInitOptions
   );
-  const response = await res.json();
+
   if (!res.ok) {
     return [] as Todo[];
   }
-  return response.todos;
+
+  try {
+    const response = await res.json();
+    return response.todos;
+  } catch {
+    return [] as Todo[];
+  }
 }
 
 export const load: PageServerLoad = async ({ cookies }) => {
@@ -48,19 +55,24 @@ export const actions = {
         "Content-Type": "application/json",
         Cookie: `session=${cookies.get("session")}`
       },
-      body: JSON.stringify({ data: todoTextData })
+      body: JSON.stringify({ data: todoTextData }),
+      signal: AbortSignal.timeout(FETCH_ABORT_TIMEOUT_MS)
     };
 
     const res = await fetch(
       `${BASE_API_URI}/items/create-todo`,
       requestInitOptions
     );
-    const response = await res.json();
-    if (!res.ok) {
-      return fail(400, { errors: response.error });
-    }
 
-    return { todo: response.todo };
+    try {
+      const response = await res.json();
+      if (!res.ok) {
+        return fail(400, { errors: response.error });
+      }
+      return { todo: response.todo };
+    } catch {
+      return fail(500, { errors: "Internal Error" });
+    }
   },
 
   delete_todo: async ({ request, fetch, cookies }) => {
@@ -77,19 +89,24 @@ export const actions = {
       headers: {
         "Content-Type": "application/json",
         Cookie: `session=${cookies.get("session")}`
-      }
+      },
+      signal: AbortSignal.timeout(FETCH_ABORT_TIMEOUT_MS)
     };
 
     const res = await fetch(
       `${BASE_API_URI}/items/delete-todo/${todoId}`,
       requestInitOptions
     );
-    const response = await res.json();
-    if (!res.ok) {
-      return fail(400, { errors: response.error });
-    }
 
-    return { todo_id: todoId };
+    try {
+      const response = await res.json();
+      if (!res.ok) {
+        return fail(400, { errors: response.error });
+      }
+      return { todo_id: todoId };
+    } catch {
+      return fail(500, { errors: "Internal Error" });
+    }
   },
 
   check_todo: async ({ request, fetch, cookies }) => {
@@ -106,18 +123,23 @@ export const actions = {
       headers: {
         "Content-Type": "application/json",
         Cookie: `session=${cookies.get("session")}`
-      }
+      },
+      signal: AbortSignal.timeout(FETCH_ABORT_TIMEOUT_MS)
     };
 
     const res = await fetch(
       `${BASE_API_URI}/items/check-todo/${todoId}`,
       requestInitOptions
     );
-    const response = await res.json();
-    if (!res.ok) {
-      return fail(400, { errors: response.error });
-    }
 
-    return { todo: response.todo };
+    try {
+      const response = await res.json();
+      if (!res.ok) {
+        return fail(400, { errors: response.error });
+      }
+      return { todo: response.todo };
+    } catch {
+      return fail(500, { errors: "Internal Error" });
+    }
   }
 };

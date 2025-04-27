@@ -1,4 +1,4 @@
-import { BASE_API_URI } from "$lib/utils/constants";
+import { BASE_API_URI, FETCH_ABORT_TIMEOUT_MS } from "$lib/utils/constants";
 import { choreItemSchema } from "$lib/utils/schemas";
 import type { Cookies } from "@sveltejs/kit";
 import { fail, redirect } from "@sveltejs/kit";
@@ -13,18 +13,25 @@ async function get_chore(choreId: string, cookies: Cookies): Promise<Chore> {
     headers: {
       "Content-Type": "application/json",
       Cookie: `session=${cookies.get("session")}`
-    }
+    },
+    signal: AbortSignal.timeout(FETCH_ABORT_TIMEOUT_MS)
   };
 
   const res = await fetch(
     `${BASE_API_URI}/chores/get-chore/${choreId}`,
     requestInitOptions
   );
+
   if (!res.ok) {
     return {} as Chore;
   }
-  const response = await res.json();
-  return response.chore as Chore;
+
+  try {
+    const response = await res.json();
+    return response.chore as Chore;
+  } catch {
+    return {} as Chore;
+  }
 }
 
 export const load: PageServerLoad = async ({ params, cookies }) => {
@@ -75,20 +82,27 @@ export const actions = {
         assignee: createChoreForm.data.assignee ?? "",
         room: createChoreForm.data.room,
         deadline: createChoreForm.data.deadline
-      })
+      }),
+      signal: AbortSignal.timeout(FETCH_ABORT_TIMEOUT_MS)
     };
 
     const res = await fetch(
       `${BASE_API_URI}/chores/create-chore`,
       requestInitOptions
     );
-    const response = await res.json();
+
     if (!res.ok) {
-      return fail(400, { createChoreForm, errors: response.error });
+      try {
+        const response = await res.json();
+        return fail(400, { createChoreForm, errors: response.error });
+      } catch {
+        return fail(500, { createChoreForm, errors: "Internal Error" });
+      }
     }
 
     return redirect(300, "/home/chores");
   },
+
   change_chore: async ({ request, fetch, cookies }) => {
     const changeChoreForm = await superValidate(request, zod(choreItemSchema));
     if (!changeChoreForm.valid) return fail(400, { changeChoreForm });
@@ -107,16 +121,22 @@ export const actions = {
         room: changeChoreForm.data.room,
         assignee: changeChoreForm.data.assignee ?? "",
         deadline: changeChoreForm.data.deadline
-      })
+      }),
+      signal: AbortSignal.timeout(FETCH_ABORT_TIMEOUT_MS)
     };
 
     const res = await fetch(
       `${BASE_API_URI}/chores/update-chore`,
       requestInitOptions
     );
-    const response = await res.json();
+
     if (!res.ok) {
-      return fail(400, { changeChoreForm, errors: response.error });
+      try {
+        const response = await res.json();
+        return fail(400, { changeChoreForm, errors: response.error });
+      } catch {
+        return fail(500, { changeChoreForm, errors: "Internal Error" });
+      }
     }
 
     return redirect(300, "/home/chores");

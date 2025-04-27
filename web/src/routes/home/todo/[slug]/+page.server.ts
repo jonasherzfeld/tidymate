@@ -1,4 +1,4 @@
-import { BASE_API_URI } from "$lib/utils/constants";
+import { BASE_API_URI, FETCH_ABORT_TIMEOUT_MS } from "$lib/utils/constants";
 import { todoItemSchema } from "$lib/utils/schemas";
 import type { Cookies } from "@sveltejs/kit";
 import { fail, redirect } from "@sveltejs/kit";
@@ -13,19 +13,25 @@ async function get_todo(todoId: string, cookies: Cookies): Promise<Todo> {
     headers: {
       "Content-Type": "application/json",
       Cookie: `session=${cookies.get("session")}`
-    }
+    },
+    signal: AbortSignal.timeout(FETCH_ABORT_TIMEOUT_MS)
   };
 
   const res = await fetch(
     `${BASE_API_URI}/items/get-todo/${todoId}`,
     requestInitOptions
   );
-  const response = await res.json();
+
   if (!res.ok) {
     return {} as Todo;
   }
 
-  return response.todo as Todo;
+  try {
+    const response = await res.json();
+    return response.chore as Todo;
+  } catch {
+    return {} as Todo;
+  }
 }
 
 export const load: PageServerLoad = async ({ params, cookies }) => {
@@ -53,18 +59,23 @@ export const actions = {
         data: changeTodoForm.data.data,
         assignee: changeTodoForm.data.assignee ?? "",
         deadline: changeTodoForm.data.deadline ?? ""
-      })
+      }),
+      signal: AbortSignal.timeout(FETCH_ABORT_TIMEOUT_MS)
     };
 
     const res = await fetch(
       `${BASE_API_URI}/items/update-todo`,
       requestInitOptions
     );
-    const response = await res.json();
-    if (!res.ok) {
-      return fail(400, { changeTodoForm, errors: response.error });
-    }
 
+    if (!res.ok) {
+      try {
+        const response = await res.json();
+        return fail(400, { changeTodoForm, errors: response.error });
+      } catch {
+        return fail(500, { changeTodoForm, errors: "Internal Error" });
+      }
+    }
     return redirect(300, "/home/todo");
   }
 };

@@ -1,4 +1,4 @@
-import { BASE_API_URI } from "$lib/utils/constants";
+import { BASE_API_URI, FETCH_ABORT_TIMEOUT_MS } from "$lib/utils/constants";
 import { loginSchema } from "$lib/utils/schemas";
 import { fail, redirect } from "@sveltejs/kit";
 import { superValidate } from "sveltekit-superforms";
@@ -33,7 +33,8 @@ export const actions = {
       body: JSON.stringify({
         email: form.data.email,
         password: form.data.password
-      })
+      }),
+      signal: AbortSignal.timeout(FETCH_ABORT_TIMEOUT_MS)
     };
 
     const res = await fetch(`${BASE_API_URI}/auth/login`, requestInitOptions);
@@ -42,8 +43,8 @@ export const actions = {
       try {
         const response = await res.json();
         return fail(400, { form, errors: response.error });
-      } catch {
-        return fail(500, { form });
+      } catch (e) {
+        return fail(500, { form, errors: "Internal Error" });
       }
     }
 
