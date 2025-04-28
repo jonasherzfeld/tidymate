@@ -23,11 +23,6 @@
       <Logo width="30px" /><span class="hidden lg:block"
         ><RainbowText plain>Tidymate</RainbowText></span
       ></a>
-    <div class="hidden lg:block">
-      <ul class="menu menu-horizontal m-0 p-0">
-        <MenuBlock position="header_left" restricted={menuRestriction} />
-      </ul>
-    </div>
   </div>
   <div class="justify-left -z-10 w-fit flex-1 pl-2 font-sans text-xl lg:hidden">
     {#if headerTitle}
@@ -52,7 +47,7 @@
       </div>
       <ul
         tabindex="-1"
-        class="menu-xl menu dropdown-content z-[1] mt-3 w-52 rounded-box border border-neutral bg-base-300 p-2 shadow-md">
+        class="menu-xl menu dropdown-content rounded-box border-neutral bg-base-300 md z-[1] mt-3 w-52 p-2 shadow-md">
         <MenuBlock position="avatar_dropdown" restricted={menuRestriction} />
       </ul>
     </div>

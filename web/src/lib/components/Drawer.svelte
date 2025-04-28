@@ -2,12 +2,12 @@
   import type { Snippet } from "svelte";
   import { page } from "$app/stores";
   import Header from "$lib/components/Header.svelte";
-  import Logo from "./Logo.svelte";
   import { MenuIcon } from "$lib/utils/icons";
   import MenuBlock from "./MenuBlock.svelte";
   import type { RestrictionType } from "$lib/utils/constants";
   import { getRestrictionType } from "$lib/utils/helpers";
-  import RainbowText from "./RainbowText.svelte";
+  import { cn } from "$lib/utils";
+
   let {
     isWebApp,
     children
@@ -28,46 +28,71 @@
   }
 </script>
 
-<div class="drawer">
+<div class="drawer flex flex-col">
   <input
     id="my-drawer-3"
     type="checkbox"
     class="drawer-toggle"
     bind:checked={isDrawerOpen} />
-  <div class="drawer-content flex min-h-screen flex-col">
-    <!-- Navbar -->
-    <div
-      class={`text-shade-500 navbar sticky top-0 z-10 w-full border-b border-solid border-neutral bg-base-300 shadow-md ${isWebApp ? "pt-12" : ""}`}>
-      <div class={`m-0 flex w-fit p-0 lg:hidden ${isWebApp ? "hidden" : ""}`}>
-        <button
-          onclick={handleClick}
-          class="btn btn-square btn-ghost ml-3 w-fit"
-          aria-label="Open Menu">
-          <MenuIcon />
-        </button>
-      </div>
-      <Header />
+
+  <!-- Navbar (Header stays stationary) -->
+  <div
+    class={`text-shade-500 navbar bg-base-300 border-base-300 border-solidshadow-md sticky top-0 z-10 ml-0 w-full border-b ${isWebApp ? "pt-12" : ""}`}>
+    <div class={`m-0 flex w-fit p-0 ${isWebApp ? "hidden" : ""}`}>
+      <button
+        onclick={handleClick}
+        class="btn btn-sm btn-square btn-ghost ml-3"
+        aria-label="Open Menu">
+        <MenuIcon />
+      </button>
     </div>
+    <Header />
+  </div>
+
+  <!-- Main Content (Moves with the drawer on large screens) -->
+  <div
+    class={cn("drawer-content flex flex-col", isDrawerOpen && "drawer-open")}>
     {@render children?.()}
   </div>
 
+  <!-- Drawer Sidebar -->
   <div class="drawer-side z-20">
-    <button onclick={handleClick} class="drawer-overlay" aria-label="Close Menu"
-    ></button>
     <ul
-      class={`menu -ml-3 min-h-full w-80 rounded-md border-r-[1px] bg-base-300 p-4 pl-7 ${isWebApp ? "pt-12" : ""}`}>
+      class={`menu bg-base-200 border-neutral -ml-3 min-h-full w-80 justify-between rounded-md border-r-[1px]  p-4 pl-7 ${isWebApp ? "pt-12" : ""}`}>
       <!-- Sidebar content here -->
-      <a
-        href={isLoggedIn && isHouseMember ? "/home" : "/"}
-        class="btn btn-ghost text-xl"
-        onclick={handleClick}>
-        <Logo width="30px" /><RainbowText>Tidymate</RainbowText></a>
-      <MenuBlock
-        position="drawer_top"
-        restricted={menuRestriction}
-        {handleClick} />
-      <div class="divider"></div>
-      <MenuBlock position="drawer_bottom" restricted={["none"]} {handleClick} />
+      <div class="mt-16">
+        <MenuBlock position="drawer_top" restricted={menuRestriction} />
+      </div>
+      <div>
+        <div class="divider"></div>
+        <MenuBlock position="drawer_bottom" restricted={["none"]} />
+      </div>
     </ul>
   </div>
 </div>
+
+<style>
+  .drawer-content {
+    transition: margin-left 0.3s ease;
+    margin-left: 0;
+  }
+
+  .drawer-open {
+    margin-left: 19rem; /* Adjust this value to match the drawer width */
+  }
+
+  .drawer-side {
+    width: 20rem; /* Set the drawer width */
+  }
+
+  .navbar {
+    z-index: 50; /* Ensure the navbar stays above the drawer */
+  }
+
+  /* Media query for large displays */
+  @media (max-width: 1024px) {
+    .drawer-open {
+      margin-left: 0 !important; /* Disable drawer movement on smaller screens */
+    }
+  }
+</style>

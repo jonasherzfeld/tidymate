@@ -19,7 +19,7 @@ import {
 } from "$lib/utils/icons";
 import type { Component } from "svelte";
 
-export const BASE_API_URI = "http://localhost:5000";
+export const BASE_API_URI = "http://127.0.0.1:5000";
 
 export const FETCH_ABORT_TIMEOUT_MS = 5000;
 
@@ -85,14 +85,6 @@ export const ROUTE_MAPPING: RouteMap[] = [
     position: ["header_left", "drawer_top", "menu"],
     icon: ChoresIcon,
     restricted: "house_member",
-    target: ""
-  },
-  {
-    url: "/about",
-    title: "About",
-    position: ["header_right", "drawer_bottom"],
-    icon: DocsIcon,
-    restricted: "none",
     target: ""
   },
   {
