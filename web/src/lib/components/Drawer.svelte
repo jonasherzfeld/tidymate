@@ -37,11 +37,11 @@
 
   <!-- Navbar (Header stays stationary) -->
   <div
-    class={`text-shade-500 navbar bg-base-300 border-base-300 border-solidshadow-md sticky top-0 z-10 ml-0 w-full border-b ${isWebApp ? "pt-12" : ""}`}>
+    class={`text-shade-500 border-solidshadow-md navbar sticky top-0 z-10 ml-0 w-full border-b border-base-300 bg-base-300 ${isWebApp ? "pt-12" : ""}`}>
     <div class={`m-0 flex w-fit p-0 ${isWebApp ? "hidden" : ""}`}>
       <button
         onclick={handleClick}
-        class="btn btn-sm btn-square btn-ghost ml-3"
+        class="btn btn-square btn-ghost btn-sm ml-3"
         aria-label="Open Menu">
         <MenuIcon />
       </button>
@@ -58,7 +58,7 @@
   <!-- Drawer Sidebar -->
   <div class="drawer-side z-20">
     <ul
-      class={`menu bg-base-200 border-neutral -ml-3 min-h-full w-80 justify-between rounded-md border-r-[1px]  p-4 pl-7 ${isWebApp ? "pt-12" : ""}`}>
+      class={`menu -ml-3 min-h-full w-80 justify-between rounded-md border-r-[1px] border-neutral bg-base-200  p-4 pl-7 ${isWebApp ? "pt-12" : ""}`}>
       <!-- Sidebar content here -->
       <div class="mt-16">
         <MenuBlock position="drawer_top" restricted={menuRestriction} />

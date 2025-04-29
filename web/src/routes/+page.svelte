@@ -2,7 +2,7 @@
   import RainbowText from "$lib/components/RainbowText.svelte";
 </script>
 
-<div class="bg-base-100 flex min-h-full w-full justify-center">
+<div class="flex min-h-full w-full justify-center bg-base-100">
   <div
     class="flex min-h-full max-w-screen-sm flex-col items-center justify-center p-4 text-center">
     <h3 class="text-4xl">Welcome to</h3>
