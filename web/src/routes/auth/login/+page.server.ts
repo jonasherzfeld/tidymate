@@ -38,7 +38,7 @@ export const actions = {
     };
 
     const res = await fetch(`${BASE_API_URI}/auth/login`, requestInitOptions);
-  
+
     if (!res.ok) {
       try {
         const response = await res.json();

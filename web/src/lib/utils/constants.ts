@@ -2,7 +2,6 @@ import {
   BathroomIcon,
   BedroomIcon,
   ChoresIcon,
-  DocsIcon,
   GeneralIcon,
   HouseCircleOutline,
   HouseIcon,
