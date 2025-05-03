@@ -1,8 +1,7 @@
 from datetime import datetime
 from flask import Blueprint, request, jsonify, render_template
-import uuid
 
-from config import db
+from db.db import db
 from models.models import Todo, House
 from utils.utils import login_required
 

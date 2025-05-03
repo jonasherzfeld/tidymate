@@ -3,7 +3,7 @@ import shortuuid
 import base64
 import os
 
-from config import db
+from db.db import db
 from utils.utils import login_required
 
 

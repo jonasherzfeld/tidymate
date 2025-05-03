@@ -1,10 +1,11 @@
 services:
   tidymate:
     container_name: tidymate
-    image: tidymate:latest
+    image: tidymate:dev
     restart: always
     volumes:
       - ../data:/app/data
+      - ../logs:/app/logs
     ports:
       - 3000:3000
     environment:

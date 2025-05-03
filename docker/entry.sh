@@ -11,7 +11,7 @@ run() {
 
     # Run the backend as the tidymate user
     cd /app/server
-    exec python src/index.py &
+    exec python src/main.py &
 }
 
 run

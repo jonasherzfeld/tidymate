@@ -1,8 +1,7 @@
 from enum import Enum
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy_serializer import SerializerMixin
-
-from config import app, db, bcrypt
+from db.db import db, bcrypt
 
 
 class ChoreSeverity(Enum):
@@ -104,7 +103,3 @@ class Chore(db.Model, SerializerMixin):
     house = db.relationship('House', back_populates='chores')
 
     serialize_rules = ('-house.chores', '-house.members', '-house.todos')
-
-
-with app.app_context():
-    db.create_all()
