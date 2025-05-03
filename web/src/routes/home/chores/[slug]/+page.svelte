@@ -240,7 +240,7 @@
           </Popover.Content>
         </Popover.Root>
         {#if isDeadlineInPast || $errors.deadline}
-          {#if $errors.data}<span
+          {#if $errors.deadline}<span
               class="invalid ml-2 flex w-full text-start text-sm text-error"
               >Deadline must be in the future</span
             >{/if}

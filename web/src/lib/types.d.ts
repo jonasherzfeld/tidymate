@@ -4,7 +4,6 @@ interface Todo {
   data: string;
   assignee: string;
   done: boolean;
-  tags: string[];
   created_on: string;
   deadline: string;
 }

@@ -2,7 +2,6 @@
   import TextInput from "$lib/components/TextInput.svelte";
   import AvatarGraphic from "$lib/components/AvatarGraphic.svelte";
   import AvatarModal from "$lib/components/AvatarModal.svelte";
-  import ThemeSwitch from "$lib/components/ThemeSwitch.svelte";
   import { superForm } from "sveltekit-superforms";
   import FormTextInput from "$lib/components/FormTextInput.svelte";
   import type { PageData } from "./$types";
@@ -163,7 +162,6 @@
     <TextInput name="joined_on" value={data.user.joined_on} disabled={true}
       ><b>Joined On</b>
     </TextInput>
-    <ThemeSwitch />
   </div>
 </div>
 <AvatarModal bind:showModal />

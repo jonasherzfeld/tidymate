@@ -9,7 +9,6 @@
   import FilterDropDown from "$lib/components/FilterDropDown.svelte";
   import {
     ReloadIcon,
-    TagIcon,
     UserIcon,
     DoneAllIcon,
     SearchIcon
@@ -25,8 +24,7 @@
   let sortOrder: boolean = $state(true);
 
   let filters: FilterDescription<Todo>[] = $state([
-    { property: "assignee", values: [], filterValues: [] },
-    { property: "tags", values: [], filterValues: [] }
+    { property: "assignee", values: [], filterValues: [] }
   ]);
 
   let showComplete: boolean = $state(false);
@@ -35,7 +33,7 @@
   let searchText: string = $state("");
 
   let todoListHandler: ListHandler<Todo> = $state(new ListHandler("done"));
-  const searchableProperties: (keyof Todo)[] = ["data", "assignee", "tags"];
+  const searchableProperties: (keyof Todo)[] = ["data", "assignee"];
   let todoList: Todo[] = $derived(
     todoListHandler.getSortedAndFilteredList(
       searchText,
@@ -103,12 +101,6 @@
         </a>
       </div>
       <div class="flex w-full flex-row justify-end gap-2">
-        <FilterDropDown
-          title="Tags"
-          values={filters[1].values}
-          bind:filterValue={filters[1].filterValues}>
-          <TagIcon class="h-4 w-4" />
-        </FilterDropDown>
         <FilterDropDown
           title="Assignee"
           values={filters[0].values}

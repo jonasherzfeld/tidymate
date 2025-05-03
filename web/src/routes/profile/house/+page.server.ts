@@ -33,7 +33,7 @@ async function get_house_members(cookies: Cookies): Promise<User[]> {
 
   try {
     const response = await res.json();
-    return response.chores;
+    return response.user_list as User[];
   } catch {
     return [] as User[];
   }

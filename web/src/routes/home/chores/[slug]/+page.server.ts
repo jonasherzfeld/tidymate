@@ -47,7 +47,6 @@ export const load: PageServerLoad = async ({ params, cookies }) => {
         last_done: "",
         room: "",
         severity: "LOW",
-        tags: [],
         created_on: "",
         done: false
       },

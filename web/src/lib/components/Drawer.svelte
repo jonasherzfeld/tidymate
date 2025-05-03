@@ -7,6 +7,7 @@
   import type { RestrictionType } from "$lib/utils/constants";
   import { getRestrictionType } from "$lib/utils/helpers";
   import { cn } from "$lib/utils";
+  import ThemeSwitch from "./ThemeSwitch.svelte";
 
   let {
     isWebApp,
@@ -51,21 +52,34 @@
 
   <!-- Main Content (Moves with the drawer on large screens) -->
   <div
-    class={cn("drawer-content flex flex-col", isDrawerOpen && "drawer-open")}>
+    class={cn("drawer-content flex flex-col ", isDrawerOpen && "drawer-open")}>
     {@render children?.()}
   </div>
 
   <!-- Drawer Sidebar -->
+
   <div class="drawer-side z-20">
+    <label
+      for="my-drawer-3"
+      aria-label="close sidebar"
+      class="drawer-overlay w-full lg:hidden"></label>
+
     <ul
       class={`menu -ml-3 min-h-full w-80 justify-between rounded-md border-r-[1px] border-neutral bg-base-200  p-4 pl-7 ${isWebApp ? "pt-12" : ""}`}>
       <!-- Sidebar content here -->
-      <div class="mt-16">
+      <div class="mt-16 lg:hidden">
+        <MenuBlock
+          position="drawer_top"
+          restricted={menuRestriction}
+          {handleClick} />
+      </div>
+      <div class="mt-16 hidden lg:block">
         <MenuBlock position="drawer_top" restricted={menuRestriction} />
       </div>
       <div>
         <div class="divider"></div>
         <MenuBlock position="drawer_bottom" restricted={["none"]} />
+        <ThemeSwitch />
       </div>
     </ul>
   </div>
@@ -73,16 +87,12 @@
 
 <style>
   .drawer-content {
-    transition: margin-left 0.3s ease;
+    /* transition: margin-left 0.3s ease; */
     margin-left: 0;
   }
 
   .drawer-open {
     margin-left: 19rem; /* Adjust this value to match the drawer width */
-  }
-
-  .drawer-side {
-    width: 20rem; /* Set the drawer width */
   }
 
   .navbar {

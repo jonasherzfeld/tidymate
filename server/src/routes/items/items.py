@@ -1,5 +1,6 @@
 from datetime import datetime
 from flask import Blueprint, request, jsonify, render_template
+import uuid
 
 from db.db import db
 from models.models import Todo, House
@@ -13,14 +14,14 @@ items = Blueprint('items', __name__)
 def create_todo(user):
     data = request.json.get("data", "")
     assignee = request.json.get("assignee", "")
-    # tags = request.json.get("tags", [])
     deadline = request.json.get("deadline", "")
 
     house = House.query.filter_by(id=user.house_id).first()
     if not house:
         return jsonify({"error": "House not found"}), 404
 
-    todo = Todo(data=data,
+    todo = Todo(id=str(uuid.uuid4()),
+                data=data,
                 assignee=assignee,
                 done=False,
                 created_on=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),

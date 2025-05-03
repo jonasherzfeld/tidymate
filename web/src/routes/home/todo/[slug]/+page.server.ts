@@ -28,7 +28,7 @@ async function get_todo(todoId: string, cookies: Cookies): Promise<Todo> {
 
   try {
     const response = await res.json();
-    return response.chore as Todo;
+    return response.todo as Todo;
   } catch {
     return {} as Todo;
   }

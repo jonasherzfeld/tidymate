@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 from flask import Blueprint, request, jsonify
+import uuid
 
 from db.db import db
 from models.models import House, Chore, ChoreSeverity
@@ -13,7 +14,6 @@ chores = Blueprint('chores', __name__)
 def create_chore(user):
     data = request.json.get("data", "")
     assignee = request.json.get("assignee", "")
-    # tags = request.json.get("tags", [])
     deadline = request.json.get("deadline", "")
     frequency = request.json.get("frequency", 0)
     last_done = request.json.get("last_done", "")
@@ -28,7 +28,8 @@ def create_chore(user):
         deadline = (datetime.now() +
                     datetime.timedelta(days=frequency)).strftime("%Y-%m-%d")
 
-    chore = Chore(data=data,
+    chore = Chore(id=str(uuid.uuid4()),
+                  data=data,
                   assignee=assignee,
                   done=False,
                   created_on=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),

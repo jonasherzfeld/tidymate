@@ -1,7 +1,7 @@
 from datetime import datetime
 from flask import Blueprint, request, jsonify, session
 import shortuuid
-
+import uuid
 from db.db import db
 from models.models import Users, House
 from utils.utils import login_required
@@ -77,6 +77,7 @@ def register():
         db_house = House.query.filter_by(join_id=join_id).first()
 
     new_user = Users(
+        id=str(uuid.uuid4()),
         email=email,
         password=password,
         first_name=first_name,
@@ -114,7 +115,8 @@ def register_house(user):
     except KeyError:
         return jsonify({"error": "Missing required fields"}), 400
 
-    new_house = House(name=house_name,
+    new_house = House(id=str(uuid.uuid4()),
+                      name=house_name,
                       city=house_city,
                       country=house_country,
                       created_on=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),

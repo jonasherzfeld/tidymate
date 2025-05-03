@@ -86,7 +86,7 @@ export async function handle({ event, resolve }) {
     event.locals.house
   );
   if (!isValid) {
-    redirect(303, "/");
+    redirect(303, "/auth/login");
   }
 
   // load page as normal

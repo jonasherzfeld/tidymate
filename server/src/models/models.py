@@ -19,7 +19,7 @@ class ChoreSeverity(Enum):
 
 
 class Users(db.Model, SerializerMixin):
-    id = db.Column("id", db.Integer, primary_key=True)
+    id = db.Column("id", db.String, primary_key=True)
     email = db.Column("email", db.String(30), nullable=False, unique=True)
     _password_hash = db.Column("password_hash", db.String(100), nullable=False)
     first_name = db.Column("first_name", db.String(100))
@@ -29,8 +29,9 @@ class Users(db.Model, SerializerMixin):
     house_id = db.Column("house_id", db.Integer, db.ForeignKey('house.id'))
     house = db.relationship('House', back_populates='members')
 
-    def __init__(self, email, password, first_name, last_name,
+    def __init__(self, id, email, password, first_name, last_name,
                  joined_on, is_admin, house):
+        self.id = id
         self.email = email
         self.password_hash = password
         self.first_name = first_name
@@ -61,7 +62,7 @@ class Users(db.Model, SerializerMixin):
 
 
 class House(db.Model, SerializerMixin):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.String, primary_key=True)
     name = db.Column(db.String(100))
     city = db.Column(db.String(100))
     country = db.Column(db.String(100))
@@ -76,7 +77,7 @@ class House(db.Model, SerializerMixin):
 
 
 class Todo(db.Model, SerializerMixin):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.String, primary_key=True)
     data = db.Column(db.String(255))
     assignee = db.Column(db.String(100))
     done = db.Column(db.Boolean, default=False)
@@ -89,7 +90,7 @@ class Todo(db.Model, SerializerMixin):
 
 
 class Chore(db.Model, SerializerMixin):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.String, primary_key=True)
     data = db.Column(db.String(255))
     assignee = db.Column(db.String(100))
     done = db.Column(db.Boolean, default=False)

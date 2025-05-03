@@ -21,7 +21,6 @@
     data = $bindable(),
     assignee = $bindable(),
     done = $bindable(),
-    tags = $bindable(),
     deadline = $bindable(),
     frequency = $bindable(),
     last_done = $bindable(),
@@ -34,7 +33,6 @@
     data: string;
     assignee: string;
     done: boolean;
-    tags: string[];
     deadline: string;
     frequency: number;
     last_done: string;

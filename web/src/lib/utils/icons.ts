@@ -10,11 +10,11 @@ import ChevronLeft from "virtual:icons/fluent/chevron-left-28-filled";
 import ChevronRight from "virtual:icons/fluent/chevron-right-28-filled";
 import CircleIcon from "virtual:icons/fluent/circle-20-filled";
 import TextIcon from "virtual:icons/fluent/code-text-16-filled";
+import ThemeIcon from "virtual:icons/fluent/dark-theme-24-filled";
 import DocsIcon from "virtual:icons/fluent/document-bullet-list-16-regular";
 import HouseIcon from "virtual:icons/fluent/home-20-filled";
 import InfoIcon from "virtual:icons/fluent/info-12-regular";
 import UserIcon from "virtual:icons/fluent/person-24-filled";
-import TagIcon from "virtual:icons/fluent/tag-16-filled";
 import TodoIcon from "virtual:icons/fluent/task-list-square-16-filled";
 import DoneAllIcon from "virtual:icons/mdi/done-all";
 import MenuDots from "virtual:icons/mdi/dots-vertical";
@@ -89,8 +89,8 @@ export {
   SubmitIcon,
   SvelteIcon,
   TSIcon,
-  TagIcon,
   TextIcon,
+  ThemeIcon,
   TodoIcon,
   UserCircleOutline,
   UserIcon

@@ -7,7 +7,7 @@ export const load: PageServerLoad = async ({ locals, url }) => {
   if (locals.user && locals.house) {
     redirect(302, "/home");
   }
-  return { from: url.searchParams.get("from") };
+  redirect(302, "/auth/login");
 };
 
 export const actions: Actions = {

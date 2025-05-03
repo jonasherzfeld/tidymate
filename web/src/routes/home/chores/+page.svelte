@@ -23,7 +23,6 @@
 
   let filters: FilterDescription<Chore>[] = $state([
     { property: "assignee", values: [], filterValues: [] },
-    { property: "tags", values: [], filterValues: [] },
     { property: "room", values: [], filterValues: [] }
   ]);
   let nameFilterFn: (value: string) => string | undefined = (value) => {
@@ -36,7 +35,7 @@
   let choreListHandler: ListHandler<Chore> = $state(
     new ListHandler("deadline")
   );
-  const searchableProperties: (keyof Chore)[] = ["data", "assignee", "tags"];
+  const searchableProperties: (keyof Chore)[] = ["data", "assignee"];
   let choreList: Chore[] = $derived(
     choreListHandler.getSortedAndFilteredList(
       searchText,
@@ -94,8 +93,8 @@
       <div class="flex w-full flex-row justify-end gap-2">
         <FilterDropDown
           title="Room"
-          values={filters[2].values}
-          bind:filterValue={filters[2].filterValues}>
+          values={filters[1].values}
+          bind:filterValue={filters[1].filterValues}>
           <RoomFilterIcon class="h-4 w-4" />
         </FilterDropDown>
         <FilterDropDown
