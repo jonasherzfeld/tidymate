@@ -15,7 +15,6 @@
     data = $bindable(),
     assignee = $bindable(),
     done = $bindable(),
-    tags = $bindable(),
     created_on = $bindable(),
     deadline = $bindable(),
     removedList = $bindable()
@@ -24,7 +23,6 @@
     data: string;
     assignee: string;
     done: boolean;
-    tags: string[];
     created_on: string;
     deadline: string;
     removedList: string[];
