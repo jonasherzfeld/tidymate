@@ -18,6 +18,7 @@ REDIS_URL = "redis://localhost:6379"
 SQL_DB_URL = f"sqlite:///{BASE_DIR}/data/data.sqlite3"
 LOG_FILE = f"{BASE_DIR}/logs/tidymate.log"
 
+
 def create_app():
     if not os.path.exists(LOG_FILE):
         open(LOG_FILE, 'w').close()
