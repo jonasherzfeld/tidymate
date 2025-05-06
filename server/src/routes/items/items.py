@@ -106,4 +106,4 @@ def delete_todo(user, todo_id):
         return jsonify({"error": "House not found"}), 404
     Todo.query.filter_by(id=todo_id).delete()
     db.session.commit()
-    return jsonify({"error": "Todo not found"}), 404
+    return jsonify({}), 200

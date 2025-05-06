@@ -26,8 +26,8 @@
     last_done = $bindable(),
     room = $bindable(),
     severity = $bindable(),
-    removedList = $bindable(),
-    onchange
+    onChange,
+    onRemove
   }: {
     id: string;
     data: string;
@@ -38,8 +38,8 @@
     last_done: string;
     room: string;
     severity: ChoreSeverity;
-    removedList: string[];
-    onchange: (deadline: string) => void;
+    onChange: (deadline: string) => void;
+    onRemove: () => void;
   } = $props();
 
   let assigneeName = $derived(
@@ -73,10 +73,10 @@
 
   const handleChecked = async ({}) => {
     return async ({ result, update }) => {
-      if (result.status !== 200) {
-        update();
+      if (result.status === 200) {
+        onChange(result.data.chore.deadline);
       } else {
-        onchange(result.data.chore.deadline);
+        update();
       }
     };
   };
@@ -84,7 +84,7 @@
   const handleRemove = async ({}) => {
     return async ({ result, update }) => {
       if (result.status === 200) {
-        removedList.push(result.data.chore_id);
+        onRemove();
       } else {
         await update();
       }

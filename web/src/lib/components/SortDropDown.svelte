@@ -4,7 +4,7 @@
   let {
     sortKey = $bindable(),
     sortOrder = $bindable()
-  }: { sortKey: string; sortOrder: boolean } = $props();
+  }: { sortKey: string; sortOrder: "asc" | "desc" } = $props();
 
   function onChange(event) {
     sortKey = event.currentTarget.value;
@@ -20,9 +20,9 @@
       class="justify-left pointer-events-none flex w-full font-bold"
       >Sort</Dropdown.TextItem>
     <Dropdown.CheckboxItem
-      checked={sortOrder}
+      checked={sortOrder === "desc"}
       onclick={() => {
-        sortOrder = !sortOrder;
+        sortOrder = sortOrder === "desc" ? "asc" : "desc";
       }}>{sortOrder ? "Descending" : "Ascending"}</Dropdown.CheckboxItem>
     <Dropdown.RadioItem
       radioName="sort"

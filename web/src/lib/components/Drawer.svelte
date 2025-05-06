@@ -8,14 +8,15 @@
   import { getRestrictionType } from "$lib/utils/helpers";
   import { cn } from "$lib/utils";
   import ThemeSwitch from "./ThemeSwitch.svelte";
+  import { getContext } from "svelte";
 
   let {
-    isWebApp,
     children
   }: {
-    isWebApp: boolean;
     children: Snippet;
   } = $props();
+
+  const isWebApp: boolean = getContext("webapp");
 
   let isLoggedIn: boolean = $derived($page.data.user ? true : false);
   let isHouseMember: boolean = $derived($page.data.house ? true : false);

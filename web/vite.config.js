@@ -9,6 +9,9 @@ export default defineConfig({
       compiler: "svelte"
     })
   ],
+  build: {
+    sourcemap: true // Enable source maps for better debugging
+  },
   test: {
     include: ["src/**/*.{test,spec}.{js,ts}"]
   }

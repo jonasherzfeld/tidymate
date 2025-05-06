@@ -1,66 +1,62 @@
 <script lang="ts">
   import type { PageData } from "./$types.js";
   import { onMount } from "svelte";
-  import { ListHandler } from "$lib/utils/list_handler";
   import { initializeFilterValues } from "$lib/utils/helpers";
   import ChoreItem from "$lib/components/ChoreItem.svelte";
   import FilterDropDown from "$lib/components/FilterDropDown.svelte";
-  import { getUsernameById } from "$lib/utils/helpers";
-  import {
-    ReloadIcon,
-    UserIcon,
-    RoomFilterIcon,
-    SearchIcon
-  } from "$lib/utils/icons";
-  import { browser } from "$app/environment";
+  import { byPropertiesOf, getUsernameById } from "$lib/utils/helpers";
+  import { UserIcon, RoomFilterIcon, SearchIcon } from "$lib/utils/icons";
 
   let { data }: { data: PageData } = $props();
-
   let serverErrors: string = $state("");
+  const choreState: ItemListState<Chore> = $state({
+    items: [],
+    filters: [
+      { property: "assignee", values: [], selection: [] },
+      { property: "room", values: [], selection: [] }
+    ],
+    searchText: "",
+    sortBy: "deadline",
+    sortOrder: "desc",
+    filteredSortedItems: []
+  });
 
-  let sortKey: SearchableItemSortKey<Chore> = $state("-deadline");
-  let sortOrder: boolean = $state(true);
-
-  let filters: FilterDescription<Chore>[] = $state([
-    { property: "assignee", values: [], filterValues: [] },
-    { property: "room", values: [], filterValues: [] }
-  ]);
   let nameFilterFn: (value: string) => string | undefined = (value) => {
     return getUsernameById(value, data.house.members);
   };
 
-  let removedList: string[] = $state([]);
-  let searchText: string = $state("");
-
-  let choreListHandler: ListHandler<Chore> = $state(
-    new ListHandler("deadline")
-  );
-  const searchableProperties: (keyof Chore)[] = ["data", "assignee"];
-  let choreList: Chore[] = $derived(
-    choreListHandler.getSortedAndFilteredList(
-      searchText,
-      sortOrder,
-      sortKey,
-      filters,
-      removedList
-    )
-  );
-
-  let isWebApp: boolean = $state(false);
-  if (browser) {
-    isWebApp =
-      window.matchMedia("(display-mode: standalone)").matches ||
-      window.navigator.standalone;
-  }
-
   onMount(async () => {
-    choreListHandler = new ListHandler(
-      "deadline",
-      searchableProperties,
-      data.house.members,
-      await data.streamed.chore_list
-    );
-    initializeFilterValues<Chore>(filters, choreListHandler.getFullList());
+    const todos = await data.streamed.chore_list;
+    choreState.items = todos;
+    initializeFilterValues<Chore>(choreState.filters, choreState.items);
+  });
+
+  $effect(() => {
+    choreState.filteredSortedItems = choreState.items
+      .filter((chore: Chore) => {
+        for (const filter of choreState.filters) {
+          if (filter.selection.length > 0) {
+            if (!filter.selection.includes(chore[filter.property] as string)) {
+              return false;
+            }
+          }
+        }
+
+        const matchesSearch =
+          !choreState.searchText ||
+          chore.data
+            .toLowerCase()
+            .includes(choreState.searchText.toLowerCase());
+
+        return matchesSearch;
+      })
+      .sort(
+        byPropertiesOf<Chore>([
+          "done",
+          ((choreState.sortOrder === "desc" ? "" : "-") +
+            choreState.sortBy) as sortArg<Chore>
+        ])
+      );
   });
 </script>
 
@@ -73,7 +69,7 @@
           type="search"
           class="grow"
           placeholder="Search"
-          bind:value={searchText} />
+          bind:value={choreState.searchText} />
       </label>
       <a class="flex flex-row flex-wrap gap-2" href="/home/chores/new">
         <button
@@ -82,26 +78,18 @@
       </a>
     </div>
     <div class="flex w-full flex-row justify-between gap-2">
-      <div>
-        <a href="/home/chores" data-sveltekit-reload>
-          <button
-            class="btn btn-outline btn-sm rounded-md border-neutral-200 shadow-sm">
-            <ReloadIcon class="h-4 w-4" />
-          </button>
-        </a>
-      </div>
       <div class="flex w-full flex-row justify-end gap-2">
         <FilterDropDown
           title="Room"
-          values={filters[1].values}
-          bind:filterValue={filters[1].filterValues}>
+          values={choreState.filters[1].values}
+          bind:filterValue={choreState.filters[1].selection}>
           <RoomFilterIcon class="h-4 w-4" />
         </FilterDropDown>
         <FilterDropDown
           title="Assignee"
-          values={filters[0].values}
+          values={choreState.filters[0].values}
           valueFn={nameFilterFn}
-          bind:filterValue={filters[0].filterValues}>
+          bind:filterValue={choreState.filters[0].selection}>
           <UserIcon class="h-4 w-4" />
         </FilterDropDown>
       </div>
@@ -122,17 +110,17 @@
           </div>
         {:then}
           <div class="flex flex-1 flex-col gap-2">
-            {#each choreList as chore, id}
+            {#each choreState.filteredSortedItems as chore, id}
               <ChoreItem
                 {...chore}
-                bind:removedList
-                onchange={(deadline: string) => {
-                  choreListHandler.fullList[id].deadline = deadline;
-                  choreListHandler = new ListHandler<Chore>(
-                    "deadline",
-                    searchableProperties,
-                    data.house.members,
-                    choreListHandler.fullList
+                onChange={(d: string) => {
+                  choreState.items = choreState.items.map((c) =>
+                    c.id === chore.id ? { ...c, deadline: d } : c
+                  );
+                }}
+                onRemove={() => {
+                  choreState.items = choreState.items.filter(
+                    (c) => c.id !== chore.id
                   );
                 }} />
             {/each}

@@ -127,4 +127,4 @@ def delete_chore(user, chore_id):
         return jsonify({"error": "House not found"}), 404
     Chore.query.filter_by(id=chore_id).delete()
     db.session.commit()
-    return jsonify({"error": "Chore not found"}), 404
+    return jsonify({}), 200
