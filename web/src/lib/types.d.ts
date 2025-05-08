@@ -50,7 +50,16 @@ type SearchableItemSortKey<T> =
 type FilterDescription<T> = {
   property: keyof T;
   values: string[];
-  filterValues: string[];
+  selection: string[];
 };
 
 type sortArg<T> = keyof T | `-${string & keyof T}`;
+
+type ItemListState<T> = {
+  items: T[];
+  filters: FilterDescription<T>[];
+  searchText: string;
+  sortBy: keyof Todo;
+  sortOrder: "asc" | "desc";
+  filteredSortedItems: T[];
+};

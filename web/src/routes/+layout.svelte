@@ -1,11 +1,11 @@
 <script lang="ts">
   import Drawer from "$lib/components/Drawer.svelte";
-  import Footer from "$lib/components/Footer.svelte";
   import type { Snippet } from "svelte";
   import { browser } from "$app/environment";
   import "../app.css";
-  import { page } from "$app/stores";
   import WebAppMenuBar from "$lib/components/WebAppMenuBar.svelte";
+  import { setContext } from "svelte";
+  import { cn } from "$lib/utils";
 
   let { children }: { children: Snippet } = $props();
 
@@ -15,6 +15,8 @@
       window.matchMedia("(display-mode: standalone)").matches ||
       (window.navigator as any).standalone;
   }
+  setContext("webapp", isWebApp);
+
   let isPageLoaded = $state(false);
   const handlePageLoaded = (e: HTMLDivElement) => {
     isPageLoaded = true;
@@ -26,13 +28,11 @@
     <span class="loading loading-spinner loading-lg"></span>
   </div>
 {/if}
-<Drawer {isWebApp}>
-  <div class={`flex grow ${isWebApp ? "" : "min-h-[92vh]"} min-w-full`}>
+<Drawer>
+  <div class={cn("flex min-w-full grow", isWebApp ? "" : "min-h-[92vh]")}>
     {@render children?.()}
   </div>
   {#if isWebApp}
     <WebAppMenuBar />
-  {:else}
-    <Footer />
   {/if}
 </Drawer>

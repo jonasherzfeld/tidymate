@@ -64,7 +64,7 @@ export const load: PageServerLoad = async ({ params, cookies }) => {
 export const actions = {
   create_chore: async ({ request, fetch, cookies }) => {
     const createChoreForm = await superValidate(request, zod(choreItemSchema));
-    console.log(createChoreForm);
+
     if (!createChoreForm.valid) return fail(400, { createChoreForm });
 
     let requestInitOptions: RequestInit = {

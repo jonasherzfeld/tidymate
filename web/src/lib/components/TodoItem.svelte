@@ -17,7 +17,8 @@
     done = $bindable(),
     created_on = $bindable(),
     deadline = $bindable(),
-    removedList = $bindable()
+    onChange,
+    onRemove
   }: {
     id: string;
     data: string;
@@ -25,7 +26,8 @@
     done: boolean;
     created_on: string;
     deadline: string;
-    removedList: string[];
+    onChange: (b: boolean) => void;
+    onRemove: () => void;
   } = $props();
 
   let assigneeName = $derived(
@@ -49,7 +51,7 @@
   const handleRemove = async ({}) => {
     return async ({ result, update }) => {
       if (result.status === 200) {
-        removedList.push(result.data.todo_id);
+        onRemove();
       } else {
         await update();
       }
@@ -71,6 +73,8 @@
           name="check_todo"
           class="checkbox-primary checkbox checkbox-md"
           onchange={(e) => {
+            done = e.target.checked;
+            onChange(done);
             e.target.form.requestSubmit();
           }}
           bind:checked={done} />
