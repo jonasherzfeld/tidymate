@@ -1,67 +1,26 @@
-import { defaultTheme } from "@sveltepress/theme-default";
-import { sveltepress } from "@sveltepress/vite";
-import { defineConfig } from "vite";
+import { defaultTheme } from '@sveltepress/theme-default'
+import { sveltepress } from '@sveltepress/vite'
+import { defineConfig } from 'vite'
 
 const config = defineConfig({
-  plugins: [
-    sveltepress({
-      theme: defaultTheme({
-        navbar: [
-          // {
-          //   title : 'Foo page',
-          //   to : '/foo/'
-          // },
-          // {
-          //   title : 'With dropdown',
-          //   items : [
-          //     {
-          //       title : 'Bar page',
-          //       to : '/foo/bar/'
-          //     },
-          //     {
-          //       title : 'External Github page',
-          //       to : 'https://github.com/',
-          //       external : true
-          //     }
-          //   ]
-          // }
-          {
-            title: "App",
-            to: "https://tidymate.vercel.app/",
-            external: true
-          }
-        ],
-        sidebar: {
-          // '/': [
-          //   {
-          //     title : 'Bar',
-          //     to : '/foo/',
-          //   },
-          //   {
-          //     title : 'Zoo',
-          //     collapsible : true,
-          //     items : [
-          //       {
-          //         title : 'Sub item',
-          //         to : '/foo/bar'
-          //       }
-          //     ]
-          //   },
-          //   {
-          //     title : 'External github page',
-          //     to : 'https://github.com'
-          //   }
-          // ]
-        },
-        github: "https://github.com/jonasherzfeld/tidymate",
-        logo: "/tidymate_logo.png"
-      }),
-      siteConfig: {
-        title: "Tidymate",
-        description: "A lean organizer app for you and your mates!"
-      }
-    })
-  ]
-});
+	plugins: [
+		sveltepress({
+			theme: defaultTheme({
+				navbar: [
+					// Add your navbar configs here
+				],
+				sidebar: {
+					// Add your sidebar configs here
+				},
+				github: 'https://github.com/Blackman99/sveltepress',
+				logo: '/sveltepress.svg',
+			}),
+			siteConfig: {
+				title: 'Sveltepress',
+				description: 'A content centered site build tool',
+			},
+		}),
+	],
+})
 
-export default config;
+export default config
