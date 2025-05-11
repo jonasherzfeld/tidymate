@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Drawer from "$lib/components/Drawer.svelte";
+  import Sidebar from "$lib/components/Sidebar.svelte";
   import type { Snippet } from "svelte";
   import { browser } from "$app/environment";
   import "../app.css";
@@ -14,6 +14,7 @@
     isWebApp =
       window.matchMedia("(display-mode: standalone)").matches ||
       (window.navigator as any).standalone;
+    console.log("isWebApp", isWebApp);
   }
   setContext("webapp", isWebApp);
 
@@ -28,11 +29,11 @@
     <span class="loading loading-spinner loading-lg"></span>
   </div>
 {/if}
-<Drawer>
-  <div class={cn("flex min-w-full grow", isWebApp ? "" : "min-h-[92vh]")}>
+<Sidebar>
+  <div class={cn("flex min-w-full grow", isWebApp ? "min-h-[92vh]" : "")}>
     {@render children?.()}
   </div>
   {#if isWebApp}
     <WebAppMenuBar />
   {/if}
-</Drawer>
+</Sidebar>

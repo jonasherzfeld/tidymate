@@ -26,6 +26,17 @@
   } from "$lib/utils/icons";
   import { getUsernameById } from "$lib/utils/helpers";
   import { FREQUENCY_INTERVALS, ROOM_CONFIG } from "$lib/utils/constants";
+  import Pikaday from "pikaday";
+
+  let myDatepicker;
+  $effect(() => {
+    if (myDatepicker) {
+      const picker = new Pikaday({
+        field: myDatepicker
+      });
+      return () => picker.destroy();
+    }
+  });
 
   let { data }: { data: PageData } = $props();
   let choreItem = $state(data.chore);
@@ -83,12 +94,12 @@
     </div>
 
     <div class="flex h-fit min-w-full flex-1 flex-col gap-3">
-      <div class="card flex h-fit flex-col gap-2 bg-base-300 p-3">
+      <div class="card bg-base-300 flex h-fit flex-col gap-2 p-3">
         <div class="text-conter mb-2 text-2xl font-bold">
           {isCreatingNewChore ? "Create" : "Edit"} Chore
         </div>
         {#if serverErrors}
-          <h1 class="step-subtitle mt-2 text-error">
+          <h1 class="step-subtitle text-error mt-2">
             {serverErrors}
           </h1>
         {/if}
@@ -104,7 +115,7 @@
           </div>
         </TextInput>
         {#if $errors.data}<span
-            class="invalid ml-2 flex w-full text-start text-sm text-error"
+            class="invalid text-error ml-2 flex w-full text-start text-sm"
             >{$errors.data}</span
           >{/if}
 
@@ -112,7 +123,7 @@
           <button
             type="button"
             tabindex="0"
-            class="text-normal btn btn-outline input-bordered no-animation w-full animate-none rounded-md bg-base-100">
+            class="text-normal btn btn-outline input-bordered no-animation bg-base-100 w-full animate-none rounded-md">
             <div class="flex w-24 items-center gap-2 font-normal">
               <RedoIcon class="h-4 w-4" />Frequency
             </div>
@@ -137,7 +148,7 @@
         </Dropdown.Root>
 
         {#if $errors.frequency}<span
-            class="invalid ml-2 flex w-full text-start text-sm text-error"
+            class="invalid text-error ml-2 flex w-full text-start text-sm"
             >{$errors.frequency}</span
           >{/if}
 
@@ -145,7 +156,7 @@
           <button
             type="button"
             tabindex="0"
-            class="text-normal btn btn-outline input-bordered no-animation w-full animate-none rounded-md bg-base-100">
+            class="text-normal btn btn-outline input-bordered no-animation bg-base-100 w-full animate-none rounded-md">
             <div class="flex w-24 items-center gap-2 font-normal">
               <UserIcon class="h-4 w-4" />Assignee
             </div>
@@ -178,7 +189,7 @@
           </Dropdown.Content>
         </Dropdown.Root>
         {#if $errors.assignee}<span
-            class="invalid ml-2 flex w-full text-start text-sm text-error"
+            class="invalid text-error ml-2 flex w-full text-start text-sm"
             >{$errors.assignee}</span
           >{/if}
 
@@ -186,7 +197,7 @@
           <button
             type="button"
             tabindex="0"
-            class="text-normal btn btn-outline input-bordered no-animation w-full animate-none rounded-md bg-base-100">
+            class="text-normal btn btn-outline input-bordered no-animation bg-base-100 w-full animate-none rounded-md">
             <div class="flex w-24 items-center gap-2 font-normal">
               <RoomFilterIcon class="h-4 w-4" />Room
             </div>
@@ -212,36 +223,25 @@
           </Dropdown.Content>
         </Dropdown.Root>
         {#if $errors.room}<span
-            class="invalid ml-2 flex w-full text-start text-sm text-error"
+            class="invalid text-error ml-2 flex w-full text-start text-sm"
             >{$errors.room}</span
           >{/if}
 
-        <input class="hidden" name="deadline" value={deadline} />
-        <Popover.Root openFocus>
-          <Popover.Trigger asChild let:builder>
-            <Button
-              variant="outline"
-              class={cn(
-                "btn btn-outline input-bordered no-animation w-full  animate-none justify-between rounded-md bg-base-100 text-left font-normal hover:bg-[var(--fallback-bc,oklch(var(--bc)/var(--tw-bg-opacity)))]",
-                !deadline && "text-muted-foreground",
-                isDeadlineInPast && "input-error"
-              )}
-              builders={[builder]}>
-              <div class="flex w-24 items-center gap-2">
-                <CalendarIcon class="h-4 w-4" />Deadline
-              </div>
-              {deadline
-                ? df.format(deadline.toDate(getLocalTimeZone()))
-                : "Set a deadline"}
-            </Button>
-          </Popover.Trigger>
-          <Popover.Content class="w-auto bg-base-100 p-0">
-            <Calendar bind:value={deadline} initialFocus />
-          </Popover.Content>
-        </Popover.Root>
+        <input
+          type="text"
+          class={cn(
+            "input pika-single",
+            !deadline && "text-muted-foreground",
+            isDeadlineInPast && "input-error"
+          )}
+          bind:this={myDatepicker}
+          name="deadline"
+          value={deadline
+            ? df.format(deadline.toDate(getLocalTimeZone()))
+            : "Set a deadline"} />
         {#if isDeadlineInPast || $errors.deadline}
           {#if $errors.deadline}<span
-              class="invalid ml-2 flex w-full text-start text-sm text-error"
+              class="invalid text-error ml-2 flex w-full text-start text-sm"
               >Deadline must be in the future</span
             >{/if}
         {/if}

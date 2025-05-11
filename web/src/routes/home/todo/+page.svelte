@@ -53,7 +53,7 @@
   onMount(async () => {
     const todos = await data.streamed.todo_list;
     todoState.items = todos;
-    initializeFilterValues<Todo>(filters, todoState.items);
+    initializeFilterValues<Todo>(todoState.filters, todoState.items);
   });
 
   $effect(() => {
@@ -117,12 +117,12 @@
     </div>
     <div class="flex flex-col">
       {#if serverErrors}
-        <h1 class="step-subtitle mt-2 text-error">
+        <h1 class="step-subtitle text-error mt-2">
           {serverErrors}
         </h1>
       {/if}
       <div
-        class="card card-bordered rounded-lg border-neutral bg-base-300 shadow-md">
+        class="card card-bordered border-neutral bg-base-300 rounded-lg shadow-md">
         {#await data.streamed.todo_list}
           <div class="flex w-full flex-col gap-4">
             <div class="skeleton h-32 w-full"></div>
@@ -159,7 +159,7 @@
     </div>
   </div>
   <div
-    class={`card sticky flex w-full rounded-lg border-2 border-base-100 bg-base-300 p-2 ${isWebApp ? "bottom-24" : "bottom-3"}`}>
+    class={`card border-base-100 bg-base-300 sticky flex w-full rounded-lg border-2 p-2 ${isWebApp ? "bottom-24" : "bottom-3"}`}>
     <form method="POST" use:enhance={handleSubmit}>
       <div class="flex flex-row flex-wrap gap-2">
         <input
