@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Sidebar from "$lib/components/Sidebar.svelte";
+  import Sidebar from "$lib/components/sidebar/Sidebar.svelte";
   import type { Snippet } from "svelte";
   import { browser } from "$app/environment";
   import "../app.css";
@@ -14,7 +14,6 @@
     isWebApp =
       window.matchMedia("(display-mode: standalone)").matches ||
       (window.navigator as any).standalone;
-    console.log("isWebApp", isWebApp);
   }
   setContext("webapp", isWebApp);
 
