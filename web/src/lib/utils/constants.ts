@@ -14,7 +14,8 @@ import {
   SignIn,
   SignOut,
   TodoIcon,
-  UserCircleOutline
+  UserCircleOutline,
+  ReminderIcon
 } from "$lib/utils/icons";
 import type { Component } from "svelte";
 
@@ -52,12 +53,15 @@ export type RestrictionType =
   | "house_member"
   | "no_house_member";
 
+export type PublicType = "private" | "public";
+
 export type RouteMap = {
   url: string;
   title: string;
   position: RouteLinkPosition[];
   icon: Component;
   restricted: RestrictionType;
+  publicType: PublicType;
   target: "_blank" | "_self" | "";
 };
 
@@ -68,6 +72,16 @@ export const ROUTE_MAPPING: RouteMap[] = [
     position: ["menu"],
     icon: HouseIcon,
     restricted: "house_member",
+    publicType: "public",
+    target: ""
+  },
+  {
+    url: "/home/reminders",
+    title: "Reminders",
+    position: ["header_left", "drawer_top", "menu"],
+    icon: ReminderIcon,
+    restricted: "house_member",
+    publicType: "private",
     target: ""
   },
   {
@@ -76,6 +90,7 @@ export const ROUTE_MAPPING: RouteMap[] = [
     position: ["header_left", "drawer_top", "menu"],
     icon: TodoIcon,
     restricted: "house_member",
+    publicType: "public",
     target: ""
   },
   {
@@ -84,6 +99,7 @@ export const ROUTE_MAPPING: RouteMap[] = [
     position: ["header_left", "drawer_top", "menu"],
     icon: ChoresIcon,
     restricted: "house_member",
+    publicType: "public",
     target: ""
   },
   {
@@ -92,6 +108,7 @@ export const ROUTE_MAPPING: RouteMap[] = [
     position: ["drawer_bottom"],
     icon: InfoIcon,
     restricted: "none",
+    publicType: "public",
     target: "_blank"
   },
   {
@@ -100,6 +117,7 @@ export const ROUTE_MAPPING: RouteMap[] = [
     position: ["avatar_dropdown"],
     icon: UserCircleOutline,
     restricted: "logged_in",
+    publicType: "public",
     target: ""
   },
   {
@@ -108,6 +126,7 @@ export const ROUTE_MAPPING: RouteMap[] = [
     position: ["avatar_dropdown"],
     icon: HouseCircleOutline,
     restricted: "house_member",
+    publicType: "public",
     target: ""
   },
   {
@@ -116,6 +135,7 @@ export const ROUTE_MAPPING: RouteMap[] = [
     position: ["avatar_dropdown"],
     icon: SignIn,
     restricted: "logged_out",
+    publicType: "public",
     target: ""
   },
   {
@@ -124,6 +144,7 @@ export const ROUTE_MAPPING: RouteMap[] = [
     position: ["avatar_dropdown"],
     icon: RegisterIcon,
     restricted: "no_house_member",
+    publicType: "public",
     target: ""
   },
   {
@@ -132,6 +153,7 @@ export const ROUTE_MAPPING: RouteMap[] = [
     position: ["avatar_dropdown"],
     icon: RegisterIcon,
     restricted: "logged_out",
+    publicType: "public",
     target: ""
   },
   {
@@ -140,6 +162,7 @@ export const ROUTE_MAPPING: RouteMap[] = [
     position: ["avatar_dropdown"],
     icon: SignOut,
     restricted: "logged_in",
+    publicType: "public",
     target: "_self"
   }
 ];
@@ -170,12 +193,12 @@ export const FREQUENCY_INTERVALS: FrequencyOption[] = [
   { value: 365, description: "Yearly" }
 ];
 
-export type RoomConfig = {
+export type CategoryConfig = {
   name: string;
   icon: Component;
   color: string;
 };
-export const ROOM_CONFIG: RoomConfig[] = [
+export const ROOM_CONFIG: CategoryConfig[] = [
   { name: "General", icon: GeneralIcon, color: "bg-stone-500" },
   { name: "Bathroom", icon: BathroomIcon, color: "bg-blue-500" },
   { name: "Bedroom", icon: BedroomIcon, color: "bg-amber-400" },
@@ -184,4 +207,15 @@ export const ROOM_CONFIG: RoomConfig[] = [
   { name: "Office", icon: OfficeIcon, color: "bg-rose-400" },
   { name: "Outdoor", icon: OutdoorIcon, color: "bg-indogo-700" },
   { name: "House", icon: HouseIcon, color: "bg-primary" }
+];
+
+export const CATEGORY_CONFIG: CategoryConfig[] = [
+  { name: "General", icon: GeneralIcon, color: "bg-stone-500" },
+  { name: "Social", icon: GeneralIcon, color: "bg-blue-500" },
+  { name: "Learning", icon: GeneralIcon, color: "bg-amber-400" },
+  { name: "Work", icon: GeneralIcon, color: "bg-violet-500" },
+  { name: "Health", icon: GeneralIcon, color: "bg-lime-400" },
+  { name: "Finance", icon: GeneralIcon, color: "bg-rose-400" },
+  { name: "Shopping", icon: GeneralIcon, color: "bg-indogo-700" },
+  { name: "Travel", icon: GeneralIcon, color: "bg-primary" }
 ];

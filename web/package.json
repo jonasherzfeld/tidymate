@@ -13,6 +13,7 @@
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.25.9",
+    "@types/pikaday": "^1.7.9",
     "autoprefixer": "^10.4.20",
     "daisyui": "^4.12.13",
     "eslint": "^9.17.0",

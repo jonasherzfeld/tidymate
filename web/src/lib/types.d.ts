@@ -20,6 +20,12 @@ interface Chore extends Todo {
   severity: ChoreSeverity;
 }
 
+interface Reminder extends Todo {
+  frequency: number;
+  last_done: string;
+  category: string;
+}
+
 interface User {
   id: string;
   email: string;

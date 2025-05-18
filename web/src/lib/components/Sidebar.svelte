@@ -33,7 +33,7 @@
 
 <div class="flex flex-col">
   <div
-    class={`text-shade-500 navbar border-base-300 bg-base-300 sticky top-0 z-10 ml-0 h-16 w-full border-b border-solid shadow-md ${isWebApp ? "pt-12" : ""}`}>
+    class={`text-shade-500 navbar border-base-300 bg-base-300 sticky top-0 z-10 ml-0 h-fit w-full border-b border-solid shadow-md ${isWebApp ? "pt-12" : ""}`}>
     <div class={`m-0 flex w-fit p-0 ${isWebApp ? "hidden" : ""}`}>
       <button
         onclick={handleClick}
@@ -67,14 +67,33 @@
           <MenuBlock
             position="drawer_top"
             restricted={menuRestriction}
+            publicType="private"
+            {handleClick} />
+        </div>
+        <div class="lg:hidden">
+          <MenuBlock
+            position="drawer_top"
+            restricted={menuRestriction}
             {handleClick} />
         </div>
         <div class="hidden lg:block">
-          <MenuBlock position="drawer_top" restricted={menuRestriction} />
+          <span>Personal</span>
+          <MenuBlock
+            position="drawer_top"
+            restricted={menuRestriction}
+            publicType="private" />
+          <span>House</span>
+          <MenuBlock
+            position="drawer_top"
+            restricted={menuRestriction}
+            publicType="public" />
         </div>
         <div>
           <div class="divider"></div>
-          <MenuBlock position="drawer_bottom" restricted={["none"]} />
+          <MenuBlock
+            position="drawer_bottom"
+            restricted={["none"]}
+            publicType="public" />
           <ThemeSwitch />
         </div>
       </ul>

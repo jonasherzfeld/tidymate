@@ -14,7 +14,6 @@
     isWebApp =
       window.matchMedia("(display-mode: standalone)").matches ||
       (window.navigator as any).standalone;
-    console.log("isWebApp", isWebApp);
   }
   setContext("webapp", isWebApp);
 

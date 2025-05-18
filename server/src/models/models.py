@@ -1,6 +1,8 @@
 from enum import Enum
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy_serializer import SerializerMixin
+from sqlalchemy.ext.declarative import declared_attr
+
 from db.db import db, bcrypt
 
 
@@ -28,6 +30,7 @@ class Users(db.Model, SerializerMixin):
     is_admin = db.Column("is_admin", db.Boolean, default=False)
     house_id = db.Column("house_id", db.Integer, db.ForeignKey('house.id'))
     house = db.relationship('House', back_populates='members')
+    reminders = db.relationship('Reminder', back_populates='user')
 
     def __init__(self, id, email, password, first_name, last_name,
                  joined_on, is_admin, house):
@@ -58,7 +61,7 @@ class Users(db.Model, SerializerMixin):
     # this prevents that Exception being raised everytime we try to call the
     # .to_dict() method in a request that returns information from users
     serialize_rules = ('-_password_hash', '-house.members',
-                       '-house.chores', '-house.todos')
+                       '-house.chores', '-house.todos', '-reminders.user')
 
 
 class House(db.Model, SerializerMixin):
@@ -76,31 +79,58 @@ class House(db.Model, SerializerMixin):
     serialize_rules = ('-members.house', '-chores.house', '-todos.house')
 
 
-class Todo(db.Model, SerializerMixin):
-    id = db.Column(db.String, primary_key=True)
-    data = db.Column(db.String(255))
-    assignee = db.Column(db.String(100))
-    done = db.Column(db.Boolean, default=False)
-    created_on = db.Column(db.String(100))
-    deadline = db.Column(db.String(100))
-    house_id = db.Column("house_id", db.Integer, db.ForeignKey('house.id'))
-    house = db.relationship('House', back_populates='todos')
+class BaseItem(object):
+    @declared_attr
+    def __tablename__(cls):
+        return cls.__name__.lower()
 
+    @declared_attr
+    def id(cls):
+        return db.Column(db.String, primary_key=True)
+
+    @declared_attr
+    def data(cls):
+        return db.Column(db.String(255))
+
+    @declared_attr
+    def assignee(cls):
+        return db.Column(db.String(100))
+
+    @declared_attr
+    def done(cls):
+        return db.Column(db.Boolean, default=False)
+
+    @declared_attr
+    def created_on(cls):
+        return db.Column(db.String(100))
+
+    @declared_attr
+    def deadline(cls):
+        return db.Column(db.String(100))
+
+
+class Todo(BaseItem, db.Model, SerializerMixin):
+    house_id = db.Column(db.Integer, db.ForeignKey('house.id'))
+    house = db.relationship('House', back_populates='todos')
     serialize_rules = ('-house.todos', '-house.members', '-house.chores')
 
 
-class Chore(db.Model, SerializerMixin):
-    id = db.Column(db.String, primary_key=True)
-    data = db.Column(db.String(255))
-    assignee = db.Column(db.String(100))
-    done = db.Column(db.Boolean, default=False)
-    created_on = db.Column(db.String(100))
-    deadline = db.Column(db.String(100))
+class Chore(BaseItem, db.Model, SerializerMixin):
     frequency = db.Column(db.Integer)
     last_done = db.Column(db.String(100))
     room = db.Column(db.String(100))
     severity = db.Column(db.Enum(ChoreSeverity))
-    house_id = db.Column("house_id", db.Integer, db.ForeignKey('house.id'))
+    house_id = db.Column(db.Integer, db.ForeignKey('house.id'))
     house = db.relationship('House', back_populates='chores')
 
     serialize_rules = ('-house.chores', '-house.members', '-house.todos')
+
+
+class Reminder(BaseItem, db.Model, SerializerMixin):
+    frequency = db.Column(db.Integer)
+    last_done = db.Column(db.String(100))
+    category = db.Column(db.String(100))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    user = db.relationship('Users', back_populates='reminders')
+
+    serialize_rules = ('-user.reminders',)

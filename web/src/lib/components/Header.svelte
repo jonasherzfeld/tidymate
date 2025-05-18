@@ -47,7 +47,7 @@
       </div>
       <ul
         tabindex="-1"
-        class="menu-xl md menu dropdown-content z-[1] mt-3 w-52 rounded-box border-neutral bg-base-300 p-2 shadow-md">
+        class="menu-xl md menu dropdown-content rounded-box border-neutral bg-base-300 z-[1] mt-3 w-52 p-2 shadow-md">
         <MenuBlock position="avatar_dropdown" restricted={menuRestriction} />
       </ul>
     </div>

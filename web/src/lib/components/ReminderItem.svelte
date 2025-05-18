@@ -12,7 +12,7 @@
   import AvatarGraphic from "./AvatarGraphic.svelte";
   import {
     FREQUENCY_INTERVALS,
-    ROOM_CONFIG,
+    CATEGORY_CONFIG,
     type CategoryConfig
   } from "$lib/utils/constants";
 
@@ -24,8 +24,7 @@
     deadline = $bindable(),
     frequency = $bindable(),
     last_done = $bindable(),
-    room = $bindable(),
-    severity = $bindable(),
+    category = $bindable(),
     onChange,
     onRemove
   }: {
@@ -36,8 +35,7 @@
     deadline: string;
     frequency: number;
     last_done: string;
-    room: string;
-    severity: ChoreSeverity;
+    category: string;
     onChange: (deadline: string) => void;
     onRemove: () => void;
   } = $props();
@@ -51,11 +49,11 @@
   let frequencyDescription: string | undefined = $derived(
     FREQUENCY_INTERVALS.find((item) => item.value === frequency)?.description
   );
-  let defaultRoomConfig: CategoryConfig | undefined = $derived(
-    ROOM_CONFIG.find((item) => item.name === "General")
+  let defaultCategoryConfig: CategoryConfig | undefined = $derived(
+    CATEGORY_CONFIG.find((item) => item.name === "General")
   );
-  let roomConfig: CategoryConfig | undefined = $derived(
-    ROOM_CONFIG.find((item) => item.name === room)
+  let categoryConfig: CategoryConfig | undefined = $derived(
+    CATEGORY_CONFIG.find((item) => item.name === category)
   );
 
   let deadlineDate: Date = $derived(new Date(deadline));
@@ -117,13 +115,13 @@
       class="justify-left mt-0 flex h-fit grow flex-col gap-1 pl-4 pr-2 pt-0 text-left">
       <div class="flex flex-row items-center gap-2">
         <div
-          class={`badge badge-info h-6 items-center gap-1 text-white ${roomConfig ? roomConfig.color : defaultRoomConfig?.color}`}>
-          {#if roomConfig}
-            <roomConfig.icon />
-            {roomConfig.name}
-          {:else if defaultRoomConfig}
-            <defaultRoomConfig.icon />
-            {defaultRoomConfig.name}
+          class={`badge badge-info h-6 items-center gap-1 text-white ${categoryConfig ? categoryConfig.color : defaultCategoryConfig?.color}`}>
+          {#if categoryConfig}
+            <categoryConfig.icon />
+            {categoryConfig.name}
+          {:else if defaultCategoryConfig}
+            <defaultCategoryConfig.icon />
+            {defaultCategoryConfig.name}
           {/if}
         </div>
         <h2 class="text-x mt-0 flex items-start pt-0">

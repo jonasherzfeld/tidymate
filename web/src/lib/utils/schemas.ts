@@ -136,6 +136,31 @@ export const choreItemSchema = z
   });
 export type ChoreItemSchema = typeof choreItemSchema;
 
+export const reminderItemSchema = z
+  .object({
+    id: z.string(),
+    data: z.string().min(1).max(255),
+    frequency: z.number().int().min(1).max(365),
+    assignee: z.string().optional(),
+    deadline: z.date(),
+    last_done: z.date().optional(),
+    category: z
+      .string()
+      .min(1, "A category must be assigned")
+      .max(255, "Invalid category name"),
+  })
+  .superRefine(({ deadline }, ctx) => {
+    let current_date: Date = new Date(new Date().toDateString());
+    if (deadline && deadline < current_date) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["deadline"],
+        message: "Deadline must be later than today"
+      });
+    }
+  });
+export type ReminderItemSchema = typeof reminderItemSchema;
+
 export const houseRoomSchema = z.object({
   room: z
     .string()
