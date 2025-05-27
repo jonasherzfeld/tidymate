@@ -13,7 +13,6 @@ reminders = Blueprint('reminders', __name__)
 @login_required
 def create_reminder(user):
     data = request.json.get("data", "")
-    assignee = request.json.get("assignee", "")
     deadline = request.json.get("deadline", "")
     frequency = request.json.get("frequency", 0)
     last_done = request.json.get("last_done", "")
@@ -25,7 +24,7 @@ def create_reminder(user):
 
     reminder = Reminder(id=str(uuid.uuid4()),
                         data=data,
-                        assignee=assignee,
+                        assignee=user.id,
                         done=False,
                         created_on=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                         deadline=deadline,
@@ -92,15 +91,12 @@ def update_reminders(user):
         return jsonify({"error": "Unauthorized"}), 401
 
     reminder_text = request.json.get("data", None)
-    reminder_assignee = request.json.get("assignee", None)
     reminder_deadline = request.json.get("deadline", None)
     reminder_frequency = request.json.get("frequency", None)
     reminder_category = request.json.get("category", None)
 
     if reminder_text:
         reminder.data = reminder_text
-    if reminder_assignee is not None:
-        reminder.assignee = reminder_assignee
     if reminder_deadline is not None:
         reminder.deadline = reminder_deadline
     if reminder_frequency is not None:

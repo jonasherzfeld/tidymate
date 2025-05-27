@@ -77,7 +77,6 @@ export const actions = {
         id: createReminderForm.data.id,
         data: createReminderForm.data.data,
         frequency: createReminderForm.data.frequency,
-        assignee: createReminderForm.data.assignee ?? "",
         category: createReminderForm.data.category,
         deadline: createReminderForm.data.deadline
       }),

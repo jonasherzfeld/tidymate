@@ -40,12 +40,6 @@
     onRemove: () => void;
   } = $props();
 
-  let assigneeName = $derived(
-    getUsernameById(assignee, $page.data.house.members)
-  );
-  let assigneeThumbnail = $derived(
-    getThumbnailById(assignee, $page.data.house.members) ?? ""
-  );
   let frequencyDescription: string | undefined = $derived(
     FREQUENCY_INTERVALS.find((item) => item.value === frequency)?.description
   );
@@ -151,19 +145,6 @@
                   ? "Due today"
                   : `${-daysToDoChore} days due`}
           </span>
-        {/if}
-        {#if assignee && assigneeName}
-          <div class="divider divider-horizontal m-0 p-0"></div>
-
-          <AvatarGraphic
-            thumbnail={assigneeThumbnail}
-            height="h-4"
-            width="w-4"
-            textSize="text-[0.4rem]"
-            firstName={assigneeName.split(" ")[0]}
-            lastName={assigneeName.split(" ")[1]} />
-          <span class="pl-2 text-xs font-medium text-neutral-500"
-            >{assigneeName}</span>
         {/if}
       </div>
       <div class="flex flex-row items-center">

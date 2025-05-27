@@ -15,14 +15,12 @@
   import {
     CalendarIcon,
     ChevronLeft,
-    UserIcon,
     CheckIcon,
     TextIcon,
-    RoomFilterIcon,
+    GeneralIcon,
     RedoIcon
   } from "$lib/utils/icons";
-  import { getUsernameById } from "$lib/utils/helpers";
-  import { FREQUENCY_INTERVALS, ROOM_CONFIG } from "$lib/utils/constants";
+  import { FREQUENCY_INTERVALS, CATEGORY_CONFIG } from "$lib/utils/constants";
   import Pikaday from "pikaday";
   import { browser } from "$app/environment";
   let myDatepicker;
@@ -43,9 +41,6 @@
     dateStyle: "long"
   });
 
-  let assigneeName: string | undefined = $derived(
-    getUsernameById(reminderItem.assignee, data.house.members)
-  );
   let frequencyDescription: string | undefined = $derived(
     FREQUENCY_INTERVALS.find(
       (frequency) => frequency.value === reminderItem.frequency
@@ -158,48 +153,7 @@
             tabindex="0"
             class="text-normal btn btn-outline input-bordered no-animation bg-base-100 w-full animate-none rounded-md">
             <div class="flex w-24 items-center gap-2 font-normal">
-              <UserIcon class="h-4 w-4" />Assignee
-            </div>
-            <span class="grow text-right font-normal">
-              {assigneeName ? assigneeName : "Set assignee"}
-            </span>
-          </button>
-          <input class="hidden" name="assignee" value={reminderItem.assignee} />
-          <Dropdown.Content>
-            <Dropdown.TextItem
-              class="justify-left pointer-events-none flex w-full font-bold"
-              >Assignee</Dropdown.TextItem>
-            <Dropdown.RadioItem
-              radioName="assigneeRadio"
-              checked={reminderItem.assignee === ""}
-              onchange={() => {
-                reminderItem.assignee = "";
-              }}>None</Dropdown.RadioItem>
-            {#each data.house.members as member}
-              <Dropdown.RadioItem
-                radioName="assigneeRadio"
-                checked={reminderItem.assignee === member.id}
-                onchange={() => {
-                  reminderItem.assignee = member.id;
-                }}
-                >{member.first_name +
-                  " " +
-                  member.last_name}</Dropdown.RadioItem>
-            {/each}
-          </Dropdown.Content>
-        </Dropdown.Root>
-        {#if $errors.assignee}<span
-            class="invalid text-error ml-2 flex w-full text-start text-sm"
-            >{$errors.assignee}</span
-          >{/if}
-
-        <Dropdown.Root>
-          <button
-            type="button"
-            tabindex="0"
-            class="text-normal btn btn-outline input-bordered no-animation bg-base-100 w-full animate-none rounded-md">
-            <div class="flex w-24 items-center gap-2 font-normal">
-              <RoomFilterIcon class="h-4 w-4" />Room
+              <GeneralIcon class="h-4 w-4" />Category
             </div>
             <span class="grow text-right font-normal">
               {reminderItem.category ? reminderItem.category : "Set Category"}
@@ -209,16 +163,14 @@
           <Dropdown.Content>
             <Dropdown.TextItem
               class="justify-left pointer-events-none flex w-full font-bold"
-              >Room</Dropdown.TextItem>
-            <!-- TODO: Enable handling of rooms for each house
-             {#each data.house.rooms as room} -->
-            {#each ROOM_CONFIG as room}
+              >Category</Dropdown.TextItem>
+            {#each CATEGORY_CONFIG as category}
               <Dropdown.RadioItem
                 radioName="categoryRadio"
-                checked={reminderItem.category === room.name}
+                checked={reminderItem.category === category.name}
                 onchange={() => {
-                  reminderItem.category = room.name;
-                }}>{room.name}</Dropdown.RadioItem>
+                  reminderItem.category = category.name;
+                }}>{category.name}</Dropdown.RadioItem>
             {/each}
           </Dropdown.Content>
         </Dropdown.Root>

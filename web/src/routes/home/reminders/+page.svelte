@@ -4,26 +4,19 @@
   import { initializeFilterValues } from "$lib/utils/helpers";
   import ReminderItem from "$lib/components/ReminderItem.svelte";
   import FilterDropDown from "$lib/components/FilterDropDown.svelte";
-  import { byPropertiesOf, getUsernameById } from "$lib/utils/helpers";
-  import { UserIcon, GeneralIcon, SearchIcon } from "$lib/utils/icons";
+  import { byPropertiesOf } from "$lib/utils/helpers";
+  import { GeneralIcon, SearchIcon } from "$lib/utils/icons";
 
   let { data }: { data: PageData } = $props();
   let serverErrors: string = $state("");
   const reminderState: ItemListState<Reminder> = $state({
     items: [],
-    filters: [
-      { property: "assignee", values: [], selection: [] },
-      { property: "category", values: [], selection: [] }
-    ],
+    filters: [{ property: "category", values: [], selection: [] }],
     searchText: "",
     sortBy: "deadline",
     sortOrder: "desc",
     filteredSortedItems: []
   });
-
-  let nameFilterFn: (value: string) => string | undefined = (value) => {
-    return getUsernameById(value, data.house.members);
-  };
 
   onMount(async () => {
     const todos = await data.streamed.reminder_list;
@@ -85,17 +78,10 @@
     <div class="flex w-full flex-row justify-between gap-2">
       <div class="flex w-full flex-row justify-end gap-2">
         <FilterDropDown
-          title="Room"
-          values={reminderState.filters[1].values}
-          bind:filterValue={reminderState.filters[1].selection}>
-          <GeneralIcon class="h-4 w-4" />
-        </FilterDropDown>
-        <FilterDropDown
-          title="Assignee"
+          title="Category"
           values={reminderState.filters[0].values}
-          valueFn={nameFilterFn}
           bind:filterValue={reminderState.filters[0].selection}>
-          <UserIcon class="h-4 w-4" />
+          <GeneralIcon class="h-4 w-4" />
         </FilterDropDown>
       </div>
     </div>
