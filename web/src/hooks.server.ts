@@ -5,6 +5,7 @@ import {
 } from "$lib/utils/constants";
 import type { RequestEvent } from "@sveltejs/kit";
 import { redirect } from "@sveltejs/kit";
+import { THEME_MAPPING } from "$lib/utils/constants";
 
 export function isAccessValid(path: String, user: User, house: House): boolean {
   const isProtecteRouteByUser = PROTECTED_ROUTES_USER.filter((option) =>
@@ -63,7 +64,7 @@ export async function handle({ event, resolve }) {
   if (theme) {
     addThemeConfig = {
       transformPageChunk: ({ html }) =>
-        html.replace('data-theme=""', `data-theme="${theme}"`)
+        html.replace('data-theme=""', `data-theme="${theme === "dark" ? THEME_MAPPING.dark : THEME_MAPPING.light}"`),
     };
   }
 

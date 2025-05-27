@@ -35,28 +35,20 @@
   );
 </script>
 
-<div class="join flex w-full">
-  <div
-    class={`input input-bordered flex w-full items-center justify-between pl-0 pr-0 ${changeModeBg}`}>
-    <span
-      class={`label join-item label-text m-2 h-full w-24 text-left ${changeModeBg}`}
-      ><b>{label}</b></span>
-    {#if editValue}
-      <input
-        type="text"
-        name={field}
-        size="1"
-        class={`label join-item label-text mr-3 grow text-right ${changeModeBg}`}
-        bind:value={$value} />
-    {:else}
-      <span
-        class={`label join-item label-text mr-3 grow justify-end ${changeModeBg}`}
-        >{$value}</span>
-    {/if}
+<div class="flex flex-col">
+  <span class="label mb-1 h-full text-left text-sm">{label}</span>
+  <div class="join w-full">
+    <input
+      type="text"
+      name={field}
+      size="1"
+      class="input join-item label-text disabled:border-[1px]5 grow text-right disabled:border-neutral-500"
+      disabled={!editValue}
+      bind:value={$value} />
     {#if editValue}
       <button
         type="submit"
-        class="btn btn-secondary join-item input-bordered -mr-px h-full disabled:bg-base-300"
+        class="btn btn-secondary join-item disabled:bg-base-300 border-neutral-500"
         disabled={creatingValue}>
         {#if !creatingValue}
           <SubmitIcon style="font-size:1.2em" />
@@ -67,7 +59,7 @@
     {:else}
       <button
         type="button"
-        class="btn join-item input-bordered -mr-px h-full bg-primary"
+        class="btn join-item bg-primary border-neutral-500"
         {disabled}
         onclick={() => {
           editValue = true;

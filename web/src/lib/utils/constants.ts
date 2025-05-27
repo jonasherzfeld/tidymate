@@ -23,6 +23,11 @@ export const BASE_API_URI = "http://127.0.0.1:5000";
 
 export const FETCH_ABORT_TIMEOUT_MS = 5000;
 
+export const THEME_MAPPING = {
+  dark: "dracula",
+  light: "cupcake"
+};
+
 // Routes that are protected and need a user to be logged in
 export const PROTECTED_ROUTES_USER = [
   "/auth/logout",

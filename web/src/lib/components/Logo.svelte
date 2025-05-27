@@ -11,13 +11,8 @@
 
 <img
   alt="Logo"
-  class="[[data-theme=light]_&]:hidden"
+  class="hidden dark:block"
   src={LogoDark}
   {width}
   height={width} />
-<img
-  alt="Logo"
-  class="[[data-theme=dark]_&]:hidden [[data-theme=default]_&]:hidden"
-  src={LogoLight}
-  {width}
-  height={width} />
+<img alt="Logo" class="dark:hidden" src={LogoLight} {width} height={width} />

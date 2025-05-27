@@ -3,11 +3,24 @@
   import { page } from "$app/stores";
   import type { SubmitFunction } from "@sveltejs/kit";
   import { ThemeIcon } from "$lib/utils/icons";
+  import { THEME_MAPPING } from "$lib/utils/constants";
+
+  export function getValueForTheme(str: string) {
+    if (str === "dark") {
+      return "dracula";
+    } else if (str === "light") {
+      return "cupcake";
+    }
+    return str;
+  }
 
   const submitSetTheme: SubmitFunction = ({ action }) => {
     const theme = action.searchParams.get("theme");
     if (theme) {
-      document.documentElement.setAttribute("data-theme", theme);
+      document.documentElement.setAttribute(
+        "data-theme",
+        theme === "dark" ? THEME_MAPPING.dark : THEME_MAPPING.light
+      );
     }
   };
 
@@ -21,12 +34,12 @@
     <div
       tabindex="0"
       role="button"
-      class="btn btn-ghost h-6 w-full justify-start text-base font-normal">
+      class="btn btn-ghost h-10 w-full justify-start text-base font-normal">
       <ThemeIcon />Theme
     </div>
     <ul
       tabindex="-1"
-      class="dropdown-content z-[1] w-72 rounded-box bg-base-100 p-2 shadow-2xl">
+      class="dropdown-content rounded-box bg-base-100 z-[1] w-72 p-2 shadow-2xl">
       {#each ["dark", "light"] as theme}
         <li>
           <button

@@ -86,7 +86,8 @@
 <div class="flex min-h-full min-w-full flex-col justify-between gap-3">
   <div class="flex flex-col gap-3">
     <div>
-      <label class="input input-sm input-bordered flex grow items-center gap-2">
+      <label
+        class="input input-sm input-bordered flex w-full grow items-center gap-2">
         <SearchIcon />
         <input
           type="search"

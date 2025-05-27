@@ -7,7 +7,7 @@
     thumbnail,
     height,
     width,
-    textSize = "text-xl",
+    textSize = "text-lg",
     firstName,
     lastName,
     children
@@ -42,7 +42,7 @@
     <img alt="User" src={thumbnail} />
   {:else}
     <div
-      class={`flex items-center justify-center bg-primary text-white ${height} ${width} ${textSize}`}>
+      class={`bg-primary flex items-center justify-center font-normal text-white ${height} ${width} ${textSize}`}>
       {inputNameInitials ? inputNameInitials : derivedNameInitials}
     </div>
   {/if}
