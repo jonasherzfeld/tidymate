@@ -72,7 +72,7 @@
   const handleChecked = async ({}) => {
     return async ({ result, update }) => {
       if (result.status === 200) {
-        onChange(result.data.chore.deadline);
+        onChange(result.data.reminder.deadline);
       } else {
         update();
       }
@@ -96,12 +96,12 @@
     <div class="flex h-full w-fit justify-start">
       <form
         class="flex"
-        action="/home/chores?/check_chore&id={id}"
+        action="/home/reminders?/check_reminder&id={id}"
         method="POST"
         use:enhance={handleChecked}>
         <input
           type="checkbox"
-          name="check_chore"
+          name="check_reminder"
           class="checkbox-primary checkbox checkbox-md"
           onchange={(e) => {
             e.target.form.requestSubmit();
@@ -182,9 +182,10 @@
           <MenuDots />
         </DropdownButton>
         <DropdownContent>
-          <DropdownLinkItem href="/home/chores/{id}">Edit</DropdownLinkItem>
+          <DropdownLinkItem href="/home/reminders/{id}">Edit</DropdownLinkItem>
           <form method="POST" use:enhance={handleRemove}>
-            <DropdownActionItem action="/home/chores?/delete_chore&id={id}"
+            <DropdownActionItem
+              action="/home/reminders?/delete_reminder&id={id}"
               >Delete</DropdownActionItem>
           </form>
         </DropdownContent>

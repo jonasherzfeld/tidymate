@@ -54,7 +54,7 @@ def get_reminder(user, reminder_id):
     reminder = Reminder.query.filter_by(id=reminder_id).first()
     if not reminder:
         return jsonify({"error": "Reminder not found"}), 404
-    elif not reminder.id == user.id:
+    elif not reminder.user_id == user.id:
         return jsonify({"error": "Unauthorized"}), 401
     return jsonify({"reminder": reminder.to_dict()})
 
@@ -65,7 +65,7 @@ def check_reminders(user, reminder_id):
     reminder = Reminder.query.filter_by(id=reminder_id).first()
     if not reminder:
         return jsonify({"error": "Reminder not found"}), 404
-    elif not reminder.id == user.id:
+    elif not reminder.user_id == user.id:
         return jsonify({"error": "Unauthorized"}), 401
 
     reminder.last_done = datetime.now().strftime("%Y-%m-%d")
@@ -88,7 +88,7 @@ def update_reminders(user):
     reminder = Reminder.query.filter_by(id=reminder_id).first()
     if not reminder:
         return jsonify({"error": "Reminder not found"}), 404
-    elif not reminder.id == user.id:
+    elif not reminder.user_id == user.id:
         return jsonify({"error": "Unauthorized"}), 401
 
     reminder_text = request.json.get("data", None)
