@@ -64,16 +64,17 @@
         class={`menu border-neutral bg-base-200 h-[calc(100vh-4rem)] w-80 justify-between  overflow-y-auto border-r-[1px]  ${isWebApp ? "pt-12" : ""}`}>
         <!-- Sidebar content here -->
         <div class="lg:hidden">
+          <span>Personal</span>
           <MenuBlock
             position="drawer_top"
             restricted={menuRestriction}
             publicType="private"
             {handleClick} />
-        </div>
-        <div class="lg:hidden">
+          <span>House</span>
           <MenuBlock
             position="drawer_top"
             restricted={menuRestriction}
+            publicType="public"
             {handleClick} />
         </div>
         <div class="hidden lg:block">

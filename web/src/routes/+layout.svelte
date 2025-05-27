@@ -29,7 +29,11 @@
   </div>
 {/if}
 <Sidebar>
-  <div class={cn("flex min-w-full grow", isWebApp ? "min-h-[92vh]" : "")}>
+  <div
+    class={cn(
+      "flex  min-w-full grow",
+      isWebApp ? "min-h-[76vh]" : "min-h-[90vh]"
+    )}>
     {@render children?.()}
   </div>
   {#if isWebApp}
