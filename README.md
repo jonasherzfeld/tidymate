@@ -38,7 +38,7 @@ services:
       - 3000:3000
     environment:
       FLASK_SECRET_KEY: "your_secret_key"
-      LOG_DEBUG: False
+      LOG_DEBUG: "False"
 ```
 
 ## Contribute

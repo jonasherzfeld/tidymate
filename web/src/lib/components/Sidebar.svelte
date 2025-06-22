@@ -63,27 +63,43 @@
       <ul
         class={`menu border-neutral bg-base-200 h-[calc(100vh-4rem)] w-80 justify-between  overflow-y-auto border-r-[1px]  ${isWebApp ? "pt-12" : ""}`}>
         <!-- Sidebar content here -->
-        <div class="lg:hidden">
-          <span>Personal</span>
+        <div class="mt-4 lg:hidden">
+          {#if menuRestriction.includes("logged_in")}
+            <div class="ml-3 font-mono">
+              <span>Personal</span>
+            </div>
+          {/if}
           <MenuBlock
             position="drawer_top"
             restricted={menuRestriction}
             publicType="private"
             {handleClick} />
-          <span>House</span>
+          {#if menuRestriction.includes("house_member")}
+            <div class="ml-3 mt-6 font-mono">
+              <span>House</span>
+            </div>
+          {/if}
           <MenuBlock
             position="drawer_top"
             restricted={menuRestriction}
             publicType="public"
             {handleClick} />
         </div>
-        <div class="hidden lg:block">
-          <span>Personal</span>
+        <div class="mt-4 hidden lg:block">
+          {#if menuRestriction.includes("logged_in")}
+            <div class="ml-3 font-mono">
+              <span>Personal</span>
+            </div>
+          {/if}
           <MenuBlock
             position="drawer_top"
             restricted={menuRestriction}
             publicType="private" />
-          <span>House</span>
+          {#if menuRestriction.includes("house_member")}
+            <div class="ml-3 mt-6 font-mono">
+              <span>House</span>
+            </div>
+          {/if}
           <MenuBlock
             position="drawer_top"
             restricted={menuRestriction}

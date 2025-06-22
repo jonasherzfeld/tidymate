@@ -20,7 +20,7 @@ export const registerSchema = z
       .string()
       .min(8, "Password should be at least 8 to 60 characters")
       .max(60, "Password should be at least 8 to 60 characters"),
-    is_join_home: z.boolean().default(true),
+    is_join_home: z.boolean().default(false),
     join_id: z
       .string()
       .min(12, "Join ID should have 12 characters")

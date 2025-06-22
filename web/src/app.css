@@ -3,7 +3,7 @@
 @plugin "daisyui/theme" {
   name: "cupcake";
   default: true;
-  prefersdark: false;
+  /* prefersdark: false; */
   /* --color-neutral: #d1d5db, */
   /* --rounded-box: "0.25rem", 
   --rounded-btn: "0.25rem", 
@@ -11,7 +11,7 @@
   --border-btn: "1px", 
   --tab-border: "1px",
   --tab-radius: "0.25rem"  */
-  --color-neutral: oklch(85% 0.06 240);
+  /* --color-neutral: oklch(85% 0.06 240); */
 
   /* border radius */
   --radius-selector: 1rem;
@@ -27,8 +27,8 @@
 }
 @plugin "daisyui/theme" {
   name: "dracula";
-  default: false;
-  prefersdark: true;
+  /* default: false; */
+  /* prefersdark: true; */
   /* --color-neutral: #4b5563, */
   /* --rounded-box: "0.25rem", 
   --rounded-btn: "0.25rem", 
@@ -37,7 +37,7 @@
   --tab-border: "1px",
   --tab-radius: "0.25rem"  */
 
-  --color-neutral: oklch(85% 0.06 240);
+  /* --color-neutral: oklch(85% 0.06 240); */
 
     /* border radius */
   --radius-selector: 1rem;

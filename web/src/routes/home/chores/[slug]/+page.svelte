@@ -230,7 +230,7 @@
         <input
           type="text"
           class={cn(
-            "input pika-single",
+            "input pika-single w-full",
             !deadline && "text-muted-foreground",
             isDeadlineInPast && "input-error"
           )}

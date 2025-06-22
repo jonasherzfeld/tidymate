@@ -108,7 +108,7 @@ export const ROUTE_MAPPING: RouteMap[] = [
     target: ""
   },
   {
-    url: "https://tidymate-docs.vercel.app/",
+    url: "https://jonasherzfeld.github.io/tidymate/",
     title: "Documentation",
     position: ["drawer_bottom"],
     icon: InfoIcon,
