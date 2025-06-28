@@ -61,7 +61,7 @@
 
 <div class="flex w-full">
   <div
-    class="card flex h-fit w-full flex-row items-start justify-between rounded-lg bg-base-300 p-2">
+    class="card bg-base-300 flex h-fit w-full flex-row items-start justify-between rounded-lg p-2">
     <div class="flex h-full w-fit justify-start">
       <form
         class="flex"
@@ -81,7 +81,7 @@
       </form>
     </div>
 
-    <div class="justify-left mt-0 h-fit grow pl-4 pr-2 pt-0 text-left">
+    <div class="justify-left mt-0 h-fit grow pt-0 pr-2 pl-4 text-left">
       <h2 class={`mt-0 flex items-start pt-0 ${done ? "text-primary" : ""}`}>
         {data}
       </h2>
@@ -90,7 +90,7 @@
         {#if deadline}
           <span
             class={cn(
-              "justify-left w-fit pr-3 text-xs text-info",
+              "justify-left text-info w-fit pr-3 text-xs",
               deadlineDate <= deadlineWarningDate && "text-warning",
               deadlineDate <= deadlineErrorDate && "text-error"
             )}>{deadlineDate.toDateString()}</span>

@@ -38,7 +38,7 @@
     <span class="label-text ml-3">Join an existing home</span>
   </div>
   {#if serverErrors}
-    <h1 class="step-subtitle mt-2 text-error">
+    <h1 class="step-subtitle text-error mt-2">
       {serverErrors}
     </h1>
   {/if}
@@ -51,7 +51,7 @@
       classIn={$errors.email ? "input-error" : ""}
       bind:value={$form.email} />
     {#if $errors.email}<span
-        class="invalid ml-2 flex w-full text-start text-sm text-error"
+        class="invalid text-error ml-2 flex w-full text-start text-sm"
         >{$errors.email}</span
       >{/if}
   </div>
@@ -64,7 +64,7 @@
       classIn={$errors.first_name ? "input-error" : ""}
       bind:value={$form.first_name} />
     {#if $errors.first_name}
-      <span class="invalid ml-2 flex w-full text-start text-sm text-error"
+      <span class="invalid text-error ml-2 flex w-full text-start text-sm"
         >{$errors.first_name}</span>
     {/if}
   </div>
@@ -76,7 +76,7 @@
       classIn={$errors.last_name ? "input-error" : ""}
       bind:value={$form.last_name} />
     {#if $errors.last_name}<span
-        class="invalid ml-2 flex w-full text-start text-sm text-error"
+        class="invalid text-error ml-2 flex w-full text-start text-sm"
         >{$errors.last_name}</span
       >{/if}
   </div>
@@ -89,7 +89,7 @@
       classIn={$errors.password ? "input-error" : ""}
       bind:value={$form.password} />
     {#if $errors.password}<span
-        class="invalid ml-2 flex w-full text-start text-sm text-error"
+        class="invalid text-error ml-2 flex w-full text-start text-sm"
         >{$errors.password}</span
       >{/if}
   </div>
@@ -102,7 +102,7 @@
       classIn={$errors.confirm_password ? "input-error" : ""}
       bind:value={$form.confirm_password} />
     {#if $errors.confirm_password}<span
-        class="invalid ml-2 flex w-full text-start text-sm text-error"
+        class="invalid text-error ml-2 flex w-full text-start text-sm"
         >{$errors.confirm_password}</span
       >{/if}
   </div>
@@ -116,7 +116,7 @@
         classIn={`input input-bordered flex items-center gap-2 ${$errors.join_id ? "input-error" : "input-primary"}`}
         bind:value={$form.join_id} />
       {#if $errors.join_id}<span
-          class="invalid ml-2 flex w-full text-start text-sm text-error"
+          class="invalid text-error ml-2 flex w-full text-start text-sm"
           >{$errors.join_id}</span
         >{/if}
     </div>

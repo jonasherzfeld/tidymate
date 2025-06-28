@@ -31,11 +31,11 @@
   <div class="modal-box">
     <div class="modal-title">
       <button
-        class="btn btn-circle btn-ghost btn-sm absolute right-2 top-2"
+        class="btn btn-circle btn-ghost btn-sm absolute top-2 right-2"
         onclick={() => dialog.close()}>✕</button>
     </div>
 
-    <div class="ml-4 mr-4 flex flex-col items-center gap-3 sm:flex-row">
+    <div class="mr-4 ml-4 flex flex-col items-center gap-3 sm:flex-row">
       <div class="avatar m-5 ml-0">
         <AvatarGraphic
           thumbnail={user.thumbnail}

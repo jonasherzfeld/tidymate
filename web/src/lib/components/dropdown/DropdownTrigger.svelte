@@ -12,7 +12,7 @@
 
 <button
   tabindex="0"
-  class={`btn btn-outline rounded-md border-base-300 shadow-sm ${className}`}
+  class={`btn btn-outline border-base-300 rounded-md shadow-sm ${className}`}
   {...others}>
   {@render children?.()}
 </button>

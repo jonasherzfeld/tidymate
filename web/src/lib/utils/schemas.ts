@@ -147,7 +147,7 @@ export const reminderItemSchema = z
     category: z
       .string()
       .min(1, "A category must be assigned")
-      .max(255, "Invalid category name"),
+      .max(255, "Invalid category name")
   })
   .superRefine(({ deadline }, ctx) => {
     let current_date: Date = new Date(new Date().toDateString());

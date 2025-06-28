@@ -18,7 +18,7 @@
   console.log("Notifications:", $page.data.notifications);
 </script>
 
-<div class="navbar flex min-h-0 justify-between p-0 pl-3 pr-3">
+<div class="navbar flex min-h-0 justify-between p-0 pr-3 pl-3">
   <div class="flex w-fit">
     <a
       href={menuRestriction.includes("house_member") ? "/home" : "/"}

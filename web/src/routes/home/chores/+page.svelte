@@ -96,7 +96,7 @@
     </div>
     <div class="flex flex-col">
       {#if serverErrors}
-        <h1 class="step-subtitle mt-2 text-error">
+        <h1 class="step-subtitle text-error mt-2">
           {serverErrors}
         </h1>
       {/if}

@@ -22,17 +22,18 @@ def create_reminder(user):
         deadline = (datetime.now() +
                     datetime.timedelta(days=frequency)).strftime("%Y-%m-%d")
 
-    reminder = Reminder(id=str(uuid.uuid4()),
-                        data=data,
-                        assignee=user.id,
-                        done=False,
-                        created_on=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                        deadline=deadline,
-                        frequency=frequency,
-                        last_done=last_done,
-                        category=category,
-                        user=user
-                        )
+    reminder = Reminder(
+        id=str(
+            uuid.uuid4()),
+        data=data,
+        assignee=user.id,
+        done=False,
+        created_on=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        deadline=deadline,
+        frequency=frequency,
+        last_done=last_done,
+        category=category,
+        user=user)
     db.session.add(reminder)
     db.session.commit()
     return jsonify({"reminder": reminder.to_dict()}), 200
@@ -69,7 +70,9 @@ def check_reminders(user, reminder_id):
 
     reminder.last_done = datetime.now().strftime("%Y-%m-%d")
     reminder.deadline = (
-        datetime.now() + timedelta(days=reminder.frequency)).strftime("%Y-%m-%d")
+        datetime.now() +
+        timedelta(
+            days=reminder.frequency)).strftime("%Y-%m-%d")
 
     db.session.commit()
     return jsonify({

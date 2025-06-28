@@ -14,6 +14,7 @@ import ThemeIcon from "virtual:icons/fluent/dark-theme-24-filled";
 import DocsIcon from "virtual:icons/fluent/document-bullet-list-16-regular";
 import HouseIcon from "virtual:icons/fluent/home-20-filled";
 import InfoIcon from "virtual:icons/fluent/info-12-regular";
+import ReminderIcon from "virtual:icons/fluent/note-pin-16-filled";
 import UserIcon from "virtual:icons/fluent/person-24-filled";
 import TodoIcon from "virtual:icons/fluent/task-list-square-16-filled";
 import DoneAllIcon from "virtual:icons/mdi/done-all";
@@ -37,22 +38,22 @@ import TSIcon from "virtual:icons/skill-icons/typescript";
 import DeleteIcon from "~icons/fluent/delete-12-filled";
 import HouseCircleOutline from "~icons/mdi/house-circle-outline";
 import UserCircleOutline from "~icons/mdi/user-circle-outline";
-import ReminderIcon from "virtual:icons/fluent/note-pin-16-filled"
 
 // Room icons
 import BathroomIcon from "virtual:icons/mdi/bathroom";
 import BedroomIcon from "virtual:icons/mdi/bedroom";
+import BellIcon from "virtual:icons/mdi/bell";
 import KitchenIcon from "virtual:icons/mdi/kitchen";
 import LivingRoomIcon from "virtual:icons/mdi/living-room";
 import OutdoorIcon from "virtual:icons/mdi/plant";
 import GeneralIcon from "virtual:icons/mdi/tools";
 import OfficeIcon from "virtual:icons/mdi/work";
-import BellIcon from "virtual:icons/mdi/bell";
 // import HouseIcon from "virtual:icons/mdi/house";
 
 export {
   BathroomIcon,
   BedroomIcon,
+  BellIcon,
   CalendarIcon,
   CheckIcon,
   ChevronLeft,
@@ -83,6 +84,7 @@ export {
   RedoIcon,
   RegisterIcon,
   ReloadIcon,
+  ReminderIcon,
   RoomFilterIcon,
   SearchIcon,
   SignIn,
@@ -95,7 +97,5 @@ export {
   ThemeIcon,
   TodoIcon,
   UserCircleOutline,
-  UserIcon,
-  ReminderIcon,
-  BellIcon
+  UserIcon
 };

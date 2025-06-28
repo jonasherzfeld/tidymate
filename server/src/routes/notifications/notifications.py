@@ -44,7 +44,8 @@ def get_notifications(user):
     return jsonify({"notifications": notifications_json})
 
 
-@notifications.route('/view-notifications/<string:notification_id>', methods=['PATCH'])
+@notifications.route('/view-notifications/<string:notification_id>',
+                     methods=['PATCH'])
 @login_required
 def view_notifications(user, notification_id):
     notification = Notification.query.filter_by(id=notification_id).first()
@@ -60,7 +61,8 @@ def view_notifications(user, notification_id):
     return jsonify({"notification": notification.to_dict()})
 
 
-@notifications.route("/delete-notifications/<string:notification_id>", methods=["DELETE"])
+@notifications.route("/delete-notifications/<string:notification_id>",
+                     methods=["DELETE"])
 @login_required
 def delete_notification(user, notification_id):
     Notification.query.filter_by(id=notification_id).delete()

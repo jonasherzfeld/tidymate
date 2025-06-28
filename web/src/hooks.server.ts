@@ -1,11 +1,11 @@
 import {
   BASE_API_URI,
   PROTECTED_ROUTES_HOUSE,
-  PROTECTED_ROUTES_USER
+  PROTECTED_ROUTES_USER,
+  THEME_MAPPING
 } from "$lib/utils/constants";
 import type { RequestEvent } from "@sveltejs/kit";
 import { redirect } from "@sveltejs/kit";
-import { THEME_MAPPING } from "$lib/utils/constants";
 
 export function isAccessValid(path: String, user: User, house: House): boolean {
   const isProtecteRouteByUser = PROTECTED_ROUTES_USER.filter((option) =>
@@ -50,7 +50,9 @@ export async function validateSession(
   return res;
 }
 
-export async function getNotifications( event: RequestEvent): Promise<Notification[]> {
+export async function getNotifications(
+  event: RequestEvent
+): Promise<Notification[]> {
   const session = event.cookies.get("session");
   if (!session) {
     // if there is no session load page as normal
@@ -70,7 +72,6 @@ export async function getNotifications( event: RequestEvent): Promise<Notificati
   return data.notifications;
 }
 
-
 export async function handle({ event, resolve }) {
   let theme: string | null = "light";
   const newTheme = event.url.searchParams.get("theme");
@@ -85,7 +86,10 @@ export async function handle({ event, resolve }) {
   if (theme) {
     addThemeConfig = {
       transformPageChunk: ({ html }) =>
-        html.replace('data-theme=""', `data-theme="${theme === "dark" ? THEME_MAPPING.dark : THEME_MAPPING.light}"`),
+        html.replace(
+          'data-theme=""',
+          `data-theme="${theme === "dark" ? THEME_MAPPING.dark : THEME_MAPPING.light}"`
+        )
     };
   }
 
@@ -113,7 +117,7 @@ export async function handle({ event, resolve }) {
 
   const notifications = await getNotifications(event);
   event.locals.notifications = notifications;
-  
+
   // load page as normal
   return await resolve(event, addThemeConfig);
 }
