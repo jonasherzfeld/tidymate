@@ -47,6 +47,16 @@ interface House {
   rooms: string[];
 }
 
+interface Notification {
+  id: string;
+  name: string;
+  description: string;
+  severity: number;
+  is_viewed: boolean;
+  created_on: string;
+  user_id: User;
+}
+
 // Internal types
 type SearchableItem<T> = T & { searchTerms: string };
 type SearchableItemSortKey<T> =

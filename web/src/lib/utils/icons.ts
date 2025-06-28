@@ -47,6 +47,7 @@ import LivingRoomIcon from "virtual:icons/mdi/living-room";
 import OutdoorIcon from "virtual:icons/mdi/plant";
 import GeneralIcon from "virtual:icons/mdi/tools";
 import OfficeIcon from "virtual:icons/mdi/work";
+import BellIcon from "virtual:icons/mdi/bell";
 // import HouseIcon from "virtual:icons/mdi/house";
 
 export {
@@ -95,5 +96,6 @@ export {
   TodoIcon,
   UserCircleOutline,
   UserIcon,
-  ReminderIcon
+  ReminderIcon,
+  BellIcon
 };

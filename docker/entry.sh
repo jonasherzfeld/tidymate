@@ -9,7 +9,11 @@ run() {
     # Run Redis
     redis-server --daemonize yes
 
-    # Run the backend as the tidymate user
+    # Running database migrations
+    cd /app/server/src
+    flask --app app db upgrade
+
+    # Run the backend
     cd /app/server
     exec python src/main.py &
 }
