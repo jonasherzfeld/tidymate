@@ -26,7 +26,7 @@
 </script>
 
 <div>
-  <h2 class="mb-2 mt-5">Invite friends to your house</h2>
+  <h2 class="mt-5 mb-2">Invite friends to your house</h2>
   <form action="?/toggle_join_id" method="POST" use:joinidEnhance>
     <div class="join">
       <input

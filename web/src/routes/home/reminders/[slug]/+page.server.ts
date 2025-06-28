@@ -6,7 +6,10 @@ import { superValidate } from "sveltekit-superforms";
 import { zod } from "sveltekit-superforms/adapters";
 import type { PageServerLoad } from "./$types.js";
 
-async function get_reminder(reminderId: string, cookies: Cookies): Promise<Reminder> {
+async function get_reminder(
+  reminderId: string,
+  cookies: Cookies
+): Promise<Reminder> {
   let requestInitOptions: RequestInit = {
     method: "GET",
     credentials: "include",
@@ -62,7 +65,10 @@ export const load: PageServerLoad = async ({ params, cookies }) => {
 
 export const actions = {
   create_reminder: async ({ request, fetch, cookies }) => {
-    const createReminderForm = await superValidate(request, zod(reminderItemSchema));
+    const createReminderForm = await superValidate(
+      request,
+      zod(reminderItemSchema)
+    );
 
     if (!createReminderForm.valid) return fail(400, { createReminderForm });
 
@@ -101,7 +107,10 @@ export const actions = {
   },
 
   change_reminder: async ({ request, fetch, cookies }) => {
-    const changeReminderForm = await superValidate(request, zod(reminderItemSchema));
+    const changeReminderForm = await superValidate(
+      request,
+      zod(reminderItemSchema)
+    );
     if (!changeReminderForm.valid) return fail(400, { changeReminderForm });
 
     let requestInitOptions: RequestInit = {

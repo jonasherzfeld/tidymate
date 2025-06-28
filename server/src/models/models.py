@@ -77,8 +77,13 @@ class Users(db.Model, SerializerMixin):
 
     # this prevents that Exception being raised everytime we try to call the
     # .to_dict() method in a request that returns information from users
-    serialize_rules = ('-_password_hash', '-house.members',
-                       '-house.chores', '-house.todos', '-reminders.user', '-notifications.user')
+    serialize_rules = (
+        '-_password_hash',
+        '-house.members',
+        '-house.chores',
+        '-house.todos',
+        '-reminders.user',
+        '-notifications.user')
 
 
 class House(db.Model, SerializerMixin):

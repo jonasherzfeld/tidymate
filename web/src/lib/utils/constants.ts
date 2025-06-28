@@ -11,11 +11,11 @@ import {
   OfficeIcon,
   OutdoorIcon,
   RegisterIcon,
+  ReminderIcon,
   SignIn,
   SignOut,
   TodoIcon,
-  UserCircleOutline,
-  ReminderIcon
+  UserCircleOutline
 } from "$lib/utils/icons";
 import type { Component } from "svelte";
 

@@ -83,7 +83,7 @@
 </script>
 
 <div class="flex min-w-full flex-1 flex-col">
-  <div class="justify-left ml-5 mr-2 flex items-center gap-5 sm:justify-center">
+  <div class="justify-left mr-2 ml-5 flex items-center gap-5 sm:justify-center">
     <div class="relative text-center">
       <div
         class="avatar"
@@ -101,7 +101,7 @@
             width="w-24"
             textSize="text-5xl font-bold">
             <div
-              class="bg-base-300 absolute bottom-0 left-0 h-7 w-full bg-opacity-60 text-center"
+              class="bg-base-300 bg-opacity-60 absolute bottom-0 left-0 h-7 w-full text-center"
               aria-label="Change Avatar"
               style="display: {isImgHover ? 'block' : 'none'}">
               <h2 class="text-sm">Change</h2>

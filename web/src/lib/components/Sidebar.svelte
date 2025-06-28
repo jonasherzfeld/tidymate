@@ -75,7 +75,7 @@
             publicType="private"
             {handleClick} />
           {#if menuRestriction.includes("house_member")}
-            <div class="ml-3 mt-6 font-mono">
+            <div class="mt-6 ml-3 font-mono">
               <span>House</span>
             </div>
           {/if}
@@ -96,7 +96,7 @@
             restricted={menuRestriction}
             publicType="private" />
           {#if menuRestriction.includes("house_member")}
-            <div class="ml-3 mt-6 font-mono">
+            <div class="mt-6 ml-3 font-mono">
               <span>House</span>
             </div>
           {/if}
