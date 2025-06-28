@@ -23,5 +23,8 @@ __pycache__
 # Environment variables
 .env*
 
+# data
+data
+
 # Misc
 .DS_Store

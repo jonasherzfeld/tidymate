@@ -168,3 +168,10 @@ export const houseRoomSchema = z.object({
     .max(30, "Room name should be at most 30 characters")
 });
 export type HouseRoomSchema = typeof houseRoomSchema;
+
+export const notificationSchema = z.object({
+  name: z.string().min(1).max(255),
+  description: z.string().min(1).max(255),
+  severity: z.string().min(1).max(50)
+});
+export type NotificationSchema = typeof notificationSchema;

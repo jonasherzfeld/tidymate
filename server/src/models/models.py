@@ -20,10 +20,26 @@ class ChoreSeverity(Enum):
         return output
 
 
+class NotificationSeverity(Enum):
+    DETAIL = 0
+    INFO = 1
+    WARN = 2
+    ERROR = 3
+
+    @staticmethod
+    def from_int(severity: int) -> 'NotificationSeverity':
+        try:
+            output = NotificationSeverity(severity)
+        except BaseException:
+            output = None
+        return output
+
+
 class Users(db.Model, SerializerMixin):
     id = db.Column("id", db.String, primary_key=True)
     email = db.Column("email", db.String(30), nullable=False, unique=True)
     _password_hash = db.Column("password_hash", db.String(100), nullable=False)
+    thumbnail = db.Column("thumbnail", db.String(300))
     first_name = db.Column("first_name", db.String(100))
     last_name = db.Column("last_name", db.String(100))
     joined_on = db.Column("joined_on", db.String(100))
@@ -31,6 +47,7 @@ class Users(db.Model, SerializerMixin):
     house_id = db.Column("house_id", db.Integer, db.ForeignKey('house.id'))
     house = db.relationship('House', back_populates='members')
     reminders = db.relationship('Reminder', back_populates='user')
+    notifications = db.relationship('Notification', back_populates='user')
 
     def __init__(self, id, email, password, first_name, last_name,
                  joined_on, is_admin, house):
@@ -61,7 +78,7 @@ class Users(db.Model, SerializerMixin):
     # this prevents that Exception being raised everytime we try to call the
     # .to_dict() method in a request that returns information from users
     serialize_rules = ('-_password_hash', '-house.members',
-                       '-house.chores', '-house.todos', '-reminders.user')
+                       '-house.chores', '-house.todos', '-reminders.user', '-notifications.user')
 
 
 class House(db.Model, SerializerMixin):
@@ -134,3 +151,16 @@ class Reminder(BaseItem, db.Model, SerializerMixin):
     user = db.relationship('Users', back_populates='reminders')
 
     serialize_rules = ('-user.reminders',)
+
+
+class Notification(db.Model, SerializerMixin):
+    id = db.Column(db.String, primary_key=True)
+    name = db.Column(db.String(100))
+    description = db.Column(db.String(255))
+    severity = db.Column(db.Enum(NotificationSeverity))
+    is_viewed = db.Column(db.Boolean, default=False)
+    created_on = db.Column(db.String(100))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    user = db.relationship('Users', back_populates='notifications')
+
+    serialize_rules = ('-user.notifications',)

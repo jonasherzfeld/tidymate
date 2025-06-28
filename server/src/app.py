@@ -1,16 +1,23 @@
-from flask import Flask
-from flask_session import Session
-from flask_cors import CORS
-from logging.config import dictConfig
-import logging
-import yaml
-import redis
-from pathlib import Path
 import os
+from pathlib import Path
+import redis
+import yaml
+import logging
+from flask_cors import CORS
+from flask_session import Session
+from flask_migrate import Migrate
+from flask import Flask
+from logging.config import dictConfig
+import sys
 
-from db.db import initialize_db
-from routes import routes
+# Append src folder to sys.path to import local modules
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+# fmt: off
+from db.db import initialize_db 
 from config.settings import settings
+from routes import routes
+# fmt: on
+
 
 CWD = Path(__file__).parent
 BASE_DIR = CWD.parent.parent
@@ -45,7 +52,8 @@ def create_app():
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     CORS(app)
     Session(app)
-    initialize_db(app)
+    db = initialize_db(app)
+    migrate = Migrate(app, db)
     app.register_blueprint(routes)
 
     return app

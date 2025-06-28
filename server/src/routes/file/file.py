@@ -1,11 +1,13 @@
 from flask import Blueprint, request, jsonify
 import shortuuid
-import base64
+from pathlib import Path
 import os
 
 from db.db import db
 from utils.utils import login_required
 
+CWD = Path(__file__).parent
+BASE_DIR = CWD.parent.parent.parent.parent
 
 file = Blueprint('file', __name__)
 
@@ -33,9 +35,10 @@ def upload_image(user):
     file_str = file_obj.read()
 
     filename = shortuuid.ShortUUID().random(length=8)
-    thumbnail_url = f"/data/userdata/{user.id}/{filename}.{file_ending}"
+    thumbnail_url = f"{BASE_DIR}/data/userdata/{user.id}/{filename}.{file_ending}"
+    os.makedirs(os.path.dirname(thumbnail_url), exist_ok=True)
     with open(thumbnail_url, "wb") as fh:
-        fh.write(base64.decodebytes(file_str))
+        fh.write(file_str)  # <-- Write bytes directly, no base64 decoding
 
     user.thumbnail = thumbnail_url
     db.session.commit()

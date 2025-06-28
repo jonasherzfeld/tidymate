@@ -7,6 +7,7 @@ declare global {
     interface Locals {
       user: User;
       house: House;
+      notifications: Notification[];
     }
     // interface PageData {}
     // interface Platform {}

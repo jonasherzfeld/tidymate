@@ -6,6 +6,7 @@
   import MenuBlock from "./MenuBlock.svelte";
   import { getRouteTitle, getRestrictionType } from "$lib/utils/helpers";
   import RainbowText from "./RainbowText.svelte";
+  import NotificationCenter from "./NotificationCenter.svelte";
 
   let isLoggedIn: boolean = $derived($page.data.user ? true : false);
   let isHouseMember: boolean = $derived($page.data.house ? true : false);
@@ -13,6 +14,8 @@
     getRestrictionType(isLoggedIn, isHouseMember)
   );
   let headerTitle: string | undefined = $derived(getRouteTitle($page.route.id));
+
+  console.log("Notifications:", $page.data.notifications);
 </script>
 
 <div class="navbar flex min-h-0 justify-between p-0 pl-3 pr-3">
@@ -29,6 +32,7 @@
       {headerTitle}
     {/if}
   </div>
+  <NotificationCenter notifications={$page.data.notifications} />
   <div class="dropdown dropdown-end">
     <div
       tabindex="0"

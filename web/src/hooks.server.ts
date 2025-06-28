@@ -50,6 +50,27 @@ export async function validateSession(
   return res;
 }
 
+export async function getNotifications( event: RequestEvent): Promise<Notification[]> {
+  const session = event.cookies.get("session");
+  if (!session) {
+    // if there is no session load page as normal
+    return [];
+  }
+
+  const res = await fetch(`${BASE_API_URI}/notifications/get-notifications`, {
+    credentials: "include",
+    headers: {
+      Cookie: `session=${session}`
+    }
+  });
+  if (!res.ok) {
+    return [];
+  }
+  const data = await res.json();
+  return data.notifications;
+}
+
+
 export async function handle({ event, resolve }) {
   let theme: string | null = "light";
   const newTheme = event.url.searchParams.get("theme");
@@ -90,6 +111,9 @@ export async function handle({ event, resolve }) {
     redirect(303, "/auth/login");
   }
 
+  const notifications = await getNotifications(event);
+  event.locals.notifications = notifications;
+  
   // load page as normal
   return await resolve(event, addThemeConfig);
 }
