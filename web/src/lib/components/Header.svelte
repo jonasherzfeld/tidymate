@@ -14,8 +14,6 @@
     getRestrictionType(isLoggedIn, isHouseMember)
   );
   let headerTitle: string | undefined = $derived(getRouteTitle($page.route.id));
-
-  console.log("Notifications:", $page.data.notifications);
 </script>
 
 <div class="navbar flex min-h-0 justify-between p-0 pr-3 pl-3">
@@ -32,21 +30,25 @@
       {headerTitle}
     {/if}
   </div>
-  <NotificationCenter notifications={$page.data.notifications} />
-  <div class="dropdown dropdown-end">
-    <div
-      tabindex="0"
-      role="button"
-      class="avatar btn btn-circle btn-ghost hover:bg-secondary">
-      <AvatarGraphic
-        thumbnail={$page.data.user?.thumbnail}
-        height="h-10"
-        width="w-10" />
+  <div class="flex w-fit items-center justify-end gap-4">
+    {#if isLoggedIn}
+      <NotificationCenter notifications={$page.data.notifications} />
+    {/if}
+    <div class="dropdown dropdown-end">
+      <div
+        tabindex="0"
+        role="button"
+        class="avatar btn btn-circle btn-ghost hover:bg-secondary">
+        <AvatarGraphic
+          thumbnail={$page.data.user?.thumbnail}
+          height="h-10"
+          width="w-10" />
+      </div>
+      <ul
+        tabindex="-1"
+        class="menu dropdown-content rounded-box border-neutral bg-base-300 z-[1] mt-3 w-52 border-[1px] p-2 shadow-md">
+        <MenuBlock position="avatar_dropdown" restricted={menuRestriction} />
+      </ul>
     </div>
-    <ul
-      tabindex="-1"
-      class="menu dropdown-content rounded-box border-neutral bg-base-300 z-[1] mt-3 w-52 border-[1px] p-2 shadow-md">
-      <MenuBlock position="avatar_dropdown" restricted={menuRestriction} />
-    </ul>
   </div>
 </div>

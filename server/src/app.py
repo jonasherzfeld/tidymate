@@ -3,6 +3,7 @@ from pathlib import Path
 import redis
 import yaml
 import logging
+from apscheduler.schedulers.background import BackgroundScheduler
 from flask_cors import CORS
 from flask_session import Session
 from flask_migrate import Migrate
@@ -16,6 +17,7 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from db.db import initialize_db 
 from config.settings import settings
 from routes import routes
+from utils.utils import check_deadlines
 # fmt: on
 
 
@@ -55,6 +57,16 @@ def create_app():
     db = initialize_db(app)
     migrate = Migrate(app, db)
     app.register_blueprint(routes)
+
+    scheduler = BackgroundScheduler()
+
+    def run_check_deadlines():
+        with app.app_context():
+            check_deadlines()
+
+    scheduler.add_job(func=run_check_deadlines, trigger='cron',
+                      hour=0, minute=0)  # Runs every day at 00:00 UTC
+    scheduler.start()
 
     return app
 

@@ -15,10 +15,11 @@ notifications = Blueprint('notifications', __name__)
 
 @notifications.route('/create-notification', methods=["POST"])
 @login_required
-def create_reminder(user):
+def create_notification(user):
     name = request.json.get("name", "")
     description = request.json.get("description", "")
     severity = NotificationSeverity.from_int(request.json.get("severity", 0))
+    href = request.json.get("href", "")
 
     notification = Notification(
         id=str(uuid.uuid4()),
@@ -27,6 +28,7 @@ def create_reminder(user):
         severity=severity,
         is_viewed=False,
         created_on=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        href=href,
         user_id=user.id
     )
 
@@ -44,10 +46,9 @@ def get_notifications(user):
     return jsonify({"notifications": notifications_json})
 
 
-@notifications.route('/view-notifications/<string:notification_id>',
-                     methods=['PATCH'])
+@notifications.route('/view-notification/<string:notification_id>', methods=['PATCH'])
 @login_required
-def view_notifications(user, notification_id):
+def view_notification(user, notification_id):
     notification = Notification.query.filter_by(id=notification_id).first()
     if not notification:
         return jsonify({"error": "Notification not found"}), 404
@@ -61,10 +62,17 @@ def view_notifications(user, notification_id):
     return jsonify({"notification": notification.to_dict()})
 
 
-@notifications.route("/delete-notifications/<string:notification_id>",
-                     methods=["DELETE"])
+@notifications.route("/delete-notification/<string:notification_id>", methods=["DELETE"])
 @login_required
 def delete_notification(user, notification_id):
     Notification.query.filter_by(id=notification_id).delete()
+    db.session.commit()
+    return jsonify({}), 200
+
+
+@notifications.route("/delete-all-notifications", methods=["DELETE"])
+@login_required
+def delete_all_notifications(user):
+    Notification.query.filter_by(user_id=user.id).delete()
     db.session.commit()
     return jsonify({}), 200
