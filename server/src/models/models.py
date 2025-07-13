@@ -165,6 +165,7 @@ class Notification(db.Model, SerializerMixin):
     severity = db.Column(db.Enum(NotificationSeverity))
     is_viewed = db.Column(db.Boolean, default=False)
     created_on = db.Column(db.String(100))
+    href = db.Column(db.String(255), nullable=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     user = db.relationship('Users', back_populates='notifications')
 

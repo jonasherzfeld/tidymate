@@ -54,6 +54,7 @@ interface Notification {
   severity: number;
   is_viewed: boolean;
   created_on: string;
+  href: string | null;
   user_id: User;
 }
 

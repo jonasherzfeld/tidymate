@@ -1,7 +1,10 @@
 from flask import jsonify, session
 from functools import wraps
+from datetime import datetime, timezone
+import uuid
 
-from models.models import Users
+from db.db import db
+from models.models import Notification, Users, Todo, Reminder, Chore, NotificationSeverity
 
 
 def login_required(function_to_protect):
@@ -18,3 +21,104 @@ def login_required(function_to_protect):
         else:
             return jsonify({"error": "Unauthorized"}), 401
     return wrapper
+
+
+def check_reminders():
+    all_reminders = Reminder.query.all()
+    for reminder in all_reminders:
+        # Parse the ISO format deadline string to datetime object
+        reminder_deadline = datetime.fromisoformat(
+            reminder.deadline.replace('Z', '+00:00'))
+        if reminder_deadline < datetime.now(timezone.utc):
+            # Check if notification already exists for this reminder
+            existing_notification = Notification.query.filter_by(
+                href=f"/home/reminders/{reminder.id}",
+                user_id=reminder.user_id
+            ).first()
+
+            if not existing_notification:
+                # Send a notification for the expired reminder
+                notification = Notification(
+                    id=str(uuid.uuid4()),
+                    name=f"Reminder: {reminder.data}",
+                    description=f"The reminder '{reminder.data}' has expired.",
+                    severity=NotificationSeverity.INFO,
+                    is_viewed=False,
+                    created_on=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                    href=f"/home/reminders/{reminder.id}",
+                    user_id=reminder.user_id,
+                )
+                db.session.add(notification)
+    db.session.commit()
+
+
+def check_chores():
+    all_chores = Chore.query.all()
+    for chore in all_chores:
+        # Parse the ISO format deadline string to datetime object
+        chore_deadline = datetime.fromisoformat(
+            chore.deadline.replace('Z', '+00:00'))
+        if chore_deadline < datetime.now(timezone.utc):
+            # Get all users assigned to this house
+            house_users = Users.query.filter_by(house_id=chore.house_id).all()
+
+            for user in house_users:
+                # Check if notification already exists for this chore and user
+                existing_notification = Notification.query.filter_by(
+                    href=f"/home/chores/{chore.id}",
+                    user_id=user.id
+                ).first()
+
+                if not existing_notification:
+                    # Send a notification for the expired chore
+                    notification = Notification(
+                        id=str(uuid.uuid4()),
+                        name=f"Chore: {chore.data}",
+                        description=f"The chore '{chore.data}' is due.",
+                        severity=NotificationSeverity.INFO,
+                        is_viewed=False,
+                        created_on=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                        href=f"/home/chores/{chore.id}",
+                        user_id=user.id,
+                    )
+                    db.session.add(notification)
+    db.session.commit()
+
+
+def check_todos():
+    all_todos = Todo.query.all()
+    for todo in all_todos:
+        # Parse the ISO format deadline string to datetime object
+        todo_deadline = datetime.fromisoformat(
+            todo.deadline.replace('Z', '+00:00'))
+        if todo_deadline < datetime.now(timezone.utc):
+            # Get all users assigned to this house
+            house_users = Users.query.filter_by(house_id=todo.house_id).all()
+
+            for user in house_users:
+                # Check if notification already exists for this todo and user
+                existing_notification = Notification.query.filter_by(
+                    href=f"/home/todo/{todo.id}",
+                    user_id=user.id
+                ).first()
+
+                if not existing_notification:
+                    # Send a notification for the expired todo
+                    notification = Notification(
+                        id=str(uuid.uuid4()),
+                        name=f"Todo: {todo.data}",
+                        description=f"The todo '{todo.data}' is due.",
+                        severity=NotificationSeverity.INFO,
+                        is_viewed=False,
+                        created_on=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                        href=f"/home/todo/{todo.id}",
+                        user_id=user.id,
+                    )
+                    db.session.add(notification)
+    db.session.commit()
+
+
+def check_deadlines():
+    check_reminders()
+    check_chores()
+    check_todos()
