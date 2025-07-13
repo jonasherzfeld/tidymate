@@ -4,7 +4,7 @@ import uuid
 
 from db.db import db
 from models.models import House, Reminder
-from utils.utils import login_required
+from utils.utils import login_required, log_history_event, EventType
 
 reminders = Blueprint('reminders', __name__)
 
@@ -36,6 +36,17 @@ def create_reminder(user):
         user=user)
     db.session.add(reminder)
     db.session.commit()
+
+    # Log creation event
+    log_history_event(
+        EventType.CREATED,
+        reminder.id,
+        "reminder",
+        reminder.data,
+        user.id,
+        user.house_id
+    )
+
     return jsonify({"reminder": reminder.to_dict()}), 200
 
 
@@ -75,6 +86,17 @@ def check_reminders(user, reminder_id):
             days=reminder.frequency)).strftime("%Y-%m-%d")
 
     db.session.commit()
+
+    # Log completion event
+    log_history_event(
+        EventType.COMPLETED,
+        reminder.id,
+        "reminder",
+        reminder.data,
+        user.id,
+        user.house_id
+    )
+
     return jsonify({
         "reminder": reminder.to_dict(),
     }), 200
@@ -116,6 +138,18 @@ def update_reminders(user):
 @reminders.route("/delete-reminder/<string:reminder_id>", methods=["DELETE"])
 @login_required
 def delete_reminder(user, reminder_id):
+    reminder = Reminder.query.filter_by(id=reminder_id).first()
+    if reminder:
+        # Log deletion event before deleting
+        log_history_event(
+            EventType.DELETED,
+            reminder.id,
+            "reminder",
+            reminder.data,
+            user.id,
+            user.house_id
+        )
+
     Reminder.query.filter_by(id=reminder_id).delete()
     db.session.commit()
     return jsonify({}), 200

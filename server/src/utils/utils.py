@@ -4,7 +4,7 @@ from datetime import datetime, timezone
 import uuid
 
 from db.db import db
-from models.models import Notification, Users, Todo, Reminder, Chore, NotificationSeverity
+from models.models import Notification, Users, Todo, Reminder, Chore, NotificationSeverity, History, EventType
 
 
 def login_required(function_to_protect):
@@ -21,6 +21,26 @@ def login_required(function_to_protect):
         else:
             return jsonify({"error": "Unauthorized"}), 401
     return wrapper
+
+
+def log_history_event(event_type: EventType, item_id: str, item_type: str, item_data: str, user_id: str, house_id: str):
+    """Log an event to the history table"""
+    try:
+        history_entry = History(
+            id=str(uuid.uuid4()),
+            event_type=event_type,
+            item_id=item_id,
+            item_type=item_type,
+            item_data=item_data,
+            user_id=user_id,
+            house_id=house_id,
+            created_on=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        )
+        db.session.add(history_entry)
+        db.session.commit()
+    except Exception as e:
+        print(f"Error logging history event: {e}")
+        db.session.rollback()
 
 
 def check_reminders():
