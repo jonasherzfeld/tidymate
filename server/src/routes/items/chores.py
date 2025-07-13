@@ -4,7 +4,7 @@ import uuid
 
 from db.db import db
 from models.models import House, Chore, ChoreSeverity
-from utils.utils import login_required
+from utils.utils import login_required, log_history_event, EventType
 
 chores = Blueprint('chores', __name__)
 
@@ -42,6 +42,17 @@ def create_chore(user):
                   )
     db.session.add(chore)
     db.session.commit()
+
+    # Log creation event
+    log_history_event(
+        EventType.CREATED,
+        chore.id,
+        "chore",
+        chore.data,
+        user.id,
+        user.house_id
+    )
+
     return jsonify({"chore": chore.to_dict()}), 200
 
 
@@ -78,6 +89,17 @@ def check_chores(user, chore_id):
         datetime.now() + timedelta(days=chore.frequency)).strftime("%Y-%m-%d")
 
     db.session.commit()
+
+    # Log completion event
+    log_history_event(
+        EventType.COMPLETED,
+        chore.id,
+        "chore",
+        chore.data,
+        user.id,
+        user.house_id
+    )
+
     return jsonify({
         "chore": chore.to_dict(),
     }), 200
@@ -125,6 +147,19 @@ def delete_chore(user, chore_id):
     house = House.query.filter_by(id=user.house_id).first()
     if not house:
         return jsonify({"error": "House not found"}), 404
+
+    chore = Chore.query.filter_by(id=chore_id).first()
+    if chore:
+        # Log deletion event before deleting
+        log_history_event(
+            EventType.DELETED,
+            chore.id,
+            "chore",
+            chore.data,
+            user.id,
+            user.house_id
+        )
+
     Chore.query.filter_by(id=chore_id).delete()
     db.session.commit()
     return jsonify({}), 200

@@ -58,6 +58,17 @@ interface Notification {
   user_id: User;
 }
 
+interface History {
+  id: string;
+  event_type: string;
+  item_id: string;
+  item_type: string;
+  item_data: string;
+  user_id: string;
+  house_id: string;
+  created_on: string;
+}
+
 // Internal types
 type SearchableItem<T> = T & { searchTerms: string };
 type SearchableItemSortKey<T> =

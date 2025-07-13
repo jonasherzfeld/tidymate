@@ -170,3 +170,34 @@ class Notification(db.Model, SerializerMixin):
     user = db.relationship('Users', back_populates='notifications')
 
     serialize_rules = ('-user.notifications',)
+
+
+class EventType(Enum):
+    COMPLETED = "completed"
+    CREATED = "created"
+    DELETED = "deleted"
+
+    @staticmethod
+    def from_string(event_type: str) -> 'EventType':
+        try:
+            return EventType(event_type)
+        except ValueError:
+            return None
+
+
+class History(db.Model, SerializerMixin):
+    id = db.Column(db.String, primary_key=True)
+    event_type = db.Column(db.Enum(EventType), nullable=False)
+    # ID of the todo/chore/reminder
+    item_id = db.Column(db.String(100), nullable=False)
+    # "todo", "chore", "reminder"
+    item_type = db.Column(db.String(50), nullable=False)
+    item_data = db.Column(db.String(255))  # Description/name of the item
+    user_id = db.Column(db.String, db.ForeignKey('users.id'), nullable=False)
+    house_id = db.Column(db.String, db.ForeignKey('house.id'), nullable=False)
+    created_on = db.Column(db.String(100), nullable=False)
+
+    user = db.relationship('Users')
+    house = db.relationship('House')
+
+    serialize_rules = ('-user.house', '-house.members')

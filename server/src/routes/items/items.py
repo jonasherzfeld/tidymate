@@ -4,7 +4,7 @@ import uuid
 
 from db.db import db
 from models.models import Todo, House
-from utils.utils import login_required
+from utils.utils import login_required, log_history_event, EventType
 
 items = Blueprint('items', __name__)
 
@@ -29,6 +29,17 @@ def create_todo(user):
                 house=house)
     db.session.add(todo)
     db.session.commit()
+
+    # Log creation event
+    log_history_event(
+        EventType.CREATED,
+        todo.id,
+        "todo",
+        todo.data,
+        user.id,
+        user.house_id
+    )
+
     return jsonify({"todo": todo.to_dict()})
 
 
@@ -60,8 +71,20 @@ def check_todos(user, todo_id):
     elif not todo.house_id == user.house_id:
         return jsonify({"error": "Unauthorized"}), 401
 
+    was_done = todo.done
     todo.done = not todo.done
     db.session.commit()
+
+    # Log completion event when todo is marked as done
+    if not was_done and todo.done:
+        log_history_event(
+            EventType.COMPLETED,
+            todo.id,
+            "todo",
+            todo.data,
+            user.id,
+            user.house_id
+        )
 
     return jsonify({
         "todo": todo.to_dict(),
@@ -104,6 +127,19 @@ def delete_todo(user, todo_id):
     house = House.query.filter_by(id=user.house_id).first()
     if not house:
         return jsonify({"error": "House not found"}), 404
+
+    todo = Todo.query.filter_by(id=todo_id).first()
+    if todo:
+        # Log deletion event before deleting
+        log_history_event(
+            EventType.DELETED,
+            todo.id,
+            "todo",
+            todo.data,
+            user.id,
+            user.house_id
+        )
+
     Todo.query.filter_by(id=todo_id).delete()
     db.session.commit()
     return jsonify({}), 200

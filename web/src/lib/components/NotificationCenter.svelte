@@ -48,19 +48,6 @@
   }
 </script>
 
-<form action="/?/create_notification" method="POST" use:enhance>
-  <input type="hidden" name="name" value="Test1" />
-  <input type="hidden" name="description" value="Test2" />
-  <input type="hidden" name="severity" value="1" />
-  <button
-    class="btn btn-ghost rounded-field"
-    onclick={() => {
-      notifications = [];
-    }}>
-    Send Notifications
-  </button>
-</form>
-
 <div class="dropdown dropdown-end indicator">
   <div
     tabindex="0"
