@@ -31,34 +31,37 @@ export const actions: Actions = {
     const description = String(formData.get("description"));
     const severity = Number(formData.get("severity"));
 
-   const requestInitOptions: RequestInit = {
-         method: "POST",
-          credentials: "include",
-         headers: {
-           "Content-Type": "application/json",
-           Cookie: `session=${cookies.get("session")}`
-         },
-         body: JSON.stringify({
-           name: name,
-           description: description,
-           severity: severity
-         }),
-         signal: AbortSignal.timeout(FETCH_ABORT_TIMEOUT_MS)
-       };
-   
-       const res = await fetch(`${BASE_API_URI}/notifications/create-notification`, requestInitOptions);
-   
-       try {
-         const response = await res.json();
-         if (!res.ok) {
-           return fail(400, { errors: response.error });
-         }
-         return {
-           success: true,
-         };
-       } catch {
-         return fail(500, { errors: "Internal Error" });
-       }
+    const requestInitOptions: RequestInit = {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: `session=${cookies.get("session")}`
+      },
+      body: JSON.stringify({
+        name: name,
+        description: description,
+        severity: severity
+      }),
+      signal: AbortSignal.timeout(FETCH_ABORT_TIMEOUT_MS)
+    };
+
+    const res = await fetch(
+      `${BASE_API_URI}/notifications/create-notification`,
+      requestInitOptions
+    );
+
+    try {
+      const response = await res.json();
+      if (!res.ok) {
+        return fail(400, { errors: response.error });
+      }
+      return {
+        success: true
+      };
+    } catch {
+      return fail(500, { errors: "Internal Error" });
+    }
   },
 
   view_notification: async ({ request, cookies }) => {
@@ -75,7 +78,10 @@ export const actions: Actions = {
       signal: AbortSignal.timeout(FETCH_ABORT_TIMEOUT_MS)
     };
 
-    const res = await fetch(`${BASE_API_URI}/notifications/view-notification/${id}`, requestInitOptions);
+    const res = await fetch(
+      `${BASE_API_URI}/notifications/view-notification/${id}`,
+      requestInitOptions
+    );
 
     try {
       const response = await res.json();
@@ -83,7 +89,6 @@ export const actions: Actions = {
         return fail(400, { errors: response.error });
       }
       return { success: true, href: response.notification.href };
-      
     } catch {
       return fail(500, { errors: "Internal Error" });
     }
@@ -103,7 +108,10 @@ export const actions: Actions = {
       signal: AbortSignal.timeout(FETCH_ABORT_TIMEOUT_MS)
     };
 
-    const res = await fetch(`${BASE_API_URI}/notifications/delete-notification/${id}`, requestInitOptions);
+    const res = await fetch(
+      `${BASE_API_URI}/notifications/delete-notification/${id}`,
+      requestInitOptions
+    );
 
     try {
       const response = await res.json();
@@ -128,7 +136,10 @@ export const actions: Actions = {
       signal: AbortSignal.timeout(FETCH_ABORT_TIMEOUT_MS)
     };
 
-    const res = await fetch(`${BASE_API_URI}/notifications/delete-all-notifications`, requestInitOptions);
+    const res = await fetch(
+      `${BASE_API_URI}/notifications/delete-all-notifications`,
+      requestInitOptions
+    );
 
     try {
       const response = await res.json();

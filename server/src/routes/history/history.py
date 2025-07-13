@@ -23,7 +23,8 @@ def get_history(user):
 @login_required
 def get_completion_stats(user):
     """Get completion statistics for the household (excluding private reminders)"""
-    # Get only chore and todo completion events for the house (exclude reminders)
+    # Get only chore and todo completion events for the house (exclude
+    # reminders)
     completion_events = History.query.filter(
         and_(
             History.house_id == user.house_id,
