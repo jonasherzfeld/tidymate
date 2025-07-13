@@ -23,7 +23,13 @@ def login_required(function_to_protect):
     return wrapper
 
 
-def log_history_event(event_type: EventType, item_id: str, item_type: str, item_data: str, user_id: str, house_id: str):
+def log_history_event(
+        event_type: EventType,
+        item_id: str,
+        item_type: str,
+        item_data: str,
+        user_id: str,
+        house_id: str):
     """Log an event to the history table"""
     try:
         history_entry = History(
