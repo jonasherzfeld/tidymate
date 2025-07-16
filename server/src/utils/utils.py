@@ -52,6 +52,10 @@ def log_history_event(
 def check_reminders():
     all_reminders = Reminder.query.all()
     for reminder in all_reminders:
+        # Skip reminders without a deadline
+        if not reminder.deadline or reminder.deadline.strip() == '':
+            continue
+
         # Parse the ISO format deadline string to datetime object
         reminder_deadline = datetime.fromisoformat(
             reminder.deadline.replace('Z', '+00:00'))
@@ -69,7 +73,7 @@ def check_reminders():
                 # Send a notification for the expired reminder
                 notification = Notification(
                     id=str(uuid.uuid4()),
-                    name=f"Reminder: {reminder.data}",
+                    name=f"{reminder.data}",
                     description=f"The reminder '{reminder.data}' has expired.",
                     severity=NotificationSeverity.INFO,
                     is_viewed=False,
@@ -84,6 +88,10 @@ def check_reminders():
 def check_chores():
     all_chores = Chore.query.all()
     for chore in all_chores:
+        # Skip chores without a deadline
+        if not chore.deadline or chore.deadline.strip() == '':
+            continue
+
         # Parse the ISO format deadline string to datetime object
         chore_deadline = datetime.fromisoformat(
             chore.deadline.replace('Z', '+00:00'))
@@ -105,7 +113,7 @@ def check_chores():
                     # Send a notification for the expired chore
                     notification = Notification(
                         id=str(uuid.uuid4()),
-                        name=f"Chore: {chore.data}",
+                        name=f"{chore.data}",
                         description=f"The chore '{chore.data}' is due.",
                         severity=NotificationSeverity.INFO,
                         is_viewed=False,
@@ -120,6 +128,10 @@ def check_chores():
 def check_todos():
     all_todos = Todo.query.all()
     for todo in all_todos:
+        # Skip todos without a deadline
+        if not todo.deadline or todo.deadline.strip() == '':
+            continue
+
         # Parse the ISO format deadline string to datetime object
         todo_deadline = datetime.fromisoformat(
             todo.deadline.replace('Z', '+00:00'))
@@ -141,7 +153,7 @@ def check_todos():
                     # Send a notification for the expired todo
                     notification = Notification(
                         id=str(uuid.uuid4()),
-                        name=f"Todo: {todo.data}",
+                        name=f"{todo.data}",
                         description=f"The todo '{todo.data}' is due.",
                         severity=NotificationSeverity.INFO,
                         is_viewed=False,

@@ -103,7 +103,7 @@
   class="bg-base-100 flex min-h-full w-full flex-1 items-start justify-center">
   <div
     class="mt-5 flex w-full max-w-screen-lg flex-1 flex-col justify-center gap-5 p-4">
-    <h1 class="text-center text-5xl font-bold">{data.house.name}</h1>
+    <h1 class="text-center text-accent text-5xl font-bold">{data.house.name}</h1>
 
     <!-- Personal Statistics Board -->
     <div class="card bg-base-200 shadow">
@@ -185,7 +185,7 @@
     <!-- Household Statistics Board -->
     <div class="card bg-base-200 shadow">
       <div class="card-body">
-        <h2 class="card-title mb-4 justify-center text-center">
+        <h2 class="card-title mb-4 justify-start text-center">
           Household Stats
         </h2>
         <div
@@ -260,7 +260,7 @@
     <!-- Leaderboard -->
     <div class="card bg-base-300 shadow">
       <div class="card-body">
-        <h2 class="card-title mb-4 justify-center text-center">
+        <h2 class="card-title mb-4 justify-start text-center">
           Household Leaderboard
         </h2>
         <div class="overflow-x-auto">

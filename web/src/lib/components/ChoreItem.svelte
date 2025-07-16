@@ -117,7 +117,7 @@
       class="justify-left mt-0 flex h-fit grow flex-col gap-1 pt-0 pr-2 pl-4 text-left">
       <div class="flex flex-row items-center gap-2">
         <div
-          class={`badge badge-info h-6 items-center gap-1 text-white ${roomConfig ? roomConfig.color : defaultRoomConfig?.color}`}>
+          class={`badge  h-6 items-center gap-1 text-white ${roomConfig ? roomConfig.color : defaultRoomConfig?.color}`}>
           {#if roomConfig}
             <roomConfig.icon />
             {roomConfig.name}

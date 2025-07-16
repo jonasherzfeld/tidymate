@@ -108,6 +108,15 @@ export const ROUTE_MAPPING: RouteMap[] = [
     target: ""
   },
   {
+    url: "/home/history",
+    title: "History",
+    position: [],
+    icon: HouseIcon,
+    restricted: "house_member",
+    publicType: "public",
+    target: ""
+  },
+  {
     url: "https://jonasherzfeld.github.io/tidymate/",
     title: "Documentation",
     position: ["drawer_bottom"],

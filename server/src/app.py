@@ -14,7 +14,7 @@ import sys
 # Append src folder to sys.path to import local modules
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 # fmt: off
-from db.db import initialize_db 
+from db.db import initialize_db
 from config.settings import settings
 from routes import routes
 from utils.utils import check_deadlines
@@ -66,6 +66,7 @@ def create_app():
 
     scheduler.add_job(func=run_check_deadlines, trigger='cron',
                       hour=0, minute=0)  # Runs every day at 00:00 UTC
+    scheduler.add_job(func=run_check_deadlines, trigger='interval', minutes=1)  # Runs every minute
     scheduler.start()
 
     return app

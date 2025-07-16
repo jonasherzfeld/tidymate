@@ -32,7 +32,7 @@
   <div
     class={cn(
       "flex  min-w-full grow",
-      isWebApp ? "min-h-[76vh]" : "min-h-[90vh]"
+      isWebApp ? "min-h-[78.5vh]" : "min-h-[90vh]"
     )}>
     {@render children?.()}
   </div>
