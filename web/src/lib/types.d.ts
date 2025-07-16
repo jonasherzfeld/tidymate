@@ -67,6 +67,7 @@ interface History {
   user_id: string;
   house_id: string;
   created_on: string;
+  user?: User;
 }
 
 // Internal types
