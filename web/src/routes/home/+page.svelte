@@ -109,7 +109,7 @@
     <div class="card bg-base-200 shadow">
       <div class="card-body">
         <h2 class="card-title mb-4 justify-center text-center">
-          📊 Your Personal Stats
+          Your Personal Stats
         </h2>
         <div
           class="stats stats-vertical bg-base-300 md:stats-horizontal shadow">
@@ -181,7 +181,7 @@
     <div class="card bg-base-200 shadow">
       <div class="card-body">
         <h2 class="card-title mb-4 justify-center text-center">
-          🏠 Household Stats
+          Household Stats
         </h2>
         <div
           class="stats stats-vertical bg-base-300 md:stats-horizontal shadow">
@@ -256,7 +256,7 @@
     <div class="card bg-base-300 shadow">
       <div class="card-body">
         <h2 class="card-title mb-4 justify-center text-center">
-          🏆 Household Leaderboard
+          Household Leaderboard
         </h2>
         <div class="overflow-x-auto">
           <table class="table w-full">

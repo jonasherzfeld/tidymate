@@ -48,7 +48,7 @@
   }
 </script>
 
-<div class="dropdown dropdown-end indicator">
+<div class="dropdown dropdown-bottom dropdown-end indicator">
   <div
     tabindex="0"
     role="button"
@@ -62,7 +62,7 @@
   <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
   <ul
     tabindex="0"
-    class="list dropdown-content bg-base-100 rounded-box z-1 mt-4 min-h-24 w-96 p-2 shadow-sm">
+    class="list dropdown-content rounded-box border-neutral bg-base-300 z-[1] mt-2 w-64 min-h-24 border-[1px] p-1 shadow-md">
     <div class="flex items-center justify-between">
       <li class="p-4 pb-2 text-xs tracking-wide opacity-60">
         Your Notifications
