@@ -108,9 +108,14 @@
     <!-- Personal Statistics Board -->
     <div class="card bg-base-200 shadow">
       <div class="card-body">
-        <h2 class="card-title mb-4 justify-center text-center">
-          Your Personal Stats
-        </h2>
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="card-title justify-center text-center">
+            Your Personal Stats
+          </h2>
+          <a href="/home/history" class="btn btn-outline btn-sm">
+            View History
+          </a>
+        </div>
         <div
           class="stats stats-vertical bg-base-300 md:stats-horizontal shadow">
           <div class="stat">
