@@ -1,7 +1,13 @@
 <script lang="ts">
   import AvatarGraphic from "$lib/components/AvatarGraphic.svelte";
   import type { PageData } from "./$types";
-  import { ChevronLeft, ReminderIcon, TodoIcon, ChoresIcon, GeneralIcon } from "$lib/utils/icons";
+  import {
+    ChevronLeft,
+    ReminderIcon,
+    TodoIcon,
+    ChoresIcon,
+    GeneralIcon
+  } from "$lib/utils/icons";
 
   let { data }: { data: PageData } = $props();
 

@@ -165,7 +165,7 @@
       <div class="flex flex-row flex-wrap gap-2">
         <input
           type="text"
-          class="flex input input-bordered w-fit grow"
+          class="input input-bordered flex w-fit grow"
           placeholder="Create to-do"
           name="todo_data"
           bind:value={newTodoData} />
