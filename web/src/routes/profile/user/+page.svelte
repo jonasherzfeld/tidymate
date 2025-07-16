@@ -5,6 +5,8 @@
   import { superForm } from "sveltekit-superforms";
   import FormTextInput from "$lib/components/FormTextInput.svelte";
   import type { PageData } from "./$types";
+  import ThemeSwitch from "$lib/components/ThemeSwitch.svelte";
+  import { getContext } from "svelte";
 
   let { data }: { data: PageData } = $props();
 
@@ -21,6 +23,8 @@
   let handleImgHover = (value: boolean) => {
     isImgHover = value;
   };
+
+  const isWebApp: boolean = getContext("webapp");
 
   const { enhance: emailEnhance, errors: emailErrors } = superForm(
     data.emailForm,
@@ -162,6 +166,9 @@
     <TextInput name="joined_on" value={data.user.joined_on} disabled={true}
       ><b>Joined On</b>
     </TextInput>
+    {#if isWebApp}
+      <ThemeSwitch />
+    {/if}
   </div>
 </div>
 <AvatarModal bind:showModal />

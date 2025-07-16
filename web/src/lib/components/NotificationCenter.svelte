@@ -28,21 +28,12 @@
     )
   );
 
-  function markAsViewed(notificationId: string) {
-    notifications = notifications.map((n) =>
-      n.id === notificationId ? { ...n, is_viewed: true } : n
-    );
-  }
-
   function handleViewNotification() {
-    return async ({ result, update }) => {
-      console.log("Handling view notification:", result);
+    return async ({ result, update }: { result: any; update: () => Promise<void> }) => {
+      await update();
+
       if (result.type === "success" && result.data?.href) {
-        console.log("Navigating to:", result.data.href);
         await goto(result.data.href);
-      } else {
-        console.log("No href found in result data.");
-        await update();
       }
     };
   }
@@ -104,22 +95,19 @@
               class="flex w-full flex-col text-left"
               type="submit"
               aria-label="View Notification"
-              formaction="/?/view_notification"
-              onclick={(e) => {
-                markAsViewed(notification.id);
-              }}>
+              formaction="/?/view_notification">
               <div class="flex flex-row items-center gap-3">
-                {#if notification.name.includes("Reminder")}
+                {#if notification.description.includes("Reminder")}
                   <ReminderIcon class="h-6 w-6  opacity-50" />
-                {:else if notification.name.includes("Todo")}
+                {:else if notification.description.includes("Todo")}
                   <TodoIcon class="h-6 w-6  opacity-50" />
-                {:else if notification.name.includes("Chore")}
+                {:else if notification.description.includes("Chore")}
                   <ChoresIcon class="h-6 w-6  opacity-50" />
                 {:else}
                   <GeneralIcon class="h-6 w-6 opacity-50" />
                 {/if}
-                <div class="flex flex-col">
-                  <span class="w-80 font-bold">{notification.name}</span>
+                <div class="flex flex-col w-32 ">
+                  <span class="font-bold">{notification.name}</span>
                   <span class="text-sm">
                     {notification.description}
                   </span>
