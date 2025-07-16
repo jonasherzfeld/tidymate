@@ -31,12 +31,12 @@
 
 <form method="POST" use:enhance={submitSetTheme}>
   <div class="dropdown dropdown-top w-full">
-      <div
-        tabindex="0"
-        role="button"
-        class="btn btn-neutral h-10 w-full justify-start pl-3 text-base font-normal">
-        <ThemeIcon />Theme
-      </div>
+    <div
+      tabindex="0"
+      role="button"
+      class="btn btn-neutral h-10 w-full justify-start pl-3 text-base font-normal">
+      <ThemeIcon />Theme
+    </div>
     <ul
       tabindex="-1"
       class="dropdown-content rounded-box bg-base-100 z-[1] w-72 p-2 shadow-2xl">

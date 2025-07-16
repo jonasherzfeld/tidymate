@@ -35,9 +35,12 @@
                 ><item.icon />{item.title}</a>
             {/if}
           {:else}
-            <a href={item.url} target={item.target} class="flex flex-col font-mono gap-0 text-xs p-0">
-                <item.icon class="h-6 w-6" />{item.title}
-              </a>
+            <a
+              href={item.url}
+              target={item.target}
+              class="flex flex-col gap-0 p-0 font-mono text-xs">
+              <item.icon class="h-6 w-6" />{item.title}
+            </a>
           {/if}
         </li>
       {/if}
