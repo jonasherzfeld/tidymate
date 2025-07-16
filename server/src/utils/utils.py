@@ -55,10 +55,13 @@ def check_reminders():
         # Parse the ISO format deadline string to datetime object
         reminder_deadline = datetime.fromisoformat(
             reminder.deadline.replace('Z', '+00:00'))
+        # Ensure reminder_deadline is timezone-aware
+        if reminder_deadline.tzinfo is None:
+            reminder_deadline = reminder_deadline.replace(tzinfo=timezone.utc)
         if reminder_deadline < datetime.now(timezone.utc):
             # Check if notification already exists for this reminder
             existing_notification = Notification.query.filter_by(
-                href=f"/home/reminders/{reminder.id}",
+                href=f"/home/reminders",
                 user_id=reminder.user_id
             ).first()
 
@@ -71,7 +74,7 @@ def check_reminders():
                     severity=NotificationSeverity.INFO,
                     is_viewed=False,
                     created_on=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                    href=f"/home/reminders/{reminder.id}",
+                    href=f"/home/reminders",
                     user_id=reminder.user_id,
                 )
                 db.session.add(notification)
@@ -84,6 +87,9 @@ def check_chores():
         # Parse the ISO format deadline string to datetime object
         chore_deadline = datetime.fromisoformat(
             chore.deadline.replace('Z', '+00:00'))
+        # Ensure chore_deadline is timezone-aware
+        if chore_deadline.tzinfo is None:
+            chore_deadline = chore_deadline.replace(tzinfo=timezone.utc)
         if chore_deadline < datetime.now(timezone.utc):
             # Get all users assigned to this house
             house_users = Users.query.filter_by(house_id=chore.house_id).all()
@@ -91,7 +97,7 @@ def check_chores():
             for user in house_users:
                 # Check if notification already exists for this chore and user
                 existing_notification = Notification.query.filter_by(
-                    href=f"/home/chores/{chore.id}",
+                    href=f"/home/chores",
                     user_id=user.id
                 ).first()
 
@@ -104,7 +110,7 @@ def check_chores():
                         severity=NotificationSeverity.INFO,
                         is_viewed=False,
                         created_on=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                        href=f"/home/chores/{chore.id}",
+                        href=f"/home/chores",
                         user_id=user.id,
                     )
                     db.session.add(notification)
@@ -117,6 +123,9 @@ def check_todos():
         # Parse the ISO format deadline string to datetime object
         todo_deadline = datetime.fromisoformat(
             todo.deadline.replace('Z', '+00:00'))
+        # Ensure todo_deadline is timezone-aware
+        if todo_deadline.tzinfo is None:
+            todo_deadline = todo_deadline.replace(tzinfo=timezone.utc)
         if todo_deadline < datetime.now(timezone.utc):
             # Get all users assigned to this house
             house_users = Users.query.filter_by(house_id=todo.house_id).all()
@@ -124,7 +133,7 @@ def check_todos():
             for user in house_users:
                 # Check if notification already exists for this todo and user
                 existing_notification = Notification.query.filter_by(
-                    href=f"/home/todo/{todo.id}",
+                    href=f"/home/todo",
                     user_id=user.id
                 ).first()
 
@@ -137,7 +146,7 @@ def check_todos():
                         severity=NotificationSeverity.INFO,
                         is_viewed=False,
                         created_on=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                        href=f"/home/todo/{todo.id}",
+                        href=f"/home/todo",
                         user_id=user.id,
                     )
                     db.session.add(notification)
