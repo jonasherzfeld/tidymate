@@ -38,8 +38,8 @@
             <a
               href={item.url}
               target={item.target}
-              class="btn-square bg-primary flex h-12 w-12 flex-col gap-0 p-1 text-xs font-light"
-              style="text-decoration: none !important; color: inherit !important; outline: none !important;"
+              class="btn-square bg-base-content text-base-300 flex h-12 w-12 flex-col gap-0 p-1 text-xs font-light"
+              style="text-decoration: none  !important; outline: none !important;"
               onmousedown={(e) => e.preventDefault()}
               onmouseup={(e) => e.preventDefault()}>
               <item.icon class="h-6 w-6" />{item.title}

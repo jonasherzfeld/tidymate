@@ -262,34 +262,33 @@
         <h2 class="card-title mb-4 justify-start text-center">
           Household Leaderboard
         </h2>
-        <div class="overflow-x-auto">
-          <table class="table w-full">
-            <thead>
-              <tr>
-                <th>Rank</th>
-                <th>Member</th>
-                <th>Total</th>
-                <th>Chores</th>
-                <th>Todos</th>
-              </tr>
-            </thead>
-            <tbody>
-              {#each leaderboard as member, index}
-                <tr class={member.id === data.user?.id ? "bg-primary/20" : ""}>
-                  <td>
-                    <div class="flex items-center gap-2">
+        <div class="space-y-3">
+          {#each leaderboard as member, index}
+            <div
+              class="card bg-base-100 shadow-sm {member.id === data.user?.id
+                ? 'ring-primary ring-2'
+                : ''}">
+              <div class="card-body p-4">
+                <div class="flex items-center justify-between">
+                  <!-- Left side: Rank and Member info -->
+                  <div class="flex items-center gap-4">
+                    <!-- Rank -->
+                    <div class="flex-shrink-0">
                       {#if index === 0}
-                        <span class="text-2xl">🥇</span>
+                        <span class="text-3xl">🥇</span>
                       {:else if index === 1}
-                        <span class="text-2xl">🥈</span>
+                        <span class="text-3xl">🥈</span>
                       {:else if index === 2}
-                        <span class="text-2xl">🥉</span>
+                        <span class="text-3xl">🥉</span>
                       {:else}
-                        <span class="text-lg font-bold">#{index + 1}</span>
+                        <div
+                          class="bg-base-200 flex h-12 w-12 items-center justify-center rounded-full">
+                          <span class="text-lg font-bold">#{index + 1}</span>
+                        </div>
                       {/if}
                     </div>
-                  </td>
-                  <td>
+
+                    <!-- Member info -->
                     <div class="flex items-center gap-3">
                       <AvatarGraphic
                         thumbnail={member.thumbnail}
@@ -306,26 +305,24 @@
                         {/if}
                       </div>
                     </div>
-                  </td>
-                  <td>
+                  </div>
+
+                  <!-- Right side: Stats -->
+                  <div class="flex flex-wrap items-center justify-end gap-2">
                     <div class="badge badge-primary badge-lg font-bold">
                       {member.totalCompleted}
                     </div>
-                  </td>
-                  <td>
                     <div class="badge badge-ghost">
-                      {member.completedChores}
+                      {member.completedChores} chores
                     </div>
-                  </td>
-                  <td>
                     <div class="badge badge-ghost">
-                      {member.completedTodos}
+                      {member.completedTodos} todos
                     </div>
-                  </td>
-                </tr>
-              {/each}
-            </tbody>
-          </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          {/each}
         </div>
       </div>
     </div>
