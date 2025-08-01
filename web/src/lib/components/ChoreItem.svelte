@@ -69,6 +69,15 @@
     )
   );
 
+  let lastDone: Date = $derived(new Date(last_done));
+  let daysSinceLastDone: number | undefined = $derived(
+    last_done === ""
+      ? undefined
+      : Math.floor(
+          (new Date().getTime() - lastDone.getTime()) / (1000 * 3600 * 24)
+        )
+  );
+
   let checkboxState = $state(false);
 
   const handleChecked = async ({}) => {
@@ -114,7 +123,7 @@
     </div>
 
     <div
-      class="justify-left mt-0 flex h-fit grow flex-col gap-1 pt-0 pr-2 pl-4 text-left">
+      class="justify-left mt-0 flex h-fit grow flex-col gap-1 pl-4 pr-2 pt-0 text-left">
       <div class="flex flex-row items-center gap-2">
         <div
           class={`badge  h-6 items-center gap-1 text-white ${roomConfig ? roomConfig.color : defaultRoomConfig?.color}`}>
@@ -174,6 +183,15 @@
         <h2
           class="mt-0 flex items-start pt-0 text-xs font-medium text-neutral-500">
           {frequencyDescription}
+          {#if daysSinceLastDone !== undefined}
+            {#if daysSinceLastDone === 0}
+              - last done today
+            {:else if daysSinceLastDone === 1}
+              - last done yesterday
+            {:else}
+              - last done {daysSinceLastDone} days ago
+            {/if}
+          {/if}
         </h2>
       </div>
     </div>

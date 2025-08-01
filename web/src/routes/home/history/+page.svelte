@@ -1,13 +1,7 @@
 <script lang="ts">
-  import AvatarGraphic from "$lib/components/AvatarGraphic.svelte";
+  import ActivityTimelineItem from "$lib/components/ActivityTimelineItem.svelte";
   import type { PageData } from "./$types";
-  import {
-    ChevronLeft,
-    ReminderIcon,
-    TodoIcon,
-    ChoresIcon,
-    GeneralIcon
-  } from "$lib/utils/icons";
+  import { ChevronLeft } from "$lib/utils/icons";
 
   let { data }: { data: PageData } = $props();
 
@@ -40,66 +34,6 @@
   });
 
   // Helper functions
-  function getEventIcon(eventType: string): string {
-    switch (eventType) {
-      case "completed":
-        return "✅";
-      case "created":
-        return "➕";
-      case "deleted":
-        return "🗑️";
-      default:
-        return "📝";
-    }
-  }
-
-  function getEventColor(eventType: string): string {
-    switch (eventType) {
-      case "completed":
-        return "text-success";
-      case "created":
-        return "text-info";
-      case "deleted":
-        return "text-error";
-      default:
-        return "text-base-content";
-    }
-  }
-
-  function getItemTypeIcon(itemType: string): string {
-    switch (itemType) {
-      case "chore":
-        return "🧹";
-      case "todo":
-        return "📋";
-      case "reminder":
-        return "⏰";
-      default:
-        return "📝";
-    }
-  }
-
-  function getItemTypeColor(itemType: string): string {
-    switch (itemType) {
-      case "chore":
-        return "badge-warning";
-      case "todo":
-        return "badge-primary";
-      case "reminder":
-        return "badge-secondary";
-      default:
-        return "badge-neutral";
-    }
-  }
-
-  function formatTime(dateString: string): string {
-    return new Date(dateString).toLocaleTimeString("en-US", {
-      hour: "numeric",
-      minute: "2-digit",
-      hour12: true
-    });
-  }
-
   function formatDate(dateString: string): string {
     return new Date(dateString).toLocaleDateString("en-US", {
       weekday: "long",
@@ -107,24 +41,6 @@
       month: "long",
       day: "numeric"
     });
-  }
-
-  function getEventDescription(event: History): string {
-    const action = event.event_type;
-    const itemType = event.item_type;
-    const itemName =
-      event.item_data || `${itemType} #${event.item_id.substring(0, 8)}`;
-
-    switch (action) {
-      case "completed":
-        return `completed ${itemType}`;
-      case "created":
-        return `created new ${itemType}`;
-      case "deleted":
-        return `deleted ${itemType}`;
-      default:
-        return `${action} ${itemType}`;
-    }
   }
 </script>
 
@@ -196,61 +112,7 @@
 
               <div class="space-y-3">
                 {#each events as event}
-                  <div
-                    class="bg-base-300 hover:bg-base-100 flex items-center gap-4 rounded-lg p-3 transition-colors">
-                    <!-- Time -->
-                    <div class="text-base-content/70 w-20 font-mono text-sm">
-                      {formatTime(event.created_on)}
-                    </div>
-
-                    <!-- Event Icon -->
-                    <div class="text-2xl">
-                      {getEventIcon(event.event_type)}
-                    </div>
-
-                    <!-- User Avatar -->
-                    <div class="avatar">
-                      <AvatarGraphic
-                        thumbnail={event.user?.thumbnail || ""}
-                        height="h-10"
-                        width="w-10"
-                        textSize="text-xs" />
-                    </div>
-
-                    <!-- Event Details -->
-                    <div class="flex-1">
-                      <div class="flex flex-wrap items-center gap-2">
-                        <span class="font-medium">
-                          {event.user?.first_name}
-                          {event.user?.last_name}
-                        </span>
-                        <span class={getEventColor(event.event_type)}>
-                          {getEventDescription(event)}
-                        </span>
-                        <div
-                          class=" badge gap-1 {getItemTypeColor(
-                            event.item_type
-                          )} badge-sm">
-                          {#if event.item_type === "reminder"}
-                            <ReminderIcon class="h-3 w-3  opacity-50" />
-                          {:else if event.item_type === "todo"}
-                            <TodoIcon class="h-3 w-3  opacity-50" />
-                          {:else if event.item_type === "chore"}
-                            <ChoresIcon class="h-3 w-3  opacity-50" />
-                          {:else}
-                            <GeneralIcon class="h-3 w-3 opacity-50" />
-                          {/if}
-                          {event.item_type}
-                        </div>
-                      </div>
-
-                      {#if event.item_data}
-                        <div class="text-base-content/70 mt-1 text-sm">
-                          "{event.item_data}"
-                        </div>
-                      {/if}
-                    </div>
-                  </div>
+                  <ActivityTimelineItem {event} />
                 {/each}
               </div>
             </div>
