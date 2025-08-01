@@ -15,7 +15,6 @@
       window.matchMedia("(display-mode: standalone)").matches ||
       (window.navigator as any).standalone;
   }
-  isWebApp = true;
   setContext("webapp", isWebApp);
 
   let isPageLoaded = $state(false);
