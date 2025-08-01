@@ -38,7 +38,10 @@
             <a
               href={item.url}
               target={item.target}
-              class="flex flex-col gap-0 p-0 font-mono text-xs">
+              class="flex flex-col gap-0 p-0 font-mono text-xs"
+              style="text-decoration: none !important; background-color: transparent !important; color: inherit !important; outline: none !important;"
+              onmousedown={(e) => e.preventDefault()}
+              onmouseup={(e) => e.preventDefault()}>
               <item.icon class="h-6 w-6" />{item.title}
             </a>
           {/if}

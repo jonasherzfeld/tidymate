@@ -28,12 +28,11 @@
   function handleClick() {
     isDrawerOpen = !isDrawerOpen;
   }
-  const HEADER_HIGHT = "4rem";
 </script>
 
 <div class="flex flex-col">
   <div
-    class={`text-shade-500 navbar border-base-300 bg-base-300 sticky top-0 z-10 ml-0 h-fit w-full border-b border-solid shadow-md ${isWebApp ? "pt-12" : ""}`}>
+    class={`text-shade-500 navbar border-base-300 bg-base-300 sticky top-0 z-10 ml-0 h-fit w-full border-b border-solid shadow-md ${isWebApp ? "pt-safe-top" : ""}`}>
     <div class={`m-0 flex w-fit p-0 ${isWebApp ? "hidden" : ""}`}>
       <button
         onclick={handleClick}
@@ -61,7 +60,7 @@
       <label for="my-drawer-2" aria-label="close sidebar" class="drawer-overlay"
       ></label>
       <ul
-        class={`menu border-neutral bg-base-200 h-[calc(100vh-4rem)] w-80 justify-between  overflow-y-auto border-r-[1px]  ${isWebApp ? "pt-12" : ""}`}>
+        class={`menu border-neutral bg-base-200 h-[calc(100vh-4rem)] w-80 justify-between  overflow-y-auto border-r-[1px]  ${isWebApp ? "pt-safe-top" : ""}`}>
         <!-- Sidebar content here -->
         <div class="mt-4 lg:hidden">
           {#if menuRestriction.includes("logged_in")}
@@ -75,7 +74,7 @@
             publicType="private"
             {handleClick} />
           {#if menuRestriction.includes("house_member")}
-            <div class="mt-6 ml-3 font-mono">
+            <div class="ml-3 mt-6 font-mono">
               <span>House</span>
             </div>
           {/if}
@@ -96,7 +95,7 @@
             restricted={menuRestriction}
             publicType="private" />
           {#if menuRestriction.includes("house_member")}
-            <div class="mt-6 ml-3 font-mono">
+            <div class="ml-3 mt-6 font-mono">
               <span>House</span>
             </div>
           {/if}

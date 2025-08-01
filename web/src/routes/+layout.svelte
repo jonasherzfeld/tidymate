@@ -15,6 +15,7 @@
       window.matchMedia("(display-mode: standalone)").matches ||
       (window.navigator as any).standalone;
   }
+  isWebApp = true;
   setContext("webapp", isWebApp);
 
   let isPageLoaded = $state(false);
@@ -31,12 +32,14 @@
 <Sidebar>
   <div
     class={cn(
-      "flex  min-w-full grow",
-      isWebApp ? "min-h-[78.5vh]" : "min-h-[90vh]"
+      "flex min-w-full grow",
+      isWebApp
+        ? "min-h-main-content pb-webapp-menu"
+        : "min-h-main-content-desktop"
     )}>
     {@render children?.()}
   </div>
-  {#if isWebApp}
-    <WebAppMenuBar />
-  {/if}
 </Sidebar>
+{#if isWebApp}
+  <WebAppMenuBar />
+{/if}

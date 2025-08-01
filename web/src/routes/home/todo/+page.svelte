@@ -160,7 +160,7 @@
     </div>
   </div>
   <div
-    class={`card border-base-100 bg-base-300 sticky flex w-full rounded-lg border-2 p-2 ${isWebApp ? "bottom-24" : "bottom-3"}`}>
+    class={`card border-base-100 bg-base-300 sticky mb-3 flex w-full rounded-lg border-2 p-2`}>
     <form method="POST" use:enhance={handleSubmit}>
       <div class="flex flex-row flex-wrap gap-2">
         <input
