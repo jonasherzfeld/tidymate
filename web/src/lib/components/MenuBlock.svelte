@@ -25,7 +25,7 @@
   {#if item.position.includes(position)}
     {#if publicType === undefined || item.publicType.includes(publicType)}
       {#if restricted.includes(item.restricted) || item.restricted === ("none" as RestrictionType)}
-        <li class="text-base">
+        <li class="gap-8 text-base">
           {#if !buttonView}
             {#if handleClick}
               <a href={item.url} target={item.target} onclick={handleClick}
@@ -34,11 +34,21 @@
               <a href={item.url} target={item.target}
                 ><item.icon />{item.title}</a>
             {/if}
+          {:else if position === "menu_mid"}
+            <a
+              href={item.url}
+              target={item.target}
+              class="btn-square bg-primary flex h-12 w-12 flex-col gap-0 p-1 text-xs font-light"
+              style="text-decoration: none !important; color: inherit !important; outline: none !important;"
+              onmousedown={(e) => e.preventDefault()}
+              onmouseup={(e) => e.preventDefault()}>
+              <item.icon class="h-6 w-6" />{item.title}
+            </a>
           {:else}
             <a
               href={item.url}
               target={item.target}
-              class="flex flex-col gap-0 p-0 font-mono text-xs"
+              class=" flex w-12 flex-col gap-0 p-1 text-xs font-light"
               style="text-decoration: none !important; background-color: transparent !important; color: inherit !important; outline: none !important;"
               onmousedown={(e) => e.preventDefault()}
               onmouseup={(e) => e.preventDefault()}>

@@ -15,7 +15,8 @@ import {
   SignIn,
   SignOut,
   TodoIcon,
-  UserCircleOutline
+  UserCircleOutline,
+  StatisticsIcon
 } from "$lib/utils/icons";
 import type { Component } from "svelte";
 
@@ -49,7 +50,9 @@ export type RouteLinkPosition =
   | "header_right"
   | "drawer_top"
   | "drawer_bottom"
-  | "menu"
+  | "menu_left"
+  | "menu_mid"
+  | "menu_right"
   | "avatar_dropdown";
 export type RestrictionType =
   | "none"
@@ -74,8 +77,27 @@ export const ROUTE_MAPPING: RouteMap[] = [
   {
     url: "/home",
     title: "Home",
-    position: ["menu"],
+    position: ["menu_mid"],
     icon: HouseIcon,
+    restricted: "house_member",
+    publicType: "public",
+    target: ""
+  },
+
+  {
+    url: "/home/history",
+    title: "History",
+    position: [],
+    icon: HouseIcon,
+    restricted: "house_member",
+    publicType: "public",
+    target: ""
+  },
+  {
+    url: "/home/stats",
+    title: "Statistics",
+    position: ["drawer_top", "menu_left"],
+    icon: StatisticsIcon,
     restricted: "house_member",
     publicType: "public",
     target: ""
@@ -83,7 +105,7 @@ export const ROUTE_MAPPING: RouteMap[] = [
   {
     url: "/home/reminders",
     title: "Reminders",
-    position: ["header_left", "drawer_top", "menu"],
+    position: ["header_left", "drawer_top", "menu_left"],
     icon: ReminderIcon,
     restricted: "house_member",
     publicType: "private",
@@ -92,7 +114,7 @@ export const ROUTE_MAPPING: RouteMap[] = [
   {
     url: "/home/todo",
     title: "Todos",
-    position: ["header_left", "drawer_top", "menu"],
+    position: ["header_left", "drawer_top", "menu_right"],
     icon: TodoIcon,
     restricted: "house_member",
     publicType: "public",
@@ -101,17 +123,8 @@ export const ROUTE_MAPPING: RouteMap[] = [
   {
     url: "/home/chores",
     title: "Chores",
-    position: ["header_left", "drawer_top", "menu"],
+    position: ["header_left", "drawer_top", "menu_right"],
     icon: ChoresIcon,
-    restricted: "house_member",
-    publicType: "public",
-    target: ""
-  },
-  {
-    url: "/home/history",
-    title: "History",
-    position: [],
-    icon: HouseIcon,
     restricted: "house_member",
     publicType: "public",
     target: ""

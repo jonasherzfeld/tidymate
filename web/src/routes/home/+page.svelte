@@ -114,9 +114,6 @@
           <h2 class="card-title justify-center text-center">
             Your Personal Stats
           </h2>
-          <a href="/home/history" class="btn btn-outline btn-sm">
-            View History
-          </a>
         </div>
         <div
           class="stats stats-vertical bg-base-300 md:stats-horizontal shadow">
