@@ -44,7 +44,7 @@
     </label>
     <div
       role="tabpanel"
-      class="tab-content bg-base-100 border-base-300 rounded-box p-6">
+      class="tab-content bg-base-100 border-base-300 rounded-box 0 p-6">
       <ChoreStats {data} />
     </div>
 

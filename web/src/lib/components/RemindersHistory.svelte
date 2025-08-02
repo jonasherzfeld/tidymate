@@ -1,11 +1,11 @@
 <script lang="ts">
   import ActivityTimelineItem from "$lib/components/ActivityTimelineItem.svelte";
-  import type { PageData } from "../../routes/home/chores/$types";
+  import type { PageData } from "../../routes/home/reminders/$types";
 
   let { data }: { data: PageData } = $props();
 
   const history: History[] = $derived(
-    (data.history || []).filter((h) => h.item_type === "chore")
+    (data.history || []).filter((h) => h.item_type === "reminder")
   );
 
   // Group history by date

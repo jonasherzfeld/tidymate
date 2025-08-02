@@ -19,7 +19,5 @@
       chores={data.chores} />
 
     <ChoresChart chores={data.chores} history={data.history} />
-
-    <RemindersChart reminders={data.reminders} history={data.history} />
   </div>
 </div>
