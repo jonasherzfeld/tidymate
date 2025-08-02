@@ -25,8 +25,8 @@
     return getUsernameById(value, data.house.members);
   };
 
-  onMount(async () => {
-    const todos = await data.streamed.chore_list;
+  onMount(() => {
+    const todos = data.chores;
     choreState.items = todos;
     initializeFilterValues<Chore>(choreState.filters, choreState.items);
   });
