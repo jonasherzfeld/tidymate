@@ -12,7 +12,7 @@ import { message, superValidate } from "sveltekit-superforms";
 import { zod } from "sveltekit-superforms/adapters";
 
 async function get_house_members(cookies: Cookies): Promise<User[]> {
-  let requestInitOptions: RequestInit = {
+  const requestInitOptions: RequestInit = {
     method: "GET",
     credentials: "include",
     headers: {
@@ -69,7 +69,7 @@ export const actions = {
 
     if (!nameForm.valid) return fail(400, { nameForm });
 
-    let requestInitOptions: RequestInit = {
+    const requestInitOptions: RequestInit = {
       method: "PATCH",
       credentials: "include",
       headers: {
@@ -106,7 +106,7 @@ export const actions = {
 
     if (!cityForm.valid) return fail(400, { cityForm });
 
-    let requestInitOptions: RequestInit = {
+    const requestInitOptions: RequestInit = {
       method: "PATCH",
       credentials: "include",
       headers: {
@@ -143,7 +143,7 @@ export const actions = {
 
     if (!countryForm.valid) return fail(400, { countryForm });
 
-    let requestInitOptions: RequestInit = {
+    const requestInitOptions: RequestInit = {
       method: "PATCH",
       credentials: "include",
       headers: {
@@ -180,7 +180,7 @@ export const actions = {
 
     if (!roomForm.valid) return fail(400, { roomForm });
 
-    let requestInitOptions: RequestInit = {
+    const requestInitOptions: RequestInit = {
       method: "PATCH",
       credentials: "include",
       headers: {
@@ -215,7 +215,7 @@ export const actions = {
 
     if (!roomForm.valid) return fail(400, { roomForm });
 
-    let requestInitOptions: RequestInit = {
+    const requestInitOptions: RequestInit = {
       method: "PATCH",
       credentials: "include",
       headers: {
@@ -248,7 +248,7 @@ export const actions = {
   toggle_join_id: async ({ request, locals, cookies }) => {
     const joinIdForm = await superValidate(request, zod(houseJoinIdSchema));
 
-    let requestInitOptions: RequestInit = {
+    const requestInitOptions: RequestInit = {
       method: "POST",
       credentials: "include",
       headers: {
@@ -286,7 +286,7 @@ export const actions = {
     const user_id = String(formData.get("user_id"));
     const is_admin = Boolean(formData.get("is_admin"));
 
-    let requestInitOptions: RequestInit = {
+    const requestInitOptions: RequestInit = {
       method: "PATCH",
       credentials: "include",
       headers: {

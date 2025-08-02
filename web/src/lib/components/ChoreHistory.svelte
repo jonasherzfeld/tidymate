@@ -1,7 +1,6 @@
 <script lang="ts">
   import ActivityTimelineItem from "$lib/components/ActivityTimelineItem.svelte";
   import type { PageData } from "../../routes/home/chores/$types";
-  import { ChevronLeft } from "$lib/utils/icons";
 
   let { data }: { data: PageData } = $props();
 

@@ -5,7 +5,6 @@
   import { superForm } from "sveltekit-superforms";
   import type { PageData } from "./$types";
   import HouseMemberTable from "$lib/components/HouseMemberTable.svelte";
-  import { EditIcon, DeleteIcon, SubmitIcon } from "$lib/utils/icons";
 
   let { data }: { data: PageData } = $props();
   const {
@@ -66,34 +65,6 @@
     }
   );
 
-  const { errors: newRoomErrors, enhance: newRoomEnhance } = superForm(
-    data.newRoomForm,
-    {
-      invalidateAll: false,
-      resetForm: false,
-      onSubmit: async () => {
-        creatingRoom = true;
-      },
-      onUpdate: async ({ form }) => {
-        creatingRoom = false;
-      }
-    }
-  );
-
-  const { errors: editRoomErrors, enhance: editRoomEnhance } = superForm(
-    data.editRoomForm,
-    {
-      invalidateAll: false,
-      resetForm: false,
-      onSubmit: async () => {
-        editingRoom = true;
-      },
-      onUpdate: async ({ form }) => {
-        editingRoom = false;
-      }
-    }
-  );
-
   let serverErrors: string = $state("");
   let editName: boolean = $state(false);
   let editCountry: boolean = $state(false);
@@ -101,11 +72,6 @@
   let creatingName: boolean = $state(false);
   let creatingCountry: boolean = $state(false);
   let creatingCity: boolean = $state(false);
-
-  let listOfRooms: string[] = data.house.rooms;
-  let creatingRoom: boolean = $state(false);
-  let editingRoom: boolean = $state(false);
-  let editedRoomName: string = $state("");
 </script>
 
 <div class="flex min-w-full flex-1 flex-col">

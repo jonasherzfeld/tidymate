@@ -40,7 +40,7 @@
   let deadlineErrorDate: Date = new Date();
   deadlineErrorDate.setDate(new Date().getDate() + 0);
 
-  const handleChecked = async ({}) => {
+  const handleChecked = async () => {
     return async ({ result, update }) => {
       if (result.status !== 200) {
         update();
@@ -48,7 +48,7 @@
     };
   };
 
-  const handleRemove = async ({}) => {
+  const handleRemove = async () => {
     return async ({ result, update }) => {
       if (result.status === 200) {
         onRemove();
@@ -81,7 +81,7 @@
       </form>
     </div>
 
-    <div class="justify-left mt-0 h-fit grow pt-0 pr-2 pl-4 text-left">
+    <div class="justify-left mt-0 h-fit grow pl-4 pr-2 pt-0 text-left">
       <h2 class={`mt-0 flex items-start pt-0 ${done ? "text-primary" : ""}`}>
         {data}
       </h2>

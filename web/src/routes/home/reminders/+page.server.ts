@@ -4,7 +4,7 @@ import { fail } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types.js";
 
 async function get_reminders(cookies: Cookies): Promise<Reminder[]> {
-  let requestInitOptions: RequestInit = {
+  const requestInitOptions: RequestInit = {
     method: "GET",
     credentials: "include",
     headers: {
@@ -48,7 +48,7 @@ export const actions = {
       return fail(400, { errors: "Invalid Reminder ID" });
     }
 
-    let requestInitOptions: RequestInit = {
+    const requestInitOptions: RequestInit = {
       method: "DELETE",
       credentials: "include",
       headers: {
@@ -83,7 +83,7 @@ export const actions = {
       return fail(400, { errors: "Invalid Reminder ID" });
     }
 
-    let requestInitOptions: RequestInit = {
+    const requestInitOptions: RequestInit = {
       method: "PATCH",
       credentials: "include",
       headers: {

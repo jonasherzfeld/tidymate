@@ -4,7 +4,7 @@ import { fail } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types.js";
 
 async function get_todos(cookies: Cookies): Promise<Todo[]> {
-  let requestInitOptions: RequestInit = {
+  const requestInitOptions: RequestInit = {
     method: "GET",
     credentials: "include",
     headers: {
@@ -48,7 +48,7 @@ export const actions = {
       return fail(400, { errors: "Nothing submitted" });
     }
 
-    let requestInitOptions: RequestInit = {
+    const requestInitOptions: RequestInit = {
       method: "POST",
       credentials: "include",
       headers: {
@@ -83,7 +83,7 @@ export const actions = {
       return fail(400, { errors: "Invalid Todo ID" });
     }
 
-    let requestInitOptions: RequestInit = {
+    const requestInitOptions: RequestInit = {
       method: "DELETE",
       credentials: "include",
       headers: {
@@ -117,7 +117,7 @@ export const actions = {
       return fail(400, { errors: "Invalid Todo ID" });
     }
 
-    let requestInitOptions: RequestInit = {
+    const requestInitOptions: RequestInit = {
       method: "PATCH",
       credentials: "include",
       headers: {

@@ -4,7 +4,7 @@ import { fail } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types.js";
 
 async function get_chores(cookies: Cookies): Promise<Chore[]> {
-  let requestInitOptions: RequestInit = {
+  const requestInitOptions: RequestInit = {
     method: "GET",
     credentials: "include",
     headers: {
@@ -32,7 +32,7 @@ async function get_chores(cookies: Cookies): Promise<Chore[]> {
 }
 
 async function get_history(cookies: Cookies): Promise<History[]> {
-  let requestInitOptions: RequestInit = {
+  const requestInitOptions: RequestInit = {
     method: "GET",
     credentials: "include",
     headers: {
@@ -75,7 +75,7 @@ export const actions = {
       return fail(400, { errors: "Invalid Chore ID" });
     }
 
-    let requestInitOptions: RequestInit = {
+    const requestInitOptions: RequestInit = {
       method: "DELETE",
       credentials: "include",
       headers: {
@@ -110,7 +110,7 @@ export const actions = {
       return fail(400, { errors: "Invalid Chore ID" });
     }
 
-    let requestInitOptions: RequestInit = {
+    const requestInitOptions: RequestInit = {
       method: "PATCH",
       credentials: "include",
       headers: {

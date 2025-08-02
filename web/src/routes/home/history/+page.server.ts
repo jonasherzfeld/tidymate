@@ -3,7 +3,7 @@ import type { Cookies } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types.js";
 
 async function get_history(cookies: Cookies): Promise<History[]> {
-  let requestInitOptions: RequestInit = {
+  const requestInitOptions: RequestInit = {
     method: "GET",
     credentials: "include",
     headers: {

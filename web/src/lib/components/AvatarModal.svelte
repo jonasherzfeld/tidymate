@@ -6,7 +6,7 @@
   let {
     showModal = $bindable()
   }: {
-    showModal: Boolean;
+    showModal: boolean;
   } = $props();
 
   let dialog: HTMLDialogElement;

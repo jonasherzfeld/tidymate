@@ -109,7 +109,7 @@
         </div>
       {:then}
         <div class="flex flex-1 flex-col gap-2">
-          {#each choreState.filteredSortedItems as chore, id}
+          {#each choreState.filteredSortedItems as chore}
             <ChoreItem
               {...chore}
               onChange={(d: string) => {

@@ -1,6 +1,5 @@
 <script lang="ts">
   import { BarChart } from "$lib/utils/charts.svelte";
-  import { ROOM_CONFIG } from "$lib/utils/constants";
 
   let {
     chores,

@@ -1,5 +1,4 @@
 <script lang="ts">
-  import AvatarGraphic from "$lib/components/AvatarGraphic.svelte";
   import {
     ReminderIcon,
     TodoIcon,
@@ -60,8 +59,6 @@
   function getEventDescription(event: History): string {
     const action = event.event_type;
     const itemType = event.item_type;
-    const itemName =
-      event.item_data || `${itemType} #${event.item_id.substring(0, 8)}`;
 
     switch (action) {
       case "completed":
@@ -90,7 +87,7 @@
 
   <!-- Main Content -->
   <div
-    class="justify-left mt-0 flex h-fit grow flex-col gap-0.5 pt-0 pr-2 pl-4 text-left">
+    class="justify-left mt-0 flex h-fit grow flex-col gap-0.5 pl-4 pr-2 pt-0 text-left">
     <!-- First Row: Item Type Badge -->
     <div class="flex flex-row items-center">
       <div
