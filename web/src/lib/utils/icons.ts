@@ -1,5 +1,4 @@
 // @ts-nocheck
-import StatisticsIcon from "virtual:icons/bxs/chart";
 import RedoIcon from "virtual:icons/fluent/approvals-app-32-filled";
 import ReloadIcon from "virtual:icons/fluent/arrow-clockwise-24-filled";
 import SortIcon from "virtual:icons/fluent/arrow-sort-16-filled";
@@ -39,6 +38,8 @@ import TSIcon from "virtual:icons/skill-icons/typescript";
 import DeleteIcon from "~icons/fluent/delete-12-filled";
 import HouseCircleOutline from "~icons/mdi/house-circle-outline";
 import UserCircleOutline from "~icons/mdi/user-circle-outline";
+import HistoryIcon from "virtual:icons/fluent/chat-history-24-filled";
+import StatisticsIcon from "virtual:icons/fluent/data-histogram-24-filled";
 
 // Room icons
 import BathroomIcon from "virtual:icons/mdi/bathroom";
@@ -99,5 +100,6 @@ export {
   ThemeIcon,
   TodoIcon,
   UserCircleOutline,
-  UserIcon
+  UserIcon,
+  HistoryIcon
 };

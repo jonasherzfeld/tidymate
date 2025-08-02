@@ -10,21 +10,6 @@
 
 {#key data.url}
   <div class="flex min-h-full flex-1">
-    <!-- in:fly={data.url.endsWith('/chore')
-            ? {
-                  x: -pageTransitionDistance,
-                  duration: pageTransitionDuration,
-                  delay: pageTransitionDuration
-              }
-            : {
-                  x: pageTransitionDistance,
-                  duration: pageTransitionDuration,
-                  delay: pageTransitionDuration
-              }}
-        out:fly={data.url.endsWith('/chore')
-            ? { x: pageTransitionDistance, duration: pageTransitionDuration }
-            : { x: -pageTransitionDistance, duration: pageTransitionDuration }}
-    > -->
     <div class="flex min-h-full w-full flex-1 items-start justify-center">
       <div
         class="flex min-h-full max-w-screen-sm grow justify-center p-4 text-center">
