@@ -48,7 +48,7 @@
 <div class="flex w-full max-w-screen-lg flex-1 flex-col justify-center gap-5">
   {#if history.length === 0}
     <div class="card bg-base-200 shadow">
-      <div class="card-body text-center">
+      <div class="card-body p-3 text-center">
         <div class="mb-4 text-6xl">📋</div>
         <h2 class="card-title justify-center">No Activity Yet</h2>
         <p>
@@ -59,29 +59,28 @@
   {:else}
     <!-- Statistics Summary -->
     <div class="card bg-base-200 shadow">
-      <div class="card-body">
+      <div class="card-body p-3">
         <h2 class="card-title mb-4">Summary</h2>
-        <div
-          class="stats stats-vertical md:stats-horizontal bg-base-300 shadow">
-          <div class="stat">
-            <div class="stat-title">Total Events</div>
-            <div class="stat-value text-primary">{history.length}</div>
+        <div class="stats stats-horizontal bg-base-300 p-0 pt-2 shadow">
+          <div class="stat m-0 min-w-12 p-0">
+            <div class="m-0 p-0 text-xs">Total</div>
+            <div class="stat-value text-primary m-0 p-0">{history.length}</div>
           </div>
-          <div class="stat">
-            <div class="stat-title">Completed</div>
-            <div class="stat-value text-success">
+          <div class="stat m-0 min-w-12 p-0">
+            <div class="m-0 p-0 text-xs">Completed</div>
+            <div class="stat-value text-success m-0 p-0">
               {history.filter((h) => h.event_type === "completed").length}
             </div>
           </div>
-          <div class="stat">
-            <div class="stat-title">Created</div>
-            <div class="stat-value text-info">
+          <div class="stat m-0 min-w-12 p-0">
+            <div class="m-0 p-0 text-xs">Created</div>
+            <div class="stat-value text-info m-0 p-0">
               {history.filter((h) => h.event_type === "created").length}
             </div>
           </div>
-          <div class="stat">
-            <div class="stat-title">Deleted</div>
-            <div class="stat-value text-error">
+          <div class="stat m-0 min-w-12 p-0">
+            <div class="m-0 p-0 text-xs">Deleted</div>
+            <div class="stat-value text-error m-0 p-0">
               {history.filter((h) => h.event_type === "deleted").length}
             </div>
           </div>
@@ -93,7 +92,7 @@
     <div class="space-y-6">
       {#each groupedHistory as { date, events }}
         <div class="card bg-base-200 shadow">
-          <div class="card-body">
+          <div class="card-body p-3">
             <h3 class="mb-4 text-center text-xl font-semibold">
               {formatDate(date)}
             </h3>

@@ -147,6 +147,7 @@
         datasets: categoryDatasets,
         options: {
           responsive: true,
+          maintainAspectRatio: false,
           plugins: {
             legend: {
               position: "top" as const
@@ -166,7 +167,7 @@
           }
         }
       }}
-      class="chart-container">
+      class="chart-container h-72">
     </div>
   </div>
 </div>

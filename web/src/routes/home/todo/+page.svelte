@@ -26,7 +26,7 @@
     </label>
     <div
       role="tabpanel"
-      class="tab-content bg-base-100 border-base-300 rounded-box p-6">
+      class="tab-content bg-base-100 border-base-300 rounded-box p-2">
       <TodoList {data} />
     </div>
 
@@ -44,7 +44,7 @@
     </label>
     <div
       role="tabpanel"
-      class="tab-content bg-base-100 border-base-300 rounded-box p-6">
+      class="tab-content bg-base-100 border-base-300 rounded-box p-2">
       <TodoStats {data} />
     </div>
 
@@ -62,7 +62,7 @@
     </label>
     <div
       role="tabpanel"
-      class="tab-content bg-base-100 border-base-300 rounded-box p-6">
+      class="tab-content bg-base-100 border-base-300 rounded-box p-2">
       <TodoHistory {data} />
     </div>
   </div>

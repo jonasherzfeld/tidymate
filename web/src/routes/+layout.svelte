@@ -11,9 +11,9 @@
 
   let isWebApp: boolean = $state(false);
   if (browser) {
-    isWebApp =
-      window.matchMedia("(display-mode: standalone)").matches ||
-      (window.navigator as any).standalone;
+    isWebApp = true;
+    // window.matchMedia("(display-mode: standalone)").matches ||
+    // (window.navigator as any).standalone;
   }
   setContext("webapp", () => isWebApp);
 
