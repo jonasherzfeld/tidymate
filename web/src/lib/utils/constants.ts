@@ -14,9 +14,9 @@ import {
   ReminderIcon,
   SignIn,
   SignOut,
+  StatisticsIcon,
   TodoIcon,
-  UserCircleOutline,
-  StatisticsIcon
+  UserCircleOutline
 } from "$lib/utils/icons";
 import type { Component } from "svelte";
 

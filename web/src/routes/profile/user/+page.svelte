@@ -24,7 +24,7 @@
     isImgHover = value;
   };
 
-  const isWebApp: boolean = getContext("webapp");
+  const isWebApp: boolean = getContext<() => boolean>("webapp")();
 
   const { enhance: emailEnhance, errors: emailErrors } = superForm(
     data.emailForm,

@@ -12,7 +12,7 @@
 </script>
 
 <ul
-  class="menu menu-horizontal h-webapp-menu bg-base-300 fixed bottom-0 left-0 right-0 z-20 w-full justify-between gap-5 border-t-[1px] pl-5 pr-5 shadow-md">
+  class="menu menu-horizontal h-webapp-menu bg-base-300 fixed right-0 bottom-0 left-0 z-20 w-full justify-between gap-5 border-t-[1px] pr-5 pl-5 shadow-md">
   <MenuBlock
     restricted={restrictionType}
     position={"menu_left"}
