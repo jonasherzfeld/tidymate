@@ -13,16 +13,5 @@
 
 <ul
   class="menu menu-horizontal h-webapp-menu bg-base-300 fixed right-0 bottom-0 left-0 z-20 w-full justify-between gap-5 border-t-[1px] pr-5 pl-5 shadow-md">
-  <MenuBlock
-    restricted={restrictionType}
-    position={"menu_left"}
-    buttonView={true} />
-  <MenuBlock
-    restricted={restrictionType}
-    position={"menu_mid"}
-    buttonView={true} />
-  <MenuBlock
-    restricted={restrictionType}
-    position={"menu_right"}
-    buttonView={true} />
+  <MenuBlock restricted={restrictionType} position={"menu"} buttonView={true} />
 </ul>

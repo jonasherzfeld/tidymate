@@ -30,7 +30,7 @@
     </label>
     <div
       role="tabpanel"
-      class="tab-content bg-base-100 border-base-300 rounded-box p-6">
+      class="tab-content bg-base-100 border-base-300 rounded-box p-2">
       <ReminderList {data} />
     </div>
 
@@ -48,7 +48,7 @@
     </label>
     <div
       role="tabpanel"
-      class="tab-content bg-base-100 border-base-300 rounded-box p-6">
+      class="tab-content bg-base-100 border-base-300 rounded-box p-2">
       <RemindersStats {data} />
     </div>
 
@@ -66,7 +66,7 @@
     </label>
     <div
       role="tabpanel"
-      class="tab-content bg-base-100 border-base-300 rounded-box p-6">
+      class="tab-content bg-base-100 border-base-300 rounded-box p-2">
       <RemindersHistory {data} />
     </div>
   </div>

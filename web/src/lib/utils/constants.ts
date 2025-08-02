@@ -14,7 +14,6 @@ import {
   ReminderIcon,
   SignIn,
   SignOut,
-  StatisticsIcon,
   TodoIcon,
   UserCircleOutline
 } from "$lib/utils/icons";
@@ -50,9 +49,7 @@ export type RouteLinkPosition =
   | "header_right"
   | "drawer_top"
   | "drawer_bottom"
-  | "menu_left"
-  | "menu_mid"
-  | "menu_right"
+  | "menu"
   | "avatar_dropdown";
 export type RestrictionType =
   | "none"
@@ -77,7 +74,7 @@ export const ROUTE_MAPPING: RouteMap[] = [
   {
     url: "/home",
     title: "Home",
-    position: ["menu_mid"],
+    position: ["menu"],
     icon: HouseIcon,
     restricted: "house_member",
     publicType: "public",
@@ -86,7 +83,7 @@ export const ROUTE_MAPPING: RouteMap[] = [
   {
     url: "/home/reminders",
     title: "Reminders",
-    position: ["header_left", "drawer_top", "menu_left"],
+    position: ["header_left", "drawer_top", "menu"],
     icon: ReminderIcon,
     restricted: "house_member",
     publicType: "private",
@@ -95,7 +92,7 @@ export const ROUTE_MAPPING: RouteMap[] = [
   {
     url: "/home/todo",
     title: "Todos",
-    position: ["header_left", "drawer_top", "menu_right"],
+    position: ["header_left", "drawer_top", "menu"],
     icon: TodoIcon,
     restricted: "house_member",
     publicType: "public",
@@ -104,7 +101,7 @@ export const ROUTE_MAPPING: RouteMap[] = [
   {
     url: "/home/chores",
     title: "Chores",
-    position: ["header_left", "drawer_top", "menu_right"],
+    position: ["header_left", "drawer_top", "menu"],
     icon: ChoresIcon,
     restricted: "house_member",
     publicType: "public",

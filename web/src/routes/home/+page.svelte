@@ -108,9 +108,10 @@
     </h1>
 
     <!-- Personal Statistics Board -->
-    <div class="card bg-base-200 shadow">
-      <div class="card-body">
-        <div class="mb-4 flex items-center justify-between">
+    <div class="card bg-base-200">
+      <div
+        class="card-body tab-content bg-base-100 border-base-300 rounded-box p-2">
+        <div class="flex items-center justify-between">
           <h2 class="card-title justify-center text-center">
             Your Personal Stats
           </h2>
@@ -182,8 +183,9 @@
     </div>
 
     <!-- Household Statistics Board -->
-    <div class="card bg-base-200 shadow">
-      <div class="card-body">
+    <div class="card bg-base-200">
+      <div
+        class="card-body tab-content bg-base-100 border-base-300 rounded-box p-2">
         <h2 class="card-title mb-4 justify-start text-center">
           Household Stats
         </h2>
@@ -257,18 +259,19 @@
     </div>
 
     <!-- Leaderboard -->
-    <div class="card bg-base-300 shadow">
-      <div class="card-body">
+    <div class="card bg-base-300">
+      <div
+        class="card-body tab-content bg-base-100 border-base-300 rounded-box p-2">
         <h2 class="card-title mb-4 justify-start text-center">
           Household Leaderboard
         </h2>
         <div class="space-y-3">
           {#each leaderboard as member, index}
             <div
-              class="card bg-base-100 shadow-sm {member.id === data.user?.id
+              class="card bg-base-300 shadow-sm {member.id === data.user?.id
                 ? 'ring-primary ring-2'
                 : ''}">
-              <div class="card-body p-4">
+              <div class="card-body p-2">
                 <div class="flex items-center justify-between">
                   <!-- Left side: Rank and Member info -->
                   <div class="flex items-center gap-4">
@@ -308,7 +311,8 @@
                   </div>
 
                   <!-- Right side: Stats -->
-                  <div class="flex flex-wrap items-center justify-end gap-2">
+                  <div
+                    class="flex min-w-24 flex-col items-end justify-end gap-2 sm:flex-row">
                     <div class="badge badge-primary badge-lg font-bold">
                       {member.totalCompleted}
                     </div>

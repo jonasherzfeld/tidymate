@@ -26,7 +26,7 @@
     </label>
     <div
       role="tabpanel"
-      class="tab-content bg-base-100 border-base-300 rounded-box p-6">
+      class="tab-content bg-base-100 border-base-300 rounded-box p-2">
       <ChoreList {data} />
     </div>
 
@@ -44,7 +44,7 @@
     </label>
     <div
       role="tabpanel"
-      class="tab-content bg-base-100 border-base-300 rounded-box 0 p-6">
+      class="tab-content bg-base-100 border-base-300 rounded-box p-2">
       <ChoreStats {data} />
     </div>
 
@@ -62,7 +62,7 @@
     </label>
     <div
       role="tabpanel"
-      class="tab-content bg-base-100 border-base-300 rounded-box p-6">
+      class="tab-content bg-base-100 border-base-300 rounded-box p-2">
       <ChoreHistory {data} />
     </div>
   </div>

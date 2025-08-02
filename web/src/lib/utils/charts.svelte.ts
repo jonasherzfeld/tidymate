@@ -9,7 +9,7 @@ export function BarChart(node: HTMLElement, data: any) {
     data: data,
     options: data.options || {
       responsive: true,
-      maintainAspectRatio: true,
+      maintainAspectRatio: false,
       scales: {
         y: {
           beginAtZero: true
