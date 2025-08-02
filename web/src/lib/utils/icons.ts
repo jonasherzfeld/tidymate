@@ -5,12 +5,14 @@ import SortIcon from "virtual:icons/fluent/arrow-sort-16-filled";
 import RoomFilterIcon from "virtual:icons/fluent/bed-16-filled";
 import CalendarIcon from "virtual:icons/fluent/calendar-24-regular";
 import ChoresIcon from "virtual:icons/fluent/calendar-arrow-counterclockwise-48-filled";
+import HistoryIcon from "virtual:icons/fluent/chat-history-24-filled";
 import CheckIcon from "virtual:icons/fluent/checkmark-12-filled";
 import ChevronLeft from "virtual:icons/fluent/chevron-left-28-filled";
 import ChevronRight from "virtual:icons/fluent/chevron-right-28-filled";
 import CircleIcon from "virtual:icons/fluent/circle-20-filled";
 import TextIcon from "virtual:icons/fluent/code-text-16-filled";
 import ThemeIcon from "virtual:icons/fluent/dark-theme-24-filled";
+import StatisticsIcon from "virtual:icons/fluent/data-histogram-24-filled";
 import DocsIcon from "virtual:icons/fluent/document-bullet-list-16-regular";
 import HouseIcon from "virtual:icons/fluent/home-20-filled";
 import InfoIcon from "virtual:icons/fluent/info-12-regular";
@@ -38,8 +40,6 @@ import TSIcon from "virtual:icons/skill-icons/typescript";
 import DeleteIcon from "~icons/fluent/delete-12-filled";
 import HouseCircleOutline from "~icons/mdi/house-circle-outline";
 import UserCircleOutline from "~icons/mdi/user-circle-outline";
-import HistoryIcon from "virtual:icons/fluent/chat-history-24-filled";
-import StatisticsIcon from "virtual:icons/fluent/data-histogram-24-filled";
 
 // Room icons
 import BathroomIcon from "virtual:icons/mdi/bathroom";
@@ -70,6 +70,7 @@ export {
   EmailIcon,
   GeneralIcon,
   GithubIcon,
+  HistoryIcon,
   HouseCircleOutline,
   HouseIcon,
   HtmlIcon,
@@ -100,6 +101,5 @@ export {
   ThemeIcon,
   TodoIcon,
   UserCircleOutline,
-  UserIcon,
-  HistoryIcon
+  UserIcon
 };
