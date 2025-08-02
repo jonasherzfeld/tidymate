@@ -1,11 +1,9 @@
 import Chart from "chart.js/auto";
 
-
-
 export function BarChart(node: HTMLElement, data: any) {
-  const canvas = document.createElement('canvas');
+  const canvas = document.createElement("canvas");
   node.appendChild(canvas);
-  
+
   const chartInstance = new Chart(canvas, {
     type: "bar",
     data: data,
@@ -30,18 +28,17 @@ export function BarChart(node: HTMLElement, data: any) {
 }
 
 export function PieChart(node: HTMLElement, data: any) {
-  const canvas = document.createElement('canvas');
+  const canvas = document.createElement("canvas");
   node.appendChild(canvas);
-  
+
   // Initialize Chart.js on the canvas
   const chartInstance = new Chart(canvas, {
     type: "doughnut",
     data: data,
     options: {
-      responsive: true,
-      }
+      responsive: true
     }
-  );
+  });
 
   // Cleanup function
   return {

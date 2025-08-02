@@ -23,7 +23,7 @@
   let serverErrors: string = $state("");
   let showComplete: boolean = $state(false);
   let newTodoData: string = $state("");
-  const isWebApp: boolean = getContext("webapp");
+  const isWebApp: boolean = getContext<() => boolean>("webapp")();
 
   const todoState: ItemListState<Todo> = $state({
     items: [],

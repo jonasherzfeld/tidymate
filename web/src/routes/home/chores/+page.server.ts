@@ -31,11 +31,38 @@ async function get_chores(cookies: Cookies): Promise<Chore[]> {
   }
 }
 
+async function get_history(cookies: Cookies): Promise<History[]> {
+  let requestInitOptions: RequestInit = {
+    method: "GET",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+      Cookie: `session=${cookies.get("session")}`
+    },
+    signal: AbortSignal.timeout(FETCH_ABORT_TIMEOUT_MS)
+  };
+
+  const res = await fetch(
+    `${BASE_API_URI}/history/get-history`,
+    requestInitOptions
+  );
+
+  if (!res.ok) {
+    return [] as History[];
+  }
+
+  try {
+    const response = await res.json();
+    return response.history;
+  } catch {
+    return [] as History[];
+  }
+}
+
 export const load: PageServerLoad = async ({ cookies }) => {
   return {
-    streamed: {
-      chore_list: get_chores(cookies)
-    }
+    chores: await get_chores(cookies),
+    history: await get_history(cookies)
   };
 };
 
