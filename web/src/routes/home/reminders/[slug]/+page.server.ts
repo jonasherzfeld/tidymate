@@ -10,7 +10,7 @@ async function get_reminder(
   reminderId: string,
   cookies: Cookies
 ): Promise<Reminder> {
-  let requestInitOptions: RequestInit = {
+  const requestInitOptions: RequestInit = {
     method: "GET",
     credentials: "include",
     headers: {
@@ -72,7 +72,7 @@ export const actions = {
 
     if (!createReminderForm.valid) return fail(400, { createReminderForm });
 
-    let requestInitOptions: RequestInit = {
+    const requestInitOptions: RequestInit = {
       method: "POST",
       credentials: "include",
       headers: {
@@ -113,7 +113,7 @@ export const actions = {
     );
     if (!changeReminderForm.valid) return fail(400, { changeReminderForm });
 
-    let requestInitOptions: RequestInit = {
+    const requestInitOptions: RequestInit = {
       method: "PATCH",
       credentials: "include",
       headers: {

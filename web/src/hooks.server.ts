@@ -7,7 +7,7 @@ import {
 import type { RequestEvent } from "@sveltejs/kit";
 import { redirect } from "@sveltejs/kit";
 
-export function isAccessValid(path: String, user: User, house: House): boolean {
+export function isAccessValid(path: string, user: User, house: House): boolean {
   const isProtecteRouteByUser = PROTECTED_ROUTES_USER.filter((option) =>
     path.startsWith(option)
   );

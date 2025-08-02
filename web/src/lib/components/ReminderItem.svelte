@@ -6,10 +6,7 @@
   import DropdownButton from "./dropdown/DropdownTrigger.svelte";
   import DropdownActionItem from "./dropdown/DropdownActionItem.svelte";
   import DropdownLinkItem from "./dropdown/DropdownLinkItem.svelte";
-  import { getUsernameById, getThumbnailById } from "$lib/utils/helpers";
-  import { page } from "$app/stores";
   import { cn } from "$lib/utils";
-  import AvatarGraphic from "./AvatarGraphic.svelte";
   import {
     FREQUENCY_INTERVALS,
     CATEGORY_CONFIG,
@@ -63,7 +60,7 @@
 
   let checkboxState = $state(false);
 
-  const handleChecked = async ({}) => {
+  const handleChecked = async () => {
     return async ({ result, update }) => {
       if (result.status === 200) {
         onChange(result.data.reminder.deadline);
@@ -73,7 +70,7 @@
     };
   };
 
-  const handleRemove = async ({}) => {
+  const handleRemove = async () => {
     return async ({ result, update }) => {
       if (result.status === 200) {
         onRemove();

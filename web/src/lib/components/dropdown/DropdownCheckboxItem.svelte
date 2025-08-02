@@ -1,13 +1,12 @@
 <script lang="ts">
   import type { Snippet } from "svelte";
-  import type { HTMLAttributes } from "svelte/elements";
 
-  interface Props extends HTMLAttributes<any> {
+  interface Props {
     children: Snippet;
     checked: boolean;
     onclick?: () => void;
   }
-  let { children, checked = $bindable(), onclick, ...others }: Props = $props();
+  let { children, checked = $bindable(), onclick }: Props = $props();
 </script>
 
 <li>
@@ -16,9 +15,8 @@
       <input
         type="checkbox"
         bind:checked
-        class="checkbox-primary checkbox checkbox-sm"
-        {...others} />
-      <span class=" ml-3 text-start" {...others}>
+        class="checkbox-primary checkbox checkbox-sm" />
+      <span class=" ml-3 text-start">
         {@render children?.()}
       </span>
     </button>

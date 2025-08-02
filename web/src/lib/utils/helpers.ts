@@ -82,7 +82,7 @@ export function getRouteTitle(url: string | null): string | undefined {
   if (!url) {
     return undefined;
   }
-  let item = ROUTE_MAPPING.find((item) => item.url === url);
+  const item = ROUTE_MAPPING.find((item) => item.url === url);
   return item?.title;
 }
 

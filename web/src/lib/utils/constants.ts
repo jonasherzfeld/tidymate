@@ -14,9 +14,9 @@ import {
   ReminderIcon,
   SignIn,
   SignOut,
+  StatisticsIcon,
   TodoIcon,
-  UserCircleOutline,
-  StatisticsIcon
+  UserCircleOutline
 } from "$lib/utils/icons";
 import type { Component } from "svelte";
 
@@ -79,25 +79,6 @@ export const ROUTE_MAPPING: RouteMap[] = [
     title: "Home",
     position: ["menu_mid"],
     icon: HouseIcon,
-    restricted: "house_member",
-    publicType: "public",
-    target: ""
-  },
-
-  {
-    url: "/home/history",
-    title: "History",
-    position: [],
-    icon: HouseIcon,
-    restricted: "house_member",
-    publicType: "public",
-    target: ""
-  },
-  {
-    url: "/home/stats",
-    title: "Statistics",
-    position: ["drawer_top", "menu_left"],
-    icon: StatisticsIcon,
     restricted: "house_member",
     publicType: "public",
     target: ""

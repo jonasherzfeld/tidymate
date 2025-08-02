@@ -7,7 +7,7 @@ import { zod } from "sveltekit-superforms/adapters";
 import type { PageServerLoad } from "./$types.js";
 
 async function get_todo(todoId: string, cookies: Cookies): Promise<Todo> {
-  let requestInitOptions: RequestInit = {
+  const requestInitOptions: RequestInit = {
     method: "GET",
     credentials: "include",
     headers: {
@@ -47,7 +47,7 @@ export const actions = {
   change_todo: async ({ request, fetch, cookies }) => {
     const changeTodoForm = await superValidate(request, zod(todoItemSchema));
     if (!changeTodoForm.valid) return fail(400, { changeTodoForm });
-    let requestInitOptions: RequestInit = {
+    const requestInitOptions: RequestInit = {
       method: "PATCH",
       credentials: "include",
       headers: {

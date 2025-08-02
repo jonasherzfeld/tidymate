@@ -26,7 +26,7 @@ export const actions = {
     const emailForm = await superValidate(request, zod(emailSchema));
     if (!emailForm.valid) return fail(400, { emailForm });
 
-    let requestInitOptions: RequestInit = {
+    const requestInitOptions: RequestInit = {
       method: "PATCH",
       credentials: "include",
       headers: {
@@ -62,7 +62,7 @@ export const actions = {
     const firstNameForm = await superValidate(request, zod(firstNameSchema));
     if (!firstNameForm.valid) return fail(400, { firstNameForm });
 
-    let requestInitOptions: RequestInit = {
+    const requestInitOptions: RequestInit = {
       method: "PATCH",
       credentials: "include",
       headers: {
@@ -98,7 +98,7 @@ export const actions = {
     const lastNameForm = await superValidate(request, zod(lastNameSchema));
     if (!lastNameForm.valid) return fail(400, { lastNameForm });
 
-    let requestInitOptions: RequestInit = {
+    const requestInitOptions: RequestInit = {
       method: "PATCH",
       credentials: "include",
       headers: {

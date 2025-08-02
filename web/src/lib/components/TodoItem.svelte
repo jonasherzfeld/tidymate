@@ -40,7 +40,7 @@
   let deadlineErrorDate: Date = new Date();
   deadlineErrorDate.setDate(new Date().getDate() + 0);
 
-  const handleChecked = async ({}) => {
+  const handleChecked = async () => {
     return async ({ result, update }) => {
       if (result.status !== 200) {
         update();
@@ -48,7 +48,7 @@
     };
   };
 
-  const handleRemove = async ({}) => {
+  const handleRemove = async () => {
     return async ({ result, update }) => {
       if (result.status === 200) {
         onRemove();

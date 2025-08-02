@@ -15,7 +15,7 @@
     onSubmit: async () => {
       isLoading = true;
     },
-    onUpdate: async ({ form, result }) => {
+    onUpdate: async ({ result }) => {
       isLoading = false;
       serverErrors = result.data.errors;
     }

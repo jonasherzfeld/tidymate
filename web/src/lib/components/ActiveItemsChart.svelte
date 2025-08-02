@@ -1,6 +1,5 @@
 <script lang="ts">
   import { PieChart } from "$lib/utils/charts.svelte";
-
   let {
     todos,
     reminders,

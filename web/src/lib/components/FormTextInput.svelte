@@ -1,8 +1,5 @@
-<script lang="ts" context="module">
-  type T = Record<string, unknown>;
-</script>
-
 <script lang="ts" generics="T extends Record<string, unknown>">
+  type T = Record<string, unknown>;
   import {
     formFieldProxy,
     superForm,
@@ -28,11 +25,7 @@
   } = $props();
 
   const form = superForm(superform);
-  const { value, errors, constraints } = formFieldProxy(form, field);
-
-  let changeModeBg = $derived(
-    editValue ? "bg-neutral text-base-300" : "bg-base-100"
-  );
+  const { value } = formFieldProxy(form, field);
 </script>
 
 <div class="flex flex-col">
