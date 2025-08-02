@@ -31,11 +31,38 @@ async function get_todos(cookies: Cookies): Promise<Todo[]> {
   }
 }
 
+async function get_history(cookies: Cookies): Promise<History[]> {
+  const requestInitOptions: RequestInit = {
+    method: "GET",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+      Cookie: `session=${cookies.get("session")}`
+    },
+    signal: AbortSignal.timeout(FETCH_ABORT_TIMEOUT_MS)
+  };
+
+  const res = await fetch(
+    `${BASE_API_URI}/history/get-history`,
+    requestInitOptions
+  );
+
+  if (!res.ok) {
+    return [] as History[];
+  }
+
+  try {
+    const response = await res.json();
+    return response.history;
+  } catch {
+    return [] as History[];
+  }
+}
+
 export const load: PageServerLoad = async ({ cookies }) => {
   return {
-    streamed: {
-      todo_list: get_todos(cookies)
-    }
+    todos: await get_todos(cookies),
+    history: await get_history(cookies)
   };
 };
 
