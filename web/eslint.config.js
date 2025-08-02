@@ -1,13 +1,18 @@
-import globals from "globals";
 import pluginJs from "@eslint/js";
-import tseslint from "typescript-eslint";
-import pluginSvelte from "eslint-plugin-svelte";
 import prettier from "eslint-config-prettier";
+import pluginSvelte from "eslint-plugin-svelte";
+import globals from "globals";
 import svelteParser from "svelte-eslint-parser";
+import tseslint from "typescript-eslint";
 
 export default [
   {
-    ignores: [".svelte-kit/", "build/"],
+    ignores: [
+      ".svelte-kit/",
+      "build/",
+      "eslint.config.js",
+      "tailwind.config.js"
+    ]
   },
   { languageOptions: { globals: globals.browser } },
   pluginJs.configs.recommended,
@@ -21,13 +26,13 @@ export default [
       parserOptions: {
         parser: tseslint.parser,
         project: "./tsconfig.json",
-        extraFileExtensions: [".svelte"],
-      },
-    },
+        extraFileExtensions: [".svelte"]
+      }
+    }
   },
   {
     rules: {
-      "svelte/no-inner-declarations": "off",
-    },
-  },
+      "svelte/no-inner-declarations": "off"
+    }
+  }
 ];

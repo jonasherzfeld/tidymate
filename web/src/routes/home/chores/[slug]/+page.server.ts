@@ -7,7 +7,7 @@ import { zod } from "sveltekit-superforms/adapters";
 import type { PageServerLoad } from "./$types.js";
 
 async function get_chore(choreId: string, cookies: Cookies): Promise<Chore> {
-  let requestInitOptions: RequestInit = {
+  const requestInitOptions: RequestInit = {
     method: "GET",
     credentials: "include",
     headers: {
@@ -67,7 +67,7 @@ export const actions = {
 
     if (!createChoreForm.valid) return fail(400, { createChoreForm });
 
-    let requestInitOptions: RequestInit = {
+    const requestInitOptions: RequestInit = {
       method: "POST",
       credentials: "include",
       headers: {
@@ -106,7 +106,7 @@ export const actions = {
     const changeChoreForm = await superValidate(request, zod(choreItemSchema));
     if (!changeChoreForm.valid) return fail(400, { changeChoreForm });
 
-    let requestInitOptions: RequestInit = {
+    const requestInitOptions: RequestInit = {
       method: "PATCH",
       credentials: "include",
       headers: {

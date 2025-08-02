@@ -1,6 +1,5 @@
 <script lang="ts">
   import { BarChart } from "$lib/utils/charts.svelte";
-  import { CATEGORY_CONFIG } from "$lib/utils/constants";
 
   let {
     reminders,

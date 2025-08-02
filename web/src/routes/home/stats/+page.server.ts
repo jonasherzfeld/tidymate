@@ -3,7 +3,7 @@ import type { Cookies } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types.js";
 
 async function get_chores(cookies: Cookies): Promise<Chore[]> {
-  let requestInitOptions: RequestInit = {
+  const requestInitOptions: RequestInit = {
     method: "GET",
     credentials: "include",
     headers: {
@@ -31,7 +31,7 @@ async function get_chores(cookies: Cookies): Promise<Chore[]> {
 }
 
 async function get_todos(cookies: Cookies): Promise<Todo[]> {
-  let requestInitOptions: RequestInit = {
+  const requestInitOptions: RequestInit = {
     method: "GET",
     credentials: "include",
     headers: {
@@ -59,7 +59,7 @@ async function get_todos(cookies: Cookies): Promise<Todo[]> {
 }
 
 async function get_reminders(cookies: Cookies): Promise<Reminder[]> {
-  let requestInitOptions: RequestInit = {
+  const requestInitOptions: RequestInit = {
     method: "GET",
     credentials: "include",
     headers: {
@@ -87,7 +87,7 @@ async function get_reminders(cookies: Cookies): Promise<Reminder[]> {
 }
 
 async function get_history(cookies: Cookies): Promise<History[]> {
-  let requestInitOptions: RequestInit = {
+  const requestInitOptions: RequestInit = {
     method: "GET",
     credentials: "include",
     headers: {

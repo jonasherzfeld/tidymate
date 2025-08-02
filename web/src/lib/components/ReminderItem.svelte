@@ -6,10 +6,7 @@
   import DropdownButton from "./dropdown/DropdownTrigger.svelte";
   import DropdownActionItem from "./dropdown/DropdownActionItem.svelte";
   import DropdownLinkItem from "./dropdown/DropdownLinkItem.svelte";
-  import { getUsernameById, getThumbnailById } from "$lib/utils/helpers";
-  import { page } from "$app/stores";
   import { cn } from "$lib/utils";
-  import AvatarGraphic from "./AvatarGraphic.svelte";
   import {
     FREQUENCY_INTERVALS,
     CATEGORY_CONFIG,
@@ -63,7 +60,7 @@
 
   let checkboxState = $state(false);
 
-  const handleChecked = async ({}) => {
+  const handleChecked = async () => {
     return async ({ result, update }) => {
       if (result.status === 200) {
         onChange(result.data.reminder.deadline);
@@ -73,7 +70,7 @@
     };
   };
 
-  const handleRemove = async ({}) => {
+  const handleRemove = async () => {
     return async ({ result, update }) => {
       if (result.status === 200) {
         onRemove();
@@ -106,7 +103,7 @@
     </div>
 
     <div
-      class="justify-left mt-0 flex h-fit grow flex-col gap-1 pt-0 pr-2 pl-4 text-left">
+      class="justify-left mt-0 flex h-fit grow flex-col gap-1 pl-4 pr-2 pt-0 text-left">
       <div class="flex flex-row items-center gap-2">
         <div
           class={`badge  h-6 items-center gap-1 text-white ${categoryConfig ? categoryConfig.color : defaultCategoryConfig?.color}`}>

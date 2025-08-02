@@ -8,18 +8,11 @@
     toCalendarDate
   } from "@internationalized/date";
   import { cn } from "$lib/utils.js";
-  import { Button } from "$lib/components/ui/button";
   import type { PageData } from "./$types";
   import TextInput from "$lib/components/TextInput.svelte";
   import * as Dropdown from "$lib/components/dropdown/index.js";
   import { superForm } from "sveltekit-superforms";
-  import {
-    CalendarIcon,
-    ChevronLeft,
-    UserIcon,
-    CheckIcon,
-    TextIcon
-  } from "$lib/utils/icons";
+  import { ChevronLeft, UserIcon, CheckIcon, TextIcon } from "$lib/utils/icons";
   import { getUsernameById } from "$lib/utils/helpers";
   import Pikaday from "pikaday";
 
@@ -62,7 +55,7 @@
     onSubmit: async () => {
       isChangingTodo = true;
     },
-    onUpdate: async ({ form, result }) => {
+    onUpdate: async ({ result }) => {
       serverErrors = result.data.errors;
       isChangingTodo = false;
     }

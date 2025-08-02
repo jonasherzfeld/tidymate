@@ -8,15 +8,11 @@
     toCalendarDate
   } from "@internationalized/date";
   import { cn } from "$lib/utils.js";
-  import { Button } from "$lib/components/ui/button";
-  import { Calendar } from "$lib/components/ui/calendar";
-  import * as Popover from "$lib/components/ui/popover";
   import type { PageData } from "./$types";
   import TextInput from "$lib/components/TextInput.svelte";
   import * as Dropdown from "$lib/components/dropdown/index.js";
   import { superForm } from "sveltekit-superforms";
   import {
-    CalendarIcon,
     ChevronLeft,
     UserIcon,
     CheckIcon,

@@ -99,7 +99,7 @@ export const todoItemSchema = z
     deadline: z.date().optional()
   })
   .superRefine(({ deadline }, ctx) => {
-    let current_date: Date = new Date(new Date().toDateString());
+    const current_date: Date = new Date(new Date().toDateString());
     if (deadline && deadline < current_date) {
       ctx.addIssue({
         code: "custom",
@@ -125,7 +125,7 @@ export const choreItemSchema = z
     severity: z.number().int().min(0).max(2).optional()
   })
   .superRefine(({ deadline }, ctx) => {
-    let current_date: Date = new Date(new Date().toDateString());
+    const current_date: Date = new Date(new Date().toDateString());
     if (deadline && deadline < current_date) {
       ctx.addIssue({
         code: "custom",
@@ -150,7 +150,7 @@ export const reminderItemSchema = z
       .max(255, "Invalid category name")
   })
   .superRefine(({ deadline }, ctx) => {
-    let current_date: Date = new Date(new Date().toDateString());
+    const current_date: Date = new Date(new Date().toDateString());
     if (deadline && deadline < current_date) {
       ctx.addIssue({
         code: "custom",
