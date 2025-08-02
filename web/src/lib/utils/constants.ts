@@ -83,25 +83,6 @@ export const ROUTE_MAPPING: RouteMap[] = [
     publicType: "public",
     target: ""
   },
-
-  {
-    url: "/home/history",
-    title: "History",
-    position: [],
-    icon: HouseIcon,
-    restricted: "house_member",
-    publicType: "public",
-    target: ""
-  },
-  {
-    url: "/home/stats",
-    title: "Statistics",
-    position: ["drawer_top", "menu_left"],
-    icon: StatisticsIcon,
-    restricted: "house_member",
-    publicType: "public",
-    target: ""
-  },
   {
     url: "/home/reminders",
     title: "Reminders",
