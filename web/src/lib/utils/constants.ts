@@ -14,7 +14,6 @@ import {
   ReminderIcon,
   SignIn,
   SignOut,
-  StatisticsIcon,
   TodoIcon,
   UserCircleOutline
 } from "$lib/utils/icons";
