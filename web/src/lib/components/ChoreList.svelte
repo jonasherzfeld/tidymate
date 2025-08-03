@@ -1,10 +1,8 @@
 <script lang="ts">
   import type { PageData } from "../../routes/home/chores/$types.js";
-  import { onMount } from "svelte";
-  import { initializeFilterValues } from "$lib/utils/helpers";
   import ChoreItem from "$lib/components/ChoreItem.svelte";
   import FilterDropDown from "$lib/components/FilterDropDown.svelte";
-  import { byPropertiesOf, getUsernameById } from "$lib/utils/helpers";
+  import { getUsernameById } from "$lib/utils/helpers";
   import {
     UserIcon,
     ReloadIcon,
@@ -12,57 +10,14 @@
     SearchIcon
   } from "$lib/utils/icons";
 
-  let { data }: { data: PageData } = $props();
-  let serverErrors: string = $state("");
-  const choreState: ItemListState<Chore> = $state({
-    items: [],
-    filters: [
-      { property: "assignee", values: [], selection: [] },
-      { property: "room", values: [], selection: [] }
-    ],
-    searchText: "",
-    sortBy: "deadline",
-    sortOrder: "desc",
-    filteredSortedItems: []
-  });
+  let {
+    data,
+    chorePageState = $bindable<ItemListState<Chore>>()
+  }: { data: PageData; chorePageState: ItemListState<Chore> } = $props();
 
   let nameFilterFn: (value: string) => string | undefined = (value) => {
     return getUsernameById(value, data.house.members);
   };
-
-  onMount(() => {
-    const todos = data.chores;
-    choreState.items = todos;
-    initializeFilterValues<Chore>(choreState.filters, choreState.items);
-  });
-
-  $effect(() => {
-    choreState.filteredSortedItems = choreState.items
-      .filter((chore: Chore) => {
-        for (const filter of choreState.filters) {
-          if (filter.selection.length > 0) {
-            if (!filter.selection.includes(chore[filter.property] as string)) {
-              return false;
-            }
-          }
-        }
-
-        const matchesSearch =
-          !choreState.searchText ||
-          chore.data
-            .toLowerCase()
-            .includes(choreState.searchText.toLowerCase());
-
-        return matchesSearch;
-      })
-      .sort(
-        byPropertiesOf<Chore>([
-          "done",
-          ((choreState.sortOrder === "desc" ? "" : "-") +
-            choreState.sortBy) as sortArg<Chore>
-        ])
-      );
-  });
 </script>
 
 <div class="flex h-full flex-col gap-3">
@@ -73,7 +28,7 @@
         type="search"
         class="grow"
         placeholder="Search"
-        bind:value={choreState.searchText} />
+        bind:value={chorePageState.searchText} />
     </label>
     <a class="flex flex-row flex-wrap gap-2" href="/home/chores/new">
       <button
@@ -93,55 +48,67 @@
     <div class="flex w-full flex-row justify-end gap-2">
       <FilterDropDown
         title="Room"
-        values={choreState.filters[1].values}
-        bind:filterValue={choreState.filters[1].selection}>
+        values={chorePageState.filters[1].values}
+        bind:filterValue={chorePageState.filters[1].selection}>
         <RoomFilterIcon class="h-4 w-4" />
       </FilterDropDown>
       <FilterDropDown
         title="Assignee"
-        values={choreState.filters[0].values}
+        values={chorePageState.filters[0].values}
         valueFn={nameFilterFn}
-        bind:filterValue={choreState.filters[0].selection}>
+        bind:filterValue={chorePageState.filters[0].selection}>
         <UserIcon class="h-4 w-4" />
       </FilterDropDown>
     </div>
   </div>
   <div class="flex flex-col">
-    {#if serverErrors}
-      <h1 class="step-subtitle text-error mt-2">
-        {serverErrors}
-      </h1>
-    {/if}
     <div class="">
-      {#await data.chores}
-        <div class="flex w-full flex-col gap-4">
-          <div class="skeleton h-32 w-full"></div>
-          <div class="skeleton h-4 w-28"></div>
-          <div class="skeleton h-4 w-full"></div>
-          <div class="skeleton h-4 w-full"></div>
-        </div>
-      {:then}
-        <div class="flex flex-1 flex-col gap-2">
-          {#each choreState.filteredSortedItems as chore}
-            <ChoreItem
-              {...chore}
-              onChange={(deadline: string, last_done: string) => {
-                choreState.items = choreState.items.map((c) =>
-                  c.id === chore.id
-                    ? { ...c, deadline: deadline, last_done: last_done }
-                    : c
-                );
-              }}
-              onRemove={() => {
-                choreState.items = choreState.items.filter(
-                  (c) => c.id !== chore.id
-                );
-              }} />
-          {/each}
-        </div>
-      {:catch error}
-        <p>{error.message}</p>
-      {/await}
+      <div class="flex flex-1 flex-col gap-2">
+        {#each chorePageState.filteredSortedItems as chore}
+          <ChoreItem
+            {...chore}
+            onChange={(deadline: string, last_done: string) => {
+              chorePageState.items = chorePageState.items.map((c) =>
+                c.id === chore.id
+                  ? { ...c, deadline: deadline, last_done: last_done }
+                  : c
+              );
+              chorePageState.history = [
+                ...chorePageState.history,
+                {
+                  id: "",
+                  event_type: "completed",
+                  item_id: chore.id,
+                  item_type: "chore",
+                  item_data: chore.data,
+                  user_id: "",
+                  house_id: "",
+                  created_on: new Date().toISOString(),
+                  user: data.user
+                } as History
+              ];
+            }}
+            onRemove={() => {
+              chorePageState.items = chorePageState.items.filter(
+                (c) => c.id !== chore.id
+              );
+              chorePageState.history = [
+                ...chorePageState.history,
+                {
+                  id: "",
+                  event_type: "deleted",
+                  item_id: chore.id,
+                  item_type: "chore",
+                  item_data: chore.data,
+                  user_id: "",
+                  house_id: "",
+                  created_on: new Date().toISOString(),
+                  user: data.user
+                } as History
+              ];
+            }} />
+        {/each}
+      </div>
     </div>
   </div>
 </div>

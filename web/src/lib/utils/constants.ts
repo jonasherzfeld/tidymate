@@ -199,28 +199,126 @@ export const FREQUENCY_INTERVALS: FrequencyOption[] = [
 ];
 
 export type CategoryConfig = {
+  id: number;
   name: string;
   icon: Component;
   color: string;
+  rgba_color: string;
 };
 export const ROOM_CONFIG: CategoryConfig[] = [
-  { name: "General", icon: GeneralIcon, color: "bg-stone-500" },
-  { name: "Bathroom", icon: BathroomIcon, color: "bg-blue-500" },
-  { name: "Bedroom", icon: BedroomIcon, color: "bg-amber-400" },
-  { name: "Kitchen", icon: KitchenIcon, color: "bg-violet-500" },
-  { name: "Living Room", icon: LivingRoomIcon, color: "bg-lime-400" },
-  { name: "Office", icon: OfficeIcon, color: "bg-rose-400" },
-  { name: "Outdoor", icon: OutdoorIcon, color: "bg-indogo-700" },
-  { name: "House", icon: HouseIcon, color: "bg-primary" }
+  {
+    id: 0,
+    name: "General",
+    icon: GeneralIcon,
+    color: "bg-stone-500",
+    rgba_color: "rgba(120, 113, 108, 0.6)"
+  },
+  {
+    id: 1,
+    name: "Bathroom",
+    icon: BathroomIcon,
+    color: "bg-blue-500",
+    rgba_color: "rgba(59, 130, 246, 0.6)"
+  },
+  {
+    id: 2,
+    name: "Bedroom",
+    icon: BedroomIcon,
+    color: "bg-amber-400",
+    rgba_color: "rgba(255, 185, 0, 0.6)"
+  },
+  {
+    id: 3,
+    name: "Kitchen",
+    icon: KitchenIcon,
+    color: "bg-violet-500",
+    rgba_color: "rgba(139, 92, 246, 0.6)"
+  },
+  {
+    id: 4,
+    name: "Living Room",
+    icon: LivingRoomIcon,
+    color: "bg-lime-400",
+    rgba_color: "rgba(163, 230, 53, 0.6)"
+  },
+  {
+    id: 5,
+    name: "Office",
+    icon: OfficeIcon,
+    color: "bg-rose-400",
+    rgba_color: "rgba(251, 113, 133, 0.6)"
+  },
+  {
+    id: 6,
+    name: "Outdoor",
+    icon: OutdoorIcon,
+    color: "bg-green-700",
+    rgba_color: "rgba(21, 128, 61, 0.6)"
+  },
+  {
+    id: 7,
+    name: "House",
+    icon: HouseIcon,
+    color: "bg-indigo-700",
+    rgba_color: "rgba(48, 63, 159, 0.6)"
+  }
 ];
 
 export const CATEGORY_CONFIG: CategoryConfig[] = [
-  { name: "General", icon: GeneralIcon, color: "bg-stone-500" },
-  { name: "Social", icon: GeneralIcon, color: "bg-blue-500" },
-  { name: "Learning", icon: GeneralIcon, color: "bg-amber-400" },
-  { name: "Work", icon: GeneralIcon, color: "bg-violet-500" },
-  { name: "Health", icon: GeneralIcon, color: "bg-lime-400" },
-  { name: "Finance", icon: GeneralIcon, color: "bg-rose-400" },
-  { name: "Shopping", icon: GeneralIcon, color: "bg-indogo-700" },
-  { name: "Travel", icon: GeneralIcon, color: "bg-primary" }
+  {
+    id: 0,
+    name: "General",
+    icon: GeneralIcon,
+    color: "bg-stone-500",
+    rgba_color: "rgba(120, 113, 108, 0.6)"
+  },
+  {
+    id: 1,
+    name: "Social",
+    icon: GeneralIcon,
+    color: "bg-blue-500",
+    rgba_color: "rgba(59, 130, 246, 0.6)"
+  },
+  {
+    id: 2,
+    name: "Learning",
+    icon: GeneralIcon,
+    color: "bg-amber-400",
+    rgba_color: "rgba(255, 185, 0, 0.6)"
+  },
+  {
+    id: 3,
+    name: "Work",
+    icon: GeneralIcon,
+    color: "bg-violet-500",
+    rgba_color: "rgba(139, 92, 246, 0.6)"
+  },
+  {
+    id: 4,
+    name: "Health",
+    icon: GeneralIcon,
+    color: "bg-lime-400",
+    rgba_color: "rgba(163, 230, 53, 0.6)"
+  },
+  {
+    id: 5,
+    name: "Finance",
+    icon: GeneralIcon,
+    color: "bg-rose-400",
+    rgba_color: "rgba(251, 113, 133, 0.6)"
+  },
+  {
+    id: 6,
+    name: "Shopping",
+    icon: GeneralIcon,
+    color: "bg-indigo-700",
+    rgba_color: "rgba(48, 63, 159, 0.6)"
+  },
+  {
+    id: 7,
+    name: "Travel",
+    icon: GeneralIcon,
+    color: "bg-green-700",
+    rgba_color: "rgba(21, 128, 61, 0.6)"
+  }
 ];

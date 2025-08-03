@@ -1,50 +1,60 @@
 import Chart from "chart.js/auto";
 
-export function BarChart(node: HTMLElement, data: any) {
-  const canvas = document.createElement("canvas");
-  node.appendChild(canvas);
+export function BarChart(node: HTMLElement, config: any) {
+  let chart: Chart;
+  let canvas: HTMLCanvasElement;
 
-  const chartInstance = new Chart(canvas, {
-    type: "bar",
-    data: data,
-    options: data.options || {
-      responsive: true,
-      maintainAspectRatio: false,
-      scales: {
-        y: {
-          beginAtZero: true
+  function createChart() {
+    if (chart) {
+      chart.destroy();
+    }
+
+    // Clear the node and create a new canvas
+    node.innerHTML = "";
+    canvas = document.createElement("canvas");
+    node.appendChild(canvas);
+
+    if (config.datasets?.length > 0) {
+      chart = new Chart(canvas, {
+        // ← Use canvas, not node
+        type: "bar",
+        data: {
+          labels: config.labels,
+          datasets: config.datasets
+        },
+        options: config.options || {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
         }
-      }
+      });
     }
-  });
+  }
+
+  createChart();
 
   return {
-    destroy() {
-      if (chartInstance) {
-        chartInstance.destroy();
+    update(newConfig: any) {
+      if (chart) {
+        // Update the chart data directly
+        chart.data.labels = newConfig.labels;
+        chart.data.datasets = newConfig.datasets;
+
+        // Re-render the chart
+        chart.update("none");
+      } else {
+        // If chart doesn't exist, create it
+        config = newConfig;
+        createChart();
       }
-    }
-  };
-}
-
-export function PieChart(node: HTMLElement, data: any) {
-  const canvas = document.createElement("canvas");
-  node.appendChild(canvas);
-
-  // Initialize Chart.js on the canvas
-  const chartInstance = new Chart(canvas, {
-    type: "doughnut",
-    data: data,
-    options: {
-      responsive: true
-    }
-  });
-
-  // Cleanup function
-  return {
+    },
     destroy() {
-      if (chartInstance) {
-        chartInstance.destroy();
+      if (chart) {
+        chart.destroy();
       }
     }
   };

@@ -86,9 +86,10 @@ type sortArg<T> = keyof T | `-${string & keyof T}`;
 
 type ItemListState<T> = {
   items: T[];
+  history: History[];
   filters: FilterDescription<T>[];
   searchText: string;
-  sortBy: keyof Todo;
+  sortBy: keyof T;
   sortOrder: "asc" | "desc";
   filteredSortedItems: T[];
 };
