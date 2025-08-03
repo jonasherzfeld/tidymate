@@ -38,7 +38,7 @@
     last_done: string;
     room: string;
     severity: ChoreSeverity;
-    onChange: (deadline: string) => void;
+    onChange: (deadline: string, last_done: string) => void;
     onRemove: () => void;
   } = $props();
 
@@ -83,7 +83,7 @@
   const handleChecked = async () => {
     return async ({ result, update }) => {
       if (result.status === 200) {
-        onChange(result.data.chore.deadline);
+        onChange(result.data.chore.deadline, result.data.chore.last_done);
       } else {
         update();
       }

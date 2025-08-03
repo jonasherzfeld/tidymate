@@ -93,9 +93,9 @@
       {#each reminderState.filteredSortedItems as reminder, id}
         <ReminderItem
           {...reminder}
-          onChange={(d: string) => {
+          onChange={(deadline: string, last_done: string) => {
             reminderState.items = reminderState.items.map((c) =>
-              c.id === reminder.id ? { ...c, deadline: d } : c
+              c.id === reminder.id ? { ...c, deadline: deadline, last_done: last_done } : c
             );
           }}
           onRemove={() => {
