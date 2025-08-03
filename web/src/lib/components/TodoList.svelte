@@ -97,6 +97,14 @@
       </label>
     </div>
     <div class="flex w-full flex-row justify-between gap-2">
+      <div>
+        <a href="/home/todo" data-sveltekit-reload>
+          <button
+            class="btn btn-outline btn-sm rounded-md border-neutral-200 shadow-sm">
+            <ReloadIcon class="h-4 w-4" />
+          </button>
+        </a>
+      </div>
       <div class="flex w-full flex-row justify-end gap-2">
         <FilterDropDown
           title="Assignee"
@@ -116,6 +124,7 @@
         </ToggleButton>
       </div>
     </div>
+
     <div class="flex flex-col">
       {#if serverErrors}
         <h1 class="step-subtitle text-error mt-2">

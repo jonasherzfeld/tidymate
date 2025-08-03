@@ -186,9 +186,7 @@
     <div class="card bg-base-200">
       <div
         class="card-body tab-content bg-base-100 border-base-300 rounded-box p-2">
-        <h2 class="card-title justify-start text-center">
-          Household Stats
-        </h2>
+        <h2 class="card-title justify-start text-center">Household Stats</h2>
         <div
           class="stats stats-vertical bg-base-300 md:stats-horizontal shadow">
           <div class="stat">
