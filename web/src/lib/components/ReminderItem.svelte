@@ -33,7 +33,7 @@
     frequency: number;
     last_done: string;
     category: string;
-    onChange: (deadline: string) => void;
+    onChange: (deadline: string, last_done: string) => void;
     onRemove: () => void;
   } = $props();
 
@@ -72,7 +72,7 @@
   const handleChecked = async () => {
     return async ({ result, update }) => {
       if (result.status === 200) {
-        onChange(result.data.reminder.deadline);
+        onChange(result.data.reminder.deadline, result.data.reminder.last_done);
       } else {
         update();
       }

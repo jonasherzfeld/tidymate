@@ -112,9 +112,9 @@
           {#each choreState.filteredSortedItems as chore}
             <ChoreItem
               {...chore}
-              onChange={(d: string) => {
+              onChange={(deadline: string, last_done: string) => {
                 choreState.items = choreState.items.map((c) =>
-                  c.id === chore.id ? { ...c, deadline: d } : c
+                  c.id === chore.id ? { ...c, deadline: deadline, last_done: last_done } : c
                 );
               }}
               onRemove={() => {
