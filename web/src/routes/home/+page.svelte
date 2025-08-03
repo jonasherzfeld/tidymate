@@ -186,7 +186,7 @@
     <div class="card bg-base-200">
       <div
         class="card-body tab-content bg-base-100 border-base-300 rounded-box p-2">
-        <h2 class="card-title mb-4 justify-start text-center">
+        <h2 class="card-title justify-start text-center">
           Household Stats
         </h2>
         <div
@@ -262,7 +262,7 @@
     <div class="card bg-base-300">
       <div
         class="card-body tab-content bg-base-100 border-base-300 rounded-box p-2">
-        <h2 class="card-title mb-4 justify-start text-center">
+        <h2 class="card-title justify-start text-center">
           Household Leaderboard
         </h2>
         <div class="space-y-3">
