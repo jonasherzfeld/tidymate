@@ -5,7 +5,12 @@
   import ChoreItem from "$lib/components/ChoreItem.svelte";
   import FilterDropDown from "$lib/components/FilterDropDown.svelte";
   import { byPropertiesOf, getUsernameById } from "$lib/utils/helpers";
-  import { UserIcon, RoomFilterIcon, SearchIcon } from "$lib/utils/icons";
+  import {
+    UserIcon,
+    ReloadIcon,
+    RoomFilterIcon,
+    SearchIcon
+  } from "$lib/utils/icons";
 
   let { data }: { data: PageData } = $props();
   let serverErrors: string = $state("");
@@ -77,6 +82,14 @@
     </a>
   </div>
   <div class="flex w-full flex-row justify-between gap-2">
+    <div>
+      <a href="/home/chores" data-sveltekit-reload>
+        <button
+          class="btn btn-outline btn-sm rounded-md border-neutral-200 shadow-sm">
+          <ReloadIcon class="h-4 w-4" />
+        </button>
+      </a>
+    </div>
     <div class="flex w-full flex-row justify-end gap-2">
       <FilterDropDown
         title="Room"
@@ -114,7 +127,9 @@
               {...chore}
               onChange={(deadline: string, last_done: string) => {
                 choreState.items = choreState.items.map((c) =>
-                  c.id === chore.id ? { ...c, deadline: deadline, last_done: last_done } : c
+                  c.id === chore.id
+                    ? { ...c, deadline: deadline, last_done: last_done }
+                    : c
                 );
               }}
               onRemove={() => {

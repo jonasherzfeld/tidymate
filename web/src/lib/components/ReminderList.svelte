@@ -4,7 +4,7 @@
   import ReminderItem from "$lib/components/ReminderItem.svelte";
   import FilterDropDown from "$lib/components/FilterDropDown.svelte";
   import { byPropertiesOf } from "$lib/utils/helpers";
-  import { GeneralIcon, SearchIcon } from "$lib/utils/icons";
+  import { GeneralIcon, ReloadIcon, SearchIcon } from "$lib/utils/icons";
 
   let { data }: { data: PageData } = $props();
   let serverErrors: string = $state("");
@@ -74,6 +74,14 @@
     </a>
   </div>
   <div class="flex w-full flex-row justify-between gap-2">
+    <div>
+      <a href="/home/reminders" data-sveltekit-reload>
+        <button
+          class="btn btn-outline btn-sm rounded-md border-neutral-200 shadow-sm">
+          <ReloadIcon class="h-4 w-4" />
+        </button>
+      </a>
+    </div>
     <div class="flex w-full flex-row justify-end gap-2">
       <FilterDropDown
         title="Category"
@@ -83,6 +91,7 @@
       </FilterDropDown>
     </div>
   </div>
+
   <div class="flex flex-col">
     {#if serverErrors}
       <h1 class="step-subtitle text-error mt-2">
@@ -95,7 +104,9 @@
           {...reminder}
           onChange={(deadline: string, last_done: string) => {
             reminderState.items = reminderState.items.map((c) =>
-              c.id === reminder.id ? { ...c, deadline: deadline, last_done: last_done } : c
+              c.id === reminder.id
+                ? { ...c, deadline: deadline, last_done: last_done }
+                : c
             );
           }}
           onRemove={() => {
