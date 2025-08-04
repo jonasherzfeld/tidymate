@@ -56,6 +56,11 @@ def create_app():
     Session(app)
     db = initialize_db(app)
     migrate = Migrate(app, db)
+    
+    # Initialize database with smart migration handling after Migrate is set up
+    from db.db import initialize_database_with_migrations
+    initialize_database_with_migrations(app)
+    
     app.register_blueprint(routes)
 
     scheduler = BackgroundScheduler()

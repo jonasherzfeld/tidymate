@@ -9,11 +9,7 @@ run() {
     # Run Redis
     redis-server --daemonize yes
 
-    # Running database migrations
-    cd /app/server/src
-    flask --app app db upgrade
-
-    # Run the backend
+    # Run the backend (database initialization happens automatically)
     cd /app/server
     exec python src/main.py &
 }

@@ -7,12 +7,20 @@ bcrypt = Bcrypt()
 
 def initialize_db(app):
     """
-    Initialize the database and create all tables.
+    Initialize the database without running migrations yet.
     """
     # Use the globally defined db and bcrypt instances
     db.init_app(app)
     bcrypt.init_app(app)
-
-    with app.app_context():
-        db.create_all()
     return db
+
+
+def initialize_database_with_migrations(app):
+    """
+    Run smart database initialization after Flask-Migrate is set up.
+    """
+    # Import here to avoid circular imports
+    from .init_db import initialize_database
+    
+    with app.app_context():
+        initialize_database()
