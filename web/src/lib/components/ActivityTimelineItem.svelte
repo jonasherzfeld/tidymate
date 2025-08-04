@@ -1,5 +1,9 @@
 <script lang="ts">
-  import { ROOM_CONFIG, CATEGORY_CONFIG, type CategoryConfig } from "$lib/utils/constants";
+  import {
+    ROOM_CONFIG,
+    CATEGORY_CONFIG,
+    type CategoryConfig
+  } from "$lib/utils/constants";
 
   let { event }: { event: History } = $props();
 
@@ -98,7 +102,7 @@
     class="justify-left mt-0 flex h-fit grow flex-col gap-0.5 pt-0 pr-2 pl-4 text-left">
     <!-- First Row: Item Type Badge -->
     {#if event.item_type !== "todo"}
-    <div class="flex flex-row items-center">
+      <div class="flex flex-row items-center">
         <div
           class={`badge  h-6 items-center gap-1 text-white ${categoryConfig ? categoryConfig.color : defaultCategoryConfig?.color}`}>
           {#if categoryConfig}
@@ -109,7 +113,7 @@
             {defaultCategoryConfig.name}
           {/if}
         </div>
-    </div>
+      </div>
     {/if}
 
     <!-- Second Row: User and Action -->
@@ -124,7 +128,7 @@
     </div>
 
     <!-- Third Row: Item Data (if exists) -->
-    {#if event.item && event.item.data }
+    {#if event.item && event.item.data}
       <div class="flex flex-row items-center">
         <span class="text-base-content/70 text-xs">
           "{event.item.data}"

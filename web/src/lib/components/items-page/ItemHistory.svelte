@@ -64,7 +64,11 @@
 
   const handleDeleteHistory = async ({ cancel }) => {
     // Show confirmation dialog before proceeding
-    if (!confirm(`Are you sure you want to delete all ${getItemTypeDisplayName(itemType).toLowerCase()} history? This action cannot be undone.`)) {
+    if (
+      !confirm(
+        `Are you sure you want to delete all ${getItemTypeDisplayName(itemType).toLowerCase()} history? This action cannot be undone.`
+      )
+    ) {
       return cancel();
     }
 
@@ -95,18 +99,16 @@
     <!-- Statistics Summary -->
     <div class="card bg-base-200 shadow">
       <div class="card-body p-3">
-        <div class="flex items-center justify-between mb-4">
+        <div class="mb-4 flex items-center justify-between">
           <h2 class="card-title">Summary</h2>
           <form
             action="/home/?/delete_history&item_type={itemType}"
             method="POST"
-            use:enhance={handleDeleteHistory}
-          >
+            use:enhance={handleDeleteHistory}>
             <button
               type="submit"
               class="btn btn-outline btn-sm"
-              disabled={isDeleting || history().length === 0}
-            >
+              disabled={isDeleting || history().length === 0}>
               {#if isDeleting}
                 <span class="loading loading-spinner loading-xs"></span>
                 Deleting...
