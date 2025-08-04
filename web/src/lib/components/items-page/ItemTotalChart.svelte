@@ -75,10 +75,7 @@
     return data;
   }
 
-  function createTotalDataset(
-    monthlyData: Map<string, number>,
-    months: any[]
-  ) {
+  function createTotalDataset(monthlyData: Map<string, number>, months: any[]) {
     const backgroundColor = "rgba(54, 162, 235, 0.6)";
     const borderColor = "rgba(54, 162, 235, 1)";
 
@@ -94,7 +91,6 @@
   }
   let datasets = $derived(chartData.datasets);
   let labels = $derived(chartData.labels);
-
 </script>
 
 <!-- Completed Items per Month Chart -->

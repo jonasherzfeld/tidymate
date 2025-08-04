@@ -26,7 +26,11 @@
     const completedItems = getCompletedItemsInRange(history, months[0].date);
 
     // Get all unique rooms
-    const categories = getAllCategories(history, completedItems, itemCategoryMap);
+    const categories = getAllCategories(
+      history,
+      completedItems,
+      itemCategoryMap
+    );
 
     // Count completions by month and room
     const monthlyData = countCompletionsByMonthAndCategory(

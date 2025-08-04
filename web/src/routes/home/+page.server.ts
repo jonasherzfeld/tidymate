@@ -1,7 +1,7 @@
 import { BASE_API_URI, FETCH_ABORT_TIMEOUT_MS } from "$lib/utils/constants";
 import type { Cookies } from "@sveltejs/kit";
-import type { PageServerLoad } from "./$types.js";
 import { fail } from "@sveltejs/kit";
+import type { PageServerLoad } from "./$types.js";
 
 async function get_chores(cookies: Cookies): Promise<Chore[]> {
   const requestInitOptions: RequestInit = {
