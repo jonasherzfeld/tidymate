@@ -1,6 +1,10 @@
 <script lang="ts">
   import { BarChart } from "$lib/utils/charts.svelte";
-  import { ROOM_CONFIG, CATEGORY_CONFIG, type CategoryConfig } from "$lib/utils/constants";
+  import {
+    ROOM_CONFIG,
+    CATEGORY_CONFIG,
+    type CategoryConfig
+  } from "$lib/utils/constants";
 
   type T = Chore | Reminder | Todo;
   let {
@@ -139,7 +143,9 @@
     if (item_type === "chore") {
       categoryMap = new Map(ROOM_CONFIG.map((room) => [room.name, room]));
     } else if (item_type === "reminder") {
-      categoryMap = new Map(CATEGORY_CONFIG.map((category) => [category.name, category]));
+      categoryMap = new Map(
+        CATEGORY_CONFIG.map((category) => [category.name, category])
+      );
     }
 
     return categories.map((category) => {

@@ -1,7 +1,6 @@
 <script lang="ts">
   import type { PageData } from "../../routes/home/todo/$types.js";
   import { enhance } from "$app/forms";
-  import { onMount } from "svelte";
   import TodoItem from "$lib/components/TodoItem.svelte";
   import SortDropDown from "$lib/components/SortDropDown.svelte";
   import FilterDropDown from "$lib/components/FilterDropDown.svelte";
@@ -12,27 +11,16 @@
     SearchIcon
   } from "$lib/utils/icons";
   import ToggleButton from "$lib/components/ToggleButton.svelte";
-  import { getContext } from "svelte";
-  import {
-    initializeFilterValues,
-    getUsernameById,
-    byPropertiesOf
-  } from "$lib/utils/helpers";
+  import { getUsernameById } from "$lib/utils/helpers";
 
-  let { data }: { data: PageData } = $props();
+  let {
+    data,
+    todoPageState = $bindable<ItemListState<Todo>>()
+  }: { data: PageData; todoPageState: ItemListState<Todo> } = $props();
+
   let serverErrors: string = $state("");
   let showComplete: boolean = $state(false);
   let newTodoData: string = $state("");
-  const isWebApp: boolean = getContext<() => boolean>("webapp")();
-
-  const todoState: ItemListState<Todo> = $state({
-    items: [],
-    filters: [{ property: "assignee", values: [], selection: [] }],
-    searchText: "",
-    sortBy: "created_on",
-    sortOrder: "desc",
-    filteredSortedItems: []
-  });
 
   let nameFilterFn: (value: string) => string | undefined = (value) => {
     return getUsernameById(value, data.house.members);
@@ -42,45 +30,13 @@
     return async ({ result, update }) => {
       serverErrors = result.data.errors;
       if (result.status === 200) {
-        todoState.items.push(result.data.todo);
+        todoPageState.items.push(result.data.todo);
         newTodoData = "";
       } else {
         update();
       }
     };
   };
-
-  onMount(() => {
-    const todos = data.todos;
-    todoState.items = todos;
-    initializeFilterValues<Todo>(todoState.filters, todoState.items);
-  });
-
-  $effect(() => {
-    todoState.filteredSortedItems = todoState.items
-      .filter((todo: Todo) => {
-        for (const filter of todoState.filters) {
-          if (filter.selection.length > 0) {
-            if (!filter.selection.includes(todo[filter.property] as string)) {
-              return false;
-            }
-          }
-        }
-
-        const matchesSearch =
-          !todoState.searchText ||
-          todo.data.toLowerCase().includes(todoState.searchText.toLowerCase());
-
-        return matchesSearch;
-      })
-      .sort(
-        byPropertiesOf<Todo>([
-          "done",
-          ((todoState.sortOrder === "desc" ? "" : "-") +
-            todoState.sortBy) as sortArg<Todo>
-        ])
-      );
-  });
 </script>
 
 <div class="flex min-h-full flex-col justify-between gap-3">
@@ -93,7 +49,7 @@
           type="search"
           class="grow"
           placeholder="Search"
-          bind:value={todoState.searchText} />
+          bind:value={todoPageState.searchText} />
       </label>
     </div>
     <div class="flex w-full flex-row justify-between gap-2">
@@ -108,15 +64,15 @@
       <div class="flex w-full flex-row justify-end gap-2">
         <FilterDropDown
           title="Assignee"
-          values={todoState.filters[0].values}
-          bind:filterValue={todoState.filters[0].selection}
+          values={todoPageState.filters[0].values}
+          bind:filterValue={todoPageState.filters[0].selection}
           valueFn={nameFilterFn}>
           <UserIcon class="h-4 w-4" />
         </FilterDropDown>
 
         <SortDropDown
-          bind:sortKey={todoState.sortBy}
-          bind:sortOrder={todoState.sortOrder} />
+          bind:sortKey={todoPageState.sortBy}
+          bind:sortOrder={todoPageState.sortOrder} />
         <ToggleButton
           className={`btn shadow-sm btn-outline rounded-md btn-sm border-neutral-200 ${showComplete ? "bg-accent" : ""}`}
           bind:isToggled={showComplete}>
@@ -134,7 +90,7 @@
       <div
         class="card card-bordered border-neutral bg-base-300 rounded-lg shadow-md">
         <div class="flex flex-1 flex-col">
-          {#each todoState.filteredSortedItems as todo, id}
+          {#each todoPageState.filteredSortedItems as todo, id}
             {#if !todo.done || (todo.done && showComplete)}
               {#if todo && id !== 0}
                 <div class="divider m-0 h-1 p-0"></div>
@@ -142,14 +98,42 @@
               <TodoItem
                 {...todo}
                 onChange={(checked: boolean) => {
-                  todoState.items = todoState.items.map((t) =>
+                  todoPageState.items = todoPageState.items.map((t) =>
                     t.id === todo.id ? { ...t, done: checked } : t
                   );
+                  todoPageState.history = [
+                    ...todoPageState.history,
+                    {
+                      id: "",
+                      event_type: "completed",
+                      item_id: todo.id,
+                      item_type: "todo",
+                      item_data: todo.data,
+                      user_id: "",
+                      house_id: "",
+                      created_on: new Date().toISOString(),
+                      user: data.user
+                    } as History
+                  ];
                 }}
                 onRemove={() => {
-                  todoState.items = todoState.items.filter(
+                  todoPageState.items = todoPageState.items.filter(
                     (t) => t.id !== todo.id
                   );
+                  todoPageState.history = [
+                    ...todoPageState.history,
+                    {
+                      id: "",
+                      event_type: "deleted",
+                      item_id: todo.id,
+                      item_type: "todo",
+                      item_data: todo.data,
+                      user_id: "",
+                      house_id: "",
+                      created_on: new Date().toISOString(),
+                      user: data.user
+                    } as History
+                  ];
                 }} />
             {/if}
           {/each}
