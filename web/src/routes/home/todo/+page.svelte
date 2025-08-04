@@ -114,7 +114,7 @@
     <div
       role="tabpanel"
       class="tab-content bg-base-100 border-base-300 rounded-box p-2">
-      <TodoHistory itemPageState={todoPageState} />
+      <TodoHistory itemPageState={todoPageState} itemType="todo" />
     </div>
   </div>
 </div>

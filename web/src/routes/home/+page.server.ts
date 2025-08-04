@@ -1,6 +1,7 @@
 import { BASE_API_URI, FETCH_ABORT_TIMEOUT_MS } from "$lib/utils/constants";
 import type { Cookies } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types.js";
+import { fail } from "@sveltejs/kit";
 
 async function get_chores(cookies: Cookies): Promise<Chore[]> {
   const requestInitOptions: RequestInit = {
@@ -172,4 +173,44 @@ export const load: PageServerLoad = async ({ cookies }) => {
     completionStats: await get_completion_stats(cookies),
     personalStats: await get_personal_stats(cookies)
   };
+};
+
+export const actions = {
+  delete_history: async ({ request, fetch, cookies }) => {
+    const params = new URLSearchParams(request.url);
+    const itemType = params.get("item_type");
+
+    if (!itemType) {
+      return fail(400, { errors: "Item type not specified" });
+    }
+
+    const requestInitOptions: RequestInit = {
+      method: "DELETE",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: `session=${cookies.get("session")}`
+      },
+      signal: AbortSignal.timeout(FETCH_ABORT_TIMEOUT_MS)
+    };
+
+    const res = await fetch(
+      `${BASE_API_URI}/history/delete-history/${itemType}`,
+      requestInitOptions
+    );
+
+    try {
+      const response = await res.json();
+      if (!res.ok) {
+        return fail(400, { errors: response.error });
+      }
+      return {
+        success: true,
+        message: response.message,
+        deleted_count: response.deleted_count
+      };
+    } catch {
+      return fail(500, { errors: "Internal Error" });
+    }
+  }
 };

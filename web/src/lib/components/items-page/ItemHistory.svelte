@@ -1,11 +1,17 @@
 <script lang="ts">
   import ActivityTimelineItem from "$lib/components/ActivityTimelineItem.svelte";
+  import { enhance } from "$app/forms";
 
   let {
-    itemPageState
-  }: { itemPageState: ItemListState<Chore | Reminder | Todo> } = $props();
+    itemPageState,
+    itemType
+  }: {
+    itemPageState: ItemListState<Chore | Reminder | Todo>;
+    itemType: string;
+  } = $props();
 
   let history = $derived(() => itemPageState.history);
+  let isDeleting = $state(false);
 
   // Group history by date
   let groupedHistory = $derived.by(() => {
@@ -42,6 +48,36 @@
       day: "numeric"
     });
   }
+
+  function getItemTypeDisplayName(type: string): string {
+    switch (type) {
+      case "chore":
+        return "Chore";
+      case "todo":
+        return "Todo";
+      case "reminder":
+        return "Reminder";
+      default:
+        return "Item";
+    }
+  }
+
+  const handleDeleteHistory = async ({ cancel }) => {
+    // Show confirmation dialog before proceeding
+    if (!confirm(`Are you sure you want to delete all ${getItemTypeDisplayName(itemType).toLowerCase()} history? This action cannot be undone.`)) {
+      return cancel();
+    }
+
+    isDeleting = true;
+    return async ({ result, update }) => {
+      if (result.status === 200) {
+        // Clear the history in the state
+        itemPageState.history = [];
+      }
+      isDeleting = false;
+      await update();
+    };
+  };
 </script>
 
 <div class="flex w-full max-w-screen-lg flex-1 flex-col justify-center gap-5">
@@ -59,7 +95,27 @@
     <!-- Statistics Summary -->
     <div class="card bg-base-200 shadow">
       <div class="card-body p-3">
-        <h2 class="card-title mb-4">Summary</h2>
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="card-title">Summary</h2>
+          <form
+            action="/home/?/delete_history&item_type={itemType}"
+            method="POST"
+            use:enhance={handleDeleteHistory}
+          >
+            <button
+              type="submit"
+              class="btn btn-outline btn-sm"
+              disabled={isDeleting || history().length === 0}
+            >
+              {#if isDeleting}
+                <span class="loading loading-spinner loading-xs"></span>
+                Deleting...
+              {:else}
+                Clear History
+              {/if}
+            </button>
+          </form>
+        </div>
         <div class="stats stats-horizontal bg-base-300 p-0 pt-2 shadow">
           <div class="stat m-0 min-w-12 p-0">
             <div class="m-0 p-0 text-xs">Total</div>

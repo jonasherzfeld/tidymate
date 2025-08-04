@@ -79,3 +79,28 @@ def get_personal_stats(user):
     }
 
     return jsonify({"stats": stats})
+
+
+@history.route('/delete-history/<string:item_type>', methods=['DELETE'])
+@login_required
+def delete_history_by_item_type(user, item_type):
+    """Delete all history events for a specific item type"""
+    # Validate item_type
+    valid_item_types = ["todo", "chore", "reminder"]
+    if item_type not in valid_item_types:
+        return jsonify({"error": "Invalid item type"}), 400
+
+    # Delete history events for the specific item type in user's house
+    deleted_count = History.query.filter(
+        and_(
+            History.house_id == user.house_id,
+            History.item_type == item_type
+        )
+    ).delete()
+
+    db.session.commit()
+
+    return jsonify({
+        "message": f"Deleted {deleted_count} {item_type} history events",
+        "deleted_count": deleted_count
+    }), 200
