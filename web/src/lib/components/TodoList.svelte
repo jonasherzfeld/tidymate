@@ -31,6 +31,18 @@
       serverErrors = result.data.errors;
       if (result.status === 200) {
         todoPageState.items.push(result.data.todo);
+        todoPageState.history.push({
+          id: `temp-${Date.now()}`,
+          event_type: "created",
+          item_id: result.data.todo.id,
+          item_data: result.data.todo.data,
+          item_type: "todo",
+          item: result.data.todo,
+          user_id: data.user.id,
+          house_id: data.user.house_id,
+          created_on: new Date().toISOString(),
+          user: data.user
+        } as History);
         newTodoData = "";
       } else {
         update();
@@ -101,20 +113,23 @@
                   todoPageState.items = todoPageState.items.map((t) =>
                     t.id === todo.id ? { ...t, done: checked } : t
                   );
-                  todoPageState.history = [
-                    ...todoPageState.history,
-                    {
-                      id: "",
-                      event_type: "completed",
-                      item_id: todo.id,
-                      item_type: "todo",
-                      item_data: todo.data,
-                      user_id: "",
-                      house_id: "",
-                      created_on: new Date().toISOString(),
-                      user: data.user
-                    } as History
-                  ];
+                  if (checked) {
+                    todoPageState.history = [
+                      ...todoPageState.history,
+                      {
+                        id: `temp-${Date.now()}`,
+                        event_type: "completed",
+                        item_id: todo.id,
+                        item_data: todo.data,
+                        item_type: "todo",
+                        item: todo,
+                        user_id: data.user.id,
+                        house_id: data.user.house_id,
+                        created_on: new Date().toISOString(),
+                        user: data.user
+                      } as History
+                    ];
+                  }
                 }}
                 onRemove={() => {
                   todoPageState.items = todoPageState.items.filter(
@@ -123,13 +138,14 @@
                   todoPageState.history = [
                     ...todoPageState.history,
                     {
-                      id: "",
+                      id: `temp-${Date.now()}`,
                       event_type: "deleted",
                       item_id: todo.id,
-                      item_type: "todo",
                       item_data: todo.data,
-                      user_id: "",
-                      house_id: "",
+                      item_type: "todo",
+                      item: todo,
+                      user_id: data.user.id,
+                      house_id: data.user.house_id,
                       created_on: new Date().toISOString(),
                       user: data.user
                     } as History

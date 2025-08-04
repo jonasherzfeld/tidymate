@@ -40,9 +40,8 @@ def create_reminder(user):
     # Log creation event
     log_history_event(
         EventType.CREATED,
-        reminder.id,
+        reminder,
         "reminder",
-        reminder.data,
         user.id,
         user.house_id
     )
@@ -90,9 +89,8 @@ def check_reminders(user, reminder_id):
     # Log completion event
     log_history_event(
         EventType.COMPLETED,
-        reminder.id,
+        reminder,
         "reminder",
-        reminder.data,
         user.id,
         user.house_id
     )
@@ -143,9 +141,8 @@ def delete_reminder(user, reminder_id):
         # Log deletion event before deleting
         log_history_event(
             EventType.DELETED,
-            reminder.id,
+            reminder,
             "reminder",
-            reminder.data,
             user.id,
             user.house_id
         )

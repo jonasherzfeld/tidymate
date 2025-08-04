@@ -76,13 +76,14 @@
               chorePageState.history = [
                 ...chorePageState.history,
                 {
-                  id: "",
+                  id: `temp-${Date.now()}`,
                   event_type: "completed",
                   item_id: chore.id,
-                  item_type: "chore",
                   item_data: chore.data,
-                  user_id: "",
-                  house_id: "",
+                  item_type: "chore",
+                  item: chore,
+                  user_id: data.user.id,
+                  house_id: data.user.house_id,
                   created_on: new Date().toISOString(),
                   user: data.user
                 } as History
@@ -95,13 +96,14 @@
               chorePageState.history = [
                 ...chorePageState.history,
                 {
-                  id: "",
+                  id: `temp-${Date.now()}`,
                   event_type: "deleted",
                   item_id: chore.id,
-                  item_type: "chore",
                   item_data: chore.data,
-                  user_id: "",
-                  house_id: "",
+                  item_type: "chore",
+                  item: chore,
+                  user_id: data.user.id,
+                  house_id: data.user.house_id,
                   created_on: new Date().toISOString(),
                   user: data.user
                 } as History

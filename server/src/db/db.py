@@ -21,6 +21,6 @@ def initialize_database_with_migrations(app):
     """
     # Import here to avoid circular imports
     from .init_db import initialize_database
-    
+
     with app.app_context():
         initialize_database()

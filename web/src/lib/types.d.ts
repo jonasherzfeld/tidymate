@@ -61,9 +61,10 @@ interface Notification {
 interface History {
   id: string;
   event_type: string;
-  item_id: string;
+  item_id?: string;
+  item_data?: string;
   item_type: string;
-  item_data: string;
+  item?: Chore | Reminder | Todo;
   user_id: string;
   house_id: string;
   created_on: string;

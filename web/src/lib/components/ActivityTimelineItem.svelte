@@ -1,10 +1,5 @@
 <script lang="ts">
-  import {
-    ReminderIcon,
-    TodoIcon,
-    ChoresIcon,
-    GeneralIcon
-  } from "$lib/utils/icons";
+  import { ROOM_CONFIG, CATEGORY_CONFIG, type CategoryConfig } from "$lib/utils/constants";
 
   let { event }: { event: History } = $props();
 
@@ -71,6 +66,19 @@
         return `${action} ${itemType}`;
     }
   }
+
+  let defaultCategoryConfig: CategoryConfig | undefined = $derived(
+    ROOM_CONFIG.find((item) => item.name === "General")
+  );
+  let categoryConfig: CategoryConfig | undefined = $derived.by(() => {
+    if (event.item_type === "chore") {
+      return ROOM_CONFIG.find((item) => item.name === event.item.room);
+    } else if (event.item_type === "reminder") {
+      return CATEGORY_CONFIG.find((item) => item.name === event.item.category);
+    } else if (event.item_type === "todo") {
+      return CATEGORY_CONFIG.find((item) => item.name === "General");
+    }
+  });
 </script>
 
 <div
@@ -89,23 +97,20 @@
   <div
     class="justify-left mt-0 flex h-fit grow flex-col gap-0.5 pt-0 pr-2 pl-4 text-left">
     <!-- First Row: Item Type Badge -->
+    {#if event.item_type !== "todo"}
     <div class="flex flex-row items-center">
-      <div
-        class="badge gap-1 {getItemTypeColor(
-          event.item_type
-        )} badge-xs h-5 items-center text-white">
-        {#if event.item_type === "reminder"}
-          <ReminderIcon class="h-2.5 w-2.5 opacity-50" />
-        {:else if event.item_type === "todo"}
-          <TodoIcon class="h-2.5 w-2.5 opacity-50" />
-        {:else if event.item_type === "chore"}
-          <ChoresIcon class="h-2.5 w-2.5 opacity-50" />
-        {:else}
-          <GeneralIcon class="h-2.5 w-2.5 opacity-50" />
-        {/if}
-        {event.item_type}
-      </div>
+        <div
+          class={`badge  h-6 items-center gap-1 text-white ${categoryConfig ? categoryConfig.color : defaultCategoryConfig?.color}`}>
+          {#if categoryConfig}
+            <categoryConfig.icon />
+            {categoryConfig.name}
+          {:else if defaultCategoryConfig}
+            <defaultCategoryConfig.icon />
+            {defaultCategoryConfig.name}
+          {/if}
+        </div>
     </div>
+    {/if}
 
     <!-- Second Row: User and Action -->
     <div class="flex flex-row items-center gap-2">
@@ -119,10 +124,16 @@
     </div>
 
     <!-- Third Row: Item Data (if exists) -->
-    {#if event.item_data}
+    {#if event.item && event.item.data }
       <div class="flex flex-row items-center">
         <span class="text-base-content/70 text-xs">
-          "{event.item_data}"
+          "{event.item.data}"
+        </span>
+      </div>
+    {:else if event.item_data}
+      <div class="flex flex-row items-center">
+        <span class="text-base-content/70 text-xs">
+          {event.item_data || "Unnamed Item"}
         </span>
       </div>
     {/if}
