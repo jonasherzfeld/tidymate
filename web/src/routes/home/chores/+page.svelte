@@ -115,7 +115,7 @@
     <div
       role="tabpanel"
       class="tab-content bg-base-100 border-base-300 rounded-box p-2">
-      <ChoreHistory itemPageState={chorePageState} />
+      <ChoreHistory itemPageState={chorePageState} itemType="chore" />
     </div>
   </div>
 </div>

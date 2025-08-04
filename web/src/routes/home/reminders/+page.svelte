@@ -120,7 +120,7 @@
     <div
       role="tabpanel"
       class="tab-content bg-base-100 border-base-300 rounded-box p-2">
-      <RemindersHistory itemPageState={reminderPageState} />
+      <RemindersHistory itemPageState={reminderPageState} itemType="reminder" />
     </div>
   </div>
 </div>
