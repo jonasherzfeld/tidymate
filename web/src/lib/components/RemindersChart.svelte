@@ -14,7 +14,7 @@
   const oneYearAgo = new Date(now.getFullYear() - 1, now.getMonth() + 1, 1); // Start from 11 months ago to include current month
 
   // Filter completed reminders from history in the last year including current month
-  const completedReminders = history.filter(
+  const completedReminders: History[] = history.filter(
     (historyItem) =>
       historyItem.event_type === "completed" &&
       historyItem.item_type === "reminder" &&
@@ -29,8 +29,9 @@
 
   // Get unique categories from completed reminders and current reminders
   const completedReminderCategories = new Set<string>();
-  completedReminders.forEach((reminder) => {
-    const category = reminderCategoryMap.get(reminder.item_id) || "General";
+  completedReminders.forEach((event: History) => {
+    if (!event.item) return;
+    const category = reminderCategoryMap.get(event.item.id) || "General";
     completedReminderCategories.add(category);
   });
 
@@ -57,13 +58,14 @@
   }
 
   // Count completed reminders by month and category
-  completedReminders.forEach((reminder) => {
-    const date = new Date(reminder.created_on);
+  completedReminders.forEach((event: History) => {
+    if (!event.item) return;
+    const date = new Date(event.created_on);
     // Use local timezone to avoid UTC conversion issues
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, "0"); // getMonth() returns 0-11, so add 1
     const monthKey = `${year}-${month}`; // YYYY-MM format
-    const category = reminderCategoryMap.get(reminder.item_id) || "General";
+    const category = reminderCategoryMap.get(event.item.id) || "General";
 
     if (monthlyCategoryData.has(monthKey)) {
       const categoryMap = monthlyCategoryData.get(monthKey)!;

@@ -47,10 +47,10 @@
 
   function getCompletedItemsInRange(history: History[], startDate: Date) {
     return history.filter(
-      (item) =>
-        item.event_type === "completed" &&
-        item.item_type === item_type &&
-        new Date(item.created_on) >= startDate
+      (event) =>
+        event.event_type === "completed" &&
+        event.item_type === item_type &&
+        new Date(event.created_on) >= startDate
     );
   }
 
@@ -63,8 +63,8 @@
     });
 
     // Count completions
-    completedItems.forEach((item) => {
-      const date = new Date(item.created_on);
+    completedItems.forEach((event) => {
+      const date = new Date(event.created_on);
       const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
 
       if (data.has(monthKey)) {
@@ -95,11 +95,6 @@
   let datasets = $derived(chartData.datasets);
   let labels = $derived(chartData.labels);
 
-  const isDataReady = $derived(
-    chartData.datasets.length > 0 &&
-      chartData.labels.length > 0 &&
-      itemPageState.items.length > 0
-  );
 </script>
 
 <!-- Completed Items per Month Chart -->
@@ -111,34 +106,28 @@
       </h2>
       <span class="text-center text-sm">Last 12 Months</span>
     </div>
-    {#if isDataReady}
-      <div
-        use:BarChart={{
-          labels: labels,
-          datasets: datasets,
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-              legend: {
-                display: false
-              },
-              title: {
-                display: false
-              }
+    <div
+      use:BarChart={{
+        labels: labels,
+        datasets: datasets,
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: false
             },
-            scales: {
-              x: { stacked: false },
-              y: { stacked: false, beginAtZero: true }
+            title: {
+              display: false
             }
+          },
+          scales: {
+            x: { stacked: false },
+            y: { stacked: false, beginAtZero: true }
           }
-        }}
-        class="chart-container h-72">
-      </div>
-    {:else}
-      <div class="chart-container flex h-72 items-center justify-center">
-        <span class="loading loading-spinner loading-lg"></span>
-      </div>
-    {/if}
+        }
+      }}
+      class="chart-container h-72">
+    </div>
   </div>
 </div>

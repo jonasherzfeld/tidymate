@@ -46,9 +46,8 @@ def create_chore(user):
     # Log creation event
     log_history_event(
         EventType.CREATED,
-        chore.id,
+        chore,
         "chore",
-        chore.data,
         user.id,
         user.house_id
     )
@@ -93,9 +92,8 @@ def check_chores(user, chore_id):
     # Log completion event
     log_history_event(
         EventType.COMPLETED,
-        chore.id,
+        chore,
         "chore",
-        chore.data,
         user.id,
         user.house_id
     )
@@ -153,9 +151,8 @@ def delete_chore(user, chore_id):
         # Log deletion event before deleting
         log_history_event(
             EventType.DELETED,
-            chore.id,
+            chore,
             "chore",
-            chore.data,
             user.id,
             user.house_id
         )

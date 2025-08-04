@@ -25,9 +25,8 @@ def login_required(function_to_protect):
 
 def log_history_event(
         event_type: EventType,
-        item_id: str,
+        item,
         item_type: str,
-        item_data: str,
         user_id: str,
         house_id: str):
     """Log an event to the history table"""
@@ -35,13 +34,14 @@ def log_history_event(
         history_entry = History(
             id=str(uuid.uuid4()),
             event_type=event_type,
-            item_id=item_id,
+            item_id=item.id if hasattr(item, 'id') else '',
+            item_data=item.data if hasattr(item, 'data') else '',
             item_type=item_type,
-            item_data=item_data,
             user_id=user_id,
             house_id=house_id,
             created_on=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         )
+        history_entry.set_item(item)
         db.session.add(history_entry)
         db.session.commit()
     except Exception as e:

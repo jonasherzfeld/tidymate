@@ -14,20 +14,19 @@
 
   // Reactive chart data - automatically updates when itemPageState changes
   const chartData = $derived.by(() => {
-    const items = itemPageState.items;
     const history = itemPageState.history;
 
     // Generate last 12 months (including current)
     const months = generateLast12Months();
 
     // Create item ID -> category mapping
-    const itemCategoryMap = createItemCategoryMap(items);
+    const itemCategoryMap = createItemCategoryMap(history);
 
     // Filter completed chores from last 12 months
     const completedItems = getCompletedItemsInRange(history, months[0].date);
 
     // Get all unique rooms
-    const categories = getAllCategories(items, completedItems, itemCategoryMap);
+    const categories = getAllCategories(history, completedItems, itemCategoryMap);
 
     // Count completions by month and room
     const monthlyData = countCompletionsByMonthAndCategory(
@@ -61,13 +60,14 @@
     return months;
   }
 
-  function createItemCategoryMap(items: T[]) {
+  function createItemCategoryMap(history: History[]) {
     const map = new Map<string, string>();
-    items.forEach((item) => {
-      if (item_type === "chore") {
-        map.set(item.id, item.room || "General");
-      } else if (item_type === "reminder") {
-        map.set(item.id, item.category || "General");
+    history.forEach((event) => {
+      if (!event.item) return;
+      if (event.item_type === "chore") {
+        map.set(event.item.id, event.item.room || "General");
+      } else if (event.item_type === "reminder") {
+        map.set(event.item.id, event.item.category || "General");
       }
     });
     return map;
@@ -75,32 +75,34 @@
 
   function getCompletedItemsInRange(history: History[], startDate: Date) {
     return history.filter(
-      (item) =>
-        item.event_type === "completed" &&
-        item.item_type === item_type &&
-        new Date(item.created_on) >= startDate
+      (event) =>
+        event.event_type === "completed" &&
+        event.item_type === item_type &&
+        new Date(event.created_on) >= startDate
     );
   }
 
   function getAllCategories(
-    items: T[],
+    history: History[],
     completedItems: any[],
     itemCategoryMap: Map<string, string>
   ) {
     const categories = new Set<string>();
 
     // Add rooms from current chores
-    items.forEach((item) => {
-      if (item_type === "chore") {
-        categories.add(item.room || "General");
-      } else if (item_type === "reminder") {
-        categories.add(item.category || "General");
+    history.forEach((event) => {
+      if (!event.item) return;
+      if (event.item_type === "chore") {
+        categories.add(event.item.room || "General");
+      } else if (event.item_type === "reminder") {
+        categories.add(event.item.category || "General");
       }
     });
 
     // Add rooms from completed chores
-    completedItems.forEach((item) => {
-      const category = itemCategoryMap.get(item.item_id) || "General";
+    completedItems.forEach((event) => {
+      if (!event.item) return;
+      const category = itemCategoryMap.get(event.item.id) || "General";
       categories.add(category);
     });
 
@@ -120,10 +122,11 @@
     });
 
     // Count completions
-    completedItems.forEach((chore) => {
-      const date = new Date(chore.created_on);
+    completedItems.forEach((event) => {
+      if (!event.item) return;
+      const date = new Date(event.created_on);
       const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
-      const category = itemCategoryMap.get(chore.item_id) || "General";
+      const category = itemCategoryMap.get(event.item.id) || "General";
 
       if (data.has(monthKey)) {
         const categoryMap = data.get(monthKey)!;
@@ -166,12 +169,6 @@
   }
   let datasets = $derived(chartData.datasets);
   let labels = $derived(chartData.labels);
-
-  const isDataReady = $derived(
-    chartData.datasets.length > 0 &&
-      chartData.labels.length > 0 &&
-      itemPageState.items.length > 0
-  );
 </script>
 
 <!-- Completed Chores per Month Chart -->
@@ -184,34 +181,28 @@
       <span class="text-center text-sm"
         >Last 12 Months per {item_type === "chore" ? "Room" : "Category"}</span>
     </div>
-    {#if isDataReady}
-      <div
-        use:BarChart={{
-          labels: labels,
-          datasets: datasets,
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-              legend: {
-                position: "top" as const
-              },
-              title: {
-                display: false
-              }
+    <div
+      use:BarChart={{
+        labels: labels,
+        datasets: datasets,
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: "top" as const
             },
-            scales: {
-              x: { stacked: true },
-              y: { stacked: true, beginAtZero: true }
+            title: {
+              display: false
             }
+          },
+          scales: {
+            x: { stacked: true },
+            y: { stacked: true, beginAtZero: true }
           }
-        }}
-        class="chart-container h-72">
-      </div>
-    {:else}
-      <div class="chart-container flex h-72 items-center justify-center">
-        <span class="loading loading-spinner loading-lg"></span>
-      </div>
-    {/if}
+        }
+      }}
+      class="chart-container h-72">
+    </div>
   </div>
 </div>

@@ -59,13 +59,14 @@
             reminderPageState.history = [
               ...reminderPageState.history,
               {
-                id: "",
+                id: `temp-${Date.now()}`,
                 event_type: "completed",
                 item_id: reminder.id,
-                item_type: "reminder",
                 item_data: reminder.data,
-                user_id: "",
-                house_id: "",
+                item_type: "reminder",
+                item: reminder,
+                user_id: data.user.id,
+                house_id: data.user.house_id,
                 created_on: new Date().toISOString(),
                 user: data.user
               } as History
@@ -78,13 +79,14 @@
             reminderPageState.history = [
               ...reminderPageState.history,
               {
-                id: "",
+                id: `temp-${Date.now()}`,
                 event_type: "deleted",
                 item_id: reminder.id,
-                item_type: "reminder",
                 item_data: reminder.data,
-                user_id: "",
-                house_id: "",
+                item_type: "reminder",
+                item: reminder,
+                user_id: data.user.id,
+                house_id: data.user.house_id,
                 created_on: new Date().toISOString(),
                 user: data.user
               } as History

@@ -185,6 +185,36 @@ class EventType(Enum):
             return None
 
 
+class HistoryItem:
+    """A wrapper class for serialized items that provides attribute access and to_dict()."""
+
+    def __init__(self, data_dict):
+        self._data = data_dict or {}
+
+    def __getattr__(self, name):
+        """Allow attribute access like item.category, item.data, etc."""
+        return self._data.get(name)
+
+    def __getitem__(self, key):
+        """Allow dictionary-style access like item['category']."""
+        return self._data.get(key)
+
+    def get(self, key, default=None):
+        """Dict-style get method."""
+        return self._data.get(key, default)
+
+    def to_dict(self):
+        """Return the underlying data as a dictionary."""
+        return self._data.copy()
+
+    def __bool__(self):
+        """Return True if the item has data."""
+        return bool(self._data)
+
+    def __repr__(self):
+        return f"HistoryItem({self._data})"
+
+
 class History(db.Model, SerializerMixin):
     id = db.Column(db.String, primary_key=True)
     event_type = db.Column(db.Enum(EventType), nullable=False)
@@ -193,6 +223,8 @@ class History(db.Model, SerializerMixin):
     # "todo", "chore", "reminder"
     item_type = db.Column(db.String(50), nullable=False)
     item_data = db.Column(db.String(255))  # Description/name of the item
+    # Serialized item data as JSON string
+    item_serialized = db.Column(db.Text)  # Stores the full serialized item
     user_id = db.Column(db.String, db.ForeignKey('users.id'), nullable=False)
     house_id = db.Column(db.String, db.ForeignKey('house.id'), nullable=False)
     created_on = db.Column(db.String(100), nullable=False)
@@ -201,3 +233,30 @@ class History(db.Model, SerializerMixin):
     house = db.relationship('House')
 
     serialize_rules = ('-user.house', '-house.members')
+
+    def set_item(self, item):
+        """Store a serialized version of the item (Todo, Chore, or Reminder)."""
+        import json
+        if hasattr(item, 'to_dict'):
+            self.item_serialized = json.dumps(item.to_dict())
+        else:
+            self.item_serialized = json.dumps(str(item))
+
+    @hybrid_property
+    def item(self):
+        """Get the item as a HistoryItem object with attribute access."""
+        import json
+        if self.item_serialized:
+            try:
+                data = json.loads(self.item_serialized)
+                return HistoryItem(data)
+            except json.JSONDecodeError:
+                return HistoryItem({})
+        return HistoryItem({})
+
+    def to_dict(self, **kwargs):
+        """Override to_dict to include the parsed item."""
+        result = super().to_dict(**kwargs)
+        if self.item:
+            result['item'] = self.item.to_dict()
+        return result

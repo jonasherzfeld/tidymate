@@ -33,9 +33,8 @@ def create_todo(user):
     # Log creation event
     log_history_event(
         EventType.CREATED,
-        todo.id,
+        todo,
         "todo",
-        todo.data,
         user.id,
         user.house_id
     )
@@ -79,9 +78,8 @@ def check_todos(user, todo_id):
     if not was_done and todo.done:
         log_history_event(
             EventType.COMPLETED,
-            todo.id,
+            todo,
             "todo",
-            todo.data,
             user.id,
             user.house_id
         )
@@ -133,9 +131,8 @@ def delete_todo(user, todo_id):
         # Log deletion event before deleting
         log_history_event(
             EventType.DELETED,
-            todo.id,
+            todo,
             "todo",
-            todo.data,
             user.id,
             user.house_id
         )
