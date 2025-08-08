@@ -70,7 +70,7 @@ def create_app():
         with app.app_context():
             from db.db import get_alembic_config, get_latest_migration_revision
             from alembic import command
-            
+
             db.create_all()
 
             # Initialize the alembic_version table first
@@ -90,8 +90,10 @@ def create_app():
                     print("Database created but no migrations found to stamp")
 
             except Exception as e:
-                print(f"Warning: Could not stamp database with migration revision: {e}")
-                print("Database created but not stamped - you may need to run migrations manually")
+                print(
+                    f"Warning: Could not stamp database with migration revision: {e}")
+                print(
+                    "Database created but not stamped - you may need to run migrations manually")
 
     app.register_blueprint(routes)
 
@@ -102,7 +104,7 @@ def create_app():
             check_deadlines()
 
     scheduler.add_job(func=run_check_deadlines, trigger='cron',
-                      hour=0, minute=0)  # Runs every day at 00:00 UTC
+                      hour=6, minute=0)  # Runs every day at 06:00 UTC
     # scheduler.add_job(
     #     func=run_check_deadlines,
     #     trigger='interval',
