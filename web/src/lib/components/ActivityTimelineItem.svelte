@@ -142,18 +142,4 @@
       </div>
     {/if}
   </div>
-
-  <!-- Right Side: Time and Avatar -->
-  <!-- <div class="flex h-full w-fit flex-col items-end justify-start gap-1">
-    <div class="text-base-content/70 font-mono text-xs">
-      {formatTime(event.created_on)}
-    </div>
-    <div class="avatar">
-      <AvatarGraphic
-        thumbnail={event.user?.thumbnail || ""}
-        height="h-6"
-        width="w-6"
-        textSize="text-[0.4rem]" />
-    </div>
-  </div> -->
 </div>

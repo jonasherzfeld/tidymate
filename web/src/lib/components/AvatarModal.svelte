@@ -43,16 +43,16 @@
           width="w-24"
           textSize="text-5xl font-bold" />
       </div>
-      <div>
-        <form method="POST" use:enhance enctype="multipart/form-data">
-          <label class="form-control mb-4 w-full max-w-xs">
+      <div >
+        <form class="flex flex-col h-fit items-start gap-1" method="POST" use:enhance enctype="multipart/form-data">
+          <label class="form-control w-full max-w-xs">
             <input
               type="file"
               name="file"
               class="file-input file-input-bordered w-full max-w-xs"
               accept=".jpg, .jpeg, .png, .webp" />
           </label>
-          <div class="grid gap-3 sm:grid-cols-2">
+          <div class="grid gap-1 w-full sm:grid-cols-2">
             <button
               class="btn"
               type="submit"

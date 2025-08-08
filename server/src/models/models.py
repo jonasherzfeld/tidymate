@@ -2,8 +2,15 @@ from enum import Enum
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.ext.declarative import declared_attr
+import re
+import os
+from pathlib import Path
 
 from db.db import db, bcrypt
+
+# Get the base directory for converting file paths to URLs
+CWD = Path(__file__).parent
+BASE_DIR = CWD.parent.parent
 
 
 class ChoreSeverity(Enum):
