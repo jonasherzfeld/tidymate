@@ -4,7 +4,6 @@
   import type { Snippet } from "svelte";
   import UserImage from "./UserImage.svelte";
 
-  
   let {
     thumbnail,
     height,
@@ -36,20 +35,20 @@
   );
   let noInitials = $derived(!inputNameInitials && !derivedNameInitials);
 
-   const variants = {
-    tiny: { size: 'thumbnail', width: 12, height: 12 },
-    small: { size: 'medium', width: 24, height: 24 },
-    medium: { size: 'medium', width: 48, height: 48 },
-    large: { size: 'large', width: 96, height: 96 },
-    xl: { size: 'large', width: 128, height: 128 }
+  const variants = {
+    tiny: { size: "thumbnail", width: 12, height: 12 },
+    small: { size: "medium", width: 24, height: 24 },
+    medium: { size: "medium", width: 48, height: 48 },
+    large: { size: "large", width: 96, height: 96 },
+    xl: { size: "large", width: 128, height: 128 }
   };
-  
+
   const variant = $derived.by(() => {
-    if (width <= 'w-10' || height <= 'h-10') return variants.tiny;
-    if (width <= 'w-24' || height <= 'h-24') return variants.small;
-    if (width <= 'w-48' || height <= 'h-48') return variants.medium;
-    if (width <= 'w-96' || height <= 'h-96') return variants.large;
-    if (width <= 'w-128' || height <= 'h-128') return variants.xl;
+    if (width <= "w-10" || height <= "h-10") return variants.tiny;
+    if (width <= "w-24" || height <= "h-24") return variants.small;
+    if (width <= "w-48" || height <= "h-48") return variants.medium;
+    if (width <= "w-96" || height <= "h-96") return variants.large;
+    if (width <= "w-128" || height <= "h-128") return variants.xl;
     return variants.small; // Default
   });
 </script>
@@ -63,9 +62,8 @@
       size={variant.size}
       width={variant.width}
       height={variant.height}
-      alt={firstName ? `${firstName}'s avatar` : 'User avatar'}
-      class="avatar-image"
-    />
+      alt={firstName ? `${firstName}'s avatar` : "User avatar"}
+      class="avatar-image" />
   {:else}
     <div
       class={`bg-primary flex items-center justify-center font-normal text-white ${height} ${width} ${textSize}`}>
