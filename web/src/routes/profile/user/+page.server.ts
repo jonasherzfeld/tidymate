@@ -151,7 +151,7 @@ export const actions = {
       }
       return {
         success: true,
-        thumbnail: response.thumbnail
+        thumbnail: response.default_thumbnail
       };
     } catch {
       return fail(500, { errors: "Internal Error" });
