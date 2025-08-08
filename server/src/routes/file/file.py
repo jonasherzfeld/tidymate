@@ -148,7 +148,8 @@ def delete_image(user):
 
     try:
         # Extract the base filename from the thumbnail path
-        # user.thumbnail should be something like "/file/userdata/{user_id}/{filename}_thumbnail.webp"
+        # user.thumbnail should be something like
+        # "/file/userdata/{user_id}/{filename}_thumbnail.webp"
         if user.thumbnail.startswith("/file/"):
             # Parse the URL to get user_dir and filename base
             parts = user.thumbnail.split('/')
