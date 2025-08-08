@@ -11,6 +11,7 @@ from flask import Flask
 from logging.config import dictConfig
 import sys
 
+
 # Append src folder to sys.path to import local modules
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 # fmt: off
@@ -54,12 +55,43 @@ def create_app():
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     CORS(app)
     Session(app)
+
+    # Initialize database and migration objects first
     db = initialize_db(app)
     migrate = Migrate(app, db)
 
-    # Initialize database with smart migration handling after Migrate is set up
-    from db.db import initialize_database_with_migrations
-    initialize_database_with_migrations(app)
+    # Check if database file exists, create and stamp if it doesn't
+    db_file_path = SQL_DB_URL.replace('sqlite:///', '')
+    if not os.path.exists(db_file_path):
+        print(f"Creating database at {SQL_DB_URL}")
+        os.makedirs(os.path.dirname(db_file_path), exist_ok=True)
+
+        # Create the database file and tables
+        with app.app_context():
+            from db.db import get_alembic_config, get_latest_migration_revision
+            from alembic import command
+            
+            db.create_all()
+
+            # Initialize the alembic_version table first
+            try:
+                # This creates the alembic_version table
+                alembic_cfg = get_alembic_config()
+                command.stamp(alembic_cfg, "base")
+                print("Initialized alembic_version table")
+
+                # Now stamp with the latest migration revision
+                head = get_latest_migration_revision()
+                if head:
+                    print(f"Stamping database with migration revision: {head}")
+                    command.stamp(alembic_cfg, head)
+                    print("Database created and stamped with latest migration revision")
+                else:
+                    print("Database created but no migrations found to stamp")
+
+            except Exception as e:
+                print(f"Warning: Could not stamp database with migration revision: {e}")
+                print("Database created but not stamped - you may need to run migrations manually")
 
     app.register_blueprint(routes)
 
