@@ -28,19 +28,16 @@ IMAGE_SIZES = {
 @file.route('/upload', methods=['POST'])
 @login_required
 def upload_image(user):
-    if 'file' not in request.files:
+    if 'avatar' not in request.files:
+        print("No avatar file part in POST")
         return jsonify({
             "error": "No file part in POST"
         }), 401
-
-    if 'file' not in request.files:
-        return jsonify({
-            "error": "No file part in POST"
-        }), 401
-    file_obj = request.files['file']
+    file_obj = request.files['avatar']
 
     file_ending = file_obj.content_type.split('/')[1]
-    if file_ending not in ['jpeg', 'png', 'jpg']:
+    if file_ending not in ['jpeg', 'png', 'jpg', 'webp']:
+        print(f"Invalid file type: {file_ending}")
         return jsonify({
             "error": "Invalid file type"
         }), 401
