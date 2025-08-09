@@ -6,7 +6,9 @@ const config = {
   preprocess: vitePreprocess(),
   kit: {
     adapter: adapter({
-      runtime: "nodejs20.x"
+      runtime: "nodejs20.x",
+      // Increase body size limit for file uploads (5MB)
+      bodySizeLimit: 5 * 1024 * 1024
     }),
     csrf: {
       checkOrigin: false
