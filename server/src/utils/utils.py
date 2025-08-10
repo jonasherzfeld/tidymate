@@ -2,9 +2,12 @@ from flask import jsonify, session
 from functools import wraps
 from datetime import datetime, timezone
 import uuid
+import logging
+from sqlalchemy import and_
 
 from db.db import db
-from models.models import Notification, Users, Todo, Reminder, Chore, NotificationSeverity, History, EventType
+from models.models import Notification, Users, Todo, Reminder, Chore, History
+from models.types import ItemType, EventType, NotificationSeverity, EventType, NotificationType
 
 
 def login_required(function_to_protect):
@@ -51,6 +54,8 @@ def log_history_event(
 
 def check_reminders():
     all_reminders = Reminder.query.all()
+    count_added_notifications = 0
+
     for reminder in all_reminders:
         # Skip reminders without a deadline
         if not reminder.deadline or reminder.deadline.strip() == '':
@@ -64,29 +69,42 @@ def check_reminders():
             reminder_deadline = reminder_deadline.replace(tzinfo=timezone.utc)
         if reminder_deadline < datetime.now(timezone.utc):
             # Check if notification already exists for this reminder
-            existing_notification = Notification.query.filter_by(
-                href=f"/home/reminders",
-                user_id=reminder.user_id
+            existing_notification = Notification.query.filter(
+                and_(
+                    Notification.item_type == ItemType.REMINDER,
+                    Notification.item_id == reminder.id,
+                    Notification.user_id == reminder.user_id
+                )
             ).first()
+            logging.info(existing_notification.to_dict() if existing_notification else "No existing notification found"
+                         )
 
             if not existing_notification:
                 # Send a notification for the expired reminder
+                count_added_notifications += 1
                 notification = Notification(
                     id=str(uuid.uuid4()),
+                    notification_type=NotificationType.ITEM_DUE,
+                    item_type=ItemType.REMINDER,
+                    item_id=reminder.id,
                     name=f"{reminder.data}",
                     description=f"The reminder '{reminder.data}' has expired.",
                     severity=NotificationSeverity.INFO,
                     is_viewed=False,
+                    is_removed=False,
                     created_on=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                     href=f"/home/reminders",
                     user_id=reminder.user_id,
                 )
                 db.session.add(notification)
     db.session.commit()
+    logging.info(
+        f"Added {count_added_notifications} notifications for expired reminders.")
 
 
 def check_chores():
     all_chores = Chore.query.all()
+    count_added_notifications = 0
     for chore in all_chores:
         # Skip chores without a deadline
         if not chore.deadline or chore.deadline.strip() == '':
@@ -105,28 +123,37 @@ def check_chores():
             for user in house_users:
                 # Check if notification already exists for this chore and user
                 existing_notification = Notification.query.filter_by(
-                    href=f"/home/chores",
+                    item_type=ItemType.CHORE,
+                    item_id=chore.id,
                     user_id=user.id
                 ).first()
 
                 if not existing_notification:
                     # Send a notification for the expired chore
+                    count_added_notifications += 1
                     notification = Notification(
                         id=str(uuid.uuid4()),
+                        notification_type=NotificationType.ITEM_DUE,
+                        item_type=ItemType.CHORE,
+                        item_id=chore.id,
                         name=f"{chore.data}",
                         description=f"The chore '{chore.data}' is due.",
                         severity=NotificationSeverity.INFO,
                         is_viewed=False,
+                        is_removed=False,
                         created_on=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                         href=f"/home/chores",
                         user_id=user.id,
                     )
                     db.session.add(notification)
     db.session.commit()
+    logging.info(
+        f"Added {count_added_notifications} notifications for expired chores.")
 
 
 def check_todos():
     all_todos = Todo.query.all()
+    count_added_notifications = 0
     for todo in all_todos:
         # Skip todos without a deadline
         if not todo.deadline or todo.deadline.strip() == '':
@@ -145,27 +172,36 @@ def check_todos():
             for user in house_users:
                 # Check if notification already exists for this todo and user
                 existing_notification = Notification.query.filter_by(
-                    href=f"/home/todo",
+                    item_type=ItemType.TODO,
+                    item_id=todo.id,
                     user_id=user.id
                 ).first()
 
                 if not existing_notification:
                     # Send a notification for the expired todo
+                    count_added_notifications += 1
                     notification = Notification(
                         id=str(uuid.uuid4()),
+                        notification_type=NotificationType.ITEM_DUE,
+                        item_type=ItemType.TODO,
+                        item_id=todo.id,
                         name=f"{todo.data}",
                         description=f"The todo '{todo.data}' is due.",
                         severity=NotificationSeverity.INFO,
                         is_viewed=False,
+                        is_removed=False,
                         created_on=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                         href=f"/home/todo",
                         user_id=user.id,
                     )
                     db.session.add(notification)
     db.session.commit()
+    logging.info(
+        f"Added {count_added_notifications} notifications for expired todos.")
 
 
 def check_deadlines():
+    logging.info("Checking deadlines for reminders, chores, and todos")
     check_reminders()
     check_chores()
     check_todos()

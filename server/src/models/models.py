@@ -1,45 +1,9 @@
-from enum import Enum
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.ext.declarative import declared_attr
-import re
-import os
-from pathlib import Path
 
+from .types import ChoreSeverity, NotificationType, NotificationSeverity, EventType, ItemType
 from db.db import db, bcrypt
-
-# Get the base directory for converting file paths to URLs
-CWD = Path(__file__).parent
-BASE_DIR = CWD.parent.parent
-
-
-class ChoreSeverity(Enum):
-    LOW = 0
-    MEDIUM = 1
-    HIGH = 2
-
-    @staticmethod
-    def from_int(severity: int) -> 'ChoreSeverity':
-        try:
-            output = ChoreSeverity(severity)
-        except BaseException:
-            output = None
-        return output
-
-
-class NotificationSeverity(Enum):
-    DETAIL = 0
-    INFO = 1
-    WARN = 2
-    ERROR = 3
-
-    @staticmethod
-    def from_int(severity: int) -> 'NotificationSeverity':
-        try:
-            output = NotificationSeverity(severity)
-        except BaseException:
-            output = None
-        return output
 
 
 class Users(db.Model, SerializerMixin):
@@ -167,29 +131,20 @@ class Reminder(BaseItem, db.Model, SerializerMixin):
 
 class Notification(db.Model, SerializerMixin):
     id = db.Column(db.String, primary_key=True)
+    notification_type = db.Column(db.Enum(NotificationType))
+    item_type = db.Column(db.Enum(ItemType))
+    item_id = db.Column(db.String(100))
     name = db.Column(db.String(100))
     description = db.Column(db.String(255))
     severity = db.Column(db.Enum(NotificationSeverity))
     is_viewed = db.Column(db.Boolean, default=False)
+    is_removed = db.Column(db.Boolean, default=False)
     created_on = db.Column(db.String(100))
     href = db.Column(db.String(255), nullable=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     user = db.relationship('Users', back_populates='notifications')
 
     serialize_rules = ('-user.notifications',)
-
-
-class EventType(Enum):
-    COMPLETED = "completed"
-    CREATED = "created"
-    DELETED = "deleted"
-
-    @staticmethod
-    def from_string(event_type: str) -> 'EventType':
-        try:
-            return EventType(event_type)
-        except ValueError:
-            return None
 
 
 class HistoryItem:

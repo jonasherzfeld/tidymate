@@ -49,10 +49,14 @@ interface House {
 
 interface Notification {
   id: string;
+  notification_type: string;
+  item_type: string;
+  item_id: string;
   name: string;
   description: string;
   severity: number;
   is_viewed: boolean;
+  is_removed: boolean;
   created_on: string;
   href: string | null;
   user_id: User;
