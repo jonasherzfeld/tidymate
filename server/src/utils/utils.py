@@ -75,8 +75,7 @@ def check_reminders():
                     Notification.item_id == reminder.id,
                     Notification.user_id == reminder.user_id,
                     Notification.item_iteration_count == reminder.iteration_count,
-                )
-            ).first()
+                )).first()
 
             if not existing_notification:
                 # Send a notification for the expired reminder
@@ -128,8 +127,7 @@ def check_chores():
                         Notification.item_id == chore.id,
                         Notification.user_id == user.id,
                         Notification.item_iteration_count == chore.iteration_count,
-                    )
-                ).first()
+                    )).first()
 
                 if not existing_notification:
                     # Send a notification for the expired chore

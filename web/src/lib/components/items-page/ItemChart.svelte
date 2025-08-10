@@ -191,10 +191,10 @@
         datasets: datasets,
         options: {
           legend: {
-                labels: {
-                    fontColor: "blue",
-                    fontSize: 18
-                }
+            labels: {
+              fontColor: "blue",
+              fontSize: 18
+            }
           },
           responsive: true,
           maintainAspectRatio: false,
@@ -202,8 +202,8 @@
             legend: {
               position: "top" as const,
               labels: {
-                    fontColor: "blue",
-                    fontSize: 18
+                fontColor: "blue",
+                fontSize: 18
               }
             },
             title: {
