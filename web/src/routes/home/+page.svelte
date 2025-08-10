@@ -179,9 +179,9 @@
                 ></path
                 ></svg>
             </div>
-            <div class="stat-value">{userCompletionRate}%</div>
             <div class="stat-title">Household contribution</div>
-            <div class="stat-desc text-secondary">
+            <div class="stat-value text-info">{userCompletionRate}%</div>
+            <div class="stat-desc">
               {currentUserStats?.totalCompleted || 0} household tasks completed
             </div>
           </div>
