@@ -19,7 +19,7 @@
   let serverErrors: string = $state("");
   let isLoading: boolean = $state(false);
   let numNonViewedNotifications: number = $derived(
-    notifications.filter((n) => (!n.is_viewed && !n.is_removed)).length
+    notifications.filter((n) => !n.is_viewed && !n.is_removed).length
   );
   let sortedNotifications = $derived(
     [...notifications]

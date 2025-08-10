@@ -77,7 +77,7 @@
 <div class="flex min-w-full flex-1 flex-col">
   <h1 class="text-accent text-5xl font-bold">{$nameForm.name}</h1>
   <p class="py-4">This is the settings page for your house!</p>
-  <div class="flex min-w-full flex-1 flex-col gap-3 mb-5">
+  <div class="mb-5 flex min-w-full flex-1 flex-col gap-3">
     <div class="card bg-base-200 flex flex-1 flex-col gap-4 p-3">
       <form action="?/update_name" method="POST" use:nameEnhance>
         <FormTextInput
