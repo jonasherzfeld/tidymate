@@ -5,7 +5,8 @@ from datetime import datetime
 
 from db.db import db
 from utils.utils import login_required
-from models.models import Notification, NotificationSeverity
+from models.models import Notification
+from models.types import ItemType, NotificationType, NotificationSeverity
 
 CWD = Path(__file__).parent
 BASE_DIR = CWD.parent.parent.parent.parent
@@ -20,13 +21,20 @@ def create_notification(user):
     description = request.json.get("description", "")
     severity = NotificationSeverity.from_int(request.json.get("severity", 0))
     href = request.json.get("href", "")
+    notification_type = request.json.get("notification_type", "info")
+    item_type = request.json.get("item_type", "none")
+    item_id = request.json.get("item_id", "")
 
     notification = Notification(
         id=str(uuid.uuid4()),
+        notification_type=NotificationType.from_string(notification_type),
+        item_type=ItemType.from_string(item_type),
+        item_id=item_id,
         name=name,
         description=description,
         severity=severity,
         is_viewed=False,
+        is_removed=False,
         created_on=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         href=href,
         user_id=user.id
@@ -41,8 +49,11 @@ def create_notification(user):
 @login_required
 def get_notifications(user):
     notifications = Notification.query.filter_by(user_id=user.id)
+    if not notifications:
+        return jsonify({"notifications": []})
+
     notifications_json = [notification.to_dict()
-                          for notification in notifications] if notifications else []
+                          for notification in notifications if not notification.is_removed]
     return jsonify({"notifications": notifications_json})
 
 
@@ -67,7 +78,16 @@ def view_notification(user, notification_id):
                      methods=["DELETE"])
 @login_required
 def delete_notification(user, notification_id):
-    Notification.query.filter_by(id=notification_id).delete()
+    notification = Notification.query.filter_by(id=notification_id).first()
+    if not notification:
+        return jsonify({"error": "Notification not found"}), 404
+    elif not notification.user_id == user.id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    notification.is_viewed = True
+    notification.is_removed = True
+
+    db.session.add(notification)
     db.session.commit()
     return jsonify({}), 200
 
@@ -75,6 +95,8 @@ def delete_notification(user, notification_id):
 @notifications.route("/delete-all-notifications", methods=["DELETE"])
 @login_required
 def delete_all_notifications(user):
-    Notification.query.filter_by(user_id=user.id).delete()
+    notifications = Notification.query.filter_by(user_id=user.id)
+    for notification in notifications:
+        notification.is_removed = True
     db.session.commit()
     return jsonify({}), 200

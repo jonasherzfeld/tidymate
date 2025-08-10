@@ -19,13 +19,15 @@
   let serverErrors: string = $state("");
   let isLoading: boolean = $state(false);
   let numNonViewedNotifications: number = $derived(
-    notifications.filter((n) => !n.is_viewed).length
+    notifications.filter((n) => (!n.is_viewed && !n.is_removed)).length
   );
   let sortedNotifications = $derived(
-    [...notifications].sort(
-      (a, b) =>
-        new Date(b.created_on).getTime() - new Date(a.created_on).getTime()
-    )
+    [...notifications]
+      .filter((n) => !n.is_removed)
+      .sort(
+        (a, b) =>
+          new Date(b.created_on).getTime() - new Date(a.created_on).getTime()
+      )
   );
 
   function handleViewNotification() {
