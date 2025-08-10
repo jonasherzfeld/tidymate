@@ -113,6 +113,7 @@ class Chore(BaseItem, db.Model, SerializerMixin):
     last_done = db.Column(db.String(100))
     room = db.Column(db.String(100))
     severity = db.Column(db.Enum(ChoreSeverity))
+    iteration_count = db.Column(db.Integer, default=0)
     house_id = db.Column(db.Integer, db.ForeignKey('house.id'))
     house = db.relationship('House', back_populates='chores')
 
@@ -123,6 +124,7 @@ class Reminder(BaseItem, db.Model, SerializerMixin):
     frequency = db.Column(db.Integer)
     last_done = db.Column(db.String(100))
     category = db.Column(db.String(100))
+    iteration_count = db.Column(db.Integer, default=0)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     user = db.relationship('Users', back_populates='reminders')
 
@@ -134,6 +136,7 @@ class Notification(db.Model, SerializerMixin):
     notification_type = db.Column(db.Enum(NotificationType))
     item_type = db.Column(db.Enum(ItemType))
     item_id = db.Column(db.String(100))
+    item_iteration_count = db.Column(db.Integer, default=0)
     name = db.Column(db.String(100))
     description = db.Column(db.String(255))
     severity = db.Column(db.Enum(NotificationSeverity))

@@ -8,6 +8,7 @@ export function BarChart(node: HTMLElement, config: any) {
     if (chart) {
       chart.destroy();
     }
+    // Chart.defaults.color = "#FFF";
 
     // Clear the node and create a new canvas
     node.innerHTML = "";

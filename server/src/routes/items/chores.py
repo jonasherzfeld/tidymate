@@ -38,6 +38,7 @@ def create_chore(user):
                   last_done=last_done,
                   room=room,
                   severity=severity,
+                  iteration_count=0,
                   house=house
                   )
     db.session.add(chore)
@@ -83,6 +84,8 @@ def check_chores(user, chore_id):
     elif not chore.house_id == user.house_id:
         return jsonify({"error": "Unauthorized"}), 401
 
+    chore.iteration_count = chore.iteration_count + \
+        1 if chore.iteration_count is not None else 1
     chore.last_done = datetime.now().strftime("%Y-%m-%d")
     chore.deadline = (
         datetime.now() + timedelta(days=chore.frequency)).strftime("%Y-%m-%d")

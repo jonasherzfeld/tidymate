@@ -63,7 +63,7 @@ def create_app():
     # Check if database file exists, create and stamp if it doesn't
     db_file_path = SQL_DB_URL.replace('sqlite:///', '')
     if not os.path.exists(db_file_path):
-        print(f"Creating database at {SQL_DB_URL}")
+        logging.info(f"Creating database at {SQL_DB_URL}")
         os.makedirs(os.path.dirname(db_file_path), exist_ok=True)
 
         # Create the database file and tables
@@ -78,21 +78,22 @@ def create_app():
                 # This creates the alembic_version table
                 alembic_cfg = get_alembic_config()
                 command.stamp(alembic_cfg, "base")
-                print("Initialized alembic_version table")
+                logging.debug("Initialized alembic_version table")
 
                 # Now stamp with the latest migration revision
                 head = get_latest_migration_revision()
                 if head:
-                    print(f"Stamping database with migration revision: {head}")
+                    logging.info(
+                        f"Stamping database with migration revision: {head}")
                     command.stamp(alembic_cfg, head)
-                    print("Database created and stamped with latest migration revision")
                 else:
-                    print("Database created but no migrations found to stamp")
+                    logging.warning(
+                        "Database created but no migrations found to stamp")
 
             except Exception as e:
-                print(
+                logging.error(
                     f"Warning: Could not stamp database with migration revision: {e}")
-                print(
+                logging.error(
                     "Database created but not stamped - you may need to run migrations manually")
 
     app.register_blueprint(routes)
