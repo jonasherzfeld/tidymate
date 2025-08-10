@@ -53,7 +53,7 @@ def create_app():
     app.config['SESSION_REDIS'] = redis.from_url(REDIS_URL)
     app.config['SQLALCHEMY_DATABASE_URI'] = SQL_DB_URL
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    CORS(app)
+    CORS(app, supports_credentials=True)
     Session(app)
 
     # Initialize database and migration objects first
@@ -117,4 +117,4 @@ def create_app():
 
 if __name__ == "__main__":
     app = create_app()
-    app.run(debug=True)
+    app.run(debug=True, port=5001)
