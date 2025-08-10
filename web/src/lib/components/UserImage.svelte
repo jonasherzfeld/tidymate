@@ -43,8 +43,7 @@
   // Auto-detect best size based on display dimensions
   function getOptimalSize(displayWidth) {
     if (displayWidth <= 64) return "thumbnail";
-    if (displayWidth <= 200) return "medium";
-    if (displayWidth <= 400) return "large";
+    if (displayWidth <= 128) return "medium";
     return "original";
   }
 
@@ -62,18 +61,6 @@
     loaded = true;
     error = false;
     onLoad?.(event);
-  }
-
-  function handleError(event) {
-    console.log(`Error loading image: ${event.target.src}`);
-
-    // Simple fallback - just use the fallback image
-    if (currentSrc !== fallbackSrc) {
-      error = true;
-      currentSrc = fallbackSrc;
-    } else {
-      onError?.(event);
-    }
   }
 
   // Progressive enhancement - load higher res on interaction

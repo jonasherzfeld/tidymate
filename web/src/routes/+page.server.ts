@@ -118,7 +118,6 @@ export const actions: Actions = {
       if (!res.ok) {
         return fail(400, { errors: response.error });
       }
-      console.log("success ID:", id);
       return { success: true };
     } catch {
       return fail(500, { errors: "Internal Error" });
@@ -146,7 +145,6 @@ export const actions: Actions = {
       if (!res.ok) {
         return fail(400, { errors: response.error });
       }
-      console.log("success");
       return { success: true };
     } catch {
       return fail(500, { errors: "Internal Error" });

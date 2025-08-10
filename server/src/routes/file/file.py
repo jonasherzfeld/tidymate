@@ -19,8 +19,7 @@ file = Blueprint('file', __name__)
 # Define your resolution presets
 IMAGE_SIZES = {
     'thumbnail': (64, 64),    # Small profile pic
-    'medium': (200, 200),     # Card views
-    'large': (400, 400),      # Profile page
+    'medium': (128, 128),     # Card views
     'original': None          # Keep original (optional)
 }
 
@@ -28,15 +27,15 @@ IMAGE_SIZES = {
 @file.route('/upload', methods=['POST'])
 @login_required
 def upload_image(user):
-    if 'avatar' not in request.files:
-        print("No avatar file part in POST")
+    if 'filepond' not in request.files:
+        print("No filepond file part in POST")
         return jsonify({
             "error": "No file part in POST"
         }), 401
-    file_obj = request.files['avatar']
+    file_obj = request.files['filepond']
 
     file_ending = file_obj.content_type.split('/')[1]
-    if file_ending not in ['jpeg', 'png', 'jpg', 'webp']:
+    if file_ending not in ['jpeg', 'png', 'jpg', 'webp', 'heic', 'heif']:
         print(f"Invalid file type: {file_ending}")
         return jsonify({
             "error": "Invalid file type"
@@ -65,6 +64,7 @@ def upload_image(user):
         image_urls = {}
 
         # Generate different resolutions
+        remove_image_files(full_user_dir)  # Clean up old images
         for size_name, dimensions in IMAGE_SIZES.items():
             if dimensions is None:  # Original size
                 processed_image = original_image
@@ -97,6 +97,22 @@ def upload_image(user):
 
     except Exception as e:
         return jsonify({"error": f"Image processing failed: {str(e)}"}), 500
+
+
+def remove_image_files(user_dir):
+    """Remove all image files for a user directory"""
+    print(f"Removing image files in: {user_dir}")
+    try:
+        if os.path.exists(user_dir) and os.path.isdir(user_dir):
+            for file in os.listdir(user_dir):
+                if file.endswith(".webp"):
+                    print(f"Removing file: {file}")
+                    os.remove(os.path.join(user_dir, file))
+            return True
+        return False
+    except Exception as e:
+        print(f"Error removing image files: {str(e)}")
+        return False
 
 
 def crop_to_square(image, size):

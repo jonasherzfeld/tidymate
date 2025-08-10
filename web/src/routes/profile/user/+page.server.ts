@@ -130,6 +130,12 @@ export const actions = {
     return message(lastNameForm, "Email Updated!");
   },
 
+  trigger_upload_image: async ({}) => {
+    return {
+      success: true
+    };
+  },
+
   upload_image: async ({ request, fetch, cookies }) => {
     const formData = await request.formData();
 
