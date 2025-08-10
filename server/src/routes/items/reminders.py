@@ -33,6 +33,7 @@ def create_reminder(user):
         frequency=frequency,
         last_done=last_done,
         category=category,
+        iteration_count=0,
         user=user)
     db.session.add(reminder)
     db.session.commit()
@@ -78,6 +79,8 @@ def check_reminders(user, reminder_id):
     elif not reminder.user_id == user.id:
         return jsonify({"error": "Unauthorized"}), 401
 
+    reminder.iteration_count = reminder.iteration_count + \
+        1 if reminder.iteration_count is not None else 1
     reminder.last_done = datetime.now().strftime("%Y-%m-%d")
     reminder.deadline = (
         datetime.now() +

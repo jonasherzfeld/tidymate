@@ -73,11 +73,10 @@ def check_reminders():
                 and_(
                     Notification.item_type == ItemType.REMINDER,
                     Notification.item_id == reminder.id,
-                    Notification.user_id == reminder.user_id
+                    Notification.user_id == reminder.user_id,
+                    Notification.item_iteration_count == reminder.iteration_count,
                 )
             ).first()
-            logging.info(existing_notification.to_dict() if existing_notification else "No existing notification found"
-                         )
 
             if not existing_notification:
                 # Send a notification for the expired reminder
@@ -87,6 +86,7 @@ def check_reminders():
                     notification_type=NotificationType.ITEM_DUE,
                     item_type=ItemType.REMINDER,
                     item_id=reminder.id,
+                    item_iteration_count=reminder.iteration_count,
                     name=f"{reminder.data}",
                     description=f"The reminder '{reminder.data}' has expired.",
                     severity=NotificationSeverity.INFO,
@@ -122,10 +122,13 @@ def check_chores():
 
             for user in house_users:
                 # Check if notification already exists for this chore and user
-                existing_notification = Notification.query.filter_by(
-                    item_type=ItemType.CHORE,
-                    item_id=chore.id,
-                    user_id=user.id
+                existing_notification = Notification.query.filter(
+                    and_(
+                        Notification.item_type == ItemType.CHORE,
+                        Notification.item_id == chore.id,
+                        Notification.user_id == user.id,
+                        Notification.item_iteration_count == chore.iteration_count,
+                    )
                 ).first()
 
                 if not existing_notification:
@@ -136,6 +139,7 @@ def check_chores():
                         notification_type=NotificationType.ITEM_DUE,
                         item_type=ItemType.CHORE,
                         item_id=chore.id,
+                        item_iteration_count=chore.iteration_count,
                         name=f"{chore.data}",
                         description=f"The chore '{chore.data}' is due.",
                         severity=NotificationSeverity.INFO,
@@ -171,10 +175,12 @@ def check_todos():
 
             for user in house_users:
                 # Check if notification already exists for this todo and user
-                existing_notification = Notification.query.filter_by(
-                    item_type=ItemType.TODO,
-                    item_id=todo.id,
-                    user_id=user.id
+                existing_notification = Notification.query.filter(
+                    and_(
+                        Notification.item_type == ItemType.TODO,
+                        Notification.item_id == todo.id,
+                        Notification.user_id == user.id,
+                    )
                 ).first()
 
                 if not existing_notification:
@@ -185,6 +191,7 @@ def check_todos():
                         notification_type=NotificationType.ITEM_DUE,
                         item_type=ItemType.TODO,
                         item_id=todo.id,
+                        item_iteration_count=0,
                         name=f"{todo.data}",
                         description=f"The todo '{todo.data}' is due.",
                         severity=NotificationSeverity.INFO,

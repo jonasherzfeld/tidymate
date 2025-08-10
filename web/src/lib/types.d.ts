@@ -18,12 +18,14 @@ interface Chore extends Todo {
   last_done: string;
   room: string;
   severity: ChoreSeverity;
+  iteration_count: number;
 }
 
 interface Reminder extends Todo {
   frequency: number;
   last_done: string;
   category: string;
+  iteration_count: number;
 }
 
 interface User {
@@ -52,6 +54,7 @@ interface Notification {
   notification_type: string;
   item_type: string;
   item_id: string;
+  item_iteration_count: number;
   name: string;
   description: string;
   severity: number;

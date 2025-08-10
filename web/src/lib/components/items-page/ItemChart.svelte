@@ -190,11 +190,21 @@
         labels: labels,
         datasets: datasets,
         options: {
+          legend: {
+                labels: {
+                    fontColor: "blue",
+                    fontSize: 18
+                }
+          },
           responsive: true,
           maintainAspectRatio: false,
           plugins: {
             legend: {
-              position: "top" as const
+              position: "top" as const,
+              labels: {
+                    fontColor: "blue",
+                    fontSize: 18
+              }
             },
             title: {
               display: false
