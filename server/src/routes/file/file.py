@@ -4,7 +4,7 @@ from pathlib import Path
 import os
 from PIL import Image
 import io
-
+import logging
 
 from db.db import db
 from utils.utils import login_required
@@ -228,9 +228,8 @@ def serve_user_file(user_id, filename):
     """Serve user uploaded files (thumbnails)"""
     try:
         file_path = f"{BASE_DIR}/data/userdata/{user_id}/{filename}"
-        print(file_path)
         if os.path.exists(file_path):
-            print(f"Serving file: {file_path}")
+            logging.info(f"Serving file: {file_path}")
             return send_file(file_path)
         else:
             return jsonify({"error": "File not found"}), 404

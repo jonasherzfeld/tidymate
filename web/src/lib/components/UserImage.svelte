@@ -80,6 +80,7 @@
   bind:this={imgElement}
   src={currentSrc}
   {alt}
+  crossorigin="use-credentials"
   class={className}
   {width}
   {height}

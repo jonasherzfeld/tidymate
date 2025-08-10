@@ -19,7 +19,7 @@ import {
 } from "$lib/utils/icons";
 import type { Component } from "svelte";
 
-export const BASE_API_URI = "http://127.0.0.1:5000";
+export const BASE_API_URI = "http://127.0.0.1:5001";
 
 export const FETCH_ABORT_TIMEOUT_MS = 5000;
 
