@@ -39,8 +39,8 @@
     tiny: { size: "thumbnail", width: 12, height: 12 },
     small: { size: "medium", width: 24, height: 24 },
     medium: { size: "medium", width: 48, height: 48 },
-    large: { size: "large", width: 96, height: 96 },
-    xl: { size: "large", width: 128, height: 128 }
+    large: { size: "original", width: 96, height: 96 },
+    xl: { size: "original", width: 128, height: 128 }
   };
 
   const variant = $derived.by(() => {

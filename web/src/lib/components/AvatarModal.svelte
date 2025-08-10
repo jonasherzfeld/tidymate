@@ -2,6 +2,29 @@
   import AvatarGraphic from "$lib/components/AvatarGraphic.svelte";
   import { page } from "$app/stores";
   import { enhance } from "$app/forms";
+  import FilePond, { registerPlugin, supported } from 'svelte-filepond';
+  import FilePondPluginImageExifOrientation from 'filepond-plugin-image-exif-orientation'
+  import FilePondPluginImagePreview from 'filepond-plugin-image-preview'
+  import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
+  import FilePondPluginImageCrop from 'filepond-plugin-image-crop';
+  import FilePondPluginImageResize from 'filepond-plugin-image-resize';
+  import FilePondPluginImageTransform from 'filepond-plugin-image-transform';
+	import { invalidateAll } from '$app/navigation';
+
+  // Register the plugins
+  registerPlugin(FilePondPluginImageExifOrientation, 
+                FilePondPluginImagePreview,
+                FilePondPluginFileValidateType,
+                FilePondPluginImageCrop,
+                FilePondPluginImageResize,
+                FilePondPluginImageTransform);
+
+  // a reference to the component, used to call FilePond methods
+  let pond;
+
+  // the name to use for the internal file input
+  let name = 'filepond';
+
 
   let {
     showModal = $bindable()
@@ -10,151 +33,36 @@
   } = $props();
 
   let dialog: HTMLDialogElement;
-  let fileInput: HTMLInputElement;
   let user = $derived($page.data.user);
-  let compressedFile: File | null = null; // Store compressed file separately
-  let originalFile: File | null = null; // Store reference to original file for name
-
+  let fileAdded = $state(false);
+  
   $effect(() => {
     if (showModal) dialog.showModal();
   });
 
-  // Handle form enhancement with compressed file
-  const handleSubmit = async () => {
-    return async ({ formData, action, update }) => {
-      console.log('Form action:', action.pathname);
-      console.log('Has compressed file:', !!compressedFile);
-      
-      // If we have a compressed file and this is an upload action, use it
-      if (compressedFile && action.search.includes('upload_image')) {
-        console.log('Using compressed file for upload', originalFile?.name);
-        formData.set('avatar', compressedFile, originalFile?.name || "image.webp");
+  const handleRemove = async ({}) => {
+    return async ({ result, update }) => {
+      if (result.status === 200) {
+        user.thumbnail = "";
+        pond.removeFiles();
+        invalidateAll();
+      } else {
+        update();
       }
-
-      return await update();
     };
   };
 
-  // Compress image before upload
-  function compressImage(file: File, maxWidth: number = 800, maxHeight: number = 800, quality: number = 0.8): Promise<File> {
-    return new Promise((resolve) => {
-      const canvas = document.createElement('canvas');
-      const ctx = canvas.getContext('2d');
-      const img = new Image();
-      
-      img.onload = () => {
-        console.log('Original image dimensions:', img.width, 'x', img.height);
-        
-        // Calculate new dimensions
-        let { width, height } = img;
-        
-        if (width > height) {
-          if (width > maxWidth) {
-            height = (height * maxWidth) / width;
-            width = maxWidth;
-          }
-        } else {
-          if (height > maxHeight) {
-            width = (width * maxHeight) / height;
-            height = maxHeight;
-          }
-        }
-        
-        console.log('Calculated dimensions:', width, 'x', height);
-        
-        // Set canvas size and draw image as-is (no rotation handling)
-        canvas.width = width;
-        canvas.height = height;
-        
-        if (ctx) {
-          // Draw the image directly without any EXIF orientation handling
-          // This will strip all EXIF data including rotation information
-          ctx.drawImage(img, 0, 0, width, height);
-        }
-        
-        canvas.toBlob((blob) => {
-          if (blob) {
-            // The resulting WebP will have no EXIF data and no rotation
-            const compressedFile = new File([blob], file.name, {
-              type: 'image/webp',
-              lastModified: Date.now(),
-            });
-            console.log('Created compressed file without EXIF/rotation data');
-            resolve(compressedFile);
-          } else {
-            resolve(file);
-          }
-        }, 'image/webp', quality);
-      };
-      
-      img.onerror = () => {
-        console.error('Failed to load image for compression');
-        resolve(file);
-      };
-      
-      img.src = URL.createObjectURL(file);
-    });
-  }
-
-  // Handle file selection with compression
-  async function handleFileChange(event: Event) {
-    const target = event.target as HTMLInputElement;
-    const file = target.files?.[0];
-    
-    if (!file) return;
-
-    // Validate file type - check for HEIC files that get auto-converted
-    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
-    const allowedExtensions = ['.jpg', '.jpeg', '.png', '.webp'];
-    const forbiddenExtensions = ['.heic', '.heif'];
-    
-    const fileExtension = file.name.toLowerCase().substring(file.name.lastIndexOf('.'));
-    
-    // Check if this is a temp file created from HEIC conversion
-    const isTempHeicFile = file.name.toLowerCase().includes('tempimage') && file.type === 'image/jpeg';
-    
-    const isValidType = allowedTypes.includes(file.type) && allowedExtensions.includes(fileExtension) && !isTempHeicFile;
-    if (!isValidType) {
-      alert('Please select a valid image file (JPG, JPEG, PNG, or WebP).');
-      target.value = '';
-      return;
-    }
-
-    // Store reference to original file
-    originalFile = file;
-
-    // Check file size (5MB limit before compression)
-    const maxSizeBeforeCompression = 5 * 1024 * 1024; // 5MB
-    if (file.size > maxSizeBeforeCompression) {
-      alert('Please select an image smaller than 5MB (Current selection is ' + (file.size / 1024).toFixed(1) + 'KB)');
-      target.value = '';
-      return;
-    }
-    
-    try {
-      // Compress the image
-      compressedFile = await compressImage(file);
-      
-      // Log file details for debugging
-      console.log('Original file:', {
-        name: file.name,
-        size: file.size,
-        type: file.type
-      });
-      console.log('Compressed file:', {
-        name: compressedFile.name,
-        size: compressedFile.size,
-        type: compressedFile.type
-      });
-      
-      console.log(`Original size: ${(file.size / 1024).toFixed(1)}KB, Compressed size: ${(compressedFile.size / 1024).toFixed(1)}KB`);
-    } catch (error) {
-      console.error('Error compressing image:', error);
-      alert('Error processing image. Please try a different file.');
-      target.value = '';
-      compressedFile = null;
-    }
-  }
+  const handleUpload = async ({}) => {
+    return async ({ result, update }) => {
+      if (result.status === 200) {
+        user.thumbnail = result.data.thumbnail;
+        pond.processFiles();
+        invalidateAll();
+      } else {
+        update();
+      }
+    };
+  };
 </script>
 
 <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
@@ -176,43 +84,89 @@
     </div>
 
     <div class="mr-4 ml-4 flex flex-col items-center gap-3 sm:flex-row">
-      <div class="avatar m-5 ml-0">
-        <AvatarGraphic
-          thumbnail={user.thumbnail}
-          height="h-24"
-          width="w-24"
-          textSize="text-5xl font-bold" />
-      </div>
-      <div>
+      <div class=" items-center gap-2 w-full ">
+            <FilePond bind:this={pond} {name}
+              server={{
+                      url: '?/',
+                      process: {
+                          url: 'upload_image',
+                          method: 'POST',
+                      },
+                      revert: {
+                          url: 'delete_image',
+                          method: 'POST',
+                      }}}
+              acceptedFileTypes={["image/png", "image/jpeg", "image/webp", "image/jpg"]}
+              allowMultiple={false}
+              allowProcess={false}
+              allowRevert={false}
+              allowRemove={true}
+              instantUpload={false}
+              maxFiles={1}
+              maxFileSize="5MB"
+              onerror={(error) => {
+                alert('Error processing image: ' + error.message);
+                invalidateAll();
+              }}
+              onprocessfile={(error, file) => {
+                if (error) {
+                  alert('Error processing image: ' + error.message);
+                } else {
+                  invalidateAll();
+                }
+              }}
+              onprocessfilerevert={(file) => {
+                invalidateAll();
+              }}
+              onaddfile={(error, file) => {
+                if (error) {
+                  console.error('Error adding file:', error);
+                } else {
+                  fileAdded = true;
+                }
+              }}
+              onremovefile={() => {
+                fileAdded = false;
+              }}
+              labelIdle="Tap to add an image or drag and drop"
+              imageCropAspectRatio={'1:1'}
+              imageResizeTargetWidth={200}
+              imageResizeTargetHeight={200}
+              stylePanelLayout={'compact'}
+              labelFileLoading="Loading"
+              labelFileProcessing="Processing"
+              labelFileProcessingComplete="Processing complete"
+              labelFileProcessingAborted="Processing aborted"
+              labelFileProcessingError="Processing error"
+              />
+        {#if !user.thumbnail}
         <form
-          class="flex h-fit flex-col items-start gap-1"
+          class="flex w-full"
           method="POST"
-          use:enhance={handleSubmit}
+          use:enhance={handleUpload}
           enctype="multipart/form-data">
-          <label class="form-control w-full max-w-xs">
-            <input
-              bind:this={fileInput}
-              type="file"
-              name="avatar"
-              class="file-input file-input-bordered w-full max-w-xs"
-              accept=".jpg, .jpeg, .png, .webp"
-              onchange={handleFileChange} />
-          </label>
-          <div class="grid w-full gap-1 sm:grid-cols-2">
             <button
-              class="btn"
+              class="btn btn-info btn-outline w-full"
+              formaction="?/trigger_upload_image"
               type="submit"
-              formaction="?/upload_image"
-              disabled={!!user.thumbnail}>Upload image</button>
+              disabled={!fileAdded}>
+              Upload image
+            </button>
+        </form>
+        {:else}
+        <form
+          class="flex w-full"
+          method="POST"
+          use:enhance={handleRemove}
+          enctype="multipart/form-data">
             <button
-              class="btn btn-error"
+              class="btn btn-error w-full"
               formaction="?/delete_image"
-              type="submit"
-              disabled={!user.thumbnail}>
+              type="submit">
               Remove image
             </button>
-          </div>
         </form>
+        {/if}
       </div>
     </div>
   </div>

@@ -1,4 +1,6 @@
 @import "tailwindcss";
+@import 'filepond/dist/filepond.css';
+@import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
 @plugin "daisyui";
 @plugin "daisyui/theme" {
   name: "cupcake";
