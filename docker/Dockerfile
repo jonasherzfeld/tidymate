@@ -20,11 +20,12 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-# Install Node.js and Redis in the final container
+# Install Node.js, Redis and Nginx in the final container
 RUN apt-get update && apt-get install -y \
     curl \
     redis-server \
     sqlite3 \
+    nginx \
     && curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
     && apt-get install -y nodejs \
     && apt-get clean \
@@ -37,6 +38,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy backend code
 COPY server/ ./server/
 
+# Copy Nginx configuration as main config
+COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
+
 # Copy the built frontend from the previous stage - using the correct SvelteKit path
 COPY --from=frontend-builder /app/web ./web
 
@@ -44,8 +48,8 @@ COPY --from=frontend-builder /app/web ./web
 RUN mkdir -p /app/data
 
 # Expose ports for the services
-EXPOSE 3000
-ENV ORIGIN=http://localhost:3000
+EXPOSE 3030
+ENV ORIGIN=http://localhost:3030
 
 # Create a startup script
 COPY ./docker/entry.sh /app/start.sh

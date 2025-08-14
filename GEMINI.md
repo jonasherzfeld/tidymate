@@ -1,79 +1,133 @@
-# Gemini Code Assistant Context
-
-This document provides context for the Gemini code assistant to understand the Tidymate project.
 
 ## Project Overview
 
-Tidymate is a self-hosted web application designed to help with household organization. It allows users to create households, invite members, and manage shared tasks like to-dos and chores, as well as personal reminders.
+Tidymate is a self-hosted web application for household organization that allows users to create households, track shared tasks, and manage personal reminders.
 
-The application is composed of a:
+## Repository Structure
 
-*   **Frontend:** A SvelteKit application located in the `web` directory.
-*   **Backend:** A Python Flask server located in the `server` directory.
-*   **Deployment:** The application is designed to be deployed using Docker, with configuration provided in the `docker` directory.
+- `/web` - SvelteKit frontend application
+- `/server` - Python Flask backend application
+- `/docker` - Docker configuration files for containerized deployment
+- `/data` - Data directory for SQLite database (created at runtime)
 
+## Common Development Commands
 
-## Building and Running
-
-### Docker (Recommended)
-
-The easiest way to run the project is with Docker Compose:
+### Frontend (SvelteKit)
 
 ```bash
-docker-compose up -d
-```
-
-This will build the necessary images and start the frontend and backend services. The application will be available at `http://localhost:3000`.
-
-### Development
-
-**Frontend:**
-
-To run the frontend in development mode:
-
-```bash
-source .env
+# Navigate to frontend directory
 cd web
-npm install
+
+# Install dependencies
+npm ci
+
+# Run development server (port 3000)
 npm run dev
+
+# Type checking
+npm run check
+
+# Linting and formatting
+npm run lint
+npm run format
+
+# Build for production
+npm run build
 ```
 
-**Backend:**
-
-To run the backend in development mode:
+### Backend (Flask)
 
 ```bash
-source .env
-source venv/bin/activate
+# Navigate to backend directory
 cd server
+
+# Install Python dependencies
 pip install -r requirements.txt
+
+# Run development server
 python src/main.py
+
+# Run with Flask development server (alternative)
+cd src
+flask --app app run --debug --port 5001
 ```
 
-**Database**
-
-To run the backend a redis server is necessary which can be lanched with
+### Docker Development
 
 ```bash
-redis-server
+# Build the Docker image
+docker build -t tidymate:dev -f docker/Dockerfile .
+
+# Run with Docker Compose
+cd docker
+docker-compose up -d
+
+# View logs
+docker logs tidymate
 ```
 
-## Development Conventions
+## Required Services
 
-*   **Code Style:** The project uses Prettier for code formatting. To format the code, run for the frontend:
-    ```bash
-    cd web
-    npm run format
-    ```
-    and for the backend:
-    ```bash
-    cd server
-    autopep8 --verbose --recursive --in-place --aggressive --aggressive .
-    ```
+- **Redis**: Required for session management
+  - Install locally: `brew install redis` (Mac) or `apt install redis-server` (Ubuntu)
+  - Start server: `redis-server`
 
-*   **Linting:** The project uses ESLint for linting. To check for linting errors, run:
-    ```bash
-    cd web
-    npm run lint
-    ```
-*   **API:** The frontend communicates with the backend via a REST API. The backend API routes are defined in the `server/src/routes` directory.
+## Architecture Overview
+
+### Frontend (SvelteKit)
+
+- Built with SvelteKit, TypeScript, and Tailwind CSS
+- Uses DaisyUI for UI components
+- File-based routing structure in `/web/src/routes`
+- Features server-side rendering for improved performance
+- Key routes:
+  - `/auth` - Authentication (login, register, logout)
+  - `/home` - Main dashboard with todos, chores, and reminders
+  - `/profile` - User and household management
+
+### Backend (Flask)
+
+- RESTful API server built with Flask
+- Uses SQLAlchemy ORM for database operations
+- SQLite database for data storage
+- Redis for session management
+- Key endpoints organized in route modules:
+  - `/auth` - Authentication and user management
+  - `/items` - Todos, chores, and reminders management
+  - `/notifications` - User notification system
+  - `/file` - File upload and management
+  - `/history` - Activity history tracking
+
+### Data Flow
+
+1. Frontend makes API calls to the backend server
+2. Backend processes requests, interacts with the database
+3. Responses are returned as JSON and rendered by the frontend
+
+### Authentication
+
+- Session-based authentication using Flask-Session
+- Redis store for session data
+- User passwords hashed with bcrypt
+
+## Development Workflow
+
+1. Run the backend server for API endpoints
+2. Run the frontend development server for UI development
+3. Changes to frontend code are automatically reloaded
+4. Backend changes require server restart
+
+## Database Management
+
+- SQLite database is used for development and production
+- Database migrations handled by Flask-Migrate (Alembic)
+- To create a new migration:
+  ```bash
+  cd server/src
+  flask --app app db migrate -m "Description of changes"
+  ```
+- To apply migrations:
+  ```bash
+  cd server/src
+  flask --app app db upgrade
+  ```
