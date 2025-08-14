@@ -59,12 +59,15 @@ export async function getNotifications(
     return [];
   }
 
-  const res = await fetch(`${BASE_API_URI}/notifications/get-notifications`, {
-    credentials: "include",
-    headers: {
-      Cookie: `session=${session}`
+  const res = await event.fetch(
+    `${BASE_API_URI}/notifications/get-notifications`,
+    {
+      credentials: "include",
+      headers: {
+        Cookie: `session=${session}`
+      }
     }
-  });
+  );
   if (!res.ok) {
     return [];
   }

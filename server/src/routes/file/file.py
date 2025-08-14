@@ -229,7 +229,6 @@ def serve_user_file(user_id, filename):
     try:
         file_path = f"{BASE_DIR}/data/userdata/{user_id}/{filename}"
         if os.path.exists(file_path):
-            logging.info(f"Serving file: {file_path}")
             return send_file(file_path)
         else:
             return jsonify({"error": "File not found"}), 404

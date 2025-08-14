@@ -7,7 +7,7 @@ services:
       - ../data:/app/data
       - ../logs:/app/logs
     ports:
-      - 3000:3000
+      - 3030:3030
     environment:
       FLASK_SECRET_KEY: "your_secret_key"
       LOG_DEBUG: "True"
