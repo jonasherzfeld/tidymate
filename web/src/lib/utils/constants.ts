@@ -1,3 +1,4 @@
+import { browser } from "$app/environment";
 import {
   BathroomIcon,
   BedroomIcon,
@@ -18,7 +19,6 @@ import {
   UserCircleOutline
 } from "$lib/utils/icons";
 import type { Component } from "svelte";
-import { browser } from "$app/environment";
 
 // Use relative URL for API base to work with Nginx proxy
 // During SSR, use the internal backend URL directly
