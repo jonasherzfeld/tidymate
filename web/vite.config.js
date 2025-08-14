@@ -12,7 +12,7 @@ export default defineConfig({
     })
   ],
   build: {
-    sourcemap: true // Enable source maps for better debugging
+    sourcemap: false
   },
   test: {
     include: ["src/**/*.{test,spec}.{js,ts}"]
