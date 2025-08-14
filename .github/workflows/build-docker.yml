@@ -42,3 +42,10 @@ jobs:
         platforms: linux/arm64
         push: true
         tags: ghcr.io/jonasherzfeld/tidymate:dev
+        cache-from: type=local,src=/tmp/.buildx-cache  # Reuse cached layers from previous builds.
+        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max  # Save new cache layers after the build.
+
+    - name: Move cache
+      run: |
+        rm -rf /tmp/.buildx-cache
+        mv /tmp/.buildx-cache-new /tmp/.buildx-cache
