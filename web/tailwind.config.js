@@ -9,6 +9,9 @@ export default {
         "webapp-menu": "5rem", // 80px - WebApp menu bar height
         "safe-top": "3rem" // 48px - Safe area top (status bar, etc.)
       },
+      height: {
+        "main-sidebar": "calc(100vh - theme(spacing.header))"
+      },
       minHeight: {
         "main-content": "calc(100vh - theme(spacing.webapp-menu))",
         "main-content-desktop": "90vh",

@@ -98,7 +98,7 @@
   <div class="mx-auto w-full max-w-4xl">
     <div class="mb-4 flex flex-col items-center">
       <h2 class="text-center text-2xl font-bold">
-        Total Completed {item_type === "chore" ? "Chores" : "Reminders"}
+        Total Completed {item_type.charAt(0).toUpperCase() + item_type.slice(1)}s
       </h2>
       <span class="text-center text-sm">Last 12 Months</span>
     </div>

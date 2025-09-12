@@ -2,7 +2,7 @@
   import type { Snippet } from "svelte";
   import { page } from "$app/stores";
   import Header from "$lib/components/Header.svelte";
-  import { MenuIcon } from "$lib/utils/icons";
+  import { MenuIcon, HouseIcon } from "$lib/utils/icons";
   import MenuBlock from "./MenuBlock.svelte";
   import type { RestrictionType } from "$lib/utils/constants";
   import { getRestrictionType } from "$lib/utils/helpers";
@@ -60,49 +60,39 @@
       <label for="my-drawer-2" aria-label="close sidebar" class="drawer-overlay lg:hidden"
       ></label>
       <ul
-        class={`menu border-neutral bg-base-200 h-[calc(100vh-4rem)] w-80 justify-between  overflow-y-auto border-r-[1px] lg:h-main-sidebar ${isWebApp ? "pt-safe-top" : ""}`}>
+        class={`menu border-neutral bg-base-200 h-main-sidebar w-80 justify-between  pt-5 pb-5 overflow-y-auto border-r-[1px] lg:h-main-sidebar ${isWebApp ? "pt-safe-top" : ""}`}>
         <!-- Sidebar content here -->
-        <div class="mt-4 lg:hidden">
+        <div>
+          <li class="text-base">
+              <a href="/" onclick={handleClick}
+                ><HouseIcon />Home</a>
+         </li>
           {#if menuRestriction.includes("logged_in")}
-            <div class="ml-3 font-mono">
-              <span>Personal</span>
+            <div class="mt-2">
+              <div class=" border-t-[1px] border-neutral"></div>
+              <div class="mt-2 ml-3 text-neutral font-bold">
+                <span>Personal</span>
+              </div>
             </div>
           {/if}
           <MenuBlock
             position="drawer_top"
             restricted={menuRestriction}
             publicType="private"
-            {handleClick} />
+            handleClick={isDrawerOpen ? handleClick : undefined} />
           {#if menuRestriction.includes("house_member")}
-            <div class="mt-6 ml-3 font-mono">
-              <span>House</span>
+            <div class="mt-6">
+              <div class=" border-t-[1px] border-neutral"></div>
+              <div class="mt-2 ml-3 text-neutral font-bold">
+                <span>House</span>
+              </div>
             </div>
           {/if}
           <MenuBlock
             position="drawer_top"
             restricted={menuRestriction}
             publicType="public"
-            {handleClick} />
-        </div>
-        <div class="mt-4 hidden lg:block">
-          {#if menuRestriction.includes("logged_in")}
-            <div class="ml-3 font-mono">
-              <span>Personal</span>
-            </div>
-          {/if}
-          <MenuBlock
-            position="drawer_top"
-            restricted={menuRestriction}
-            publicType="private" />
-          {#if menuRestriction.includes("house_member")}
-            <div class="mt-6 ml-3 font-mono">
-              <span>House</span>
-            </div>
-          {/if}
-          <MenuBlock
-            position="drawer_top"
-            restricted={menuRestriction}
-            publicType="public" />
+            handleClick={isDrawerOpen ? handleClick : undefined} />
         </div>
         <div>
           <div class="divider"></div>
