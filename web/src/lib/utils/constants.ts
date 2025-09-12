@@ -1,4 +1,5 @@
 import { browser } from "$app/environment";
+import { PUBLIC_DEV_MODE } from "$env/static/public";
 import {
   BathroomIcon,
   BedroomIcon,
@@ -22,7 +23,8 @@ import type { Component } from "svelte";
 
 // Use relative URL for API base to work with Nginx proxy
 // During SSR, use the internal backend URL directly
-export const BASE_API_URI = browser ? "/api" : "http://127.0.0.1:5001";
+export const USE_API = PUBLIC_DEV_MODE == "True" ? false : browser;
+export const BASE_API_URI = USE_API ? "/api" : "http://127.0.0.1:5001";
 
 export const FETCH_ABORT_TIMEOUT_MS = 5000;
 
