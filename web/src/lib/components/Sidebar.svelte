@@ -33,7 +33,7 @@
 <div class="flex flex-col">
   <div
     class={`text-shade-500 navbar border-base-300 bg-base-300 sticky top-0 z-10 ml-0 h-fit w-full border-b border-solid shadow-md ${isWebApp ? "pt-safe-top" : ""}`}>
-    <div class={`m-0 flex w-fit p-0 ${isWebApp ? "hidden" : ""}`}>
+    <div class={`m-0 flex w-fit p-0 ${isWebApp ? "hidden" : "lg:hidden"}`}>
       <button
         onclick={handleClick}
         class="btn btn-square btn-ghost btn-sm ml-3"
@@ -43,7 +43,7 @@
     </div>
     <Header />
   </div>
-  <div class={cn("drawer", isDrawerOpen ? "lg:drawer-open" : "")}>
+  <div class="drawer lg:drawer-open">
     <input
       id="my-drawer-2"
       type="checkbox"
@@ -56,11 +56,11 @@
         {@render children?.()}
       </div>
     </div>
-    <div class="drawer-side mt-16 h-[calc(100vh-4rem)] lg:mt-0">
-      <label for="my-drawer-2" aria-label="close sidebar" class="drawer-overlay"
+    <div class="drawer-side mt-16 h-main-sidebar lg:mt-0 lg:sticky lg:top-16">
+      <label for="my-drawer-2" aria-label="close sidebar" class="drawer-overlay lg:hidden"
       ></label>
       <ul
-        class={`menu border-neutral bg-base-200 h-[calc(100vh-4rem)] w-80 justify-between  overflow-y-auto border-r-[1px]  ${isWebApp ? "pt-safe-top" : ""}`}>
+        class={`menu border-neutral bg-base-200 h-[calc(100vh-4rem)] w-80 justify-between  overflow-y-auto border-r-[1px] lg:h-main-sidebar ${isWebApp ? "pt-safe-top" : ""}`}>
         <!-- Sidebar content here -->
         <div class="mt-4 lg:hidden">
           {#if menuRestriction.includes("logged_in")}

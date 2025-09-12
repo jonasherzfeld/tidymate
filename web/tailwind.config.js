@@ -11,7 +11,8 @@ export default {
       },
       minHeight: {
         "main-content": "calc(100vh - theme(spacing.webapp-menu))",
-        "main-content-desktop": "90vh"
+        "main-content-desktop": "90vh",
+        "main-sidebar": "calc(100vh - theme(spacing.header))"
       }
     }
   },
