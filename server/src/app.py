@@ -98,6 +98,10 @@ def create_app():
 
     app.register_blueprint(routes)
 
+    # Register error handlers
+    from utils.api_errors import APIError, handle_api_error
+    app.register_error_handler(APIError, handle_api_error)
+
     scheduler = BackgroundScheduler()
 
     def run_check_deadlines():

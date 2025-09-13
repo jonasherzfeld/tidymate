@@ -4,6 +4,7 @@ from sqlalchemy import and_
 from db.db import db
 from models.models import History, EventType
 from utils.utils import login_required
+from utils.api_errors import ValidationError
 
 history = Blueprint('history', __name__)
 
@@ -88,7 +89,7 @@ def delete_history_by_item_type(user, item_type):
     # Validate item_type
     valid_item_types = ["todo", "chore", "reminder"]
     if item_type not in valid_item_types:
-        return jsonify({"error": "Invalid item type"}), 400
+        raise ValidationError("Invalid item type")
 
     # Delete history events for the specific item type in user's house
     deleted_count = History.query.filter(

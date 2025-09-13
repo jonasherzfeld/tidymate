@@ -8,6 +8,7 @@ import logging
 
 from db.db import db
 from utils.utils import login_required
+from utils.api_errors import ValidationError, NotFoundError, APIError
 
 CWD = Path(__file__).parent
 BASE_DIR = CWD.parent.parent.parent.parent
@@ -29,17 +30,14 @@ IMAGE_SIZES = {
 def upload_image(user):
     if 'filepond' not in request.files:
         print("No filepond file part in POST")
-        return jsonify({
-            "error": "No file part in POST"
-        }), 401
+        raise ValidationError("No file part in POST")
+
     file_obj = request.files['filepond']
 
     file_ending = file_obj.content_type.split('/')[1]
     if file_ending not in ['jpeg', 'png', 'jpg', 'webp', 'heic', 'heif']:
         print(f"Invalid file type: {file_ending}")
-        return jsonify({
-            "error": "Invalid file type"
-        }), 401
+        raise ValidationError("Invalid file type")
 
     try:
         # Read and validate image
@@ -96,7 +94,7 @@ def upload_image(user):
         }), 200
 
     except Exception as e:
-        return jsonify({"error": f"Image processing failed: {str(e)}"}), 500
+        raise APIError(f"Image processing failed: {str(e)}", 500)
 
 
 def remove_image_files(user_dir):
@@ -155,9 +153,7 @@ def save_optimized_image(image, file_path, size_name):
 @login_required
 def delete_image(user):
     if not user.thumbnail:
-        return jsonify({
-            "error": "No thumbnail to delete"
-        }), 400
+        raise ValidationError("No thumbnail to delete")
 
     try:
         # Extract the base filename from the thumbnail path
@@ -196,9 +192,7 @@ def delete_image(user):
                     "thumbnail": ""
                 }), 200
             else:
-                return jsonify({
-                    "error": "Invalid thumbnail URL format"
-                }), 400
+                raise ValidationError("Invalid thumbnail URL format")
         else:
             # Handle legacy file system paths
             thumbnail_path = user.thumbnail
@@ -213,9 +207,7 @@ def delete_image(user):
                     "thumbnail": ""
                 }), 200
             else:
-                return jsonify({
-                    "error": "File not found"
-                }), 404
+                raise NotFoundError("File not found")
 
     except Exception as e:
         return jsonify({
@@ -231,6 +223,6 @@ def serve_user_file(user_id, filename):
         if os.path.exists(file_path):
             return send_file(file_path)
         else:
-            return jsonify({"error": "File not found"}), 404
+            raise NotFoundError("File not found")
     except Exception as e:
-        return jsonify({"error": "Internal server error"}), 500
+        raise APIError("Internal server error", 500)

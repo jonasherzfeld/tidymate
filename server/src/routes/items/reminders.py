@@ -5,6 +5,7 @@ import uuid
 from db.db import db
 from models.models import House, Reminder
 from utils.utils import login_required, log_history_event, EventType
+from utils.api_errors import NotFoundError, AuthorizationError, ValidationError
 
 reminders = Blueprint('reminders', __name__)
 
@@ -64,9 +65,10 @@ def get_reminders(user):
 def get_reminder(user, reminder_id):
     reminder = Reminder.query.filter_by(id=reminder_id).first()
     if not reminder:
-        return jsonify({"error": "Reminder not found"}), 404
+        raise NotFoundError("Reminder not found")
     elif not reminder.user_id == user.id:
-        return jsonify({"error": "Unauthorized"}), 401
+        raise AuthorizationError(
+            "User is not authorized to access this reminder")
     return jsonify({"reminder": reminder.to_dict()})
 
 
@@ -75,9 +77,10 @@ def get_reminder(user, reminder_id):
 def check_reminders(user, reminder_id):
     reminder = Reminder.query.filter_by(id=reminder_id).first()
     if not reminder:
-        return jsonify({"error": "Reminder not found"}), 404
+        raise NotFoundError("Reminder not found")
     elif not reminder.user_id == user.id:
-        return jsonify({"error": "Unauthorized"}), 401
+        raise AuthorizationError(
+            "User is not authorized to access this reminder")
 
     reminder.iteration_count = reminder.iteration_count + \
         1 if reminder.iteration_count is not None else 1
@@ -108,13 +111,14 @@ def check_reminders(user, reminder_id):
 def update_reminders(user):
     reminder_id = request.json.get("id", None)
     if not reminder_id:
-        return jsonify({"error": "Reminder ID not provided"}), 400
+        raise ValidationError("Reminder ID not provided")
 
     reminder = Reminder.query.filter_by(id=reminder_id).first()
     if not reminder:
-        return jsonify({"error": "Reminder not found"}), 404
+        raise NotFoundError("Reminder not found")
     elif not reminder.user_id == user.id:
-        return jsonify({"error": "Unauthorized"}), 401
+        raise AuthorizationError(
+            "User is not authorized to access this reminder")
 
     reminder_text = request.json.get("data", None)
     reminder_deadline = request.json.get("deadline", None)

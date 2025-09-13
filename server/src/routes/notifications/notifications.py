@@ -5,6 +5,7 @@ from datetime import datetime
 
 from db.db import db
 from utils.utils import login_required
+from utils.api_errors import NotFoundError, AuthorizationError, AuthenticationError
 from models.models import Notification
 from models.types import ItemType, NotificationType, NotificationSeverity
 
@@ -63,9 +64,10 @@ def get_notifications(user):
 def view_notification(user, notification_id):
     notification = Notification.query.filter_by(id=notification_id).first()
     if not notification:
-        return jsonify({"error": "Notification not found"}), 404
+        raise NotFoundError("Notification not found")
     elif not notification.user_id == user.id:
-        return jsonify({"error": "Unauthorized"}), 401
+        raise AuthorizationError(
+            "User is not authorized to access this notification")
 
     notification.is_viewed = True
 
@@ -80,9 +82,10 @@ def view_notification(user, notification_id):
 def delete_notification(user, notification_id):
     notification = Notification.query.filter_by(id=notification_id).first()
     if not notification:
-        return jsonify({"error": "Notification not found"}), 404
+        raise NotFoundError("Notification not found")
     elif not notification.user_id == user.id:
-        return jsonify({"error": "Unauthorized"}), 401
+        raise AuthorizationError(
+            "User is not authorized to access this notification")
 
     notification.is_viewed = True
     notification.is_removed = True

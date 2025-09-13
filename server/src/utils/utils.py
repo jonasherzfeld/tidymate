@@ -8,6 +8,7 @@ from sqlalchemy import and_
 from db.db import db
 from models.models import Notification, Users, Todo, Reminder, Chore, History
 from models.types import ItemType, EventType, NotificationSeverity, EventType, NotificationType
+from utils.api_errors import AuthenticationError
 
 
 def login_required(function_to_protect):
@@ -20,9 +21,9 @@ def login_required(function_to_protect):
                 # Success!
                 return function_to_protect(user, *args, **kwargs)
             else:
-                return jsonify({"error": "Invalid user"}), 401
+                raise AuthenticationError("Invalid user")
         else:
-            return jsonify({"error": "Unauthorized"}), 401
+            raise AuthenticationError()
     return wrapper
 
 

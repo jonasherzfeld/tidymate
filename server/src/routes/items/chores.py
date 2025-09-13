@@ -5,6 +5,7 @@ import uuid
 from db.db import db
 from models.models import House, Chore, ChoreSeverity
 from utils.utils import login_required, log_history_event, EventType
+from utils.api_errors import NotFoundError, AuthorizationError, AuthenticationError, ValidationError
 
 chores = Blueprint('chores', __name__)
 
@@ -22,7 +23,7 @@ def create_chore(user):
 
     house = House.query.filter_by(id=user.house_id).first()
     if not house:
-        return jsonify({"error": "House not found"}), 404
+        raise NotFoundError("House not found")
 
     if deadline == "":
         deadline = (datetime.now() +
@@ -69,9 +70,10 @@ def get_chores(user):
 def get_chore(user, chore_id):
     chore = Chore.query.filter_by(id=chore_id).first()
     if not chore:
-        return jsonify({"error": "Chore not found"}), 404
+        raise NotFoundError("Chore not found")
     elif not chore.house_id == user.house_id:
-        return jsonify({"error": "Unauthorized"}), 401
+        raise AuthenticationError(
+            "User is not authorized to access this chore")
     return jsonify({"chore": chore.to_dict()})
 
 
@@ -80,9 +82,9 @@ def get_chore(user, chore_id):
 def check_chores(user, chore_id):
     chore = Chore.query.filter_by(id=chore_id).first()
     if not chore:
-        return jsonify({"error": "Chore not found"}), 404
+        raise NotFoundError("Chore not found")
     elif not chore.house_id == user.house_id:
-        return jsonify({"error": "Unauthorized"}), 401
+        raise AuthorizationError("User is not authorized to access this chore")
 
     chore.iteration_count = chore.iteration_count + \
         1 if chore.iteration_count is not None else 1
@@ -111,13 +113,13 @@ def check_chores(user, chore_id):
 def update_chores(user):
     chore_id = request.json.get("id", None)
     if not chore_id:
-        return jsonify({"error": "Chore ID not provided"}), 400
+        raise ValidationError("Chore ID not provided")
 
     chore = Chore.query.filter_by(id=chore_id).first()
     if not chore:
-        return jsonify({"error": "Chore not found"}), 404
+        raise NotFoundError("Chore not found")
     elif not chore.house_id == user.house_id:
-        return jsonify({"error": "Unauthorized"}), 401
+        raise AuthorizationError("User is not authorized to access this chore")
 
     chore_text = request.json.get("data", None)
     chore_assignee = request.json.get("assignee", None)
@@ -147,7 +149,7 @@ def update_chores(user):
 def delete_chore(user, chore_id):
     house = House.query.filter_by(id=user.house_id).first()
     if not house:
-        return jsonify({"error": "House not found"}), 404
+        raise NotFoundError("House not found")
 
     chore = Chore.query.filter_by(id=chore_id).first()
     if chore:

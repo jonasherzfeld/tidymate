@@ -5,6 +5,7 @@ import uuid
 from db.db import db
 from models.models import Todo, House
 from utils.utils import login_required, log_history_event, EventType
+from utils.api_errors import NotFoundError, AuthorizationError, ValidationError
 
 items = Blueprint('items', __name__)
 
@@ -18,7 +19,7 @@ def create_todo(user):
 
     house = House.query.filter_by(id=user.house_id).first()
     if not house:
-        return jsonify({"error": "House not found"}), 404
+        raise NotFoundError("House not found")
 
     todo = Todo(id=str(uuid.uuid4()),
                 data=data,
@@ -55,9 +56,9 @@ def get_todos(user):
 def get_todo(user, todo_id):
     todo = Todo.query.filter_by(id=todo_id).first()
     if not todo:
-        return jsonify({"error": "Chore not found"}), 404
+        raise NotFoundError("Todo not found")
     elif not todo.house_id == user.house_id:
-        return jsonify({"error": "Unauthorized"}), 401
+        raise AuthorizationError("User is not authorized to access this todo")
     return jsonify({"todo": todo.to_dict()})
 
 
@@ -66,9 +67,9 @@ def get_todo(user, todo_id):
 def check_todos(user, todo_id):
     todo = Todo.query.filter_by(id=todo_id).first()
     if not todo:
-        return jsonify({"error": "Todo not found"}), 404
+        raise NotFoundError("Todo not found")
     elif not todo.house_id == user.house_id:
-        return jsonify({"error": "Unauthorized"}), 401
+        raise AuthorizationError("User is not authorized to access this todo")
 
     was_done = todo.done
     todo.done = not todo.done
@@ -94,13 +95,13 @@ def check_todos(user, todo_id):
 def update_todos(user):
     todo_id = request.json.get("id", None)
     if not todo_id:
-        return jsonify({"error": "Todo ID not provided"}), 400
+        raise ValidationError("Todo ID not provided")
 
     todo = Todo.query.filter_by(id=todo_id).first()
     if not todo:
-        return jsonify({"error": "Todo not found"}), 404
+        raise NotFoundError("Todo not found")
     elif not todo.house_id == user.house_id:
-        return jsonify({"error": "Unauthorized"}), 401
+        raise AuthorizationError("User is not authorized to access this todo")
 
     todo_text = request.json.get("data", None)
     todo_assignee = request.json.get("assignee", None)
@@ -124,7 +125,7 @@ def update_todos(user):
 def delete_todo(user, todo_id):
     house = House.query.filter_by(id=user.house_id).first()
     if not house:
-        return jsonify({"error": "House not found"}), 404
+        raise NotFoundError("House not found")
 
     todo = Todo.query.filter_by(id=todo_id).first()
     if todo:
