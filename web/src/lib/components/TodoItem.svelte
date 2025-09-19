@@ -34,11 +34,11 @@
     getUsernameById(assignee, $page.data.house.members)
   );
 
-  let deadlineDate: Date = $derived(new Date(deadline));
-  let deadlineWarningDate: Date = new Date();
-  deadlineWarningDate.setDate(new Date().getDate() + 1);
-  let deadlineErrorDate: Date = new Date();
-  deadlineErrorDate.setDate(new Date().getDate() + 0);
+  let deadlineDate = $derived(new Date(deadline));
+
+  const now = new Date();
+  const isWarning = $derived(deadlineDate.getTime() <= now.getTime() + 24 * 60 * 60 * 1000); // 1 day from now
+  const isError = $derived(deadlineDate.getTime() <= now.getTime()); // Past due
 
   const handleChecked = async () => {
     return async ({ result, update }) => {
@@ -91,8 +91,8 @@
           <span
             class={cn(
               "justify-left text-info w-fit pr-3 text-xs",
-              deadlineDate <= deadlineWarningDate && "text-warning",
-              deadlineDate <= deadlineErrorDate && "text-error"
+              isWarning && "text-warning",
+              isError && "text-error"
             )}>{deadlineDate.toDateString()}</span>
         {/if}
         {#if assigneeName}
