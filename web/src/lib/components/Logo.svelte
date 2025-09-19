@@ -14,5 +14,12 @@
   class="hidden dark:block"
   src={LogoDark}
   {width}
-  height={width} />
-<img alt="Logo" class="dark:hidden" src={LogoLight} {width} height={width} />
+  height={width}
+  loading="lazy" />
+<img
+  alt="Logo"
+  class="dark:hidden"
+  src={LogoLight}
+  {width}
+  height={width}
+  loading="lazy" />

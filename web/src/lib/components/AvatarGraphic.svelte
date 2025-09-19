@@ -55,7 +55,7 @@
 
 <div class={`mask mask-circle ${height} ${width}`}>
   {#if !isLoggedIn || (isLoggedIn && noInitials)}
-    <img alt="User" src={UnknownAvatar} class="h-4 w-4" />
+    <img alt="User" src={UnknownAvatar} class="h-4 w-4" loading="lazy" />
   {:else if thumbnail}
     <UserImage
       filename={thumbnail}
