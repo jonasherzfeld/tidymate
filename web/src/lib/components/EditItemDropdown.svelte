@@ -30,8 +30,7 @@
     </span>
   </button>
   <Dropdown.Content>
-    <Dropdown.TextItem
-      class="justify-left pointer-events-none flex w-full font-bold"
+    <Dropdown.TextItem class="justify-left pointer-events-none flex w-full font-bold"
       >Room</Dropdown.TextItem>
     <Dropdown.RadioItem
       radioName={name}

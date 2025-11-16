@@ -80,9 +80,7 @@ interface History {
 
 // Internal types
 type SearchableItem<T> = T & { searchTerms: string };
-type SearchableItemSortKey<T> =
-  | keyof SearchableItem<T>
-  | `-${string & keyof SearchableItem<T>}`;
+type SearchableItemSortKey<T> = keyof SearchableItem<T> | `-${string & keyof SearchableItem<T>}`;
 
 type FilterDescription<T> = {
   property: keyof T;

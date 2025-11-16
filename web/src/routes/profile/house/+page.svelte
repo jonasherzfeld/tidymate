@@ -12,6 +12,7 @@
     errors: nameErrors,
     enhance: nameEnhance
   } = superForm(data.nameForm, {
+    invalidateAll: false,
     resetForm: false,
     onSubmit: async () => {
       creatingName = true;
@@ -26,41 +27,37 @@
     }
   });
 
-  const { errors: cityErrors, enhance: cityEnhance } = superForm(
-    data.cityForm,
-    {
-      resetForm: false,
-      onSubmit: async () => {
-        creatingCity = true;
-      },
-      onUpdate: async ({ form }) => {
-        if (form.valid) {
-          editCity = false;
-        } else {
-          editCity = true;
-        }
-        creatingCity = false;
+  const { errors: cityErrors, enhance: cityEnhance } = superForm(data.cityForm, {
+    invalidateAll: false,
+    resetForm: false,
+    onSubmit: async () => {
+      creatingCity = true;
+    },
+    onUpdate: async ({ form }) => {
+      if (form.valid) {
+        editCity = false;
+      } else {
+        editCity = true;
       }
+      creatingCity = false;
     }
-  );
+  });
 
-  const { errors: countryErrors, enhance: countryEnhance } = superForm(
-    data.countryForm,
-    {
-      resetForm: false,
-      onSubmit: async () => {
-        creatingCountry = true;
-      },
-      onUpdate: async ({ form }) => {
-        if (form.valid) {
-          editCountry = false;
-        } else {
-          editCountry = true;
-        }
-        creatingCountry = false;
+  const { errors: countryErrors, enhance: countryEnhance } = superForm(data.countryForm, {
+    invalidateAll: false,
+    resetForm: false,
+    onSubmit: async () => {
+      creatingCountry = true;
+    },
+    onUpdate: async ({ form }) => {
+      if (form.valid) {
+        editCountry = false;
+      } else {
+        editCountry = true;
       }
+      creatingCountry = false;
     }
-  );
+  });
 
   let serverErrors: string = $state("");
   let editName: boolean = $state(false);
@@ -83,9 +80,7 @@
           label="Name"
           bind:editValue={editName}
           bind:creatingValue={creatingName} />
-        {#if $nameErrors.name}<span class="invalid text-error"
-            >{$nameErrors.name}</span
-          >{/if}
+        {#if $nameErrors.name}<span class="invalid text-error">{$nameErrors.name}</span>{/if}
       </form>
       <form action="?/update_city" method="POST" use:cityEnhance>
         <FormTextInput
@@ -94,9 +89,7 @@
           label="City"
           bind:editValue={editCity}
           bind:creatingValue={creatingCity} />
-        {#if $cityErrors.city}<span class="invalid text-error"
-            >{$cityErrors.city}</span
-          >{/if}
+        {#if $cityErrors.city}<span class="invalid text-error">{$cityErrors.city}</span>{/if}
       </form>
       <form action="?/update_country" method="POST" use:countryEnhance>
         <FormTextInput
@@ -105,8 +98,7 @@
           label="Country"
           bind:editValue={editCountry}
           bind:creatingValue={creatingCountry} />
-        {#if $countryErrors.country}<span class="invalid text-error"
-            >{$countryErrors.country}</span
+        {#if $countryErrors.country}<span class="invalid text-error">{$countryErrors.country}</span
           >{/if}
       </form>
       <TextInput name="joined_on" value={data.house.created_on} disabled={true}
@@ -124,9 +116,7 @@
           <div class="skeleton h-4 w-full"></div>
         </div>
       {:then user_list}
-        <HouseMemberTable
-          userList={user_list}
-          changeEnabled={data.user.is_admin} />
+        <HouseMemberTable userList={user_list} changeEnabled={data.user.is_admin} />
       {/await}
     </div>
 

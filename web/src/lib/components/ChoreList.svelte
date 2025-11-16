@@ -3,12 +3,7 @@
   import ChoreItem from "$lib/components/ChoreItem.svelte";
   import FilterDropDown from "$lib/components/FilterDropDown.svelte";
   import { getUsernameById } from "$lib/utils/helpers";
-  import {
-    UserIcon,
-    ReloadIcon,
-    RoomFilterIcon,
-    SearchIcon
-  } from "$lib/utils/icons";
+  import { UserIcon, ReloadIcon, RoomFilterIcon, SearchIcon } from "$lib/utils/icons";
 
   let {
     data,
@@ -31,16 +26,13 @@
         bind:value={chorePageState.searchText} />
     </label>
     <a class="flex flex-row flex-wrap gap-2" href="/home/chores/new">
-      <button
-        formaction="?/create_chore"
-        class="btn btn-primary btn-sm w-[92px]">Add</button>
+      <button formaction="?/create_chore" class="btn btn-primary btn-sm w-[92px]">Add</button>
     </a>
   </div>
   <div class="flex w-full flex-row justify-between gap-2">
     <div>
       <a href="/home/chores" data-sveltekit-reload>
-        <button
-          class="btn btn-outline btn-sm rounded-md border-neutral-200 shadow-sm">
+        <button class="btn btn-outline btn-sm rounded-md border-neutral-200 shadow-sm">
           <ReloadIcon class="h-4 w-4" />
         </button>
       </a>
@@ -69,9 +61,7 @@
             {...chore}
             onChange={(deadline: string, last_done: string) => {
               chorePageState.items = chorePageState.items.map((c) =>
-                c.id === chore.id
-                  ? { ...c, deadline: deadline, last_done: last_done }
-                  : c
+                c.id === chore.id ? { ...c, deadline: deadline, last_done: last_done } : c
               );
               chorePageState.history = [
                 ...chorePageState.history,
@@ -90,9 +80,7 @@
               ];
             }}
             onRemove={() => {
-              chorePageState.items = chorePageState.items.filter(
-                (c) => c.id !== chore.id
-              );
+              chorePageState.items = chorePageState.items.filter((c) => c.id !== chore.id);
               chorePageState.history = [
                 ...chorePageState.history,
                 {

@@ -6,9 +6,7 @@
 
   let isLoggedIn: boolean = $derived($page.data.user ? true : false);
   let isInHouse: boolean = $derived($page.data.house ? true : false);
-  let restrictionType: RestrictionType[] = $derived(
-    getRestrictionType(isLoggedIn, isInHouse)
-  );
+  let restrictionType: RestrictionType[] = $derived(getRestrictionType(isLoggedIn, isInHouse));
 </script>
 
 <ul

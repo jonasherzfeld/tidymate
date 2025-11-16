@@ -20,9 +20,7 @@
 
   let isLoggedIn: boolean = $derived($page.data.user ? true : false);
   let isHouseMember: boolean = $derived($page.data.house ? true : false);
-  let menuRestriction: RestrictionType[] = $derived(
-    getRestrictionType(isLoggedIn, isHouseMember)
-  );
+  let menuRestriction: RestrictionType[] = $derived(getRestrictionType(isLoggedIn, isHouseMember));
   let isDrawerOpen: boolean = $state(false);
 
   function handleClick() {
@@ -44,11 +42,7 @@
     <Header />
   </div>
   <div class="drawer lg:drawer-open">
-    <input
-      id="my-drawer-2"
-      type="checkbox"
-      class="drawer-toggle"
-      bind:checked={isDrawerOpen} />
+    <input id="my-drawer-2" type="checkbox" class="drawer-toggle" bind:checked={isDrawerOpen} />
 
     <div class="drawer-content flex w-full flex-col items-center justify-start">
       <!-- Page content here -->
@@ -57,10 +51,7 @@
       </div>
     </div>
     <div class="drawer-side h-main-sidebar mt-16 lg:sticky lg:top-16 lg:mt-0">
-      <label
-        for="my-drawer-2"
-        aria-label="close sidebar"
-        class="drawer-overlay lg:hidden"></label>
+      <label for="my-drawer-2" aria-label="close sidebar" class="drawer-overlay lg:hidden"></label>
       <ul
         class={`menu border-base-300 bg-base-200 h-main-sidebar lg:h-main-sidebar w-80  justify-between overflow-y-auto border-r-[1px] pt-5 pb-5 ${isWebApp ? "pt-safe-top" : ""}`}>
         <!-- Sidebar content here -->
@@ -97,10 +88,7 @@
         </div>
         <div>
           <div class="divider"></div>
-          <MenuBlock
-            position="drawer_bottom"
-            restricted={["none"]}
-            publicType="public" />
+          <MenuBlock position="drawer_bottom" restricted={["none"]} publicType="public" />
           <ThemeSwitch />
         </div>
       </ul>

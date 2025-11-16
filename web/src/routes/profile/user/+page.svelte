@@ -26,25 +26,22 @@
 
   const isWebApp: boolean = getContext<() => boolean>("webapp")();
 
-  const { enhance: emailEnhance, errors: emailErrors } = superForm(
-    data.emailForm,
-    {
-      invalidateAll: false,
-      resetForm: false,
-      onSubmit: async () => {
-        creatingEmail = true;
-      },
-      onUpdate: async ({ form, result }) => {
-        serverErrors = result.data.errors;
-        if (form.valid) {
-          editEmail = false;
-        } else {
-          editEmail = true;
-        }
-        creatingEmail = false;
+  const { enhance: emailEnhance, errors: emailErrors } = superForm(data.emailForm, {
+    invalidateAll: false,
+    resetForm: false,
+    onSubmit: async () => {
+      creatingEmail = true;
+    },
+    onUpdate: async ({ form, result }) => {
+      serverErrors = result.data.errors;
+      if (form.valid) {
+        editEmail = false;
+      } else {
+        editEmail = true;
       }
+      creatingEmail = false;
     }
-  );
+  });
 
   const {
     form: firstNameForm,
@@ -66,24 +63,21 @@
     }
   });
 
-  const { errors: lastNameErrors, enhance: lastNameEnhance } = superForm(
-    data.lastNameForm,
-    {
-      invalidateAll: false,
-      resetForm: false,
-      onSubmit: async () => {
-        creatingLastName = true;
-      },
-      onUpdate: async ({ form }) => {
-        if (form.valid) {
-          editLastName = false;
-        } else {
-          editLastName = true;
-        }
-        creatingLastName = false;
+  const { errors: lastNameErrors, enhance: lastNameEnhance } = superForm(data.lastNameForm, {
+    invalidateAll: false,
+    resetForm: false,
+    onSubmit: async () => {
+      creatingLastName = true;
+    },
+    onUpdate: async ({ form }) => {
+      if (form.valid) {
+        editLastName = false;
+      } else {
+        editLastName = true;
       }
+      creatingLastName = false;
     }
-  );
+  });
 </script>
 
 <div class="flex min-w-full flex-1 flex-col">
@@ -137,9 +131,7 @@
         disabled={true}
         bind:editValue={editEmail}
         bind:creatingValue={creatingEmail} />
-      {#if $emailErrors.email}<span class="invalid text-error"
-          >{$emailErrors.email}</span
-        >{/if}
+      {#if $emailErrors.email}<span class="invalid text-error">{$emailErrors.email}</span>{/if}
     </form>
     <form action="?/update_first_name" method="POST" use:firstNameEnhance>
       <FormTextInput

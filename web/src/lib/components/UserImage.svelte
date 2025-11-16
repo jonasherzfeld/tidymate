@@ -11,6 +11,7 @@
     width = null,
     height = null,
     lazy = true,
+    priority = false, // For LCP images (above the fold)
     fallbackSrc = UnknownAvatar,
     onLoad = null,
     onError = null,
@@ -84,7 +85,8 @@
   class={className}
   {width}
   {height}
-  loading={lazy ? "lazy" : "eager"}
+  loading={priority ? "eager" : lazy ? "lazy" : "eager"}
+  fetchpriority={priority ? "high" : "auto"}
   onload={handleLoad}
   class:loaded
   class:error

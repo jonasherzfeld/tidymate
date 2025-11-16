@@ -1,9 +1,5 @@
 import { BASE_API_URI, FETCH_ABORT_TIMEOUT_MS } from "$lib/utils/constants";
-import {
-  emailSchema,
-  firstNameSchema,
-  lastNameSchema
-} from "$lib/utils/schemas";
+import { emailSchema, firstNameSchema, lastNameSchema } from "$lib/utils/schemas";
 import { fail } from "@sveltejs/kit";
 import { message, superValidate } from "sveltekit-superforms";
 import { zod } from "sveltekit-superforms/adapters";
@@ -41,10 +37,7 @@ export const actions = {
       signal: AbortSignal.timeout(FETCH_ABORT_TIMEOUT_MS)
     };
 
-    const res = await fetch(
-      `${BASE_API_URI}/auth/update-user`,
-      requestInitOptions
-    );
+    const res = await fetch(`${BASE_API_URI}/auth/update-user`, requestInitOptions);
 
     if (!res.ok) {
       try {
@@ -77,10 +70,7 @@ export const actions = {
       signal: AbortSignal.timeout(FETCH_ABORT_TIMEOUT_MS)
     };
 
-    const res = await fetch(
-      `${BASE_API_URI}/auth/update-user`,
-      requestInitOptions
-    );
+    const res = await fetch(`${BASE_API_URI}/auth/update-user`, requestInitOptions);
 
     if (!res.ok) {
       try {
@@ -113,10 +103,7 @@ export const actions = {
       signal: AbortSignal.timeout(FETCH_ABORT_TIMEOUT_MS)
     };
 
-    const res = await fetch(
-      `${BASE_API_URI}/auth/update-user`,
-      requestInitOptions
-    );
+    const res = await fetch(`${BASE_API_URI}/auth/update-user`, requestInitOptions);
 
     if (!res.ok) {
       try {

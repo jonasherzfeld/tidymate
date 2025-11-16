@@ -42,10 +42,7 @@ export const actions = {
       signal: AbortSignal.timeout(FETCH_ABORT_TIMEOUT_MS)
     };
 
-    const res = await fetch(
-      `${BASE_API_URI}/auth/register-house`,
-      requestInitOptions
-    );
+    const res = await fetch(`${BASE_API_URI}/auth/register-house`, requestInitOptions);
 
     if (!res.ok) {
       try {

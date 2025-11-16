@@ -14,10 +14,7 @@ async function get_reminders(cookies: Cookies): Promise<Reminder[]> {
     signal: AbortSignal.timeout(FETCH_ABORT_TIMEOUT_MS)
   };
 
-  const res = await fetch(
-    `${BASE_API_URI}/reminders/get-reminders`,
-    requestInitOptions
-  );
+  const res = await fetch(`${BASE_API_URI}/reminders/get-reminders`, requestInitOptions);
 
   if (!res.ok) {
     return [] as Reminder[];
@@ -42,10 +39,7 @@ async function get_history(cookies: Cookies): Promise<History[]> {
     signal: AbortSignal.timeout(FETCH_ABORT_TIMEOUT_MS)
   };
 
-  const res = await fetch(
-    `${BASE_API_URI}/history/get-history`,
-    requestInitOptions
-  );
+  const res = await fetch(`${BASE_API_URI}/history/get-history`, requestInitOptions);
 
   if (!res.ok) {
     return [] as History[];

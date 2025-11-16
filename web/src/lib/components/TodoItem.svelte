@@ -30,16 +30,12 @@
     onRemove: () => void;
   } = $props();
 
-  let assigneeName = $derived(
-    getUsernameById(assignee, $page.data.house.members)
-  );
+  let assigneeName = $derived(getUsernameById(assignee, $page.data.house.members));
 
   let deadlineDate = $derived(new Date(deadline));
 
   const now = new Date();
-  const isWarning = $derived(
-    deadlineDate.getTime() <= now.getTime() + 24 * 60 * 60 * 1000
-  ); // 1 day from now
+  const isWarning = $derived(deadlineDate.getTime() <= now.getTime() + 24 * 60 * 60 * 1000); // 1 day from now
   const isError = $derived(deadlineDate.getTime() <= now.getTime()); // Past due
 
   const handleChecked = async () => {
@@ -112,8 +108,7 @@
         <DropdownContent>
           <DropdownLinkItem href="/home/todo/{id}">Edit</DropdownLinkItem>
           <form method="POST" use:enhance={handleRemove}>
-            <DropdownActionItem action="/home/todo?/delete_todo&id={id}"
-              >Delete</DropdownActionItem>
+            <DropdownActionItem action="/home/todo?/delete_todo&id={id}">Delete</DropdownActionItem>
           </form>
         </DropdownContent>
       </Dropdown>

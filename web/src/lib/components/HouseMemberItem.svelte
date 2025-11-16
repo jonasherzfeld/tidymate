@@ -42,12 +42,7 @@
   <td>
     <div class="flex items-center gap-3">
       <div class="avatar">
-        <AvatarGraphic
-          height="h-10"
-          width="w-10"
-          {firstName}
-          {lastName}
-          thumbnail={src} />
+        <AvatarGraphic height="h-10" width="w-10" {firstName} {lastName} thumbnail={src} />
       </div>
       <div>
         <div class="font-bold">{firstName} {lastName}</div>
@@ -58,10 +53,7 @@
     <div class="">{date.toLocaleDateString("en-GB")}</div>
   </td>
   <th>
-    <form
-      action="/profile/house?/set_admin"
-      method="POST"
-      use:enhance={handleIsAdmin}>
+    <form action="/profile/house?/set_admin" method="POST" use:enhance={handleIsAdmin}>
       <input type="hidden" name="user_id" value={userId} />
       <input
         type="checkbox"

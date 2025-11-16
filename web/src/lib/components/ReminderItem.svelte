@@ -7,11 +7,7 @@
   import DropdownActionItem from "./dropdown/DropdownActionItem.svelte";
   import DropdownLinkItem from "./dropdown/DropdownLinkItem.svelte";
   import { cn } from "$lib/utils";
-  import {
-    FREQUENCY_INTERVALS,
-    CATEGORY_CONFIG,
-    type CategoryConfig
-  } from "$lib/utils/constants";
+  import { FREQUENCY_INTERVALS, CATEGORY_CONFIG, type CategoryConfig } from "$lib/utils/constants";
 
   let {
     id = $bindable(),
@@ -53,18 +49,14 @@
   let deadlineErrorDate: Date = new Date();
   deadlineErrorDate.setDate(new Date().getDate() + 0);
   let daysToDoChore: number = $derived(
-    Math.ceil(
-      (deadlineDate.getTime() - new Date().getTime()) / (1000 * 3600 * 24)
-    )
+    Math.ceil((deadlineDate.getTime() - new Date().getTime()) / (1000 * 3600 * 24))
   );
 
   let lastDone: Date = $derived(new Date(last_done));
   let daysSinceLastDone: number | undefined = $derived(
     last_done === ""
       ? undefined
-      : Math.floor(
-          (new Date().getTime() - lastDone.getTime()) / (1000 * 3600 * 24)
-        )
+      : Math.floor((new Date().getTime() - lastDone.getTime()) / (1000 * 3600 * 24))
   );
 
   let checkboxState = $state(false);
@@ -111,8 +103,7 @@
       </form>
     </div>
 
-    <div
-      class="justify-left mt-0 flex h-fit grow flex-col gap-1 pt-0 pr-2 pl-4 text-left">
+    <div class="justify-left mt-0 flex h-fit grow flex-col gap-1 pt-0 pr-2 pl-4 text-left">
       <div class="flex flex-row items-center gap-2">
         <div
           class={`badge  h-6 items-center gap-1 text-white ${categoryConfig ? categoryConfig.color : defaultCategoryConfig?.color}`}>
@@ -156,8 +147,7 @@
       <div class="flex flex-row items-center">
         <RedoIcon class="mr-1 h-3 w-3 text-neutral-500" />
 
-        <h2
-          class="mt-0 flex items-start pt-0 text-xs font-medium text-neutral-500">
+        <h2 class="mt-0 flex items-start pt-0 text-xs font-medium text-neutral-500">
           {frequencyDescription}
           {#if daysSinceLastDone !== undefined}
             {#if daysSinceLastDone === 0}
@@ -180,8 +170,7 @@
         <DropdownContent>
           <DropdownLinkItem href="/home/reminders/{id}">Edit</DropdownLinkItem>
           <form method="POST" use:enhance={handleRemove}>
-            <DropdownActionItem
-              action="/home/reminders?/delete_reminder&id={id}"
+            <DropdownActionItem action="/home/reminders?/delete_reminder&id={id}"
               >Delete</DropdownActionItem>
           </form>
         </DropdownContent>

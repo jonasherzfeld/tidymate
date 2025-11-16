@@ -42,15 +42,11 @@
   });
 
   let frequencyDescription: string | undefined = $derived(
-    FREQUENCY_INTERVALS.find(
-      (frequency) => frequency.value === reminderItem.frequency
-    )?.description
+    FREQUENCY_INTERVALS.find((frequency) => frequency.value === reminderItem.frequency)?.description
   );
   let deadline: CalendarDate | undefined = $state(
     reminderItem.deadline
-      ? toCalendarDate(
-          fromDate(new Date(reminderItem.deadline), getLocalTimeZone())
-        )
+      ? toCalendarDate(fromDate(new Date(reminderItem.deadline), getLocalTimeZone()))
       : undefined
   );
   let isDeadlineInPast: boolean | undefined = $derived(
@@ -80,8 +76,7 @@
     use:enhance>
     <div class="relative mt-3 flex items-center justify-start">
       <div class="items-center">
-        <a href="/home/reminders" class="flex items-center gap-1"
-          ><ChevronLeft />Back</a>
+        <a href="/home/reminders" class="flex items-center gap-1"><ChevronLeft />Back</a>
       </div>
     </div>
 
@@ -98,16 +93,12 @@
 
         <input class="hidden" name="id" value={reminderItem.id} />
 
-        <TextInput
-          name="data"
-          bind:value={reminderItem.data}
-          placeholder="Enter a Reminder text">
+        <TextInput name="data" bind:value={reminderItem.data} placeholder="Enter a Reminder text">
           <div class="flex w-24 items-center gap-2 font-normal">
             <TextIcon class="h-4 w-4" />Text
           </div>
         </TextInput>
-        {#if $errors.data}<span
-            class="invalid text-error ml-2 flex w-full text-start text-sm"
+        {#if $errors.data}<span class="invalid text-error ml-2 flex w-full text-start text-sm"
             >{$errors.data}</span
           >{/if}
 
@@ -123,13 +114,9 @@
               {frequencyDescription ? frequencyDescription : "Set frequency"}
             </span>
           </button>
-          <input
-            class="hidden"
-            name="frequency"
-            value={reminderItem.frequency} />
+          <input class="hidden" name="frequency" value={reminderItem.frequency} />
           <Dropdown.Content>
-            <Dropdown.TextItem
-              class="justify-left pointer-events-none flex w-full font-bold"
+            <Dropdown.TextItem class="justify-left pointer-events-none flex w-full font-bold"
               >Frequency</Dropdown.TextItem>
             {#each FREQUENCY_INTERVALS as interval}
               <Dropdown.RadioItem
@@ -142,8 +129,7 @@
           </Dropdown.Content>
         </Dropdown.Root>
 
-        {#if $errors.frequency}<span
-            class="invalid text-error ml-2 flex w-full text-start text-sm"
+        {#if $errors.frequency}<span class="invalid text-error ml-2 flex w-full text-start text-sm"
             >{$errors.frequency}</span
           >{/if}
 
@@ -161,8 +147,7 @@
           </button>
           <input class="hidden" name="category" value={reminderItem.category} />
           <Dropdown.Content>
-            <Dropdown.TextItem
-              class="justify-left pointer-events-none flex w-full font-bold"
+            <Dropdown.TextItem class="justify-left pointer-events-none flex w-full font-bold"
               >Category</Dropdown.TextItem>
             {#each CATEGORY_CONFIG as category}
               <Dropdown.RadioItem
@@ -174,8 +159,7 @@
             {/each}
           </Dropdown.Content>
         </Dropdown.Root>
-        {#if $errors.category}<span
-            class="invalid text-error ml-2 flex w-full text-start text-sm"
+        {#if $errors.category}<span class="invalid text-error ml-2 flex w-full text-start text-sm"
             >{$errors.category}</span
           >{/if}
 
@@ -188,12 +172,9 @@
           )}
           bind:this={myDatepicker}
           name="deadline"
-          value={deadline
-            ? df.format(deadline.toDate(getLocalTimeZone()))
-            : "Set a deadline"} />
+          value={deadline ? df.format(deadline.toDate(getLocalTimeZone())) : "Set a deadline"} />
         {#if isDeadlineInPast || $errors.deadline}
-          {#if $errors.deadline}<span
-              class="invalid text-error ml-2 flex w-full text-start text-sm"
+          {#if $errors.deadline}<span class="invalid text-error ml-2 flex w-full text-start text-sm"
               >Deadline must be in the future</span
             >{/if}
         {/if}

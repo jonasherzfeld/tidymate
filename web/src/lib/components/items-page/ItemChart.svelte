@@ -1,16 +1,10 @@
 <script lang="ts">
   import { BarChart } from "$lib/utils/charts.svelte";
-  import {
-    ROOM_CONFIG,
-    CATEGORY_CONFIG,
-    type CategoryConfig
-  } from "$lib/utils/constants";
+  import { ROOM_CONFIG, CATEGORY_CONFIG, type CategoryConfig } from "$lib/utils/constants";
 
   type T = Chore | Reminder | Todo;
-  let {
-    item_type,
-    itemPageState
-  }: { item_type: string; itemPageState: ItemListState<T> } = $props();
+  let { item_type, itemPageState }: { item_type: string; itemPageState: ItemListState<T> } =
+    $props();
 
   // Reactive chart data - automatically updates when itemPageState changes
   const chartData = $derived.by(() => {
@@ -26,18 +20,10 @@
     const completedItems = getCompletedItemsInRange(history, months[0].date);
 
     // Get all unique rooms
-    const categories = getAllCategories(
-      history,
-      completedItems,
-      itemCategoryMap
-    );
+    const categories = getAllCategories(history, completedItems, itemCategoryMap);
 
     // Count completions by month and room
-    const monthlyData = countCompletionsByMonthAndCategory(
-      completedItems,
-      itemCategoryMap,
-      months
-    );
+    const monthlyData = countCompletionsByMonthAndCategory(completedItems, itemCategoryMap, months);
 
     return {
       labels: months.map((m) => m.label),
@@ -150,9 +136,7 @@
     if (item_type === "chore") {
       categoryMap = new Map(ROOM_CONFIG.map((room) => [room.name, room]));
     } else if (item_type === "reminder") {
-      categoryMap = new Map(
-        CATEGORY_CONFIG.map((category) => [category.name, category])
-      );
+      categoryMap = new Map(CATEGORY_CONFIG.map((category) => [category.name, category]));
     }
 
     return categories.map((category) => {
@@ -162,9 +146,7 @@
 
       return {
         label: category,
-        data: months.map(
-          (month) => monthlyData.get(month.monthKey)?.get(category) || 0
-        ),
+        data: months.map((month) => monthlyData.get(month.monthKey)?.get(category) || 0),
         backgroundColor,
         borderColor,
         borderWidth: 1

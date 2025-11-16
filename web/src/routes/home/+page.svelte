@@ -1,10 +1,6 @@
 <script lang="ts">
   import { BarChart } from "$lib/utils/charts.svelte";
-  import {
-    ROOM_CONFIG,
-    CATEGORY_CONFIG,
-    type CategoryConfig
-  } from "$lib/utils/constants";
+  import { ROOM_CONFIG, CATEGORY_CONFIG, type CategoryConfig } from "$lib/utils/constants";
   import type { PageData } from "../$types";
 
   let { data }: { data: PageData } = $props();
@@ -46,9 +42,7 @@
   // Room chart data
   const roomChartData = $derived.by(() => {
     const breakdown: Record<string, number> = household.room_breakdown || {};
-    const roomColorMap = new Map<string, CategoryConfig>(
-      ROOM_CONFIG.map((r) => [r.name, r])
-    );
+    const roomColorMap = new Map<string, CategoryConfig>(ROOM_CONFIG.map((r) => [r.name, r]));
 
     const entries = Object.entries(breakdown).sort(([, a], [, b]) => b - a);
     const labels = entries.map(([name]) => name);
@@ -74,11 +68,8 @@
 
   // Category chart data
   const categoryChartData = $derived.by(() => {
-    const breakdown: Record<string, number> =
-      reminderStats.category_breakdown || {};
-    const catColorMap = new Map<string, CategoryConfig>(
-      CATEGORY_CONFIG.map((c) => [c.name, c])
-    );
+    const breakdown: Record<string, number> = reminderStats.category_breakdown || {};
+    const catColorMap = new Map<string, CategoryConfig>(CATEGORY_CONFIG.map((c) => [c.name, c]));
 
     const entries = Object.entries(breakdown).sort(([, a], [, b]) => b - a);
     const labels = entries.map(([name]) => name);
@@ -118,23 +109,17 @@
   };
 </script>
 
-<div
-  class="bg-base-100 flex min-h-full w-full flex-1 items-start justify-center">
-  <div
-    class="mt-5 flex w-full max-w-screen-lg flex-1 flex-col justify-center gap-5 p-4">
+<div class="bg-base-100 flex min-h-full w-full flex-1 items-start justify-center">
+  <div class="mt-5 flex w-full max-w-screen-lg flex-1 flex-col justify-center gap-5 p-4">
     <h1 class="text-accent text-center text-5xl font-bold">
       {data.house.name}
     </h1>
 
     <!-- Household Achievements (Chores + Todos) -->
     <div class="card bg-base-200">
-      <div
-        class="card-body tab-content bg-base-100 border-base-300 rounded-box p-2">
-        <h2 class="card-title justify-start text-center">
-          Household Achievements
-        </h2>
-        <div
-          class="stats stats-vertical bg-base-300 md:stats-horizontal shadow">
+      <div class="card-body tab-content bg-base-100 border-base-300 rounded-box p-2">
+        <h2 class="card-title justify-start text-center">Household Achievements</h2>
+        <div class="stats stats-vertical bg-base-300 md:stats-horizontal shadow">
           <div class="stat">
             <div class="stat-figure text-success">
               <svg
@@ -208,9 +193,7 @@
                 {household.strongest_room_count} chores completed
               </div>
             {:else}
-              <div class="stat-value text-base-content/30 text-lg">
-                No data yet
-              </div>
+              <div class="stat-value text-base-content/30 text-lg">No data yet</div>
               <div class="stat-desc">Complete chores to see stats</div>
             {/if}
           </div>
@@ -235,11 +218,9 @@
 
     <!-- Your Reminders -->
     <div class="card bg-base-200">
-      <div
-        class="card-body tab-content bg-base-100 border-base-300 rounded-box p-2">
+      <div class="card-body tab-content bg-base-100 border-base-300 rounded-box p-2">
         <h2 class="card-title justify-start text-center">Your Reminders</h2>
-        <div
-          class="stats stats-vertical bg-base-300 md:stats-horizontal shadow">
+        <div class="stats stats-vertical bg-base-300 md:stats-horizontal shadow">
           <div class="stat">
             <div class="stat-figure text-success">
               <svg
@@ -306,9 +287,7 @@
                 {reminderStats.strongest_category_count} reminders completed
               </div>
             {:else}
-              <div class="stat-value text-base-content/30 text-lg">
-                No data yet
-              </div>
+              <div class="stat-value text-base-content/30 text-lg">No data yet</div>
               <div class="stat-desc">Complete reminders to see stats</div>
             {/if}
           </div>

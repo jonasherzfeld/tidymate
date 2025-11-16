@@ -10,11 +10,7 @@
   import { page } from "$app/stores";
   import { cn } from "$lib/utils";
   import AvatarGraphic from "./AvatarGraphic.svelte";
-  import {
-    FREQUENCY_INTERVALS,
-    ROOM_CONFIG,
-    type CategoryConfig
-  } from "$lib/utils/constants";
+  import { FREQUENCY_INTERVALS, ROOM_CONFIG, type CategoryConfig } from "$lib/utils/constants";
 
   let {
     id = $bindable(),
@@ -42,12 +38,8 @@
     onRemove: () => void;
   } = $props();
 
-  let assigneeName = $derived(
-    getUsernameById(assignee, $page.data.house.members)
-  );
-  let assigneeThumbnail = $derived(
-    getThumbnailById(assignee, $page.data.house.members) ?? ""
-  );
+  let assigneeName = $derived(getUsernameById(assignee, $page.data.house.members));
+  let assigneeThumbnail = $derived(getThumbnailById(assignee, $page.data.house.members) ?? "");
   let frequencyDescription: string | undefined = $derived(
     FREQUENCY_INTERVALS.find((item) => item.value === frequency)?.description
   );
@@ -64,18 +56,14 @@
   let deadlineErrorDate: Date = new Date();
   deadlineErrorDate.setDate(new Date().getDate() + 0);
   let daysToDoChore: number = $derived(
-    Math.ceil(
-      (deadlineDate.getTime() - new Date().getTime()) / (1000 * 3600 * 24)
-    )
+    Math.ceil((deadlineDate.getTime() - new Date().getTime()) / (1000 * 3600 * 24))
   );
 
   let lastDone: Date = $derived(new Date(last_done));
   let daysSinceLastDone: number | undefined = $derived(
     last_done === ""
       ? undefined
-      : Math.floor(
-          (new Date().getTime() - lastDone.getTime()) / (1000 * 3600 * 24)
-        )
+      : Math.floor((new Date().getTime() - lastDone.getTime()) / (1000 * 3600 * 24))
   );
 
   let checkboxState = $state(false);
@@ -122,8 +110,7 @@
       </form>
     </div>
 
-    <div
-      class="justify-left mt-0 flex h-fit grow flex-col gap-1 pt-0 pr-2 pl-4 text-left">
+    <div class="justify-left mt-0 flex h-fit grow flex-col gap-1 pt-0 pr-2 pl-4 text-left">
       <div class="flex flex-row items-center gap-2">
         <div
           class={`badge  h-6 items-center gap-1 text-white ${roomConfig ? roomConfig.color : defaultRoomConfig?.color}`}>
@@ -173,15 +160,13 @@
             textSize="text-[0.4rem]"
             firstName={assigneeName.split(" ")[0]}
             lastName={assigneeName.split(" ")[1]} />
-          <span class="pl-2 text-xs font-medium text-neutral-500"
-            >{assigneeName}</span>
+          <span class="pl-2 text-xs font-medium text-neutral-500">{assigneeName}</span>
         {/if}
       </div>
       <div class="flex flex-row items-center">
         <RedoIcon class="mr-1 h-3 w-3 text-neutral-500" />
 
-        <h2
-          class="mt-0 flex items-start pt-0 text-xs font-medium text-neutral-500">
+        <h2 class="mt-0 flex items-start pt-0 text-xs font-medium text-neutral-500">
           {frequencyDescription}
           {#if daysSinceLastDone !== undefined}
             {#if daysSinceLastDone === 0}

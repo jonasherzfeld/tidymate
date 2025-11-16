@@ -56,13 +56,7 @@
   );
 
   function handleViewNotification() {
-    return async ({
-      result,
-      update
-    }: {
-      result: any;
-      update: () => Promise<void>;
-    }) => {
+    return async ({ result, update }: { result: any; update: () => Promise<void> }) => {
       await update();
 
       if (result.type === "success" && result.data?.href) {
@@ -93,19 +87,14 @@
   }
 </script>
 
-<div
-  class="bg-base-100 flex min-h-full w-full flex-1 items-start justify-center">
-  <div
-    class="mt-5 flex w-full max-w-screen-lg flex-1 flex-col justify-center gap-5 p-4">
+<div class="bg-base-100 flex min-h-full w-full flex-1 items-start justify-center">
+  <div class="mt-5 flex w-full max-w-screen-lg flex-1 flex-col justify-center gap-5 p-4">
     <div class="flex flex-row items-center gap-2">
       <h1 class="flex grow items-center gap-2 text-lg font-bold">
         <BellIcon class="h-5 w-5" />
         Notifications
       </h1>
-      <form
-        action="/home/notifications?/delete_all_notifications"
-        method="POST"
-        use:enhance>
+      <form action="/home/notifications?/delete_all_notifications" method="POST" use:enhance>
         <button
           class="btn btn-outline btn-sm rounded-md border-neutral-200 shadow-sm"
           type="submit"
@@ -117,18 +106,13 @@
 
     <div class="flex flex-1 flex-col gap-2">
       {#if sortedNotifications.length === 0}
-        <div class="flex items-center justify-center p-8 opacity-60">
-          No notifications
-        </div>
+        <div class="flex items-center justify-center p-8 opacity-60">No notifications</div>
       {/if}
       {#each sortedNotifications as notification}
         <div class="flex w-full">
           <div
             class="card card-bordered border-neutral bg-base-300 flex h-fit w-full flex-row items-start justify-between rounded-lg p-2 shadow-sm">
-            <form
-              class="flex min-w-0 grow"
-              method="POST"
-              use:enhance={handleViewNotification}>
+            <form class="flex min-w-0 grow" method="POST" use:enhance={handleViewNotification}>
               <button
                 class="flex w-full items-center gap-3 text-left"
                 type="submit"

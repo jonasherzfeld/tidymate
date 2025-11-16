@@ -14,10 +14,7 @@ async function get_todos(cookies: Cookies): Promise<Todo[]> {
     signal: AbortSignal.timeout(FETCH_ABORT_TIMEOUT_MS)
   };
 
-  const res = await fetch(
-    `${BASE_API_URI}/items/get-todos`,
-    requestInitOptions
-  );
+  const res = await fetch(`${BASE_API_URI}/items/get-todos`, requestInitOptions);
 
   if (!res.ok) {
     return [] as Todo[];
@@ -42,10 +39,7 @@ async function get_history(cookies: Cookies): Promise<History[]> {
     signal: AbortSignal.timeout(FETCH_ABORT_TIMEOUT_MS)
   };
 
-  const res = await fetch(
-    `${BASE_API_URI}/history/get-history`,
-    requestInitOptions
-  );
+  const res = await fetch(`${BASE_API_URI}/history/get-history`, requestInitOptions);
 
   if (!res.ok) {
     return [] as History[];
@@ -86,10 +80,7 @@ export const actions = {
       signal: AbortSignal.timeout(FETCH_ABORT_TIMEOUT_MS)
     };
 
-    const res = await fetch(
-      `${BASE_API_URI}/items/create-todo`,
-      requestInitOptions
-    );
+    const res = await fetch(`${BASE_API_URI}/items/create-todo`, requestInitOptions);
 
     try {
       const response = await res.json();
@@ -120,10 +111,7 @@ export const actions = {
       signal: AbortSignal.timeout(FETCH_ABORT_TIMEOUT_MS)
     };
 
-    const res = await fetch(
-      `${BASE_API_URI}/items/delete-todo/${todoId}`,
-      requestInitOptions
-    );
+    const res = await fetch(`${BASE_API_URI}/items/delete-todo/${todoId}`, requestInitOptions);
 
     try {
       const response = await res.json();
@@ -154,10 +142,7 @@ export const actions = {
       signal: AbortSignal.timeout(FETCH_ABORT_TIMEOUT_MS)
     };
 
-    const res = await fetch(
-      `${BASE_API_URI}/items/check-todo/${todoId}`,
-      requestInitOptions
-    );
+    const res = await fetch(`${BASE_API_URI}/items/check-todo/${todoId}`, requestInitOptions);
 
     try {
       const response = await res.json();

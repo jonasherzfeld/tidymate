@@ -10,9 +10,7 @@
 
   let isLoggedIn: boolean = $derived($page.data.user ? true : false);
   let isHouseMember: boolean = $derived($page.data.house ? true : false);
-  let menuRestriction: RestrictionType[] = $derived(
-    getRestrictionType(isLoggedIn, isHouseMember)
-  );
+  let menuRestriction: RestrictionType[] = $derived(getRestrictionType(isLoggedIn, isHouseMember));
   let headerTitle: string | undefined = $derived(getRouteTitle($page.route.id));
 </script>
 
@@ -35,14 +33,8 @@
       <NotificationCenter notifications={$page.data.notifications} />
     {/if}
     <div class="dropdown dropdown-end">
-      <div
-        tabindex="0"
-        role="button"
-        class="avatar btn btn-circle btn-ghost hover:bg-secondary">
-        <AvatarGraphic
-          thumbnail={$page.data.user?.thumbnail}
-          height="h-10"
-          width="w-10" />
+      <div tabindex="0" role="button" class="avatar btn btn-circle btn-ghost hover:bg-secondary">
+        <AvatarGraphic thumbnail={$page.data.user?.thumbnail} height="h-10" width="w-10" />
       </div>
       <ul
         tabindex="-1"

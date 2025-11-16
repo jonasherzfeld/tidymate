@@ -8,6 +8,7 @@ from flask_cors import CORS
 from flask_session import Session
 from flask_migrate import Migrate
 from flask import Flask
+from flask_compress import Compress
 from logging.config import dictConfig
 import sys
 
@@ -53,6 +54,22 @@ def create_app():
     app.config['SESSION_REDIS'] = redis.from_url(REDIS_URL)
     app.config['SQLALCHEMY_DATABASE_URI'] = SQL_DB_URL
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+    # Enable compression for responses
+    app.config['COMPRESS_MIMETYPES'] = [
+        'text/html',
+        'text/css',
+        'text/xml',
+        'application/json',
+        'application/javascript',
+        'application/x-javascript',
+        'text/javascript'
+    ]
+    app.config['COMPRESS_LEVEL'] = 6  # Compression level (1-9, 6 is balanced)
+    # Only compress responses > 500 bytes
+    app.config['COMPRESS_MIN_SIZE'] = 500
+    Compress(app)
+
     CORS(app, supports_credentials=True)
     Session(app)
 

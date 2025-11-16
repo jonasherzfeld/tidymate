@@ -4,12 +4,7 @@
   import TodoItem from "$lib/components/TodoItem.svelte";
   import SortDropDown from "$lib/components/SortDropDown.svelte";
   import FilterDropDown from "$lib/components/FilterDropDown.svelte";
-  import {
-    ReloadIcon,
-    UserIcon,
-    DoneAllIcon,
-    SearchIcon
-  } from "$lib/utils/icons";
+  import { ReloadIcon, UserIcon, DoneAllIcon, SearchIcon } from "$lib/utils/icons";
   import ToggleButton from "$lib/components/ToggleButton.svelte";
   import { getUsernameById } from "$lib/utils/helpers";
 
@@ -54,8 +49,7 @@
 <div class="flex min-h-full flex-col justify-between gap-3">
   <div class="flex flex-col gap-3">
     <div>
-      <label
-        class="input input-sm input-bordered flex w-full grow items-center gap-2">
+      <label class="input input-sm input-bordered flex w-full grow items-center gap-2">
         <SearchIcon />
         <input
           type="search"
@@ -67,8 +61,7 @@
     <div class="flex w-full flex-row justify-between gap-2">
       <div>
         <a href="/home/todo" data-sveltekit-reload>
-          <button
-            class="btn btn-outline btn-sm rounded-md border-neutral-200 shadow-sm">
+          <button class="btn btn-outline btn-sm rounded-md border-neutral-200 shadow-sm">
             <ReloadIcon class="h-4 w-4" />
           </button>
         </a>
@@ -99,8 +92,7 @@
           {serverErrors}
         </h1>
       {/if}
-      <div
-        class="card card-bordered border-neutral bg-base-300 rounded-lg shadow-md">
+      <div class="card card-bordered border-neutral bg-base-300 rounded-lg shadow-md">
         <div class="flex flex-1 flex-col">
           {#each todoPageState.filteredSortedItems as todo, id}
             {#if !todo.done || (todo.done && showComplete)}
@@ -132,9 +124,7 @@
                   }
                 }}
                 onRemove={() => {
-                  todoPageState.items = todoPageState.items.filter(
-                    (t) => t.id !== todo.id
-                  );
+                  todoPageState.items = todoPageState.items.filter((t) => t.id !== todo.id);
                   todoPageState.history = [
                     ...todoPageState.history,
                     {
@@ -157,8 +147,7 @@
       </div>
     </div>
   </div>
-  <div
-    class={`card border-base-100 bg-base-300 sticky mb-3 flex w-full rounded-lg border-2 p-2`}>
+  <div class={`card border-base-100 bg-base-300 sticky mb-3 flex w-full rounded-lg border-2 p-2`}>
     <form method="POST" use:enhance={handleSubmit}>
       <div class="flex flex-row flex-wrap gap-2">
         <input

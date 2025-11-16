@@ -118,10 +118,7 @@ export const choreItemSchema = z
     assignee: z.string().optional(),
     deadline: z.date(),
     last_done: z.date().optional(),
-    room: z
-      .string()
-      .min(1, "A room must be assigned")
-      .max(255, "Invalid room name"),
+    room: z.string().min(1, "A room must be assigned").max(255, "Invalid room name"),
     severity: z.number().int().min(0).max(2).optional()
   })
   .superRefine(({ deadline }, ctx) => {
@@ -144,10 +141,7 @@ export const reminderItemSchema = z
     assignee: z.string().optional(),
     deadline: z.date(),
     last_done: z.date().optional(),
-    category: z
-      .string()
-      .min(1, "A category must be assigned")
-      .max(255, "Invalid category name")
+    category: z.string().min(1, "A category must be assigned").max(255, "Invalid category name")
   })
   .superRefine(({ deadline }, ctx) => {
     const current_date: Date = new Date(new Date().toDateString());

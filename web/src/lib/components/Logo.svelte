@@ -7,19 +7,27 @@
   }: {
     width: string;
   } = $props();
+
+  const widthNum = parseInt(width);
 </script>
 
 <img
   alt="Logo"
   class="hidden dark:block"
   src={LogoDark}
-  {width}
-  height={width}
-  loading="lazy" />
+  width={widthNum}
+  height={widthNum}
+  loading="lazy"
+  style="max-width: {width}; height: auto;"
+  decoding="async" />
+
+<!-- Light theme logo with optimized sizing -->
 <img
   alt="Logo"
   class="dark:hidden"
   src={LogoLight}
-  {width}
-  height={width}
-  loading="lazy" />
+  width={widthNum}
+  height={widthNum}
+  loading="lazy"
+  style="max-width: {width}; height: auto;"
+  decoding="async" />

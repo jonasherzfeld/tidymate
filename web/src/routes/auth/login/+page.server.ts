@@ -53,9 +53,7 @@ export const actions = {
         ["set-cookie"].split(";")[0]
         .split(/=(.*)/s)[1];
 
-      const path = Object.fromEntries(res.headers)
-        ["set-cookie"].split(";")[2]
-        .split("=")[1];
+      const path = Object.fromEntries(res.headers)["set-cookie"].split(";")[2].split("=")[1];
       const maxAge = 60 * 60 * 24 * 30;
 
       cookies.set("session", sessionID, {

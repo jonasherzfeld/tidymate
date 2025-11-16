@@ -2,11 +2,8 @@
   import type { Snippet } from "svelte";
   import DropdownItem from "./DropdownItem.svelte";
 
-  let {
-    action,
-    disabled,
-    children
-  }: { action?: string; disabled?: boolean; children: Snippet } = $props();
+  let { action, disabled, children }: { action?: string; disabled?: boolean; children: Snippet } =
+    $props();
 </script>
 
 <DropdownItem>

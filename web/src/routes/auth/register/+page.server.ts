@@ -45,10 +45,7 @@ export const actions = {
       signal: AbortSignal.timeout(FETCH_ABORT_TIMEOUT_MS)
     };
 
-    const res = await fetch(
-      `${BASE_API_URI}/auth/register`,
-      requestInitOptions
-    );
+    const res = await fetch(`${BASE_API_URI}/auth/register`, requestInitOptions);
 
     if (!res.ok) {
       try {
@@ -64,9 +61,7 @@ export const actions = {
         ["set-cookie"].split(";")[0]
         .split(/=(.*)/s)[1];
 
-      const path = Object.fromEntries(res.headers)
-        ["set-cookie"].split(";")[2]
-        .split("=")[1];
+      const path = Object.fromEntries(res.headers)["set-cookie"].split(";")[2].split("=")[1];
       const maxAge = 60 * 60 * 24 * 30;
 
       cookies.set("session", sessionID, {

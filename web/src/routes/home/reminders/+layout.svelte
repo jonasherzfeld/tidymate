@@ -11,8 +11,7 @@
 {#key data.url}
   <div class="flex min-h-full flex-1">
     <div class="flex min-h-full w-full flex-1 items-start justify-center">
-      <div
-        class="flex min-h-full max-w-screen-sm grow justify-center p-2 text-center">
+      <div class="flex min-h-full max-w-screen-sm grow justify-center p-2 text-center">
         {@render children?.()}
       </div>
     </div>

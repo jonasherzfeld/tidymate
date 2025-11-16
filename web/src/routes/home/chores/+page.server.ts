@@ -14,10 +14,7 @@ async function get_chores(cookies: Cookies): Promise<Chore[]> {
     signal: AbortSignal.timeout(FETCH_ABORT_TIMEOUT_MS)
   };
 
-  const res = await fetch(
-    `${BASE_API_URI}/chores/get-chores`,
-    requestInitOptions
-  );
+  const res = await fetch(`${BASE_API_URI}/chores/get-chores`, requestInitOptions);
 
   if (!res.ok) {
     return [] as Chore[];
@@ -42,10 +39,7 @@ async function get_history(cookies: Cookies): Promise<History[]> {
     signal: AbortSignal.timeout(FETCH_ABORT_TIMEOUT_MS)
   };
 
-  const res = await fetch(
-    `${BASE_API_URI}/history/get-history`,
-    requestInitOptions
-  );
+  const res = await fetch(`${BASE_API_URI}/history/get-history`, requestInitOptions);
 
   if (!res.ok) {
     return [] as History[];
@@ -85,10 +79,7 @@ export const actions = {
       signal: AbortSignal.timeout(FETCH_ABORT_TIMEOUT_MS)
     };
 
-    const res = await fetch(
-      `${BASE_API_URI}/chores/delete-chore/${choreId}`,
-      requestInitOptions
-    );
+    const res = await fetch(`${BASE_API_URI}/chores/delete-chore/${choreId}`, requestInitOptions);
 
     if (!res.ok) {
       try {
@@ -120,10 +111,7 @@ export const actions = {
       signal: AbortSignal.timeout(FETCH_ABORT_TIMEOUT_MS)
     };
 
-    const res = await fetch(
-      `${BASE_API_URI}/chores/check-chore/${choreId}`,
-      requestInitOptions
-    );
+    const res = await fetch(`${BASE_API_URI}/chores/check-chore/${choreId}`, requestInitOptions);
 
     try {
       const response = await res.json();

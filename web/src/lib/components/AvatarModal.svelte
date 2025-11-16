@@ -99,12 +99,7 @@
               method: "POST"
             }
           }}
-          acceptedFileTypes={[
-            "image/png",
-            "image/jpeg",
-            "image/webp",
-            "image/jpg"
-          ]}
+          acceptedFileTypes={["image/png", "image/jpeg", "image/webp", "image/jpg"]}
           allowMultiple={false}
           allowProcess={false}
           allowRevert={false}
@@ -167,10 +162,7 @@
             method="POST"
             use:enhance={handleRemove}
             enctype="multipart/form-data">
-            <button
-              class="btn btn-error w-full"
-              formaction="?/delete_image"
-              type="submit">
+            <button class="btn btn-error w-full" formaction="?/delete_image" type="submit">
               Remove image
             </button>
           </form>

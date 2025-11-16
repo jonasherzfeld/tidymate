@@ -16,8 +16,7 @@
     <SortIcon class="h-4 w-4" />
   </Dropdown.Trigger>
   <Dropdown.Content>
-    <Dropdown.TextItem
-      class="justify-left pointer-events-none flex w-full font-bold"
+    <Dropdown.TextItem class="justify-left pointer-events-none flex w-full font-bold"
       >Sort</Dropdown.TextItem>
     <Dropdown.CheckboxItem
       checked={sortOrder === "desc"}

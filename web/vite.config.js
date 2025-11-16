@@ -8,13 +8,33 @@ export default defineConfig({
     sveltekit(),
     tailwindcss(),
     Icons({
-      compiler: "svelte"
+      compiler: "svelte",
+      // Optimize icon loading
+      autoInstall: true,
+      // Use collection-based loading for better tree-shaking
+      defaultStyle: "",
+      defaultClass: ""
     })
   ],
   build: {
-    sourcemap: false
+    sourcemap: false,
+    // Enable minification
+    minify: "terser",
+    terserOptions: {
+      compress: {
+        drop_console: true, // Remove console.logs in production
+        drop_debugger: true
+      }
+    },
+    // Optimize chunk size
+    chunkSizeWarningLimit: 600
   },
   test: {
     include: ["src/**/*.{test,spec}.{js,ts}"]
+  },
+  // Optimize dependencies pre-bundling
+  optimizeDeps: {
+    include: ["clsx", "tailwind-merge"],
+    exclude: []
   }
 });

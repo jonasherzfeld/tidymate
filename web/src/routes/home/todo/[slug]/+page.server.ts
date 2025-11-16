@@ -17,10 +17,7 @@ async function get_todo(todoId: string, cookies: Cookies): Promise<Todo> {
     signal: AbortSignal.timeout(FETCH_ABORT_TIMEOUT_MS)
   };
 
-  const res = await fetch(
-    `${BASE_API_URI}/items/get-todo/${todoId}`,
-    requestInitOptions
-  );
+  const res = await fetch(`${BASE_API_URI}/items/get-todo/${todoId}`, requestInitOptions);
 
   if (!res.ok) {
     return {} as Todo;
@@ -63,10 +60,7 @@ export const actions = {
       signal: AbortSignal.timeout(FETCH_ABORT_TIMEOUT_MS)
     };
 
-    const res = await fetch(
-      `${BASE_API_URI}/items/update-todo`,
-      requestInitOptions
-    );
+    const res = await fetch(`${BASE_API_URI}/items/update-todo`, requestInitOptions);
 
     if (!res.ok) {
       try {

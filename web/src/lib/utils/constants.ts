@@ -34,12 +34,7 @@ export const THEME_MAPPING = {
 };
 
 // Routes that are protected and need a user to be logged in
-export const PROTECTED_ROUTES_USER = [
-  "/auth/logout",
-  "/profile",
-  "/home",
-  "/auth/register/house"
-];
+export const PROTECTED_ROUTES_USER = ["/auth/logout", "/profile", "/home", "/auth/register/house"];
 
 // Routes that are protected and need a user to be assigned to a house
 export const PROTECTED_ROUTES_HOUSE = ["/profile/house", "/home"];

@@ -4,9 +4,7 @@
 
   let { data }: { data: PageData } = $props();
 
-  const history: History[] = $derived(
-    (data.history || []).filter((h) => h.item_type === "todo")
-  );
+  const history: History[] = $derived((data.history || []).filter((h) => h.item_type === "todo"));
 
   // Group history by date
   const groupedHistory = $derived.by(() => {
@@ -28,8 +26,7 @@
     return sortedDates.map((date) => ({
       date,
       events: groups[date].sort(
-        (a, b) =>
-          new Date(b.created_on).getTime() - new Date(a.created_on).getTime()
+        (a, b) => new Date(b.created_on).getTime() - new Date(a.created_on).getTime()
       )
     }));
   });
@@ -51,9 +48,7 @@
       <div class="card-body p-3 text-center">
         <div class="mb-4 text-6xl">📋</div>
         <h2 class="card-title justify-center">No Activity Yet</h2>
-        <p>
-          Start creating and completing tasks to see your activity history here!
-        </p>
+        <p>Start creating and completing tasks to see your activity history here!</p>
       </div>
     </div>
   {:else}

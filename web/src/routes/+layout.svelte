@@ -23,25 +23,14 @@
     }
   }
   setContext("webapp", () => isWebApp);
-
-  let isPageLoaded = $state(false);
-  const handlePageLoaded = (e: HTMLDivElement) => {
-    isPageLoaded = true;
-  };
 </script>
 
-{#if !isPageLoaded}
-  <div class="flex h-screen items-center justify-center" use:handlePageLoaded>
-    <span class="loading loading-spinner loading-lg"></span>
-  </div>
-{/if}
+<!-- Removed loading spinner to prevent CLS - content renders immediately -->
 <Sidebar>
   <div
     class={cn(
       "flex min-w-full grow",
-      isWebApp
-        ? "min-h-main-content pb-webapp-menu"
-        : "min-h-main-content-desktop"
+      isWebApp ? "min-h-main-content pb-webapp-menu" : "min-h-main-content-desktop"
     )}>
     {@render children?.()}
   </div>

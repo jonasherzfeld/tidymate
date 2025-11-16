@@ -15,6 +15,12 @@
   --tab-radius: "0.25rem"  */
   /* --color-neutral: oklch(85% 0.06 240); */
 
+  /* Color contrast fixes for WCAG AA compliance */
+  --color-accent: oklch(
+    65% 0.15 40
+  ); /* Darker orange for 3:1 contrast on light bg (was too light) */
+  --color-base-content: oklch(25% 0.02 280); /* Darker text for 4.5:1 contrast (stat titles) */
+
   /* border radius */
   --radius-selector: 1rem;
   --radius-field: 0.25rem;
@@ -79,5 +85,38 @@
   ::backdrop,
   ::file-selector-button {
     border-color: var(--color-gray-200, currentcolor);
+  }
+
+  /* CLS Prevention: Reserve space for images */
+  img {
+    /* Prevent layout shift by maintaining aspect ratio */
+    height: auto;
+    /* Optimize image rendering */
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+
+  /* Ensure avatar images maintain aspect ratio and size */
+  img[class*="avatar"],
+  .mask img {
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Reserve minimum height for stat cards to prevent shift */
+  .stats .stat {
+    min-height: 8rem;
+  }
+
+  /* Prevent card body shifts */
+  .card-body {
+    min-height: fit-content;
+  }
+
+  /* Ensure leaderboard cards have consistent height */
+  .space-y-3 > .card {
+    min-height: 5rem;
   }
 }

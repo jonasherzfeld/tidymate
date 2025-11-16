@@ -1,13 +1,7 @@
 <script lang="ts">
   import { BellIcon } from "$lib/utils/icons";
   import { enhance } from "$app/forms";
-  import {
-    DeleteIcon,
-    ReminderIcon,
-    TodoIcon,
-    ChoresIcon,
-    GeneralIcon
-  } from "$lib/utils/icons";
+  import { DeleteIcon, ReminderIcon, TodoIcon, ChoresIcon, GeneralIcon } from "$lib/utils/icons";
   import { goto } from "$app/navigation";
 
   const MAX_VISIBLE = 4;
@@ -27,26 +21,13 @@
   let sortedNotifications = $derived(
     [...notifications]
       .filter((n) => !n.is_removed)
-      .sort(
-        (a, b) =>
-          new Date(b.created_on).getTime() - new Date(a.created_on).getTime()
-      )
+      .sort((a, b) => new Date(b.created_on).getTime() - new Date(a.created_on).getTime())
   );
-  let visibleNotifications = $derived(
-    sortedNotifications.slice(0, MAX_VISIBLE)
-  );
-  let remainingCount = $derived(
-    Math.max(0, sortedNotifications.length - MAX_VISIBLE)
-  );
+  let visibleNotifications = $derived(sortedNotifications.slice(0, MAX_VISIBLE));
+  let remainingCount = $derived(Math.max(0, sortedNotifications.length - MAX_VISIBLE));
 
   function handleViewNotification() {
-    return async ({
-      result,
-      update
-    }: {
-      result: any;
-      update: () => Promise<void>;
-    }) => {
+    return async ({ result, update }: { result: any; update: () => Promise<void> }) => {
       await update();
 
       if (result.type === "success" && result.data?.href) {
@@ -57,13 +38,9 @@
 </script>
 
 <div class="dropdown dropdown-bottom dropdown-end indicator">
-  <div
-    tabindex="0"
-    role="button"
-    class="btn btn-ghost btn-square btn-sm rounded-field indicator">
+  <div tabindex="0" role="button" class="btn btn-ghost btn-square btn-sm rounded-field indicator">
     {#if numNonViewedNotifications > 0}
-      <span class="indicator-item badge badge-secondary badge-xs"
-        >{numNonViewedNotifications}</span>
+      <span class="indicator-item badge badge-secondary badge-xs">{numNonViewedNotifications}</span>
     {/if}
     <BellIcon class="h-4 w-4" />
   </div>
@@ -72,9 +49,7 @@
     tabindex="0"
     class="list dropdown-content rounded-box border-neutral bg-base-300 z-[1] mt-2 min-h-24 w-64 border-[1px] p-1 shadow-md">
     <div class="flex items-center justify-between">
-      <li class="p-4 pb-2 text-xs tracking-wide opacity-60">
-        Your Notifications
-      </li>
+      <li class="p-4 pb-2 text-xs tracking-wide opacity-60">Your Notifications</li>
       <form action="/?/delete_all_notifications" method="POST" use:enhance>
         <button
           class="btn btn-ghost btn-link p-4 pb-2 text-xs font-normal tracking-wide opacity-60"
@@ -135,8 +110,7 @@
                 aria-label="Delete Notification"
                 formaction="/?/delete_notification">
                 {#if !notification.is_viewed}
-                  <span
-                    class="indicator-item indicator-center badge badge-secondary badge-xs"
+                  <span class="indicator-item indicator-center badge badge-secondary badge-xs"
                     >New</span>
                 {/if}
                 <DeleteIcon class="h-4 w-4" />
@@ -146,12 +120,9 @@
         </form>
       {/each}
     </div>
-    <a
-      href="/home/notifications"
-      class="btn btn-ghost btn-sm w-full text-xs opacity-70">
+    <a href="/home/notifications" class="btn btn-ghost btn-sm w-full text-xs opacity-70">
       {#if remainingCount > 0}
-        {remainingCount} more notification{remainingCount === 1 ? "" : "s"} - See
-        all
+        {remainingCount} more notification{remainingCount === 1 ? "" : "s"} - See all
       {:else}
         See all
       {/if}

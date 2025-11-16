@@ -22,11 +22,5 @@
 
 <label class={"input input-bordered flex w-full items-center gap-1 " + classIn}>
   {@render children?.()}
-  <input
-    {type}
-    {name}
-    class="grow text-right"
-    {placeholder}
-    {value}
-    {disabled} />
+  <input {type} {name} class="grow text-right" {placeholder} {value} {disabled} />
 </label>

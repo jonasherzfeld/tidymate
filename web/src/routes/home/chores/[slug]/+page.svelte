@@ -46,15 +46,11 @@
     getUsernameById(choreItem.assignee, data.house.members)
   );
   let frequencyDescription: string | undefined = $derived(
-    FREQUENCY_INTERVALS.find(
-      (frequency) => frequency.value === choreItem.frequency
-    )?.description
+    FREQUENCY_INTERVALS.find((frequency) => frequency.value === choreItem.frequency)?.description
   );
   let deadline: CalendarDate | undefined = $state(
     choreItem.deadline
-      ? toCalendarDate(
-          fromDate(new Date(choreItem.deadline), getLocalTimeZone())
-        )
+      ? toCalendarDate(fromDate(new Date(choreItem.deadline), getLocalTimeZone()))
       : undefined
   );
   let isDeadlineInPast: boolean | undefined = $derived(
@@ -84,8 +80,7 @@
     use:enhance>
     <div class="relative mt-3 flex items-center justify-start">
       <div class="items-center">
-        <a href="/home/chores" class="flex items-center gap-1"
-          ><ChevronLeft />Back</a>
+        <a href="/home/chores" class="flex items-center gap-1"><ChevronLeft />Back</a>
       </div>
     </div>
 
@@ -102,16 +97,12 @@
 
         <input class="hidden" name="id" value={choreItem.id} />
 
-        <TextInput
-          name="data"
-          bind:value={choreItem.data}
-          placeholder="Enter a Chore text">
+        <TextInput name="data" bind:value={choreItem.data} placeholder="Enter a Chore text">
           <div class="flex w-24 items-center gap-2 font-normal">
             <TextIcon class="h-4 w-4" />Text
           </div>
         </TextInput>
-        {#if $errors.data}<span
-            class="invalid text-error ml-2 flex w-full text-start text-sm"
+        {#if $errors.data}<span class="invalid text-error ml-2 flex w-full text-start text-sm"
             >{$errors.data}</span
           >{/if}
 
@@ -129,8 +120,7 @@
           </button>
           <input class="hidden" name="frequency" value={choreItem.frequency} />
           <Dropdown.Content>
-            <Dropdown.TextItem
-              class="justify-left pointer-events-none flex w-full font-bold"
+            <Dropdown.TextItem class="justify-left pointer-events-none flex w-full font-bold"
               >Frequency</Dropdown.TextItem>
             {#each FREQUENCY_INTERVALS as interval}
               <Dropdown.RadioItem
@@ -143,8 +133,7 @@
           </Dropdown.Content>
         </Dropdown.Root>
 
-        {#if $errors.frequency}<span
-            class="invalid text-error ml-2 flex w-full text-start text-sm"
+        {#if $errors.frequency}<span class="invalid text-error ml-2 flex w-full text-start text-sm"
             >{$errors.frequency}</span
           >{/if}
 
@@ -162,8 +151,7 @@
           </button>
           <input class="hidden" name="assignee" value={choreItem.assignee} />
           <Dropdown.Content>
-            <Dropdown.TextItem
-              class="justify-left pointer-events-none flex w-full font-bold"
+            <Dropdown.TextItem class="justify-left pointer-events-none flex w-full font-bold"
               >Assignee</Dropdown.TextItem>
             <Dropdown.RadioItem
               radioName="assigneeRadio"
@@ -177,15 +165,11 @@
                 checked={choreItem.assignee === member.id}
                 onchange={() => {
                   choreItem.assignee = member.id;
-                }}
-                >{member.first_name +
-                  " " +
-                  member.last_name}</Dropdown.RadioItem>
+                }}>{member.first_name + " " + member.last_name}</Dropdown.RadioItem>
             {/each}
           </Dropdown.Content>
         </Dropdown.Root>
-        {#if $errors.assignee}<span
-            class="invalid text-error ml-2 flex w-full text-start text-sm"
+        {#if $errors.assignee}<span class="invalid text-error ml-2 flex w-full text-start text-sm"
             >{$errors.assignee}</span
           >{/if}
 
@@ -203,8 +187,7 @@
           </button>
           <input class="hidden" name="room" value={choreItem.room} />
           <Dropdown.Content>
-            <Dropdown.TextItem
-              class="justify-left pointer-events-none flex w-full font-bold"
+            <Dropdown.TextItem class="justify-left pointer-events-none flex w-full font-bold"
               >Room</Dropdown.TextItem>
             <!-- TODO: Enable handling of rooms for each house
              {#each data.house.rooms as room} -->
@@ -218,8 +201,7 @@
             {/each}
           </Dropdown.Content>
         </Dropdown.Root>
-        {#if $errors.room}<span
-            class="invalid text-error ml-2 flex w-full text-start text-sm"
+        {#if $errors.room}<span class="invalid text-error ml-2 flex w-full text-start text-sm"
             >{$errors.room}</span
           >{/if}
 
@@ -232,12 +214,9 @@
           )}
           bind:this={myDatepicker}
           name="deadline"
-          value={deadline
-            ? df.format(deadline.toDate(getLocalTimeZone()))
-            : "Set a deadline"} />
+          value={deadline ? df.format(deadline.toDate(getLocalTimeZone())) : "Set a deadline"} />
         {#if isDeadlineInPast || $errors.deadline}
-          {#if $errors.deadline}<span
-              class="invalid text-error ml-2 flex w-full text-start text-sm"
+          {#if $errors.deadline}<span class="invalid text-error ml-2 flex w-full text-start text-sm"
               >Deadline must be in the future</span
             >{/if}
         {/if}

@@ -43,17 +43,11 @@ export async function subscribeToPush(): Promise<boolean> {
     if (permission !== "granted") return false;
 
     // Get VAPID public key via SvelteKit proxy (same origin, cookies work)
-    console.debug(
-      "[PUSH] Fetching VAPID public key from /api/push/vapid-public-key..."
-    );
+    console.debug("[PUSH] Fetching VAPID public key from /api/push/vapid-public-key...");
     const res = await fetch("/api/push/vapid-public-key");
     console.debug("[PUSH] VAPID key response:", res.status, res.statusText);
     if (!res.ok) {
-      console.error(
-        "[PUSH] Failed to fetch VAPID key:",
-        res.status,
-        await res.text()
-      );
+      console.error("[PUSH] Failed to fetch VAPID key:", res.status, await res.text());
       return false;
     }
     const { public_key } = await res.json();
@@ -82,11 +76,7 @@ export async function subscribeToPush(): Promise<boolean> {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ subscription: subscription.toJSON() })
     });
-    console.debug(
-      "[PUSH] Backend subscribe response:",
-      subRes.status,
-      subRes.statusText
-    );
+    console.debug("[PUSH] Backend subscribe response:", subRes.status, subRes.statusText);
     if (!subRes.ok) {
       console.error("[PUSH] Backend subscribe failed:", await subRes.text());
     }

@@ -1,9 +1,5 @@
 <script lang="ts">
-  import {
-    ROOM_CONFIG,
-    CATEGORY_CONFIG,
-    type CategoryConfig
-  } from "$lib/utils/constants";
+  import { ROOM_CONFIG, CATEGORY_CONFIG, type CategoryConfig } from "$lib/utils/constants";
 
   let { event }: { event: History } = $props();
 
@@ -98,8 +94,7 @@
   </div>
 
   <!-- Main Content -->
-  <div
-    class="justify-left mt-0 flex h-fit grow flex-col gap-0.5 pt-0 pr-2 pl-4 text-left">
+  <div class="justify-left mt-0 flex h-fit grow flex-col gap-0.5 pt-0 pr-2 pl-4 text-left">
     <!-- First Row: Item Type Badge -->
     {#if event.item_type !== "todo"}
       <div class="flex flex-row items-center">

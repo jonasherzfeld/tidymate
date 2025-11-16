@@ -22,10 +22,7 @@ async function get_house_members(cookies: Cookies): Promise<User[]> {
     signal: AbortSignal.timeout(FETCH_ABORT_TIMEOUT_MS)
   };
 
-  const res = await fetch(
-    `${BASE_API_URI}/auth/get-house-members`,
-    requestInitOptions
-  );
+  const res = await fetch(`${BASE_API_URI}/auth/get-house-members`, requestInitOptions);
 
   if (!res.ok) {
     return [] as User[];
@@ -42,10 +39,7 @@ async function get_house_members(cookies: Cookies): Promise<User[]> {
 export const load = async ({ locals, cookies }) => {
   const nameForm = await superValidate(locals.house, zod(houseNamechema));
   const cityForm = await superValidate(locals.house, zod(houseCitySchema));
-  const countryForm = await superValidate(
-    locals.house,
-    zod(houseCountrySchema)
-  );
+  const countryForm = await superValidate(locals.house, zod(houseCountrySchema));
   const newRoomForm = await superValidate(zod(houseRoomSchema));
   const editRoomForm = await superValidate(zod(houseRoomSchema));
   const joinIdForm = await superValidate(locals.house, zod(houseJoinIdSchema));
@@ -84,10 +78,7 @@ export const actions = {
       signal: AbortSignal.timeout(FETCH_ABORT_TIMEOUT_MS)
     };
 
-    const res = await fetch(
-      `${BASE_API_URI}/auth/update-house`,
-      requestInitOptions
-    );
+    const res = await fetch(`${BASE_API_URI}/auth/update-house`, requestInitOptions);
 
     if (!res.ok) {
       try {
@@ -121,10 +112,7 @@ export const actions = {
       signal: AbortSignal.timeout(FETCH_ABORT_TIMEOUT_MS)
     };
 
-    const res = await fetch(
-      `${BASE_API_URI}/auth/update-house`,
-      requestInitOptions
-    );
+    const res = await fetch(`${BASE_API_URI}/auth/update-house`, requestInitOptions);
 
     if (!res.ok) {
       try {
@@ -158,10 +146,7 @@ export const actions = {
       signal: AbortSignal.timeout(FETCH_ABORT_TIMEOUT_MS)
     };
 
-    const res = await fetch(
-      `${BASE_API_URI}/auth/update-house`,
-      requestInitOptions
-    );
+    const res = await fetch(`${BASE_API_URI}/auth/update-house`, requestInitOptions);
 
     if (!res.ok) {
       try {
@@ -193,10 +178,7 @@ export const actions = {
       signal: AbortSignal.timeout(FETCH_ABORT_TIMEOUT_MS)
     };
 
-    const res = await fetch(
-      `${BASE_API_URI}/auth/create-room`,
-      requestInitOptions
-    );
+    const res = await fetch(`${BASE_API_URI}/auth/create-room`, requestInitOptions);
 
     if (!res.ok) {
       try {
@@ -228,10 +210,7 @@ export const actions = {
       signal: AbortSignal.timeout(FETCH_ABORT_TIMEOUT_MS)
     };
 
-    const res = await fetch(
-      `${BASE_API_URI}/auth/create-room`,
-      requestInitOptions
-    );
+    const res = await fetch(`${BASE_API_URI}/auth/create-room`, requestInitOptions);
 
     if (!res.ok) {
       try {
@@ -299,10 +278,7 @@ export const actions = {
       signal: AbortSignal.timeout(FETCH_ABORT_TIMEOUT_MS)
     };
 
-    const res = await fetch(
-      `${BASE_API_URI}/auth/set-admin/${user_id}`,
-      requestInitOptions
-    );
+    const res = await fetch(`${BASE_API_URI}/auth/set-admin/${user_id}`, requestInitOptions);
     const response = await res.json();
     if (!res.ok) {
       return fail(400, { error: response.error });

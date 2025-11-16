@@ -31,8 +31,7 @@
               <a href={item.url} target={item.target} onclick={handleClick}
                 ><item.icon />{item.title}</a>
             {:else}
-              <a href={item.url} target={item.target}
-                ><item.icon />{item.title}</a>
+              <a href={item.url} target={item.target}><item.icon />{item.title}</a>
             {/if}
           {:else if position === "menu_mid"}
             <a

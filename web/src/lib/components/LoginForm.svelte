@@ -1,17 +1,12 @@
 <script lang="ts">
-  import {
-    superForm,
-    type SuperValidated,
-    type Infer
-  } from "sveltekit-superforms";
+  import { superForm, type SuperValidated, type Infer } from "sveltekit-superforms";
   import type { LoginSchema } from "$lib/utils/schemas";
   import TextInput from "$lib/components/TextInput.svelte";
   import { EmailIcon, PasswordIcon } from "$lib/utils/icons";
 
   import { page } from "$app/stores";
 
-  let { loginForm }: { loginForm: SuperValidated<Infer<LoginSchema>> } =
-    $props();
+  let { loginForm }: { loginForm: SuperValidated<Infer<LoginSchema>> } = $props();
   const { form, errors, enhance } = superForm(loginForm, {
     onSubmit: async () => {
       isLoading = true;
@@ -25,11 +20,7 @@
   let isLoading: boolean = $state(false);
 </script>
 
-<form
-  class="flex flex-col space-y-4"
-  method="POST"
-  action="?/login"
-  use:enhance>
+<form class="flex flex-col space-y-4" method="POST" action="?/login" use:enhance>
   {#if serverErrors}
     <h1 class="step-subtitle text-error mt-2">
       {serverErrors}
@@ -49,8 +40,7 @@
       classIn={$errors.email ? "input-error" : ""}>
       <EmailIcon class="h-4 w-4 opacity-60" />
     </TextInput>
-    {#if $errors.email}<span
-        class="invalid text-error ml-2 flex w-full text-start text-sm"
+    {#if $errors.email}<span class="invalid text-error ml-2 flex w-full text-start text-sm"
         >{$errors.email}</span
       >{/if}
   </div>
@@ -63,8 +53,7 @@
       classIn={$errors.password ? "input-error" : ""}>
       <PasswordIcon class="h-4 w-4 opacity-60" />
     </TextInput>
-    {#if $errors.password}<span
-        class="invalid text-error ml-2 flex w-full text-start text-sm"
+    {#if $errors.password}<span class="invalid text-error ml-2 flex w-full text-start text-sm"
         >{$errors.password}</span
       >{/if}
   </div>

@@ -5,10 +5,7 @@
   import TodoHistory from "$lib/components/items-page/ItemHistory.svelte";
   import { StatisticsIcon, HistoryIcon, TodoIcon } from "$lib/utils/icons.js";
   import { onMount } from "svelte";
-  import {
-    initializeFilterValues,
-    byPropertiesOf
-  } from "$lib/utils/helpers.js";
+  import { initializeFilterValues, byPropertiesOf } from "$lib/utils/helpers.js";
 
   let { data }: { data: PageData } = $props();
   let activeTab: "todos" | "stats" | "history" = $state("todos");
@@ -25,9 +22,7 @@
 
   onMount(() => {
     todoPageState.items = data.todos;
-    todoPageState.history = (data.history || []).filter(
-      (h) => h.item_type === "todo"
-    );
+    todoPageState.history = (data.history || []).filter((h) => h.item_type === "todo");
     initializeFilterValues<Todo>(todoPageState.filters, todoPageState.items);
   });
 
@@ -44,17 +39,14 @@
 
         const matchesSearch =
           !todoPageState.searchText ||
-          todo.data
-            .toLowerCase()
-            .includes(todoPageState.searchText.toLowerCase());
+          todo.data.toLowerCase().includes(todoPageState.searchText.toLowerCase());
 
         return matchesSearch;
       })
       .sort(
         byPropertiesOf<Todo>([
           "done",
-          ((todoPageState.sortOrder === "desc" ? "" : "-") +
-            todoPageState.sortBy) as sortArg<Todo>
+          ((todoPageState.sortOrder === "desc" ? "" : "-") + todoPageState.sortBy) as sortArg<Todo>
         ])
       );
   });
@@ -75,9 +67,7 @@
       <TodoIcon class="mr-2 h-4 w-4" />
       Todos
     </label>
-    <div
-      role="tabpanel"
-      class="tab-content bg-base-100 border-base-300 rounded-box p-2">
+    <div role="tabpanel" class="tab-content bg-base-100 border-base-300 rounded-box p-2">
       <TodoList {data} bind:todoPageState />
     </div>
 
@@ -93,9 +83,7 @@
       <StatisticsIcon class="mr-2 h-4 w-4" />
       Stats
     </label>
-    <div
-      role="tabpanel"
-      class="tab-content bg-base-100 border-base-300 rounded-box p-2">
+    <div role="tabpanel" class="tab-content bg-base-100 border-base-300 rounded-box p-2">
       <TodoStats item_type={"todo"} itemPageState={todoPageState} />
     </div>
 
@@ -111,9 +99,7 @@
       <HistoryIcon class="mr-2 h-4 w-4" />
       History
     </label>
-    <div
-      role="tabpanel"
-      class="tab-content bg-base-100 border-base-300 rounded-box p-2">
+    <div role="tabpanel" class="tab-content bg-base-100 border-base-300 rounded-box p-2">
       <TodoHistory itemPageState={todoPageState} itemType="todo" />
     </div>
   </div>

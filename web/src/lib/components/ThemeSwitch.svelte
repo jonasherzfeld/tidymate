@@ -17,10 +17,7 @@
   }
 
   let isDark: boolean = $state(
-    browser
-      ? document.documentElement.getAttribute("data-theme") ===
-          THEME_MAPPING.dark
-      : false
+    browser ? document.documentElement.getAttribute("data-theme") === THEME_MAPPING.dark : false
   );
 
   const submitSetTheme: SubmitFunction = ({ action }) => {
@@ -39,9 +36,7 @@
   <li class="gap-8 text-base">
     <button
       type="submit"
-      formaction="/?/set_theme&theme={isDark
-        ? 'light'
-        : 'dark'}&redirectTo={$page.url.pathname}">
+      formaction="/?/set_theme&theme={isDark ? 'light' : 'dark'}&redirectTo={$page.url.pathname}">
       {#if isDark}
         <MoonIcon />Dark Mode
       {:else}

@@ -36,41 +36,28 @@ export function byPropertiesOf<T extends object>(sortBy: Array<sortArg<T>>) {
   };
 }
 
-export function sortBy<T extends object>(
-  arr: T[],
-  ...sortBy: Array<sortArg<T>>
-) {
+export function sortBy<T extends object>(arr: T[], ...sortBy: Array<sortArg<T>>) {
   arr.sort(byPropertiesOf<T>(sortBy));
 }
 
-export function initializeFilterValues<T>(
-  filters: FilterDescription<T>[],
-  list: T[]
-) {
+export function initializeFilterValues<T>(filters: FilterDescription<T>[], list: T[]) {
   for (const todo of list) {
     for (const filter of filters) {
       const values = todo[filter.property] as string | string[];
       if (values) {
         if (Array.isArray(values)) {
           for (const value of values) {
-            filter.values.indexOf(value) === -1
-              ? filter.values.push(value)
-              : null;
+            filter.values.indexOf(value) === -1 ? filter.values.push(value) : null;
           }
         } else {
-          filter.values.indexOf(values) === -1
-            ? filter.values.push(values)
-            : null;
+          filter.values.indexOf(values) === -1 ? filter.values.push(values) : null;
         }
       }
     }
   }
 }
 
-export function getRestrictionType(
-  isLoggedIn: boolean,
-  isHouseMember: boolean
-): RestrictionType[] {
+export function getRestrictionType(isLoggedIn: boolean, isHouseMember: boolean): RestrictionType[] {
   return isLoggedIn && isHouseMember
     ? ["logged_in", "house_member"]
     : isLoggedIn
@@ -86,10 +73,7 @@ export function getRouteTitle(url: string | null): string | undefined {
   return item?.title;
 }
 
-export function getUsernameById(
-  id: string,
-  userList: User[]
-): string | undefined {
+export function getUsernameById(id: string, userList: User[]): string | undefined {
   const member = userList.find((member) => member.id === id);
   if (member) {
     return `${member.first_name} ${member.last_name}`;
@@ -97,10 +81,7 @@ export function getUsernameById(
   return undefined;
 }
 
-export function getThumbnailById(
-  id: string,
-  userList: User[]
-): string | undefined {
+export function getThumbnailById(id: string, userList: User[]): string | undefined {
   const member = userList.find((member) => member.id === id);
   if (member) {
     return member.thumbnail;

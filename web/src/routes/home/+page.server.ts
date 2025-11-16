@@ -7,10 +7,7 @@ export const load: PageServerLoad = async ({ cookies }) => {
   const [chores, todos, reminders, homeStats] = await Promise.all([
     authenticatedFetch<{ chores: Chore[] }>("/chores/get-chores", cookies),
     authenticatedFetch<{ todos: Todo[] }>("/items/get-todos", cookies),
-    authenticatedFetch<{ reminders: Reminder[] }>(
-      "/reminders/get-reminders",
-      cookies
-    ),
+    authenticatedFetch<{ reminders: Reminder[] }>("/reminders/get-reminders", cookies),
     authenticatedFetch<{ stats: any }>("/history/get-home-stats", cookies)
   ]);
 

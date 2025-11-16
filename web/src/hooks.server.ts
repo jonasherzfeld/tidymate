@@ -8,9 +8,7 @@ import type { RequestEvent } from "@sveltejs/kit";
 import { redirect } from "@sveltejs/kit";
 
 export function isAccessValid(path: string, user: User, house: House): boolean {
-  const isProtecteRouteByUser = PROTECTED_ROUTES_USER.filter((option) =>
-    path.startsWith(option)
-  );
+  const isProtecteRouteByUser = PROTECTED_ROUTES_USER.filter((option) => path.startsWith(option));
   if (!user && isProtecteRouteByUser.length >= 1) {
     return false;
   }
@@ -25,9 +23,7 @@ export function isAccessValid(path: string, user: User, house: House): boolean {
   return true;
 }
 
-export async function validateSession(
-  event: RequestEvent
-): Promise<Response | null> {
+export async function validateSession(event: RequestEvent): Promise<Response | null> {
   // get cookies from browser
   const session = event.cookies.get("session");
   if (!session) {
@@ -50,24 +46,19 @@ export async function validateSession(
   return res;
 }
 
-export async function getNotifications(
-  event: RequestEvent
-): Promise<Notification[]> {
+export async function getNotifications(event: RequestEvent): Promise<Notification[]> {
   const session = event.cookies.get("session");
   if (!session) {
     // if there is no session load page as normal
     return [];
   }
 
-  const res = await event.fetch(
-    `${BASE_API_URI}/notifications/get-notifications`,
-    {
-      credentials: "include",
-      headers: {
-        Cookie: `session=${session}`
-      }
+  const res = await event.fetch(`${BASE_API_URI}/notifications/get-notifications`, {
+    credentials: "include",
+    headers: {
+      Cookie: `session=${session}`
     }
-  );
+  });
   if (!res.ok) {
     return [];
   }
@@ -109,11 +100,7 @@ export async function handle({ event, resolve }) {
     event.locals.house = response.house;
   }
 
-  const isValid = isAccessValid(
-    event.url.pathname,
-    event.locals.user,
-    event.locals.house
-  );
+  const isValid = isAccessValid(event.url.pathname, event.locals.user, event.locals.house);
   if (!isValid) {
     redirect(303, "/auth/login");
   }

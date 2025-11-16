@@ -7,12 +7,7 @@ import tseslint from "typescript-eslint";
 
 export default [
   {
-    ignores: [
-      ".svelte-kit/",
-      "build/",
-      "eslint.config.js",
-      "tailwind.config.js"
-    ]
+    ignores: [".svelte-kit/", "build/", "eslint.config.js", "tailwind.config.js"]
   },
   { languageOptions: { globals: globals.browser } },
   pluginJs.configs.recommended,

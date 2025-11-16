@@ -29,35 +29,28 @@ self.addEventListener("push", function (event) {
 
   console.log("[SW] Showing notification:", data.title, options);
 
-  event.waitUntil(
-    self.registration.showNotification(data.title || "Tidymate", options)
-  );
+  event.waitUntil(self.registration.showNotification(data.title || "Tidymate", options));
 });
 
 self.addEventListener("notificationclick", function (event) {
-  console.log(
-    "[SW] Notification clicked, href:",
-    event.notification.data?.href
-  );
+  console.log("[SW] Notification clicked, href:", event.notification.data?.href);
   event.notification.close();
 
   const href = event.notification.data?.href || "/";
 
   event.waitUntil(
-    clients
-      .matchAll({ type: "window", includeUncontrolled: true })
-      .then(function (clientList) {
-        for (const client of clientList) {
-          if (client.url.includes(self.location.origin) && "focus" in client) {
-            client.focus();
-            client.navigate(href);
-            return;
-          }
+    clients.matchAll({ type: "window", includeUncontrolled: true }).then(function (clientList) {
+      for (const client of clientList) {
+        if (client.url.includes(self.location.origin) && "focus" in client) {
+          client.focus();
+          client.navigate(href);
+          return;
         }
-        if (clients.openWindow) {
-          return clients.openWindow(href);
-        }
-      })
+      }
+      if (clients.openWindow) {
+        return clients.openWindow(href);
+      }
+    })
   );
 });
 

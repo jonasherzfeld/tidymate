@@ -21,16 +21,13 @@
         bind:value={reminderPageState.searchText} />
     </label>
     <a class="flex flex-row flex-wrap gap-2" href="/home/reminders/new">
-      <button
-        formaction="?/create_reminder"
-        class="btn btn-primary btn-sm w-[92px]">Add</button>
+      <button formaction="?/create_reminder" class="btn btn-primary btn-sm w-[92px]">Add</button>
     </a>
   </div>
   <div class="flex w-full flex-row justify-between gap-2">
     <div>
       <a href="/home/reminders" data-sveltekit-reload>
-        <button
-          class="btn btn-outline btn-sm rounded-md border-neutral-200 shadow-sm">
+        <button class="btn btn-outline btn-sm rounded-md border-neutral-200 shadow-sm">
           <ReloadIcon class="h-4 w-4" />
         </button>
       </a>
@@ -52,9 +49,7 @@
           {...reminder}
           onChange={(deadline: string, last_done: string) => {
             reminderPageState.items = reminderPageState.items.map((c) =>
-              c.id === reminder.id
-                ? { ...c, deadline: deadline, last_done: last_done }
-                : c
+              c.id === reminder.id ? { ...c, deadline: deadline, last_done: last_done } : c
             );
             reminderPageState.history = [
               ...reminderPageState.history,
@@ -73,9 +68,7 @@
             ];
           }}
           onRemove={() => {
-            reminderPageState.items = reminderPageState.items.filter(
-              (c) => c.id !== reminder.id
-            );
+            reminderPageState.items = reminderPageState.items.filter((c) => c.id !== reminder.id);
             reminderPageState.history = [
               ...reminderPageState.history,
               {
