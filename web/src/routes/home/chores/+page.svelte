@@ -62,8 +62,8 @@
 </script>
 
 <div class="flex min-h-full min-w-full flex-col justify-between gap-3">
-  <div role="tablist" class="tabs tabs-lifted">
-    <label class="tab">
+  <div role="tablist" class="tabs tabs-lift">
+    <label class="tab w-30">
       <input
         type="radio"
         name="my_tabs_2"
@@ -82,7 +82,7 @@
       <ChoreList {data} bind:chorePageState />
     </div>
 
-    <label class="tab">
+    <label class="tab w-30">
       <input
         type="radio"
         name="my_tabs_2"
@@ -100,7 +100,7 @@
       <ChoreStats item_type="chore" itemPageState={chorePageState} />
     </div>
 
-    <label class="tab">
+    <label class="tab w-30">
       <input
         type="radio"
         name="my_tabs_2"

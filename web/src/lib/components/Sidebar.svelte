@@ -56,21 +56,22 @@
         {@render children?.()}
       </div>
     </div>
-    <div class="drawer-side mt-16 h-main-sidebar lg:mt-0 lg:sticky lg:top-16">
-      <label for="my-drawer-2" aria-label="close sidebar" class="drawer-overlay lg:hidden"
-      ></label>
+    <div class="drawer-side h-main-sidebar mt-16 lg:sticky lg:top-16 lg:mt-0">
+      <label
+        for="my-drawer-2"
+        aria-label="close sidebar"
+        class="drawer-overlay lg:hidden"></label>
       <ul
-        class={`menu border-neutral bg-base-200 h-main-sidebar w-80 justify-between  pt-5 pb-5 overflow-y-auto border-r-[1px] lg:h-main-sidebar ${isWebApp ? "pt-safe-top" : ""}`}>
+        class={`menu border-base-300 bg-base-200 h-main-sidebar lg:h-main-sidebar w-80  justify-between overflow-y-auto border-r-[1px] pt-5 pb-5 ${isWebApp ? "pt-safe-top" : ""}`}>
         <!-- Sidebar content here -->
         <div>
           <li class="text-base">
-              <a href="/" onclick={handleClick}
-                ><HouseIcon />Home</a>
-         </li>
+            <a href="/" onclick={handleClick}><HouseIcon />Home</a>
+          </li>
           {#if menuRestriction.includes("logged_in")}
             <div class="mt-2">
-              <div class=" border-t-[1px] border-neutral"></div>
-              <div class="mt-2 ml-3 text-neutral font-bold">
+              <div class=" border-neutral border-t-[1px]"></div>
+              <div class="text-neutral mt-2 ml-3 font-bold">
                 <span>Personal</span>
               </div>
             </div>
@@ -82,8 +83,8 @@
             handleClick={isDrawerOpen ? handleClick : undefined} />
           {#if menuRestriction.includes("house_member")}
             <div class="mt-6">
-              <div class=" border-t-[1px] border-neutral"></div>
-              <div class="mt-2 ml-3 text-neutral font-bold">
+              <div class=" border-neutral border-t-[1px]"></div>
+              <div class="text-neutral mt-2 ml-3 font-bold">
                 <span>House</span>
               </div>
             </div>

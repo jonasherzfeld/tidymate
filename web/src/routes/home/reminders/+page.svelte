@@ -67,8 +67,8 @@
 </script>
 
 <div class="flex min-h-full min-w-full flex-col justify-between gap-3">
-  <div role="tablist" class="tabs tabs-lifted">
-    <label class="tab">
+  <div role="tablist" class="tabs tabs-lift">
+    <label class="tab w-32">
       <input
         type="radio"
         name="my_tabs_2"
@@ -87,7 +87,7 @@
       <ReminderList {data} bind:reminderPageState />
     </div>
 
-    <label class="tab">
+    <label class="tab w-30">
       <input
         type="radio"
         name="my_tabs_2"
@@ -105,7 +105,7 @@
       <RemindersStats item_type="reminder" itemPageState={reminderPageState} />
     </div>
 
-    <label class="tab">
+    <label class="tab w-30">
       <input
         type="radio"
         name="my_tabs_2"

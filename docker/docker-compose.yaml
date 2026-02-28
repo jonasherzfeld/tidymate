@@ -11,3 +11,5 @@ services:
     environment:
       FLASK_SECRET_KEY: "your_secret_key"
       LOG_DEBUG: "True"
+      VAPID_PRIVATE_KEY: "your_vapid_private_key"
+      VAPID_PUBLIC_KEY: "your_vapid_public_key"

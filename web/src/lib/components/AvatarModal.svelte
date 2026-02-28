@@ -58,7 +58,6 @@
       if (result.status === 200) {
         user.thumbnail = result.data.thumbnail;
         pond.processFiles();
-        invalidateAll();
       } else {
         update();
       }
@@ -121,6 +120,8 @@
             if (error) {
               alert("Error processing image: " + error.message);
             } else {
+              fileAdded = false;
+              pond.removeFiles();
               invalidateAll();
             }
           }}
@@ -147,7 +148,7 @@
           labelFileProcessingComplete="Processing complete"
           labelFileProcessingAborted="Processing aborted"
           labelFileProcessingError="Processing error" />
-        {#if !user.thumbnail}
+        {#if fileAdded}
           <form
             class="flex w-full"
             method="POST"
@@ -156,12 +157,11 @@
             <button
               class="btn btn-info btn-outline w-full"
               formaction="?/trigger_upload_image"
-              type="submit"
-              disabled={!fileAdded}>
+              type="submit">
               Upload image
             </button>
           </form>
-        {:else}
+        {:else if user.thumbnail}
           <form
             class="flex w-full"
             method="POST"

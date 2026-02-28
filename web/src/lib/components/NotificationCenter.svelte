@@ -10,6 +10,8 @@
   } from "$lib/utils/icons";
   import { goto } from "$app/navigation";
 
+  const MAX_VISIBLE = 4;
+
   let {
     notifications = $bindable([])
   }: {
@@ -18,6 +20,7 @@
 
   let serverErrors: string = $state("");
   let isLoading: boolean = $state(false);
+
   let numNonViewedNotifications: number = $derived(
     notifications.filter((n) => !n.is_viewed && !n.is_removed).length
   );
@@ -28,6 +31,12 @@
         (a, b) =>
           new Date(b.created_on).getTime() - new Date(a.created_on).getTime()
       )
+  );
+  let visibleNotifications = $derived(
+    sortedNotifications.slice(0, MAX_VISIBLE)
+  );
+  let remainingCount = $derived(
+    Math.max(0, sortedNotifications.length - MAX_VISIBLE)
   );
 
   function handleViewNotification() {
@@ -77,11 +86,6 @@
     </div>
 
     <div class="flex grow flex-col items-center justify-center">
-      {#if serverErrors && serverErrors.length > 0}
-        <h1 class="step-subtitle text-error mt-2">
-          {serverErrors}
-        </h1>
-      {/if}
       {#if serverErrors}
         <h1 class="step-subtitle text-error mt-2">
           {serverErrors}
@@ -93,10 +97,10 @@
           <div class="skeleton h-4 w-28"></div>
         </div>
       {/if}
-      {#if notifications.length === 0}
+      {#if sortedNotifications.length === 0}
         <li class="text-center">No notifications</li>
       {/if}
-      {#each sortedNotifications as notification}
+      {#each visibleNotifications as notification}
         <form method="POST" use:enhance={handleViewNotification}>
           <li class="list-row">
             <button
@@ -142,5 +146,14 @@
         </form>
       {/each}
     </div>
+    <a
+      href="/home/notifications"
+      class="btn btn-ghost btn-sm w-full text-xs opacity-70">
+      {#if remainingCount > 0}
+        {remainingCount} more notification{remainingCount === 1 ? "" : "s"} - See all
+      {:else}
+        See all
+      {/if}
+    </a>
   </ul>
 </div>

@@ -4,7 +4,8 @@ import uuid
 
 from db.db import db
 from models.models import House, Reminder
-from utils.utils import login_required, log_history_event, EventType
+from utils.utils import login_required, log_history_event, EventType, notify_if_due, dismiss_notifications_for_item
+from models.types import ItemType
 from utils.api_errors import NotFoundError, AuthorizationError, ValidationError
 
 reminders = Blueprint('reminders', __name__)
@@ -21,7 +22,7 @@ def create_reminder(user):
 
     if deadline == "":
         deadline = (datetime.now() +
-                    datetime.timedelta(days=frequency)).strftime("%Y-%m-%d")
+                    timedelta(days=frequency)).strftime("%Y-%m-%d")
 
     reminder = Reminder(
         id=str(
@@ -47,6 +48,10 @@ def create_reminder(user):
         user.id,
         user.house_id
     )
+
+    # Notify owner if deadline is due
+    notify_if_due(reminder, "reminder", ItemType.REMINDER,
+                  [user.id], "/home/reminders")
 
     return jsonify({"reminder": reminder.to_dict()}), 200
 
@@ -81,6 +86,8 @@ def check_reminders(user, reminder_id):
     elif not reminder.user_id == user.id:
         raise AuthorizationError(
             "User is not authorized to access this reminder")
+
+    dismiss_notifications_for_item(reminder.id, ItemType.REMINDER)
 
     reminder.iteration_count = reminder.iteration_count + \
         1 if reminder.iteration_count is not None else 1

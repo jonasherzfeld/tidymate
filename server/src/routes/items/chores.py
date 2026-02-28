@@ -3,8 +3,9 @@ from flask import Blueprint, request, jsonify
 import uuid
 
 from db.db import db
-from models.models import House, Chore, ChoreSeverity
-from utils.utils import login_required, log_history_event, EventType
+from models.models import House, Chore, Users, ChoreSeverity
+from utils.utils import login_required, log_history_event, EventType, notify_if_due, dismiss_notifications_for_item
+from models.types import ItemType
 from utils.api_errors import NotFoundError, AuthorizationError, AuthenticationError, ValidationError
 
 chores = Blueprint('chores', __name__)
@@ -27,7 +28,7 @@ def create_chore(user):
 
     if deadline == "":
         deadline = (datetime.now() +
-                    datetime.timedelta(days=frequency)).strftime("%Y-%m-%d")
+                    timedelta(days=frequency)).strftime("%Y-%m-%d")
 
     chore = Chore(id=str(uuid.uuid4()),
                   data=data,
@@ -53,6 +54,15 @@ def create_chore(user):
         user.id,
         user.house_id
     )
+
+    # Notify assignee if set, otherwise all house members
+    if chore.assignee and chore.assignee.strip():
+        notify_user_ids = [chore.assignee]
+    else:
+        house_users = Users.query.filter_by(house_id=user.house_id).all()
+        notify_user_ids = [u.id for u in house_users]
+    notify_if_due(chore, "chore", ItemType.CHORE,
+                  notify_user_ids, "/home/chores")
 
     return jsonify({"chore": chore.to_dict()}), 200
 
@@ -85,6 +95,8 @@ def check_chores(user, chore_id):
         raise NotFoundError("Chore not found")
     elif not chore.house_id == user.house_id:
         raise AuthorizationError("User is not authorized to access this chore")
+
+    dismiss_notifications_for_item(chore.id, ItemType.CHORE)
 
     chore.iteration_count = chore.iteration_count + \
         1 if chore.iteration_count is not None else 1
