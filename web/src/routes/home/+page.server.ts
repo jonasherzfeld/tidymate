@@ -4,30 +4,34 @@ import type { PageServerLoad } from "./$types.js";
 import { authenticatedFetch } from "$lib/api/server";
 
 export const load: PageServerLoad = async ({ cookies }) => {
-  const [chores, todos, reminders, completionStats, personalStats] = await Promise.all([
+  const [chores, todos, reminders, homeStats] = await Promise.all([
     authenticatedFetch<{ chores: Chore[] }>("/chores/get-chores", cookies),
     authenticatedFetch<{ todos: Todo[] }>("/items/get-todos", cookies),
     authenticatedFetch<{ reminders: Reminder[] }>("/reminders/get-reminders", cookies),
-    authenticatedFetch<{ stats: any }>("/history/get-completion-stats", cookies),
-    authenticatedFetch<{ stats: any }>("/history/get-personal-stats", cookies),
+    authenticatedFetch<{ stats: any }>("/history/get-home-stats", cookies),
   ]);
 
   return {
     chores: chores?.chores ?? [],
     todos: todos?.todos ?? [],
     reminders: reminders?.reminders ?? [],
-    completionStats: completionStats?.stats ?? {
-      total_completed: 0,
-      completed_todos: 0,
-      completed_chores: 0,
-      completed_reminders: 0,
-      by_user: {}
-    },
-    personalStats: personalStats?.stats ?? {
-      total_completed: 0,
-      completed_todos: 0,
-      completed_chores: 0,
-      completed_reminders: 0
+    homeStats: homeStats?.stats ?? {
+      household: {
+        total_completed: 0,
+        last_month_completed: 0,
+        completed_chores: 0,
+        completed_todos: 0,
+        last_month_chores: 0,
+        last_month_todos: 0,
+        strongest_room: null,
+        strongest_room_count: 0,
+      },
+      reminders: {
+        total_completed: 0,
+        last_month_completed: 0,
+        strongest_category: null,
+        strongest_category_count: 0,
+      }
     },
   };
 };

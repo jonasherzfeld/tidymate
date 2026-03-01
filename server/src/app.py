@@ -96,6 +96,10 @@ def create_app():
                 logging.error(
                     "Database created but not stamped - you may need to run migrations manually")
 
+    @app.route('/health')
+    def health():
+        return {'status': 'ok'}, 200
+
     app.register_blueprint(routes)
 
     # Register error handlers
