@@ -1,6 +1,9 @@
 {
   "name": "Tidymate",
   "short_name": "Tidymate",
+  "id": "/",
+  "start_url": "/",
+  "scope": "/",
   "icons": [
     {
       "src": "/static/web-app-manifest-192x192.png",
