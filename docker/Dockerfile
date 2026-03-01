@@ -13,6 +13,7 @@ RUN npm ci
 COPY web/ ./
 
 # Build the frontend
+ENV PUBLIC_DEV_MODE=False
 RUN npm run build
 
 # Stage 2: Set up the backend and combine with frontend
@@ -50,10 +51,15 @@ RUN mkdir -p /app/data
 # Expose ports for the services
 EXPOSE 3030
 ENV ORIGIN=http://localhost:3030
+ENV BE_HEALTH_ENDPOINT=/api/health
+ENV FE_HEALTH_ENDPOINT=/health
 
 # Create a startup script
 COPY ./docker/entry.sh /app/start.sh
 RUN chmod +x /app/start.sh
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=30s --retries=3 \
+  CMD curl -f ${ORIGIN}${BE_HEALTH_ENDPOINT} && curl -f ${ORIGIN}${FE_HEALTH_ENDPOINT} || exit 1
 
 # Set the entrypoint
 ENTRYPOINT ["/app/start.sh"]

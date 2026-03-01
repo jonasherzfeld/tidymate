@@ -14,7 +14,8 @@
     editValue = $bindable(),
     creatingValue = $bindable(),
     label = "",
-    disabled = false
+    disabled = false,
+    id = undefined
   }: {
     superform: SuperValidated<T>;
     field: FormPathLeaves<T>;
@@ -22,9 +23,10 @@
     creatingValue: boolean;
     label: string;
     disabled?: boolean;
+    id?: string;
   } = $props();
 
-  const form = superForm(superform);
+  const form = superForm(superform, { id, warnings: { duplicateId: false } });
   const { value } = formFieldProxy(form, field);
 </script>
 

@@ -14,6 +14,13 @@
     isWebApp =
       window.matchMedia("(display-mode: standalone)").matches ||
       (window.navigator as any).standalone;
+
+    // Register service worker for push notifications
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("/sw.js").catch((err) => {
+        console.warn("Service worker registration failed:", err);
+      });
+    }
   }
   setContext("webapp", () => isWebApp);
 

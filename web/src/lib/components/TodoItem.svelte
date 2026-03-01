@@ -37,7 +37,9 @@
   let deadlineDate = $derived(new Date(deadline));
 
   const now = new Date();
-  const isWarning = $derived(deadlineDate.getTime() <= now.getTime() + 24 * 60 * 60 * 1000); // 1 day from now
+  const isWarning = $derived(
+    deadlineDate.getTime() <= now.getTime() + 24 * 60 * 60 * 1000
+  ); // 1 day from now
   const isError = $derived(deadlineDate.getTime() <= now.getTime()); // Past due
 
   const handleChecked = async () => {

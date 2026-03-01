@@ -3,8 +3,9 @@ from flask import Blueprint, request, jsonify, render_template
 import uuid
 
 from db.db import db
-from models.models import Todo, House
-from utils.utils import login_required, log_history_event, EventType
+from models.models import Todo, House, Users
+from utils.utils import login_required, log_history_event, EventType, notify_if_due, dismiss_notifications_for_item
+from models.types import ItemType
 from utils.api_errors import NotFoundError, AuthorizationError, ValidationError
 
 items = Blueprint('items', __name__)
@@ -40,6 +41,11 @@ def create_todo(user):
         user.house_id
     )
 
+    # Notify all house members if deadline is due
+    house_users = Users.query.filter_by(house_id=user.house_id).all()
+    notify_if_due(todo, "todo", ItemType.TODO,
+                  [u.id for u in house_users], "/home/todo")
+
     return jsonify({"todo": todo.to_dict()})
 
 
@@ -73,6 +79,11 @@ def check_todos(user, todo_id):
 
     was_done = todo.done
     todo.done = not todo.done
+
+    # Dismiss notifications when marking as done
+    if not was_done and todo.done:
+        dismiss_notifications_for_item(todo.id, ItemType.TODO)
+
     db.session.commit()
 
     # Log completion event when todo is marked as done

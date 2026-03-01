@@ -54,7 +54,8 @@ class Users(db.Model, SerializerMixin):
         '-house.chores',
         '-house.todos',
         '-reminders.user',
-        '-notifications.user')
+        '-notifications.user',
+        '-push_subscriptions.user')
 
 
 class House(db.Model, SerializerMixin):
@@ -148,6 +149,19 @@ class Notification(db.Model, SerializerMixin):
     user = db.relationship('Users', back_populates='notifications')
 
     serialize_rules = ('-user.notifications',)
+
+
+class PushSubscription(db.Model, SerializerMixin):
+    id = db.Column(db.String, primary_key=True)
+    user_id = db.Column(db.String, db.ForeignKey('users.id'), nullable=False)
+    endpoint = db.Column(db.Text, nullable=False)
+    p256dh_key = db.Column(db.String(255), nullable=False)
+    auth_key = db.Column(db.String(255), nullable=False)
+    created_on = db.Column(db.String(100))
+
+    user = db.relationship('Users', backref='push_subscriptions')
+
+    serialize_rules = ('-user.push_subscriptions',)
 
 
 class HistoryItem:

@@ -62,13 +62,11 @@
 </script>
 
 <div class="flex min-h-full min-w-full flex-col justify-between gap-3">
-  <div role="tablist" class="tabs tabs-lifted">
-    <label class="tab">
+  <div class="tabs tabs-lift">
+    <label class="tab w-30">
       <input
         type="radio"
         name="my_tabs_2"
-        role="tab"
-        class="tab"
         aria-label="Chores"
         bind:group={activeTab}
         value="chores"
@@ -76,45 +74,35 @@
       <ChoresIcon class="mr-2 h-4 w-4" />
       Chores
     </label>
-    <div
-      role="tabpanel"
-      class="tab-content bg-base-100 border-base-300 rounded-box p-2">
+    <div class="tab-content bg-base-100 border-base-300 rounded-box p-2">
       <ChoreList {data} bind:chorePageState />
     </div>
 
-    <label class="tab">
+    <label class="tab w-30">
       <input
         type="radio"
         name="my_tabs_2"
-        role="tab"
-        class="tab"
         aria-label="Stats"
         bind:group={activeTab}
         value="stats" />
       <StatisticsIcon class="mr-2 h-4 w-4" />
       Stats
     </label>
-    <div
-      role="tabpanel"
-      class="tab-content bg-base-100 border-base-300 rounded-box p-2">
+    <div class="tab-content bg-base-100 border-base-300 rounded-box p-2">
       <ChoreStats item_type="chore" itemPageState={chorePageState} />
     </div>
 
-    <label class="tab">
+    <label class="tab w-30">
       <input
         type="radio"
         name="my_tabs_2"
-        role="tab"
-        class="tab"
         aria-label="History"
         bind:group={activeTab}
         value="history" />
       <HistoryIcon class="mr-2 h-4 w-4" />
       History
     </label>
-    <div
-      role="tabpanel"
-      class="tab-content bg-base-100 border-base-300 rounded-box p-2">
+    <div class="tab-content bg-base-100 border-base-300 rounded-box p-2">
       <ChoreHistory itemPageState={chorePageState} itemType="chore" />
     </div>
   </div>

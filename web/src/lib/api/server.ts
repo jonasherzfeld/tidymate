@@ -14,9 +14,9 @@ export async function authenticatedFetch<T>(
     headers: {
       ...options.headers,
       "Content-Type": "application/json",
-      Cookie: `session=${cookies.get("session")}`,
+      Cookie: `session=${cookies.get("session")}`
     },
-    signal: AbortSignal.timeout(FETCH_ABORT_TIMEOUT_MS),
+    signal: AbortSignal.timeout(FETCH_ABORT_TIMEOUT_MS)
   };
 
   const res = await fetch(`${BASE_API_URI}${endpoint}`, requestInit);
@@ -27,7 +27,7 @@ export async function authenticatedFetch<T>(
   }
 
   try {
-    return await res.json() as T;
+    return (await res.json()) as T;
   } catch {
     return null;
   }

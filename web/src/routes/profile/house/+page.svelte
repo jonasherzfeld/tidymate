@@ -12,7 +12,6 @@
     errors: nameErrors,
     enhance: nameEnhance
   } = superForm(data.nameForm, {
-    invalidateAll: false,
     resetForm: false,
     onSubmit: async () => {
       creatingName = true;
@@ -30,7 +29,6 @@
   const { errors: cityErrors, enhance: cityEnhance } = superForm(
     data.cityForm,
     {
-      invalidateAll: false,
       resetForm: false,
       onSubmit: async () => {
         creatingCity = true;
@@ -49,7 +47,6 @@
   const { errors: countryErrors, enhance: countryEnhance } = superForm(
     data.countryForm,
     {
-      invalidateAll: false,
       resetForm: false,
       onSubmit: async () => {
         creatingCountry = true;

@@ -96,6 +96,10 @@ def create_app():
                 logging.error(
                     "Database created but not stamped - you may need to run migrations manually")
 
+    @app.route('/health')
+    def health():
+        return {'status': 'ok'}, 200
+
     app.register_blueprint(routes)
 
     # Register error handlers
@@ -108,12 +112,8 @@ def create_app():
         with app.app_context():
             check_deadlines()
 
-    scheduler.add_job(func=run_check_deadlines, trigger='cron',
-                      hour=6, minute=0)  # Runs every day at 06:00 UTC
-    # scheduler.add_job(
-    #     func=run_check_deadlines,
-    #     trigger='interval',
-    #     minutes=1)  # Runs every minute
+    scheduler.add_job(func=run_check_deadlines, trigger='interval',
+                      minutes=1)
     scheduler.start()
 
     return app
