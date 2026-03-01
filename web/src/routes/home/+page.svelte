@@ -84,8 +84,7 @@
     const labels = entries.map(([name]) => name);
     const values = entries.map(([, count]) => count);
     const bgColors = labels.map(
-      (name) =>
-        catColorMap.get(name)?.rgba_color || "rgba(120, 113, 108, 0.6)"
+      (name) => catColorMap.get(name)?.rgba_color || "rgba(120, 113, 108, 0.6)"
     );
     const borderColors = bgColors.map((c) => c.replace("0.6", "1"));
 
@@ -178,7 +177,8 @@
               {household.last_month_completed}
             </div>
             <div class="stat-desc">
-              {household.last_month_chores} chores • {household.last_month_todos} todos
+              {household.last_month_chores} chores • {household.last_month_todos}
+              todos
             </div>
           </div>
 
@@ -316,9 +316,7 @@
 
         {#if categoryChartData.labels.length > 0}
           <div class="mt-2">
-            <h3 class="mb-2 px-2 text-sm font-medium">
-              Completed by Category
-            </h3>
+            <h3 class="mb-2 px-2 text-sm font-medium">Completed by Category</h3>
             <div
               use:BarChart={{ ...categoryChartData, options: chartOptions }}
               class="chart-container h-48">

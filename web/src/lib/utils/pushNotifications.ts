@@ -1,8 +1,6 @@
 function urlBase64ToUint8Array(base64String: string): Uint8Array {
   const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
-  const base64 = (base64String + padding)
-    .replace(/-/g, "+")
-    .replace(/_/g, "/");
+  const base64 = (base64String + padding).replace(/-/g, "+").replace(/_/g, "/");
   const rawData = window.atob(base64);
   const outputArray = new Uint8Array(rawData.length);
   for (let i = 0; i < rawData.length; ++i) {
@@ -21,7 +19,10 @@ export async function getExistingSubscription(): Promise<PushSubscription | null
   if (!isPushSupported()) return null;
   const registration = await navigator.serviceWorker.ready;
   const sub = await registration.pushManager.getSubscription();
-  console.debug("[PUSH] getExistingSubscription:", sub ? `active (endpoint=${sub.endpoint.slice(0, 60)}...)` : "none");
+  console.debug(
+    "[PUSH] getExistingSubscription:",
+    sub ? `active (endpoint=${sub.endpoint.slice(0, 60)}...)` : "none"
+  );
   return sub;
 }
 
@@ -42,11 +43,17 @@ export async function subscribeToPush(): Promise<boolean> {
     if (permission !== "granted") return false;
 
     // Get VAPID public key via SvelteKit proxy (same origin, cookies work)
-    console.debug("[PUSH] Fetching VAPID public key from /api/push/vapid-public-key...");
+    console.debug(
+      "[PUSH] Fetching VAPID public key from /api/push/vapid-public-key..."
+    );
     const res = await fetch("/api/push/vapid-public-key");
     console.debug("[PUSH] VAPID key response:", res.status, res.statusText);
     if (!res.ok) {
-      console.error("[PUSH] Failed to fetch VAPID key:", res.status, await res.text());
+      console.error(
+        "[PUSH] Failed to fetch VAPID key:",
+        res.status,
+        await res.text()
+      );
       return false;
     }
     const { public_key } = await res.json();
@@ -63,7 +70,10 @@ export async function subscribeToPush(): Promise<boolean> {
       userVisibleOnly: true,
       applicationServerKey: urlBase64ToUint8Array(public_key)
     });
-    console.debug("[PUSH] PushManager subscription created:", subscription.endpoint.slice(0, 60) + "...");
+    console.debug(
+      "[PUSH] PushManager subscription created:",
+      subscription.endpoint.slice(0, 60) + "..."
+    );
 
     // Send subscription to backend via SvelteKit proxy
     console.debug("[PUSH] Sending subscription to backend...");
@@ -72,7 +82,11 @@ export async function subscribeToPush(): Promise<boolean> {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ subscription: subscription.toJSON() })
     });
-    console.debug("[PUSH] Backend subscribe response:", subRes.status, subRes.statusText);
+    console.debug(
+      "[PUSH] Backend subscribe response:",
+      subRes.status,
+      subRes.statusText
+    );
     if (!subRes.ok) {
       console.error("[PUSH] Backend subscribe failed:", await subRes.text());
     }

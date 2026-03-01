@@ -150,7 +150,8 @@
       href="/home/notifications"
       class="btn btn-ghost btn-sm w-full text-xs opacity-70">
       {#if remainingCount > 0}
-        {remainingCount} more notification{remainingCount === 1 ? "" : "s"} - See all
+        {remainingCount} more notification{remainingCount === 1 ? "" : "s"} - See
+        all
       {:else}
         See all
       {/if}

@@ -114,7 +114,8 @@ def get_vapid_public_key(user):
     """Return the VAPID public key so the browser can subscribe."""
     import os
     public_key = os.environ.get("VAPID_PUBLIC_KEY", "")
-    logging.debug(f"[PUSH] vapid-public-key requested by user={user.id}, key={'set' if public_key else 'MISSING'} (len={len(public_key)})")
+    logging.debug(
+        f"[PUSH] vapid-public-key requested by user={user.id}, key={'set' if public_key else 'MISSING'} (len={len(public_key)})")
     return jsonify({"public_key": public_key})
 
 
@@ -133,7 +134,8 @@ def push_subscribe(user):
     p256dh = keys.get("p256dh")
     auth = keys.get("auth")
 
-    logging.debug(f"[PUSH] subscribe: endpoint={endpoint[:80] if endpoint else 'None'}..., p256dh={'set' if p256dh else 'MISSING'}, auth={'set' if auth else 'MISSING'}")
+    logging.debug(
+        f"[PUSH] subscribe: endpoint={endpoint[:80] if endpoint else 'None'}..., p256dh={'set' if p256dh else 'MISSING'}, auth={'set' if auth else 'MISSING'}")
 
     if not all([endpoint, p256dh, auth]):
         logging.warning("[PUSH] subscribe: invalid subscription data")
@@ -148,7 +150,8 @@ def push_subscribe(user):
         existing.p256dh_key = p256dh
         existing.auth_key = auth
         db.session.commit()
-        logging.debug(f"[PUSH] subscribe: updated existing subscription {existing.id}")
+        logging.debug(
+            f"[PUSH] subscribe: updated existing subscription {existing.id}")
         return jsonify({"message": "Subscription updated"}), 200
 
     sub = PushSubscription(
@@ -183,6 +186,7 @@ def push_unsubscribe(user):
         db.session.delete(sub)
         db.session.commit()
     else:
-        logging.debug(f"[PUSH] unsubscribe: no subscription found for endpoint")
+        logging.debug(
+            f"[PUSH] unsubscribe: no subscription found for endpoint")
 
     return jsonify({"message": "Unsubscribed"}), 200

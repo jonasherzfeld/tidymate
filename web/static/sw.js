@@ -35,7 +35,10 @@ self.addEventListener("push", function (event) {
 });
 
 self.addEventListener("notificationclick", function (event) {
-  console.log("[SW] Notification clicked, href:", event.notification.data?.href);
+  console.log(
+    "[SW] Notification clicked, href:",
+    event.notification.data?.href
+  );
   event.notification.close();
 
   const href = event.notification.data?.href || "/";

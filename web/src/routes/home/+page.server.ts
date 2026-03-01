@@ -1,14 +1,17 @@
+import { authenticatedFetch } from "$lib/api/server";
 import { BASE_API_URI, FETCH_ABORT_TIMEOUT_MS } from "$lib/utils/constants";
 import { fail } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types.js";
-import { authenticatedFetch } from "$lib/api/server";
 
 export const load: PageServerLoad = async ({ cookies }) => {
   const [chores, todos, reminders, homeStats] = await Promise.all([
     authenticatedFetch<{ chores: Chore[] }>("/chores/get-chores", cookies),
     authenticatedFetch<{ todos: Todo[] }>("/items/get-todos", cookies),
-    authenticatedFetch<{ reminders: Reminder[] }>("/reminders/get-reminders", cookies),
-    authenticatedFetch<{ stats: any }>("/history/get-home-stats", cookies),
+    authenticatedFetch<{ reminders: Reminder[] }>(
+      "/reminders/get-reminders",
+      cookies
+    ),
+    authenticatedFetch<{ stats: any }>("/history/get-home-stats", cookies)
   ]);
 
   return {
@@ -24,15 +27,15 @@ export const load: PageServerLoad = async ({ cookies }) => {
         last_month_chores: 0,
         last_month_todos: 0,
         strongest_room: null,
-        strongest_room_count: 0,
+        strongest_room_count: 0
       },
       reminders: {
         total_completed: 0,
         last_month_completed: 0,
         strongest_category: null,
-        strongest_category_count: 0,
+        strongest_category_count: 0
       }
-    },
+    }
   };
 };
 

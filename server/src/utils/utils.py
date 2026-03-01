@@ -59,7 +59,8 @@ def log_history_event(
 def send_push_notification(user_id, title, body, href=None):
     """Send web push to all active subscriptions for a user.
     Non-blocking: logs errors but never raises."""
-    logging.debug(f"[PUSH] send_push_notification called for user={user_id}, title='{title}'")
+    logging.debug(
+        f"[PUSH] send_push_notification called for user={user_id}, title='{title}'")
 
     vapid_private_key = os.environ.get("VAPID_PRIVATE_KEY")
     if not vapid_private_key:
@@ -67,7 +68,8 @@ def send_push_notification(user_id, title, body, href=None):
         return
 
     subscriptions = PushSubscription.query.filter_by(user_id=user_id).all()
-    logging.debug(f"[PUSH] Found {len(subscriptions)} subscription(s) for user={user_id}")
+    logging.debug(
+        f"[PUSH] Found {len(subscriptions)} subscription(s) for user={user_id}")
     if not subscriptions:
         return
 
@@ -79,7 +81,8 @@ def send_push_notification(user_id, title, body, href=None):
     })
 
     for sub in subscriptions:
-        logging.debug(f"[PUSH] Sending to subscription {sub.id}, endpoint={sub.endpoint[:80]}...")
+        logging.debug(
+            f"[PUSH] Sending to subscription {sub.id}, endpoint={sub.endpoint[:80]}...")
         try:
             webpush(
                 subscription_info={
@@ -95,11 +98,14 @@ def send_push_notification(user_id, title, body, href=None):
             )
             logging.debug(f"[PUSH] Successfully sent to subscription {sub.id}")
         except WebPushException as e:
-            logging.warning(f"[PUSH] WebPushException for subscription {sub.id}: {e}")
+            logging.warning(
+                f"[PUSH] WebPushException for subscription {sub.id}: {e}")
             if hasattr(e, 'response') and e.response is not None:
-                logging.warning(f"[PUSH] Response status: {e.response.status_code}, body: {e.response.text[:200]}")
+                logging.warning(
+                    f"[PUSH] Response status: {e.response.status_code}, body: {e.response.text[:200]}")
                 if e.response.status_code in (404, 410):
-                    logging.info(f"[PUSH] Removing expired subscription {sub.id}")
+                    logging.info(
+                        f"[PUSH] Removing expired subscription {sub.id}")
                     db.session.delete(sub)
                     db.session.commit()
         except Exception as e:

@@ -154,7 +154,8 @@ def get_home_stats(user):
     strongest_category = None
     strongest_category_count = 0
     if category_counts:
-        strongest_category, strongest_category_count = category_counts.most_common(1)[0]
+        strongest_category, strongest_category_count = category_counts.most_common(1)[
+            0]
 
     return jsonify({
         "stats": {
