@@ -1,9 +1,11 @@
 <script lang="ts">
   import { enhance } from "$app/forms";
   import { page } from "$app/stores";
+  import { browser } from "$app/environment";
   import type { SubmitFunction } from "@sveltejs/kit";
-  import { ThemeIcon } from "$lib/utils/icons";
   import { THEME_MAPPING } from "$lib/utils/constants";
+  import SunIcon from "virtual:icons/mdi/weather-sunny";
+  import MoonIcon from "virtual:icons/mdi/weather-night";
 
   export function getValueForTheme(str: string) {
     if (str === "dark") {
@@ -14,6 +16,13 @@
     return str;
   }
 
+  let isDark: boolean = $state(
+    browser
+      ? document.documentElement.getAttribute("data-theme") ===
+          THEME_MAPPING.dark
+      : false
+  );
+
   const submitSetTheme: SubmitFunction = ({ action }) => {
     const theme = action.searchParams.get("theme");
     if (theme) {
@@ -21,37 +30,21 @@
         "data-theme",
         theme === "dark" ? THEME_MAPPING.dark : THEME_MAPPING.light
       );
+      isDark = theme === "dark";
     }
   };
-
-  function getCapitalized(str: string) {
-    return str.charAt(0).toUpperCase() + str.slice(1);
-  }
 </script>
 
 <form method="POST" use:enhance={submitSetTheme}>
-  <div class="dropdown dropdown-top w-full">
-    <div
-      tabindex="0"
-      role="button"
-      class="btn btn-neutral h-10 w-full justify-start pl-3 text-base font-normal">
-      <ThemeIcon />Theme
-    </div>
-    <ul
-      tabindex="-1"
-      class="dropdown-content rounded-box bg-base-100 z-[1] w-72 p-2 shadow-2xl">
-      {#each ["dark", "light"] as theme}
-        <li>
-          <button
-            type="submit"
-            formaction="/?/set_theme&theme={theme}&redirectTo={$page.url
-              .pathname}"
-            name="theme-dropdown"
-            class="theme-controller btn btn-ghost btn-sm btn-block justify-start"
-            aria-label={getCapitalized(theme)}
-            value={theme}>{getCapitalized(theme)}</button>
-        </li>
-      {/each}
-    </ul>
-  </div>
+  <li class="gap-8 text-base">
+    <button
+      type="submit"
+      formaction="/?/set_theme&theme={isDark ? 'light' : 'dark'}&redirectTo={$page.url.pathname}">
+      {#if isDark}
+        <MoonIcon />Dark Mode
+      {:else}
+        <SunIcon />Light Mode
+      {/if}
+    </button>
+  </li>
 </form>

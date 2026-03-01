@@ -167,7 +167,10 @@
       ><b>Joined On</b>
     </TextInput>
     {#if isWebApp}
-      <ThemeSwitch />
+      <ul
+        class="menu w-full border-[1px] rounded-md bg-base-100 p-0">
+        <ThemeSwitch />
+      </ul>
     {/if}
   </div>
 </div>
