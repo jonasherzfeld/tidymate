@@ -160,6 +160,7 @@ def delete_reminder(user, reminder_id):
             user.id,
             user.house_id
         )
+        dismiss_notifications_for_item(reminder.id, ItemType.REMINDER)
 
     Reminder.query.filter_by(id=reminder_id).delete()
     db.session.commit()

@@ -3,7 +3,15 @@
     "allow": [
       "mcp__plugin_context7_context7__resolve-library-id",
       "mcp__plugin_context7_context7__query-docs",
-      "Bash(source:*)"
+      "Bash(source:*)",
+      "Bash(git rebase *)",
+      "Bash(npm run *)",
+      "Bash(sqlite3 /Users/jonasherzfeld/Developer/tidymate/data/data.sqlite3 \".tables\")",
+      "Bash(sqlite3 /Users/jonasherzfeld/Developer/tidymate/data/data.sqlite3 \"SELECT * FROM alembic_version;\")",
+      "Bash(python -c \"import ast; ast.parse\\(open\\('src/utils/utils.py'\\).read\\(\\)\\); ast.parse\\(open\\('src/routes/items/items.py'\\).read\\(\\)\\); ast.parse\\(open\\('src/routes/items/chores.py'\\).read\\(\\)\\); ast.parse\\(open\\('src/routes/items/reminders.py'\\).read\\(\\)\\); ast.parse\\(open\\('src/routes/notifications/notifications.py'\\).read\\(\\)\\); print\\('OK'\\)\")",
+      "Bash(python3 -c \"import ast; ast.parse\\(open\\('src/utils/utils.py'\\).read\\(\\)\\); ast.parse\\(open\\('src/routes/items/items.py'\\).read\\(\\)\\); ast.parse\\(open\\('src/routes/items/chores.py'\\).read\\(\\)\\); ast.parse\\(open\\('src/routes/items/reminders.py'\\).read\\(\\)\\); ast.parse\\(open\\('src/routes/notifications/notifications.py'\\).read\\(\\)\\); print\\('OK'\\)\")",
+      "Bash(npx svelte-kit *)",
+      "Bash(npx svelte-check *)"
     ]
   }
 }

@@ -1,6 +1,7 @@
 <script lang="ts">
   import { MenuDots, CircleIcon, RedoIcon } from "$lib/utils/icons";
   import { enhance } from "$app/forms";
+  import { invalidateAll } from "$app/navigation";
   import Dropdown from "./dropdown/Dropdown.svelte";
   import DropdownContent from "./dropdown/DropdownContent.svelte";
   import DropdownButton from "./dropdown/DropdownTrigger.svelte";
@@ -72,6 +73,7 @@
     return async ({ result, update }) => {
       if (result.status === 200) {
         onChange(result.data.chore.deadline, result.data.chore.last_done);
+        await invalidateAll();
       } else {
         update();
       }
@@ -82,6 +84,7 @@
     return async ({ result, update }) => {
       if (result.status === 200) {
         onRemove();
+        await invalidateAll();
       } else {
         await update();
       }

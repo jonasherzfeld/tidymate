@@ -148,6 +148,7 @@ def delete_todo(user, todo_id):
             user.id,
             user.house_id
         )
+        dismiss_notifications_for_item(todo.id, ItemType.TODO)
 
     Todo.query.filter_by(id=todo_id).delete()
     db.session.commit()

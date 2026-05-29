@@ -23,8 +23,7 @@ self.addEventListener("push", function (event) {
     badge: "/favicon-48x48.png",
     data: { href: data.href || "/" },
     vibrate: [100, 50, 100],
-    tag: "tidymate-notification",
-    renotify: true
+    tag: data.tag || `tidymate-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`
   };
 
   console.log("[SW] Showing notification:", data.title, options);

@@ -45,7 +45,7 @@ def create_notification(user):
 
     db.session.add(notification)
     db.session.commit()
-    send_push_notification(user.id, name, description, href)
+    send_push_notification(user.id, name, description, href, tag=notification.id)
     return jsonify({"notification": notification.to_dict()}), 200
 
 

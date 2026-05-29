@@ -79,12 +79,6 @@
     }
   }
 
-  function getNotificationIcon(description: string): typeof ReminderIcon {
-    if (description.includes("Reminder")) return ReminderIcon;
-    if (description.includes("Todo")) return TodoIcon;
-    if (description.includes("Chore")) return ChoresIcon;
-    return GeneralIcon;
-  }
 </script>
 
 <div class="bg-base-100 flex min-h-full w-full flex-1 items-start justify-center">
@@ -119,11 +113,11 @@
                 aria-label="View Notification"
                 formaction="/home/notifications?/view_notification">
                 <div class="flex h-full w-fit items-center justify-start pl-1">
-                  {#if notification.description.includes("Reminder")}
+                  {#if notification.item_type === "reminder"}
                     <ReminderIcon class="h-5 w-5 opacity-50" />
-                  {:else if notification.description.includes("Todo")}
+                  {:else if notification.item_type === "todo"}
                     <TodoIcon class="h-5 w-5 opacity-50" />
-                  {:else if notification.description.includes("Chore")}
+                  {:else if notification.item_type === "chore"}
                     <ChoresIcon class="h-5 w-5 opacity-50" />
                   {:else}
                     <GeneralIcon class="h-5 w-5 opacity-50" />

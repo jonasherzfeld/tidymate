@@ -84,11 +84,11 @@
               aria-label="View Notification"
               formaction="/?/view_notification">
               <div class="flex flex-row items-center gap-3">
-                {#if notification.description.includes("Reminder")}
+                {#if notification.item_type === "reminder"}
                   <ReminderIcon class="h-6 w-6  opacity-50" />
-                {:else if notification.description.includes("Todo")}
+                {:else if notification.item_type === "todo"}
                   <TodoIcon class="h-6 w-6  opacity-50" />
-                {:else if notification.description.includes("Chore")}
+                {:else if notification.item_type === "chore"}
                   <ChoresIcon class="h-6 w-6  opacity-50" />
                 {:else}
                   <GeneralIcon class="h-6 w-6 opacity-50" />

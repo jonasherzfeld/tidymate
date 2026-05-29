@@ -56,7 +56,7 @@ def log_history_event(
         db.session.rollback()
 
 
-def send_push_notification(user_id, title, body, href=None):
+def send_push_notification(user_id, title, body, href=None, tag=None):
     """Send web push to all active subscriptions for a user.
     Non-blocking: logs errors but never raises."""
     logging.debug(
@@ -73,12 +73,15 @@ def send_push_notification(user_id, title, body, href=None):
     if not subscriptions:
         return
 
-    payload = json.dumps({
+    payload_obj = {
         "title": title,
         "body": body,
         "href": href or "/",
         "icon": "/web-app-manifest-192x192.png"
-    })
+    }
+    if tag:
+        payload_obj["tag"] = tag
+    payload = json.dumps(payload_obj)
 
     for sub in subscriptions:
         logging.debug(
@@ -165,6 +168,7 @@ def notify_if_due(item, item_type, item_type_enum, user_ids, href):
     context = _item_context(item)
     description = f"The {item_type} '{item.data}' is due.{context}"
 
+    created = []
     for user_id in user_ids:
         notification = Notification(
             id=str(uuid.uuid4()),
@@ -182,10 +186,12 @@ def notify_if_due(item, item_type, item_type_enum, user_ids, href):
             user_id=user_id,
         )
         db.session.add(notification)
+        created.append((user_id, notification))
     db.session.commit()
 
-    for user_id in user_ids:
-        send_push_notification(user_id, item.data, description, href)
+    for user_id, notification in created:
+        send_push_notification(
+            user_id, item.data, description, href, tag=notification.id)
 
 
 def check_reminders():
@@ -220,7 +226,6 @@ def check_reminders():
                 Notification.item_id == reminder.id,
                 Notification.user_id == reminder.user_id,
                 Notification.item_iteration_count == iteration_count,
-                Notification.is_removed != True,
             )).first()
 
         if not existing_notification:
@@ -246,11 +251,12 @@ def check_reminders():
             db.session.add(notification)
             pending_pushes.append((
                 reminder.user_id, notification.name,
-                notification.description, notification.href))
+                notification.description, notification.href,
+                notification.id))
 
     db.session.commit()
-    for user_id, title, body, href in pending_pushes:
-        send_push_notification(user_id, title, body, href)
+    for user_id, title, body, href, tag in pending_pushes:
+        send_push_notification(user_id, title, body, href, tag=tag)
     logging.info(
         f"Added {count_added_notifications} notifications for expired reminders.")
 
@@ -293,7 +299,6 @@ def check_chores():
                     Notification.item_id == chore.id,
                     Notification.user_id == user.id,
                     Notification.item_iteration_count == iteration_count,
-                    Notification.is_removed != True,
                 )).first()
 
             if not existing_notification:
@@ -319,11 +324,12 @@ def check_chores():
                 db.session.add(notification)
                 pending_pushes.append((
                     user.id, notification.name,
-                    notification.description, notification.href))
+                    notification.description, notification.href,
+                    notification.id))
 
     db.session.commit()
-    for user_id, title, body, href in pending_pushes:
-        send_push_notification(user_id, title, body, href)
+    for user_id, title, body, href, tag in pending_pushes:
+        send_push_notification(user_id, title, body, href, tag=tag)
     logging.info(
         f"Added {count_added_notifications} notifications for expired chores.")
 
@@ -335,6 +341,8 @@ def check_todos():
     for todo in all_todos:
         # Skip todos without a deadline or already done
         if not todo.deadline or todo.deadline.strip() == '':
+            continue
+        if todo.done:
             continue
 
         try:
@@ -359,7 +367,6 @@ def check_todos():
                     Notification.item_type == ItemType.TODO,
                     Notification.item_id == todo.id,
                     Notification.user_id == user.id,
-                    Notification.is_removed != True,
                 )
             ).first()
 
@@ -384,11 +391,12 @@ def check_todos():
                 db.session.add(notification)
                 pending_pushes.append((
                     user.id, notification.name,
-                    notification.description, notification.href))
+                    notification.description, notification.href,
+                    notification.id))
 
     db.session.commit()
-    for user_id, title, body, href in pending_pushes:
-        send_push_notification(user_id, title, body, href)
+    for user_id, title, body, href, tag in pending_pushes:
+        send_push_notification(user_id, title, body, href, tag=tag)
     logging.info(
         f"Added {count_added_notifications} notifications for expired todos.")
 

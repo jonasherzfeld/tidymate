@@ -173,6 +173,7 @@ def delete_chore(user, chore_id):
             user.id,
             user.house_id
         )
+        dismiss_notifications_for_item(chore.id, ItemType.CHORE)
 
     Chore.query.filter_by(id=chore_id).delete()
     db.session.commit()
