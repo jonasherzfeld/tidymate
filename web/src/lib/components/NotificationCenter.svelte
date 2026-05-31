@@ -20,9 +20,7 @@
 
   let serverErrors: string = $state("");
 
-  let numUnread = $derived(
-    notifications.filter((n) => !n.is_viewed && !n.is_removed).length
-  );
+  let numUnread = $derived(notifications.filter((n) => !n.is_viewed && !n.is_removed).length);
   let visible = $derived(
     [...notifications]
       .filter((n) => !n.is_removed)
@@ -41,9 +39,7 @@
 
   let todayItems = $derived(visible.filter((n) => isToday(n.created_on)));
   let earlierItems = $derived(visible.filter((n) => !isToday(n.created_on)));
-  let bellLabel = $derived(
-    numUnread > 0 ? `Notifications, ${numUnread} unread` : "Notifications"
-  );
+  let bellLabel = $derived(numUnread > 0 ? `Notifications, ${numUnread} unread` : "Notifications");
 
   function handleViewNotification() {
     return async ({ result, update }: { result: any; update: () => Promise<void> }) => {
@@ -79,7 +75,7 @@
     {#if numUnread > 0}
       <span
         aria-hidden="true"
-        class="bg-accent ring-base-100 absolute -top-0.5 -right-0.5 inline-flex h-4 min-w-4 items-center justify-center rounded-full px-1 text-[10px] font-semibold text-accent-content ring-2">
+        class="bg-accent ring-base-100 text-accent-content absolute -top-0.5 -right-0.5 inline-flex h-4 min-w-4 items-center justify-center rounded-full px-1 text-[10px] font-semibold ring-2">
         {numUnread > 9 ? "9+" : numUnread}
       </span>
     {/if}
@@ -89,8 +85,8 @@
   <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
   <div
     tabindex="0"
-    class="dropdown-content bg-base-100 border-neutral z-[5] mt-2 w-80 overflow-hidden rounded-box border shadow-[var(--shadow-lg)]">
-    <div class="flex items-center justify-between border-b border-neutral px-4 py-3">
+    class="dropdown-content bg-base-100 border-neutral rounded-box z-[5] mt-2 w-80 overflow-hidden border shadow-[var(--shadow-lg)]">
+    <div class="border-neutral flex items-center justify-between border-b px-4 py-3">
       <div>
         <div class="text-base-content text-sm font-semibold">Notifications</div>
         <div class="text-muted text-xs">
@@ -124,7 +120,7 @@
       {#each [{ title: "Today", items: todayItems }, { title: "Earlier", items: earlierItems }] as group}
         {#if group.items.length > 0}
           <div
-            class="text-muted bg-base-200/60 px-4 py-1.5 text-[10px] font-semibold uppercase tracking-wider">
+            class="text-muted bg-base-200/60 px-4 py-1.5 text-[10px] font-semibold tracking-wider uppercase">
             {group.title}
           </div>
           {#each group.items as notification}
@@ -133,7 +129,7 @@
               method="POST"
               use:enhance={handleViewNotification}
               class={cn(
-                "border-b border-neutral last:border-0",
+                "border-neutral border-b last:border-0",
                 !notification.is_viewed && "bg-primary/[0.03]"
               )}>
               <input type="hidden" name="id" value={notification.id} />
@@ -166,7 +162,7 @@
                   </div>
                 </button>
                 <button
-                  class="text-muted hover:text-error -m-1 inline-flex h-7 w-7 items-center justify-center rounded-field transition-colors"
+                  class="text-muted hover:text-error rounded-field -m-1 inline-flex h-7 w-7 items-center justify-center transition-colors"
                   type="submit"
                   aria-label="Delete notification"
                   formaction="/?/delete_notification">

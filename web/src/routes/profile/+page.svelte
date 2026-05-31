@@ -164,7 +164,7 @@
         textSize="text-3xl font-semibold" />
     </button>
     <div class="min-w-0">
-      <div class="text-muted text-xs uppercase tracking-wide">Signed in as</div>
+      <div class="text-muted text-xs tracking-wide uppercase">Signed in as</div>
       <h1 class="text-base-content truncate text-2xl font-semibold tracking-tight">
         {$firstNameForm.first_name}
       </h1>
@@ -289,7 +289,7 @@
   <!-- Preferences -->
   <section class="flex flex-col gap-3">
     <SectionHeader title="Preferences" subtitle="App settings." />
-    <Card padding="md" class="flex flex-col divide-y divide-neutral">
+    <Card padding="md" class="divide-neutral flex flex-col divide-y">
       {#if isWebApp}
         <div class="-mx-4 -mt-4 px-4 py-2">
           <ul class="menu w-full p-0">
@@ -306,9 +306,7 @@
             </div>
             <div>
               <div class="text-base-content text-sm font-medium">Push notifications</div>
-              <div class="text-muted text-xs">
-                Get notified about chores, todos and reminders.
-              </div>
+              <div class="text-muted text-xs">Get notified about chores, todos and reminders.</div>
             </div>
           </div>
           <Button

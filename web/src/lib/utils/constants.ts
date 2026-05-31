@@ -7,7 +7,6 @@ import {
   FinanceIcon,
   GeneralIcon,
   HealthIcon,
-  HouseCircleOutline,
   HouseIcon,
   InfoIcon,
   KitchenIcon,

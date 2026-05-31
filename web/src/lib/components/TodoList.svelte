@@ -59,11 +59,11 @@
   <!-- Toolbar -->
   <div class="flex flex-col gap-2">
     <label
-      class="border-neutral bg-base-100 focus-within:border-primary/60 flex w-full items-center gap-2 rounded-field border px-3 py-2 transition-colors">
+      class="border-neutral bg-base-100 focus-within:border-primary/60 rounded-field flex w-full items-center gap-2 border px-3 py-2 transition-colors">
       <SearchIcon class="text-muted h-4 w-4" />
       <input
         type="search"
-        class="grow bg-transparent text-sm outline-none placeholder:text-base-content/40"
+        class="placeholder:text-base-content/40 grow bg-transparent text-sm outline-none"
         placeholder="Search todos"
         bind:value={todoPageState.searchText} />
     </label>
@@ -174,12 +174,12 @@
 
   <!-- Quick create -->
   <div
-    class="bg-base-100 border-neutral sticky bottom-3 rounded-field border p-2 shadow-[var(--shadow-md)]">
+    class="bg-base-100 border-neutral rounded-field sticky bottom-3 border p-2 shadow-[var(--shadow-md)]">
     <form method="POST" use:enhance={handleSubmit}>
       <div class="flex items-center gap-2">
         <input
           type="text"
-          class="grow bg-transparent px-2 py-1.5 text-sm outline-none placeholder:text-base-content/40"
+          class="placeholder:text-base-content/40 grow bg-transparent px-2 py-1.5 text-sm outline-none"
           placeholder="Add a new todo…"
           name="todo_data"
           bind:value={newTodoData} />

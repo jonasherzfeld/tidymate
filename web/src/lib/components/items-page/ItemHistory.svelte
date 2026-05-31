@@ -116,25 +116,25 @@
           </form>
         </div>
         <div class="stats stats-horizontal bg-base-300 p-0 pt-2 shadow">
-          <div class="stat place-items-center  m-0 min-w-12 p-0 ">
+          <div class="stat m-0 min-w-12 place-items-center p-0">
             <div class="stat-title m-0 p-0 text-xs">Total</div>
             <div class="stat-value text-primary m-0 p-0">
               {history().length}
             </div>
           </div>
-          <div class="stat place-items-center  m-0 min-w-12 p-0">
+          <div class="stat m-0 min-w-12 place-items-center p-0">
             <div class="stat-title m-0 p-0 text-xs">Completed</div>
             <div class="stat-value text-success m-0 p-0">
               {history().filter((h) => h.event_type === "completed").length}
             </div>
           </div>
-          <div class="stat place-items-center  m-0 min-w-12 p-0">
+          <div class="stat m-0 min-w-12 place-items-center p-0">
             <div class="stat-title m-0 p-0 text-xs">Created</div>
             <div class="stat-value text-info m-0 p-0">
               {history().filter((h) => h.event_type === "created").length}
             </div>
           </div>
-          <div class="stat place-items-center  m-0 min-w-12 p-0">
+          <div class="stat m-0 min-w-12 place-items-center p-0">
             <div class="stat-title m-0 p-0 text-xs">Deleted</div>
             <div class="stat-value text-error m-0 p-0">
               {history().filter((h) => h.event_type === "deleted").length}

@@ -64,7 +64,5 @@
     </div>
   </div>
 
-  <Button variant="primary" size="lg" block loading={isLoading} type="submit">
-    Sign in
-  </Button>
+  <Button variant="primary" size="lg" block loading={isLoading} type="submit">Sign in</Button>
 </form>

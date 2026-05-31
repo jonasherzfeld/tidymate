@@ -16,18 +16,9 @@
           "hover:bg-primary/90 hover:shadow-md",
           "border border-transparent"
         ],
-        secondary: [
-          "bg-base-200 text-base-content border border-neutral",
-          "hover:bg-base-300"
-        ],
-        soft: [
-          "bg-primary/10 text-primary border border-transparent",
-          "hover:bg-primary/15"
-        ],
-        ghost: [
-          "bg-transparent text-base-content border border-transparent",
-          "hover:bg-base-200"
-        ],
+        secondary: ["bg-base-200 text-base-content border border-neutral", "hover:bg-base-300"],
+        soft: ["bg-primary/10 text-primary border border-transparent", "hover:bg-primary/15"],
+        ghost: ["bg-transparent text-base-content border border-transparent", "hover:bg-base-200"],
         outline: [
           "bg-transparent text-base-content border border-neutral",
           "hover:bg-base-200 hover:border-base-content/20"

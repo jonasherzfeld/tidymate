@@ -13,8 +13,7 @@
         ghost: "bg-transparent text-base-content hover:bg-base-200",
         soft: "bg-base-200 text-base-content hover:bg-base-300",
         primary: "bg-primary text-primary-content hover:bg-primary/90",
-        outline:
-          "bg-transparent text-base-content border border-neutral hover:bg-base-200"
+        outline: "bg-transparent text-base-content border border-neutral hover:bg-base-200"
       },
       size: {
         xs: "h-7 w-7 [&_svg]:h-3.5 [&_svg]:w-3.5",
@@ -51,9 +50,6 @@
   }: Props = $props();
 </script>
 
-<button
-  {type}
-  class={cn(iconButtonVariants({ variant, size }), className)}
-  {...rest}>
+<button {type} class={cn(iconButtonVariants({ variant, size }), className)} {...rest}>
   {@render children?.()}
 </button>

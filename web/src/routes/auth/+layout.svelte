@@ -7,9 +7,8 @@
 </script>
 
 <div class="flex min-h-full w-full items-center justify-center">
-
   <!-- Form panel -->
-  <div class="flex items-center justify-center px-6 py-12 w-full">
+  <div class="flex w-full items-center justify-center px-6 py-12">
     <div class="w-full max-w-sm">
       <div class="mb-8 flex items-center gap-3 lg:hidden">
         <Logo width="32px" />

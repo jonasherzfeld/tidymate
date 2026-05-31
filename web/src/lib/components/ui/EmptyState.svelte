@@ -20,7 +20,7 @@
 <div
   class={cn(
     "flex flex-col items-center justify-center text-center",
-    "border border-dashed border-neutral rounded-box",
+    "border-neutral rounded-box border border-dashed",
     "bg-base-100 px-6 py-12",
     className
   )}>

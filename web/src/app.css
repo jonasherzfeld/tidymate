@@ -110,10 +110,8 @@
 :root,
 [data-theme="cupcake"] {
   --shadow-xs: 0 1px 2px rgb(20 22 30 / 0.04);
-  --shadow-sm:
-    0 1px 3px rgb(20 22 30 / 0.06), 0 1px 2px rgb(20 22 30 / 0.04);
-  --shadow-md:
-    0 4px 12px -2px rgb(20 22 30 / 0.08), 0 2px 4px rgb(20 22 30 / 0.04);
+  --shadow-sm: 0 1px 3px rgb(20 22 30 / 0.06), 0 1px 2px rgb(20 22 30 / 0.04);
+  --shadow-md: 0 4px 12px -2px rgb(20 22 30 / 0.08), 0 2px 4px rgb(20 22 30 / 0.04);
   --shadow-lg: 0 16px 40px -8px rgb(20 22 30 / 0.14);
   --shadow-focus: 0 0 0 3px oklch(56% 0.18 270 / 0.22);
 
@@ -127,10 +125,8 @@
 
 [data-theme="dracula"] {
   --shadow-xs: 0 1px 2px rgb(0 0 0 / 0.4);
-  --shadow-sm:
-    0 1px 3px rgb(0 0 0 / 0.45), 0 1px 2px rgb(0 0 0 / 0.35);
-  --shadow-md:
-    0 4px 14px -2px rgb(0 0 0 / 0.5), 0 2px 4px rgb(0 0 0 / 0.3);
+  --shadow-sm: 0 1px 3px rgb(0 0 0 / 0.45), 0 1px 2px rgb(0 0 0 / 0.35);
+  --shadow-md: 0 4px 14px -2px rgb(0 0 0 / 0.5), 0 2px 4px rgb(0 0 0 / 0.3);
   --shadow-lg: 0 18px 44px -8px rgb(0 0 0 / 0.6);
   --shadow-focus: 0 0 0 3px oklch(74% 0.17 270 / 0.32);
 }
@@ -153,10 +149,7 @@
   }
 
   body {
-    font-feature-settings:
-      "cv11",
-      "ss01",
-      "ss03";
+    font-feature-settings: "cv11", "ss01", "ss03";
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -183,8 +176,7 @@
   }
 
   /* Focus rings — consistent across all focusable elements */
-  :where(button, [role="button"], a, input, select, textarea, [tabindex])
-    :focus-visible {
+  :where(button, [role="button"], a, input, select, textarea, [tabindex]) :focus-visible {
     outline: none;
   }
   :where(button, [role="button"], a, input, select, textarea, [tabindex]):focus-visible {

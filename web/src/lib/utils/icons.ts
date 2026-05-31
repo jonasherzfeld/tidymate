@@ -54,12 +54,12 @@ import OfficeIcon from "virtual:icons/mdi/work";
 
 // Reminder category icons
 import SocialIcon from "virtual:icons/mdi/account-group";
-import LearningIcon from "virtual:icons/mdi/school";
-import WorkIcon from "virtual:icons/mdi/briefcase";
-import HealthIcon from "virtual:icons/mdi/heart-pulse";
-import FinanceIcon from "virtual:icons/mdi/cash";
-import ShoppingIcon from "virtual:icons/mdi/cart";
 import TravelIcon from "virtual:icons/mdi/airplane";
+import WorkIcon from "virtual:icons/mdi/briefcase";
+import ShoppingIcon from "virtual:icons/mdi/cart";
+import FinanceIcon from "virtual:icons/mdi/cash";
+import HealthIcon from "virtual:icons/mdi/heart-pulse";
+import LearningIcon from "virtual:icons/mdi/school";
 
 export {
   BathroomIcon,
@@ -79,8 +79,8 @@ export {
   EmailIcon,
   FinanceIcon,
   GeneralIcon,
-  HealthIcon,
   GithubIcon,
+  HealthIcon,
   HistoryIcon,
   HouseCircleOutline,
   HouseIcon,

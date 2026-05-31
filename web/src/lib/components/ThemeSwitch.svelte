@@ -28,7 +28,7 @@
     <button
       type="submit"
       formaction="/?/set_theme&theme={isDark ? 'light' : 'dark'}&redirectTo={$page.url.pathname}"
-      class="text-base-content hover:bg-base-200 flex items-center gap-3 rounded-field px-3 py-2 text-sm transition-colors">
+      class="text-base-content hover:bg-base-200 rounded-field flex items-center gap-3 px-3 py-2 text-sm transition-colors">
       {#if isDark}
         <SunIcon class="h-4 w-4" />
         Light mode

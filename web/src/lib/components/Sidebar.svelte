@@ -59,7 +59,7 @@
     <div class={cn("flex w-fit", isWebApp ? "hidden" : "lg:hidden")}>
       <button
         onclick={() => (isDrawerOpen = !isDrawerOpen)}
-        class="hover:bg-base-200 ml-2 inline-flex h-9 w-9 items-center justify-center rounded-field transition-colors"
+        class="hover:bg-base-200 rounded-field ml-2 inline-flex h-9 w-9 items-center justify-center transition-colors"
         aria-label="Open menu">
         <MenuIcon class="h-5 w-5" />
       </button>
@@ -85,19 +85,17 @@
     <div class="drawer-side h-main-sidebar mt-16 lg:sticky lg:top-16 lg:mt-0">
       <!-- svelte-ignore a11y_click_events_have_key_events -->
       <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-      <label
-        for="my-drawer-2"
-        aria-label="close sidebar"
-        class="drawer-overlay lg:hidden"></label>
+      <label for="my-drawer-2" aria-label="close sidebar" class="drawer-overlay lg:hidden"></label>
 
       <aside
         class={cn(
-          "bg-base-100 border-neutral flex h-main-sidebar w-72 flex-col justify-between gap-4 overflow-y-auto border-r p-4",
+          "bg-base-100 border-neutral h-main-sidebar flex w-72 flex-col justify-between gap-4 overflow-y-auto border-r p-4",
           isWebApp && "pt-safe-top"
         )}>
         <nav class="flex flex-col gap-1">
           {#if personalItems.length > 0}
-            <div class="text-muted px-3 pt-2 pb-1 text-[10px] font-semibold uppercase tracking-wider">
+            <div
+              class="text-muted px-3 pt-2 pb-1 text-[10px] font-semibold tracking-wider uppercase">
               Personal
             </div>
             {#each personalItems as item}
@@ -106,7 +104,7 @@
                 target={item.target}
                 onclick={close}
                 class={cn(
-                  "flex items-center gap-3 rounded-field px-3 py-2 text-sm transition-colors",
+                  "rounded-field flex items-center gap-3 px-3 py-2 text-sm transition-colors",
                   isActive(item.url)
                     ? "bg-primary/10 text-primary font-medium"
                     : "text-base-content hover:bg-base-200"
@@ -118,7 +116,8 @@
           {/if}
 
           {#if houseItems.length > 0}
-            <div class="text-muted px-3 pt-4 pb-1 text-[10px] font-semibold uppercase tracking-wider">
+            <div
+              class="text-muted px-3 pt-4 pb-1 text-[10px] font-semibold tracking-wider uppercase">
               House
             </div>
             {#each houseItems as item}
@@ -127,7 +126,7 @@
                 target={item.target}
                 onclick={close}
                 class={cn(
-                  "flex items-center gap-3 rounded-field px-3 py-2 text-sm transition-colors",
+                  "rounded-field flex items-center gap-3 px-3 py-2 text-sm transition-colors",
                   isActive(item.url)
                     ? "bg-primary/10 text-primary font-medium"
                     : "text-base-content hover:bg-base-200"
@@ -144,7 +143,7 @@
             <a
               href={item.url}
               target={item.target}
-              class="text-muted hover:bg-base-200 hover:text-base-content flex items-center gap-3 rounded-field px-3 py-2 text-sm transition-colors">
+              class="text-muted hover:bg-base-200 hover:text-base-content rounded-field flex items-center gap-3 px-3 py-2 text-sm transition-colors">
               <item.icon class="h-4 w-4" />
               {item.title}
             </a>

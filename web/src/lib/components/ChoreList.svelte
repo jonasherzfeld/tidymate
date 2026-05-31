@@ -6,13 +6,7 @@
   import FilterDropDown from "$lib/components/FilterDropDown.svelte";
   import { Button, EmptyState } from "$lib/components/ui";
   import { getUsernameById, getThumbnailById } from "$lib/utils/helpers";
-  import {
-    UserIcon,
-    ReloadIcon,
-    RoomFilterIcon,
-    SearchIcon,
-    ChoresIcon
-  } from "$lib/utils/icons";
+  import { UserIcon, ReloadIcon, RoomFilterIcon, SearchIcon, ChoresIcon } from "$lib/utils/icons";
   import { FREQUENCY_INTERVALS, ROOM_CONFIG } from "$lib/utils/constants";
 
   let {
@@ -28,11 +22,11 @@
   <div class="flex flex-col gap-2">
     <div class="flex items-center gap-2">
       <label
-        class="border-neutral bg-base-100 focus-within:border-primary/60 flex grow items-center gap-2 rounded-field border px-3 py-2 transition-colors">
+        class="border-neutral bg-base-100 focus-within:border-primary/60 rounded-field flex grow items-center gap-2 border px-3 py-2 transition-colors">
         <SearchIcon class="text-muted h-4 w-4" />
         <input
           type="search"
-          class="grow bg-transparent text-sm outline-none placeholder:text-base-content/40"
+          class="placeholder:text-base-content/40 grow bg-transparent text-sm outline-none"
           placeholder="Search chores"
           bind:value={chorePageState.searchText} />
       </label>

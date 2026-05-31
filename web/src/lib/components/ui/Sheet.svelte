@@ -29,10 +29,8 @@
   } = $props();
 
   const sideClasses: Record<Side, string> = {
-    right:
-      "fixed right-0 top-0 h-full w-full max-w-md border-l border-neutral",
-    bottom:
-      "fixed inset-x-0 bottom-0 max-h-[92dvh] w-full border-t border-neutral rounded-t-box"
+    right: "fixed right-0 top-0 h-full w-full max-w-md border-l border-neutral",
+    bottom: "fixed inset-x-0 bottom-0 max-h-[92dvh] w-full border-t border-neutral rounded-t-box"
   };
 
   const flyParams: Record<Side, { x?: number; y?: number; duration: number }> = {
@@ -67,13 +65,13 @@
           <div
             {...props}
             class={cn(
-              "z-50 bg-base-100 flex flex-col shadow-[var(--shadow-lg)]",
+              "bg-base-100 z-50 flex flex-col shadow-[var(--shadow-lg)]",
               sideClasses[side],
               className
             )}
             transition:fly={{ ...flyParams[side], easing: cubicOut }}>
             {#if title || description}
-              <div class="flex items-start justify-between gap-3 border-b border-neutral p-5">
+              <div class="border-neutral flex items-start justify-between gap-3 border-b p-5">
                 <div class="min-w-0 flex-1">
                   {#if title}
                     <Dialog.Title class="text-lg font-semibold tracking-tight">
@@ -87,7 +85,7 @@
                   {/if}
                 </div>
                 <Dialog.Close
-                  class="text-muted hover:bg-base-200 hover:text-base-content -m-1 inline-flex h-8 w-8 items-center justify-center rounded-field transition-colors"
+                  class="text-muted hover:bg-base-200 hover:text-base-content rounded-field -m-1 inline-flex h-8 w-8 items-center justify-center transition-colors"
                   aria-label="Close">
                   <X class="h-4 w-4" />
                 </Dialog.Close>
@@ -99,7 +97,7 @@
             </div>
 
             {#if footer}
-              <div class="border-t border-neutral p-4">
+              <div class="border-neutral border-t p-4">
                 {@render footer()}
               </div>
             {/if}

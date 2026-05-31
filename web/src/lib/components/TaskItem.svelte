@@ -123,7 +123,7 @@
 
 <div
   class={cn(
-    "group bg-base-100 border-neutral relative flex items-start gap-3 rounded-field border px-3 py-3 sm:px-4",
+    "group bg-base-100 border-neutral rounded-field relative flex items-start gap-3 border px-3 py-3 sm:px-4",
     "transition-all duration-200 ease-[var(--ease-smooth)]",
     "hover:border-base-content/15 hover:shadow-[var(--shadow-sm)]",
     displayedDone && "opacity-65"
@@ -145,14 +145,14 @@
   <div class="min-w-0 flex-1">
     <div class="flex items-center gap-2">
       {#if category}
-        <Badge size="xs" class={cn("ring-inset !ring-1", category.tint)}>
+        <Badge size="xs" class={cn("!ring-1 ring-inset", category.tint)}>
           <category.icon class="h-3 w-3" />
           {category.name}
         </Badge>
       {/if}
       <h3
         class={cn(
-          "text-base-content min-w-0 truncate text-sm font-medium leading-snug transition-all",
+          "text-base-content min-w-0 truncate text-sm leading-snug font-medium transition-all",
           displayedDone && "line-through decoration-2"
         )}>
         {title}

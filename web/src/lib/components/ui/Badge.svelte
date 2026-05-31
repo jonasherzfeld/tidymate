@@ -2,14 +2,10 @@
   import { tv, type VariantProps } from "tailwind-variants";
 
   export const badgeVariants = tv({
-    base: [
-      "inline-flex items-center gap-1 font-medium whitespace-nowrap",
-      "ring-1 ring-inset"
-    ],
+    base: ["inline-flex items-center gap-1 font-medium whitespace-nowrap", "ring-1 ring-inset"],
     variants: {
       variant: {
-        neutral:
-          "bg-base-200 text-base-content/80 ring-base-content/10",
+        neutral: "bg-base-200 text-base-content/80 ring-base-content/10",
         primary: "bg-primary/10 text-primary ring-primary/20",
         success: "bg-success/15 text-success ring-success/25",
         warning: "bg-warning/15 text-warning ring-warning/25",
@@ -39,13 +35,7 @@
       children?: Snippet;
     };
 
-  let {
-    class: className = "",
-    variant,
-    size,
-    children,
-    ...rest
-  }: Props = $props();
+  let { class: className = "", variant, size, children, ...rest }: Props = $props();
 </script>
 
 <span class={cn(badgeVariants({ variant, size }), className)} {...rest}>

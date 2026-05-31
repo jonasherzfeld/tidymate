@@ -148,23 +148,20 @@
     {@const plannedCount = day.items.length - doneCount}
     <div
       class={cn(
-        "border-neutral flex flex-col gap-2 rounded-field border p-3",
+        "border-neutral rounded-field flex flex-col gap-2 border p-3",
         day.isToday && "border-primary/40 bg-primary/[0.04]"
       )}>
       <div class="flex items-baseline justify-between gap-2">
         <div class="flex items-baseline gap-2">
           <span
-            class={cn(
-              "text-sm font-medium",
-              day.isToday ? "text-primary" : "text-base-content"
-            )}>
+            class={cn("text-sm font-medium", day.isToday ? "text-primary" : "text-base-content")}>
             {day.date.toLocaleDateString(undefined, { weekday: "short" })}
             <span class="text-muted text-xs font-normal">
               {day.date.toLocaleDateString(undefined, { month: "short", day: "numeric" })}
             </span>
           </span>
           {#if day.isToday}
-            <span class="text-primary text-[10px] font-semibold uppercase tracking-wide">
+            <span class="text-primary text-[10px] font-semibold tracking-wide uppercase">
               Today
             </span>
           {/if}
@@ -189,9 +186,8 @@
             {@const Icon = item.category?.icon ?? GeneralIcon}
             <div
               class={cn(
-                "ring-inset relative flex items-center gap-2 overflow-hidden rounded-md px-2.5 py-1.5 text-xs ring-1 transition-opacity",
-                item.category?.tint ??
-                  "bg-base-200 text-base-content/80 ring-base-content/10",
+                "relative flex items-center gap-2 overflow-hidden rounded-md px-2.5 py-1.5 text-xs ring-1 transition-opacity ring-inset",
+                item.category?.tint ?? "bg-base-200 text-base-content/80 ring-base-content/10",
                 item.done && "opacity-60"
               )}>
               <Icon class="h-3.5 w-3.5 shrink-0" />

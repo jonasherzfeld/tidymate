@@ -25,7 +25,7 @@
 <Sheet bind:open side="right" {title} description="Stats and history">
   <div class="flex flex-col gap-4">
     <!-- Segmented tabs -->
-    <div class="border-neutral bg-base-200 inline-flex rounded-field border p-1">
+    <div class="border-neutral bg-base-200 rounded-field inline-flex border p-1">
       <button
         type="button"
         class={cn(

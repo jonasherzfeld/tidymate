@@ -26,7 +26,7 @@
   <div class="flex w-fit shrink-0 items-center">
     <a
       href={menuRestriction.includes("house_member") ? "/home" : "/"}
-      class="hover:bg-base-200 -ml-1 inline-flex items-center gap-2 rounded-field px-2 py-1.5 transition-colors">
+      class="hover:bg-base-200 rounded-field -ml-1 inline-flex items-center gap-2 px-2 py-1.5 transition-colors">
       <Logo width="28px" />
       <span class="text-base-content hidden text-base font-semibold tracking-tight lg:block">
         Tidymate
@@ -56,9 +56,9 @@
       </button>
       <ul
         tabindex="-1"
-        class="menu dropdown-content border-neutral bg-base-100 z-[5] mt-2 w-56 rounded-box border p-1.5 shadow-[var(--shadow-lg)]">
+        class="menu dropdown-content border-neutral bg-base-100 rounded-box z-[5] mt-2 w-56 border p-1.5 shadow-[var(--shadow-lg)]">
         {#if isLoggedIn && $page.data.user}
-          <div class="flex flex-col px-3 py-2 gap-0.5 active:!bg-transparent">
+          <div class="flex flex-col gap-0.5 px-3 py-2 active:!bg-transparent">
             <span class="text-base-content text-sm font-medium">
               {$page.data.user.first_name}
               {$page.data.user.last_name}

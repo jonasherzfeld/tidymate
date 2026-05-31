@@ -73,9 +73,7 @@
     return n;
   }
 
-  function countPlannedThisWeek(
-    items: { deadline?: string; done: boolean }[]
-  ): number {
+  function countPlannedThisWeek(items: { deadline?: string; done: boolean }[]): number {
     return items.filter((i) => {
       if (i.done || !i.deadline) return false;
       const d = i.deadline.slice(0, 10);
@@ -97,9 +95,7 @@
   const outerCirc = 2 * Math.PI * outerR;
   const innerCirc = 2 * Math.PI * innerR;
 
-  const choresPct = $derived(
-    choresTotal > 0 ? Math.min(choresDone / choresTotal, 1) : 0
-  );
+  const choresPct = $derived(choresTotal > 0 ? Math.min(choresDone / choresTotal, 1) : 0);
   const remindersPct = $derived(
     remindersTotal > 0 ? Math.min(remindersDone / remindersTotal, 1) : 0
   );
@@ -117,7 +113,9 @@
       </div>
       <div class="mt-2 flex flex-wrap items-center gap-2">
         <Badge size="sm" variant={deltaVariant}>
-          {deltaLabel}{completedPrevWeek > 0 && delta !== 0 ? ` (${deltaPercent > 0 ? "+" : ""}${deltaPercent}%)` : ""}
+          {deltaLabel}{completedPrevWeek > 0 && delta !== 0
+            ? ` (${deltaPercent > 0 ? "+" : ""}${deltaPercent}%)`
+            : ""}
         </Badge>
         {#if streakDays >= 2}
           <Badge size="sm" variant="primary">
@@ -153,7 +151,7 @@
             fill="none"
             stroke="currentColor"
             stroke-width={ringStroke}
-            class="text-primary/15" />
+            class="text-primary/15"></circle>
           <circle
             cx={ringSize / 2}
             cy={ringSize / 2}
@@ -164,7 +162,7 @@
             stroke-linecap="round"
             stroke-dasharray={outerCirc}
             stroke-dashoffset={outerCirc * (1 - choresPct)}
-            class="text-primary transition-[stroke-dashoffset] duration-500" />
+            class="text-primary transition-[stroke-dashoffset] duration-500"></circle>
 
           <!-- Reminders track + progress (inner) -->
           <circle
@@ -174,7 +172,7 @@
             fill="none"
             stroke="currentColor"
             stroke-width={ringStroke}
-            class="text-accent/15" />
+            class="text-accent/15"></circle>
           <circle
             cx={ringSize / 2}
             cy={ringSize / 2}
@@ -185,7 +183,7 @@
             stroke-linecap="round"
             stroke-dasharray={innerCirc}
             stroke-dashoffset={innerCirc * (1 - remindersPct)}
-            class="text-accent transition-[stroke-dashoffset] duration-500" />
+            class="text-accent transition-[stroke-dashoffset] duration-500"></circle>
         </svg>
 
         <div class="flex flex-col gap-1.5 text-xs">

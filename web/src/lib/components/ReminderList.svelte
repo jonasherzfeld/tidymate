@@ -18,11 +18,11 @@
   <div class="flex flex-col gap-2">
     <div class="flex items-center gap-2">
       <label
-        class="border-neutral bg-base-100 focus-within:border-primary/60 flex grow items-center gap-2 rounded-field border px-3 py-2 transition-colors">
+        class="border-neutral bg-base-100 focus-within:border-primary/60 rounded-field flex grow items-center gap-2 border px-3 py-2 transition-colors">
         <SearchIcon class="text-muted h-4 w-4" />
         <input
           type="search"
-          class="grow bg-transparent text-sm outline-none placeholder:text-base-content/40"
+          class="placeholder:text-base-content/40 grow bg-transparent text-sm outline-none"
           placeholder="Search reminders"
           bind:value={reminderPageState.searchText} />
       </label>
@@ -100,9 +100,7 @@
               }
             }}
             onRemove={() => {
-              reminderPageState.items = reminderPageState.items.filter(
-                (r) => r.id !== reminder.id
-              );
+              reminderPageState.items = reminderPageState.items.filter((r) => r.id !== reminder.id);
               reminderPageState.history = [
                 ...reminderPageState.history,
                 {

@@ -9,8 +9,5 @@
   let { class: className = "", ...rest }: Props = $props();
 </script>
 
-<div
-  aria-hidden="true"
-  class={cn("bg-base-200 animate-pulse rounded-field", className)}
-  {...rest}>
+<div aria-hidden="true" class={cn("bg-base-200 rounded-field animate-pulse", className)} {...rest}>
 </div>

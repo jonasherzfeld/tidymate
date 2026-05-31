@@ -24,7 +24,7 @@
 </script>
 
 <nav
-  class="bg-base-100 border-neutral fixed right-0 bottom-0 left-0 z-20 flex h-webapp-menu items-center justify-around border-t px-3 pb-[env(safe-area-inset-bottom)] shadow-[var(--shadow-md)]">
+  class="bg-base-100 border-neutral h-webapp-menu fixed right-0 bottom-0 left-0 z-20 flex items-center justify-around border-t px-3 pb-[env(safe-area-inset-bottom)] shadow-[var(--shadow-md)]">
   {#each menuItems as item}
     {@const active = isActive(item.url)}
     <a

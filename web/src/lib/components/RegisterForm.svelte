@@ -28,7 +28,7 @@
 
   <!-- Join toggle -->
   <label
-    class="border-neutral bg-base-200/50 hover:bg-base-200 flex cursor-pointer items-center justify-between rounded-field border p-3 transition-colors">
+    class="border-neutral bg-base-200/50 hover:bg-base-200 rounded-field flex cursor-pointer items-center justify-between border p-3 transition-colors">
     <div class="flex items-center gap-3">
       <HouseIcon class="text-primary h-4 w-4" />
       <div>

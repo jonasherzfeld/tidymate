@@ -61,12 +61,12 @@
   {#if data.length > 0}
     <defs>
       <linearGradient id="sparkArea" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="currentColor" stop-opacity="0.22" />
-        <stop offset="100%" stop-color="currentColor" stop-opacity="0" />
+        <stop offset="0%" stop-color="currentColor" stop-opacity="0.22"></stop>
+        <stop offset="100%" stop-color="currentColor" stop-opacity="0"></stop>
       </linearGradient>
     </defs>
     {#if showArea}
-      <path d={geometry.area} fill="url(#sparkArea)" stroke="none" />
+      <path d={geometry.area} fill="url(#sparkArea)" stroke="none"></path>
     {/if}
     <polyline
       points={geometry.points}
@@ -74,13 +74,13 @@
       stroke="currentColor"
       stroke-width={strokeWidth}
       stroke-linecap="round"
-      stroke-linejoin="round" />
+      stroke-linejoin="round"></polyline>
     {#if showDots && geometry.lastPoint}
       <circle
         cx={geometry.lastPoint.x}
         cy={geometry.lastPoint.y}
         r={strokeWidth * 1.4}
-        fill="currentColor" />
+        fill="currentColor"></circle>
     {/if}
   {/if}
 </svg>

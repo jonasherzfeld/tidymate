@@ -2,10 +2,7 @@
   import { tv, type VariantProps } from "tailwind-variants";
 
   export const cardVariants = tv({
-    base: [
-      "bg-base-100 border border-neutral",
-      "rounded-box shadow-[var(--shadow-sm)]"
-    ],
+    base: ["bg-base-100 border border-neutral", "rounded-box shadow-[var(--shadow-sm)]"],
     variants: {
       interactive: {
         true: [
@@ -39,13 +36,7 @@
       children?: Snippet;
     };
 
-  let {
-    class: className = "",
-    interactive,
-    padding,
-    children,
-    ...rest
-  }: Props = $props();
+  let { class: className = "", interactive, padding, children, ...rest }: Props = $props();
 </script>
 
 <div class={cn(cardVariants({ interactive, padding }), className)} {...rest}>

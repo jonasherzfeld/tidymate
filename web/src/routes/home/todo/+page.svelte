@@ -43,8 +43,7 @@
       .sort(
         byPropertiesOf<Todo>([
           "done",
-          ((todoPageState.sortOrder === "desc" ? "" : "-") +
-            todoPageState.sortBy) as sortArg<Todo>
+          ((todoPageState.sortOrder === "desc" ? "" : "-") + todoPageState.sortBy) as sortArg<Todo>
         ])
       );
   });

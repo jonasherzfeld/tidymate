@@ -1,4 +1,4 @@
-import type { Chart as ChartType, ChartConfiguration } from "chart.js";
+import type { ChartConfiguration, Chart as ChartType } from "chart.js";
 
 type ChartCtor = typeof import("chart.js").Chart;
 

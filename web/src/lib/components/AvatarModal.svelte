@@ -66,7 +66,7 @@
             class="pointer-events-none fixed inset-0 z-50 flex items-end justify-center p-0 sm:items-center sm:p-4">
             <div
               {...props}
-              class="bg-base-100 border-neutral pointer-events-auto flex w-full flex-col rounded-t-box border shadow-[var(--shadow-lg)] sm:max-w-md sm:rounded-box"
+              class="bg-base-100 border-neutral rounded-t-box sm:rounded-box pointer-events-auto flex w-full flex-col border shadow-[var(--shadow-lg)] sm:max-w-md"
               transition:fly={{ y: 24, duration: 220, easing: cubicOut }}>
               <!-- Header -->
               <div class="border-neutral flex items-start justify-between gap-3 border-b p-5">
@@ -79,7 +79,7 @@
                   </Dialog.Description>
                 </div>
                 <Dialog.Close
-                  class="text-muted hover:bg-base-200 hover:text-base-content -m-1 inline-flex h-8 w-8 items-center justify-center rounded-field transition-colors"
+                  class="text-muted hover:bg-base-200 hover:text-base-content rounded-field -m-1 inline-flex h-8 w-8 items-center justify-center transition-colors"
                   aria-label="Close">
                   <X class="h-4 w-4" />
                 </Dialog.Close>
@@ -89,7 +89,7 @@
               <div class="flex flex-col gap-5 p-5">
                 <div class="flex justify-center">
                   <div
-                    class="bg-base-200 ring-base-100 outline-neutral rounded-full outline ring-4">
+                    class="bg-base-200 ring-base-100 outline-neutral rounded-full ring-4 outline">
                     <AvatarGraphic
                       thumbnail={user?.thumbnail}
                       height="h-24"
