@@ -29,7 +29,8 @@
   } = $props();
 
   const sideClasses: Record<Side, string> = {
-    right: "fixed right-0 top-0 h-full w-full max-w-md border-l border-neutral",
+    right:
+      "fixed right-0 top-0 bottom-0 w-full max-w-md border-l border-neutral pt-[calc(env(safe-area-inset-top)+theme(spacing.header))]",
     bottom: "fixed inset-x-0 bottom-0 max-h-[92dvh] w-full border-t border-neutral rounded-t-box"
   };
 

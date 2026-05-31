@@ -71,7 +71,12 @@
 </script>
 
 <div class="dropdown dropdown-bottom dropdown-end">
-  <IconButton variant="ghost" size="sm" aria-label={bellLabel} class="relative">
+  <IconButton
+    variant="ghost"
+    size="sm"
+    aria-label={bellLabel}
+    class="relative"
+    onclick={(e) => e.currentTarget.focus()}>
     {#if numUnread > 0}
       <span
         aria-hidden="true"

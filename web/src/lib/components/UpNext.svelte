@@ -48,7 +48,7 @@
     return FREQUENCY_INTERVALS.find((f) => f.value === value)?.description;
   }
 
-  const items: UpNextItem[] = $derived.by(() => {
+  const allItems: UpNextItem[] = $derived.by(() => {
     const merged: UpNextItem[] = [];
 
     for (const c of chores) {
@@ -90,11 +90,12 @@
       });
     }
 
-    return merged.sort((a, b) => a.dueDays - b.dueDays).slice(0, limit);
+    return merged.sort((a, b) => a.dueDays - b.dueDays);
   });
 
-  const overdueCount = $derived(items.filter((i) => i.dueDays < 0).length);
-  const todayCount = $derived(items.filter((i) => i.dueDays >= 0 && i.dueDays <= 1).length);
+  const items = $derived(allItems.slice(0, limit));
+  const overdueCount = $derived(allItems.filter((i) => i.dueDays < 0).length);
+  const todayCount = $derived(allItems.filter((i) => i.dueDays === 0).length);
 </script>
 
 <section class="flex flex-col gap-3">
@@ -134,7 +135,8 @@
             category={item.category}
             deadline={item.deadline}
             frequencyDescription={item.frequencyDescription}
-            daysSinceLastDone={item.daysSinceLastDone} />
+            daysSinceLastDone={item.daysSinceLastDone}
+            showKind />
         </div>
       {/each}
     </div>

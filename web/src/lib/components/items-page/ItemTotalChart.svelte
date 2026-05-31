@@ -1,5 +1,6 @@
 <script lang="ts">
   import { BarChart } from "$lib/utils/charts.svelte";
+  import { Card, SectionHeader } from "$lib/components/ui";
 
   type T = Chore | Reminder | Todo;
   let { item_type, itemPageState }: { item_type: string; itemPageState: ItemListState<T> } =
@@ -83,7 +84,9 @@
         data: months.map((month) => monthlyData.get(month.monthKey) || 0),
         backgroundColor,
         borderColor,
-        borderWidth: 1
+        borderWidth: 1,
+        borderRadius: 6,
+        borderSkipped: false
       }
     ];
   }
@@ -91,37 +94,26 @@
   let labels = $derived(chartData.labels);
 </script>
 
-<!-- Completed Items per Month Chart -->
-<div class="card p-5 shadow">
-  <div class="mx-auto w-full max-w-4xl">
-    <div class="mb-4 flex flex-col items-center">
-      <h2 class="text-center text-2xl font-bold">
-        Total Completed {item_type.charAt(0).toUpperCase() + item_type.slice(1)}s
-      </h2>
-      <span class="text-center text-sm">Last 12 Months</span>
-    </div>
-    <div
-      use:BarChart={{
-        labels: labels,
-        datasets: datasets,
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: {
-              display: false
-            },
-            title: {
-              display: false
-            }
-          },
-          scales: {
-            x: { stacked: false },
-            y: { stacked: false, beginAtZero: true }
-          }
+<Card padding="md">
+  <SectionHeader title={`Completed ${item_type}s`} subtitle="Last 12 months." />
+
+  <div
+    use:BarChart={{
+      labels: labels,
+      datasets: datasets,
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          title: { display: false }
+        },
+        scales: {
+          x: { stacked: false },
+          y: { stacked: false, beginAtZero: true }
         }
-      }}
-      class="chart-container h-72">
-    </div>
+      }
+    }}
+    class="chart-container mt-4 h-72">
   </div>
-</div>
+</Card>

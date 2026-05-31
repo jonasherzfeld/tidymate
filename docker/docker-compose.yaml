@@ -9,7 +9,7 @@ services:
     ports:
       - 3030:3030
     environment:
-      FLASK_SECRET_KEY: "your_secret_key"
       LOG_DEBUG: "True"
-      VAPID_PRIVATE_KEY: "your_vapid_private_key"
-      VAPID_PUBLIC_KEY: "your_vapid_public_key"
+      # FLASK_SECRET_KEY and VAPID_{PRIVATE,PUBLIC}_KEY are auto-generated
+      # on first boot and persisted to /app/data/secrets.env. Set them here
+      # only if you need to override (e.g. sharing keys across instances).

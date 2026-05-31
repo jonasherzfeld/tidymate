@@ -24,7 +24,7 @@
 </script>
 
 <nav
-  class="bg-base-100 border-neutral h-webapp-menu fixed right-0 bottom-0 left-0 z-20 flex items-center justify-around border-t px-3 pb-[env(safe-area-inset-bottom)] shadow-[var(--shadow-md)]">
+  class="bg-base-100 border-neutral h-[calc(theme(spacing.webapp-menu)+env(safe-area-inset-bottom))] fixed right-0 bottom-0 left-0 z-20 flex items-center justify-around border-t px-3 pb-[env(safe-area-inset-bottom)] shadow-[var(--shadow-md)]">
   {#each menuItems as item}
     {@const active = isActive(item.url)}
     <a
@@ -36,7 +36,7 @@
       )}>
       <span
         class={cn(
-          "relative flex h-9 w-9 items-center justify-center rounded-full transition-all",
+          "relative flex h-9 w-9 shrink-0 items-center justify-center rounded-full transition-all",
           active && "bg-primary/10"
         )}>
         <item.icon class="h-5 w-5" />

@@ -63,7 +63,9 @@
     data: sortedMonthKeys.map((monthKey) => monthlyTodoData.get(monthKey) || 0),
     backgroundColor: "rgba(16, 185, 129, 0.6)",
     borderColor: "rgba(16, 185, 129, 1)",
-    borderWidth: 1
+    borderWidth: 1,
+    borderRadius: 6,
+    borderSkipped: false
   };
 </script>
 

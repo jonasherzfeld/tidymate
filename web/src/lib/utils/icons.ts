@@ -1,4 +1,5 @@
 // @ts-nocheck
+import PlusIcon from "virtual:icons/fluent/add-12-filled";
 import RedoIcon from "virtual:icons/fluent/approvals-app-32-filled";
 import ReloadIcon from "virtual:icons/fluent/arrow-clockwise-24-filled";
 import SortIcon from "virtual:icons/fluent/arrow-sort-16-filled";
@@ -96,6 +97,7 @@ export {
   OfficeIcon,
   OutdoorIcon,
   PasswordIcon,
+  PlusIcon,
   RedoIcon,
   RegisterIcon,
   ReloadIcon,

@@ -1,140 +1,137 @@
 <script lang="ts">
   import { ROOM_CONFIG, CATEGORY_CONFIG, type CategoryConfig } from "$lib/utils/constants";
+  import { Badge } from "$lib/components/ui";
+  import {
+    CheckIcon,
+    ChoresIcon,
+    DeleteIcon,
+    PlusIcon,
+    ReminderIcon,
+    TextIcon,
+    TodoIcon
+  } from "$lib/utils/icons";
+  import { cn } from "$lib/utils";
+  import type { Component } from "svelte";
 
   let { event }: { event: History } = $props();
 
-  // Helper functions
-  function getEventIcon(eventType: string): string {
-    switch (eventType) {
-      case "completed":
-        return "✅";
-      case "created":
-        return "➕";
-      case "deleted":
-        return "🗑️";
-      default:
-        return "📝";
-    }
-  }
+  type EventMeta = {
+    icon: Component;
+    iconTint: string;
+    label: string;
+    verb: string;
+  };
 
-  function getEventColor(eventType: string): string {
-    switch (eventType) {
-      case "completed":
-        return "text-success";
-      case "created":
-        return "text-info";
-      case "deleted":
-        return "text-error";
-      default:
-        return "text-base-content";
+  const EVENT_META: Record<string, EventMeta> = {
+    completed: {
+      icon: CheckIcon,
+      iconTint: "bg-success/15 text-success ring-success/25",
+      label: "Completed",
+      verb: "completed"
+    },
+    created: {
+      icon: PlusIcon,
+      iconTint: "bg-info/15 text-info ring-info/25",
+      label: "Created",
+      verb: "created"
+    },
+    deleted: {
+      icon: DeleteIcon,
+      iconTint: "bg-error/15 text-error ring-error/25",
+      label: "Deleted",
+      verb: "deleted"
     }
-  }
+  };
 
-  function getItemTypeColor(itemType: string): string {
-    switch (itemType) {
-      case "chore":
-        return "badge-warning";
-      case "todo":
-        return "badge-primary";
-      case "reminder":
-        return "badge-secondary";
-      default:
-        return "badge-neutral";
+  const FALLBACK_META: EventMeta = {
+    icon: TextIcon,
+    iconTint: "bg-base-200 text-base-content/70 ring-base-content/10",
+    label: "Updated",
+    verb: "updated"
+  };
+
+  const KIND_META: Record<string, { icon: Component; label: string; tint: string }> = {
+    chore: {
+      icon: ChoresIcon,
+      label: "Chore",
+      tint: "bg-primary/10 text-primary ring-primary/20"
+    },
+    reminder: {
+      icon: ReminderIcon,
+      label: "Reminder",
+      tint: "bg-secondary/10 text-secondary ring-secondary/20"
+    },
+    todo: {
+      icon: TodoIcon,
+      label: "Todo",
+      tint: "bg-base-content/10 text-base-content/70 ring-base-content/15"
     }
-  }
+  };
+
+  let eventMeta = $derived(EVENT_META[event.event_type] ?? FALLBACK_META);
+  let kindMeta = $derived(KIND_META[event.item_type] ?? KIND_META.todo);
 
   function formatTime(dateString: string): string {
-    return new Date(dateString).toLocaleTimeString("en-US", {
+    return new Date(dateString).toLocaleTimeString(undefined, {
       hour: "numeric",
-      minute: "2-digit",
-      hour12: true
+      minute: "2-digit"
     });
   }
 
-  function getEventDescription(event: History): string {
-    const action = event.event_type;
-    const itemType = event.item_type;
-
-    switch (action) {
-      case "completed":
-        return `completed ${itemType}`;
-      case "created":
-        return `created new ${itemType}`;
-      case "deleted":
-        return `deleted ${itemType}`;
-      default:
-        return `${action} ${itemType}`;
-    }
-  }
-
-  let defaultCategoryConfig: CategoryConfig | undefined = $derived(
-    ROOM_CONFIG.find((item) => item.name === "General")
-  );
   let categoryConfig: CategoryConfig | undefined = $derived.by(() => {
+    if (!event.item) return undefined;
     if (event.item_type === "chore") {
       return ROOM_CONFIG.find((item) => item.name === event.item.room);
-    } else if (event.item_type === "reminder") {
-      return CATEGORY_CONFIG.find((item) => item.name === event.item.category);
-    } else if (event.item_type === "todo") {
-      return CATEGORY_CONFIG.find((item) => item.name === "General");
     }
+    if (event.item_type === "reminder") {
+      return CATEGORY_CONFIG.find((item) => item.name === event.item.category);
+    }
+    return undefined;
   });
+
+  let itemLabel = $derived(event.item?.data ?? event.item_data ?? "Unnamed item");
+  let userName = $derived(
+    [event.user?.first_name, event.user?.last_name].filter(Boolean).join(" ") || "Someone"
+  );
 </script>
 
 <div
-  class="card card-bordered border-neutral bg-base-300 flex h-fit w-full flex-row items-start justify-between rounded-lg p-2 shadow-sm">
-  <!-- Event Icon -->
-  <div class="flex h-full w-fit flex-col justify-start">
-    <div class="text-lg">
-      {getEventIcon(event.event_type)}
-    </div>
-    <div class="text-base-content/50 font-mono text-xs">
-      {formatTime(event.created_on)}
-    </div>
-  </div>
+  class={cn(
+    "group bg-base-100 border-neutral rounded-field relative flex items-start gap-3 border px-3 py-3",
+    "transition-all duration-200 ease-[var(--ease-smooth)]",
+    "hover:border-base-content/15 hover:shadow-[var(--shadow-sm)]"
+  )}>
+  <span
+    title={eventMeta.label}
+    aria-label={eventMeta.label}
+    class={cn(
+      "inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-md ring-1 ring-inset",
+      eventMeta.iconTint
+    )}>
+    <eventMeta.icon class="h-3.5 w-3.5" />
+  </span>
 
-  <!-- Main Content -->
-  <div class="justify-left mt-0 flex h-fit grow flex-col gap-0.5 pt-0 pr-2 pl-4 text-left">
-    <!-- First Row: Item Type Badge -->
-    {#if event.item_type !== "todo"}
-      <div class="flex flex-row items-center">
-        <div
-          class={`badge  h-6 items-center gap-1 text-white ${categoryConfig ? categoryConfig.color : defaultCategoryConfig?.color}`}>
-          {#if categoryConfig}
-            <categoryConfig.icon />
-            {categoryConfig.name}
-          {:else if defaultCategoryConfig}
-            <defaultCategoryConfig.icon />
-            {defaultCategoryConfig.name}
-          {/if}
-        </div>
-      </div>
-    {/if}
-
-    <!-- Second Row: User and Action -->
-    <div class="flex flex-row items-center gap-2">
-      <span class="text-xs font-medium">
-        {event.user?.first_name}
-        {event.user?.last_name}
-      </span>
-      <span class="{getEventColor(event.event_type)} text-xs">
-        {getEventDescription(event)}
+  <div class="min-w-0 flex-1">
+    <div class="flex flex-wrap items-center gap-1.5">
+      <Badge size="xs" class={cn("!ring-1 ring-inset", kindMeta.tint)}>
+        <kindMeta.icon class="h-3 w-3" />
+        {kindMeta.label}
+      </Badge>
+      {#if categoryConfig}
+        <Badge size="xs" class={cn("!ring-1 ring-inset", categoryConfig.tint)}>
+          <categoryConfig.icon class="h-3 w-3" />
+          {categoryConfig.name}
+        </Badge>
+      {/if}
+      <span class="text-muted ml-auto font-mono text-[11px]">
+        {formatTime(event.created_on)}
       </span>
     </div>
 
-    <!-- Third Row: Item Data (if exists) -->
-    {#if event.item && event.item.data}
-      <div class="flex flex-row items-center">
-        <span class="text-base-content/70 text-xs">
-          "{event.item.data}"
-        </span>
-      </div>
-    {:else if event.item_data}
-      <div class="flex flex-row items-center">
-        <span class="text-base-content/70 text-xs">
-          {event.item_data || "Unnamed Item"}
-        </span>
-      </div>
-    {/if}
+    <p class="text-base-content mt-1.5 truncate text-sm leading-snug">
+      <span class="font-medium">{userName}</span>
+      <span class="text-muted">{eventMeta.verb}</span>
+      <span class="font-medium">"{itemLabel}"</span>
+    </p>
   </div>
 </div>
