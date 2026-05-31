@@ -17,6 +17,7 @@ import DocsIcon from "virtual:icons/fluent/document-bullet-list-16-regular";
 import HouseIcon from "virtual:icons/fluent/home-20-filled";
 import InfoIcon from "virtual:icons/fluent/info-12-regular";
 import ReminderIcon from "virtual:icons/fluent/note-pin-16-filled";
+import PlusIcon from "virtual:icons/fluent/add-12-filled";
 import UserIcon from "virtual:icons/fluent/person-24-filled";
 import TodoIcon from "virtual:icons/fluent/task-list-square-16-filled";
 import DoneAllIcon from "virtual:icons/mdi/done-all";
@@ -96,6 +97,7 @@ export {
   OfficeIcon,
   OutdoorIcon,
   PasswordIcon,
+  PlusIcon,
   RedoIcon,
   RegisterIcon,
   ReloadIcon,

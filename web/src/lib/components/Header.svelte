@@ -51,7 +51,8 @@
       <button
         tabindex="0"
         class="hover:ring-primary/40 ring-base-100 flex h-9 w-9 items-center justify-center rounded-full ring-2 transition-shadow"
-        aria-label={accountLabel}>
+        aria-label={accountLabel}
+        onclick={(e) => e.currentTarget.focus()}>
         <AvatarGraphic thumbnail={$page.data.user?.thumbnail} height="h-9" width="w-9" />
       </button>
       <ul

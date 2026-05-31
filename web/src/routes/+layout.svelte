@@ -12,9 +12,9 @@
 
   let isWebApp: boolean = $state(false);
   if (browser) {
-    isWebApp =
-      window.matchMedia("(display-mode: standalone)").matches ||
-      (window.navigator as any).standalone;
+    isWebApp = true;
+      // window.matchMedia("(display-mode: standalone)").matches ||
+      // (window.navigator as any).standalone;
 
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker.register("/sw.js").catch((err) => {
@@ -29,7 +29,9 @@
   <div
     class={cn(
       "flex min-w-full grow",
-      isWebApp ? "min-h-main-content pb-webapp-menu" : "min-h-main-content-desktop"
+      isWebApp
+        ? "min-h-main-content pb-[calc(theme(spacing.webapp-menu)+env(safe-area-inset-bottom))]"
+        : "min-h-main-content-desktop"
     )}>
     {@render children?.()}
   </div>

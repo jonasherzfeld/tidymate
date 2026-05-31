@@ -17,7 +17,8 @@
       "Bash(sort -k2 -rn)",
       "Bash(sips -z 96 96 tidymate_logo.png --out tidymate_logo.png)",
       "Bash(sips -z 96 96 tidymate_logo_white.png --out tidymate_logo_white.png)",
-      "Bash(git checkout *)"
+      "Bash(git checkout *)",
+      "Bash(git add *)"
     ]
   }
 }

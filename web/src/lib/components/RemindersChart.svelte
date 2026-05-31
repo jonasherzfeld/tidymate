@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { BarChart } from "$lib/utils/charts.svelte";
+  import { BarChart, stackedBarRadius } from "$lib/utils/charts.svelte";
 
   let {
     reminders,
@@ -130,7 +130,9 @@
       ),
       backgroundColor: backgroundColor,
       borderColor: borderColor,
-      borderWidth: 1
+      borderWidth: 1,
+      borderRadius: stackedBarRadius(3),
+      borderSkipped: false
     };
   });
 </script>

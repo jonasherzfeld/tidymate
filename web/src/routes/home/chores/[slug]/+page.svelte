@@ -207,6 +207,7 @@
 
         <input
           type="text"
+          readonly
           class={cn(
             "input pika-single w-full",
             !deadline && "text-muted-foreground",

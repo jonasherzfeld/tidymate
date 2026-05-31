@@ -8,6 +8,32 @@ run() {
     # Ensure data directory exists
     mkdir -p /app/data
 
+    # Generate and persist server-identity secrets on first boot.
+    # These must survive restarts: rotating VAPID keys invalidates every
+    # existing browser push subscription, and rotating FLASK_SECRET_KEY
+    # invalidates every active session.
+    SECRETS_FILE="/app/data/secrets.env"
+    if [ ! -f "$SECRETS_FILE" ]; then
+        echo "Generating server secrets (first boot)..."
+        (
+            cd /app/server
+            python generate_vapid_keys.py | grep '^export VAPID_'
+            echo "export FLASK_SECRET_KEY=\"$(python -c 'import secrets; print(secrets.token_urlsafe(32))')\""
+        ) > "$SECRETS_FILE"
+        chmod 600 "$SECRETS_FILE"
+    fi
+    # shellcheck disable=SC1090
+    # Only apply persisted values for keys not already provided by the environment,
+    # so docker-compose `environment:` overrides still win.
+    while IFS= read -r line; do
+        key="${line#export }"
+        key="${key%%=*}"
+        if [ -z "${!key}" ]; then
+            eval "$line"
+            export "${key?}"
+        fi
+    done < "$SECRETS_FILE"
+
     # Run database migrations before starting the application
     echo "Checking database and running migrations..."
     cd /app/server/src

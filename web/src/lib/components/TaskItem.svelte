@@ -2,7 +2,14 @@
   import { enhance } from "$app/forms";
   import { invalidateAll } from "$app/navigation";
   import { cn } from "$lib/utils";
-  import { CalendarIcon, RedoIcon, MenuDots } from "$lib/utils/icons";
+  import {
+    CalendarIcon,
+    ChoresIcon,
+    MenuDots,
+    RedoIcon,
+    ReminderIcon,
+    TodoIcon
+  } from "$lib/utils/icons";
   import { Badge, Checkbox, IconButton, toast } from "$lib/components/ui";
   import AvatarGraphic from "./AvatarGraphic.svelte";
   import Dropdown from "./dropdown/Dropdown.svelte";
@@ -25,6 +32,7 @@
     deadline,
     frequencyDescription,
     daysSinceLastDone,
+    showKind = false,
     onCheck,
     onRemove
   }: {
@@ -38,6 +46,8 @@
     deadline?: string;
     frequencyDescription?: string;
     daysSinceLastDone?: number;
+    /** Show a small kind glyph (chore/reminder/todo) before the title — for mixed lists. */
+    showKind?: boolean;
     /** Called when the check succeeds. For todos the new `done` is passed; for recurring items
      *  the server returns updated deadline/last_done — handled at the list level via invalidateAll. */
     onCheck?: (next: boolean, payload?: unknown) => void;
@@ -46,6 +56,20 @@
 
   const routeRoot =
     kind === "todo" ? "/home/todo" : kind === "chore" ? "/home/chores" : "/home/reminders";
+
+  const kindMeta = {
+    chore: { icon: ChoresIcon, label: "Chore", tint: "bg-primary/10 text-primary ring-primary/20" },
+    reminder: {
+      icon: ReminderIcon,
+      label: "Reminder",
+      tint: "bg-secondary/10 text-secondary ring-secondary/20"
+    },
+    todo: {
+      icon: TodoIcon,
+      label: "Todo",
+      tint: "bg-base-content/10 text-base-content/70 ring-base-content/15"
+    }
+  }[kind];
   const checkAction = `${routeRoot}?/check_${kind}&id=${id}`;
   const deleteAction = `${routeRoot}?/delete_${kind}&id=${id}`;
   const editHref = `${routeRoot}/${id}`;
@@ -67,8 +91,8 @@
   let dueVariant: "neutral" | "info" | "warning" | "error" = $derived.by(() => {
     if (dueDays === undefined) return "neutral";
     if (dueDays < 0) return "error";
-    if (dueDays <= 1) return "warning";
-    if (dueDays <= 3) return "info";
+    if (dueDays < 1) return "warning";
+    if (dueDays < 2) return "info";
     return "neutral";
   });
 
@@ -144,6 +168,17 @@
 
   <div class="min-w-0 flex-1">
     <div class="flex items-center gap-2">
+      {#if showKind}
+        <span
+          title={kindMeta.label}
+          aria-label={kindMeta.label}
+          class={cn(
+            "inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-md ring-1 ring-inset",
+            kindMeta.tint
+          )}>
+          <kindMeta.icon class="h-3 w-3" />
+        </span>
+      {/if}
       {#if category}
         <Badge size="xs" class={cn("!ring-1 ring-inset", category.tint)}>
           <category.icon class="h-3 w-3" />

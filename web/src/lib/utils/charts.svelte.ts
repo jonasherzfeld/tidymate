@@ -2,6 +2,38 @@ import type { ChartConfiguration, Chart as ChartType } from "chart.js";
 
 type ChartCtor = typeof import("chart.js").Chart;
 
+/**
+ * Scriptable borderRadius for stacked bars: rounds only the outer corners of
+ * the whole stack (top of topmost non-zero segment, bottom of bottommost),
+ * leaving inner joins flat so the stack reads as a single rounded shape.
+ */
+export function stackedBarRadius(radius: number) {
+  return (ctx: any) => {
+    const { datasetIndex, dataIndex, chart } = ctx;
+    const datasets = chart.data.datasets;
+    let top = -1;
+    let bottom = -1;
+    for (let i = datasets.length - 1; i >= 0; i--) {
+      if ((datasets[i].data[dataIndex] as number) > 0) {
+        top = i;
+        break;
+      }
+    }
+    for (let i = 0; i < datasets.length; i++) {
+      if ((datasets[i].data[dataIndex] as number) > 0) {
+        bottom = i;
+        break;
+      }
+    }
+    if (datasetIndex === top && datasetIndex === bottom) return radius;
+    if (datasetIndex === top)
+      return { topLeft: radius, topRight: radius, bottomLeft: 0, bottomRight: 0 };
+    if (datasetIndex === bottom)
+      return { topLeft: 0, topRight: 0, bottomLeft: radius, bottomRight: radius };
+    return 0;
+  };
+}
+
 let chartPromise: Promise<ChartCtor> | null = null;
 
 function loadChart(): Promise<ChartCtor> {
