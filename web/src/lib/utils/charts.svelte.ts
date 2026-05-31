@@ -1,61 +1,79 @@
-import Chart from "chart.js/auto";
+import type { Chart as ChartType, ChartConfiguration } from "chart.js";
+
+type ChartCtor = typeof import("chart.js").Chart;
+
+let chartPromise: Promise<ChartCtor> | null = null;
+
+function loadChart(): Promise<ChartCtor> {
+  if (!chartPromise) {
+    chartPromise = import("chart.js").then(
+      ({ Chart, BarController, BarElement, CategoryScale, LinearScale, Tooltip, Legend }) => {
+        Chart.register(BarController, BarElement, CategoryScale, LinearScale, Tooltip, Legend);
+        return Chart;
+      }
+    );
+  }
+  return chartPromise;
+}
 
 export function BarChart(node: HTMLElement, config: any) {
-  let chart: Chart;
-  let canvas: HTMLCanvasElement;
+  let chart: ChartType | null = null;
+  let canvas: HTMLCanvasElement | null = null;
+  let destroyed = false;
+  let currentConfig = config;
 
-  function createChart() {
+  async function createChart() {
+    if (destroyed) return;
+    const Chart = await loadChart();
+    if (destroyed) return;
+
     if (chart) {
       chart.destroy();
+      chart = null;
     }
-    // Chart.defaults.color = "#FFF";
 
-    // Clear the node and create a new canvas
     node.innerHTML = "";
     canvas = document.createElement("canvas");
     node.appendChild(canvas);
 
-    if (config.datasets?.length > 0) {
-      chart = new Chart(canvas, {
-        // ← Use canvas, not node
-        type: "bar",
-        data: {
-          labels: config.labels,
-          datasets: config.datasets
-        },
-        options: config.options || {
-          responsive: true,
-          maintainAspectRatio: false,
-          scales: {
-            y: {
-              beginAtZero: true
-            }
-          }
+    if (!currentConfig.datasets?.length) return;
+
+    const chartConfig: ChartConfiguration<"bar"> = {
+      type: "bar",
+      data: {
+        labels: currentConfig.labels,
+        datasets: currentConfig.datasets
+      },
+      options: currentConfig.options || {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: { beginAtZero: true }
         }
-      });
-    }
+      }
+    };
+
+    chart = new Chart(canvas, chartConfig);
   }
 
   createChart();
 
   return {
     update(newConfig: any) {
+      currentConfig = newConfig;
       if (chart) {
-        // Update the chart data directly
         chart.data.labels = newConfig.labels;
         chart.data.datasets = newConfig.datasets;
-
-        // Re-render the chart
         chart.update("none");
       } else {
-        // If chart doesn't exist, create it
-        config = newConfig;
         createChart();
       }
     },
     destroy() {
+      destroyed = true;
       if (chart) {
         chart.destroy();
+        chart = null;
       }
     }
   };

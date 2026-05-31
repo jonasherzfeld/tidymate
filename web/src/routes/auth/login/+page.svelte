@@ -5,12 +5,16 @@
   let { data }: { data: PageData } = $props();
 </script>
 
-<div class="flex flex-col gap-4 lg:text-center">
-  <h1 class="text-4xl">Login</h1>
-  <div>
-    <LoginForm loginForm={data.loginForm} />
-    <p class="mt-2">
-      Have no account? <a href="/auth/register">Register here</a>.
-    </p>
-  </div>
+<div class="flex flex-col gap-2 text-left">
+  <h1 class="text-base-content text-3xl font-semibold tracking-tight">Welcome back</h1>
+  <p class="text-muted text-sm">Sign in to your Tidymate account.</p>
 </div>
+
+<div class="mt-8">
+  <LoginForm loginForm={data.loginForm} />
+</div>
+
+<p class="text-muted mt-6 text-center text-sm">
+  Don't have an account?
+  <a href="/auth/register" class="text-primary font-medium hover:underline">Register</a>
+</p>

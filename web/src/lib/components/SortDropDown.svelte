@@ -12,7 +12,7 @@
 </script>
 
 <Dropdown.Root>
-  <Dropdown.Trigger className="btn-sm border-neutral-200">
+  <Dropdown.Trigger className="btn-sm">
     <SortIcon class="h-4 w-4" />
   </Dropdown.Trigger>
   <Dropdown.Content>

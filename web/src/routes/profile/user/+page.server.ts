@@ -1,20 +1,14 @@
 import { BASE_API_URI, FETCH_ABORT_TIMEOUT_MS } from "$lib/utils/constants";
 import { emailSchema, firstNameSchema, lastNameSchema } from "$lib/utils/schemas";
-import { fail } from "@sveltejs/kit";
+import { fail, redirect } from "@sveltejs/kit";
 import { message, superValidate } from "sveltekit-superforms";
 import { zod } from "sveltekit-superforms/adapters";
 import type { PageServerLoad } from "./$types.js";
 
-export const load: PageServerLoad = async ({ locals }) => {
-  const emailForm = await superValidate(locals.user, zod(emailSchema));
-  const firstNameForm = await superValidate(locals.user, zod(firstNameSchema));
-  const lastNameForm = await superValidate(locals.user, zod(lastNameSchema));
-
-  return {
-    emailForm,
-    firstNameForm,
-    lastNameForm
-  };
+// GET requests redirect to the unified /profile page.
+// POST/form actions below remain so existing action URLs keep working.
+export const load: PageServerLoad = async () => {
+  redirect(302, "/profile");
 };
 
 export const actions = {
@@ -115,12 +109,6 @@ export const actions = {
     }
 
     return message(lastNameForm, "Email Updated!");
-  },
-
-  trigger_upload_image: async ({}) => {
-    return {
-      success: true
-    };
   },
 
   upload_image: async ({ request, fetch, cookies }) => {

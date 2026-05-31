@@ -1,12 +1,21 @@
 <script lang="ts">
   import type { Snippet } from "svelte";
+  import Logo from "$lib/components/Logo.svelte";
+  import RainbowText from "$lib/components/RainbowText.svelte";
 
   let { children }: { children: Snippet } = $props();
 </script>
 
-<div class="flex min-h-full w-full justify-center">
-  <div
-    class="justify-content bg-base-200 m-4 grid h-fit w-full grid-cols-1 content-between rounded-lg p-4 text-center sm:w-[350px]">
-    {@render children?.()}
+<div class="flex min-h-full w-full items-center justify-center">
+
+  <!-- Form panel -->
+  <div class="flex items-center justify-center px-6 py-12 w-full">
+    <div class="w-full max-w-sm">
+      <div class="mb-8 flex items-center gap-3 lg:hidden">
+        <Logo width="32px" />
+        <RainbowText plain classIn="text-xl font-semibold tracking-tight">Tidymate</RainbowText>
+      </div>
+      {@render children?.()}
+    </div>
   </div>
 </div>

@@ -154,11 +154,3 @@ export const reminderItemSchema = z
     }
   });
 export type ReminderItemSchema = typeof reminderItemSchema;
-
-export const houseRoomSchema = z.object({
-  room: z
-    .string()
-    .min(3, "Room name should be at least 3 characters")
-    .max(30, "Room name should be at most 30 characters")
-});
-export type HouseRoomSchema = typeof houseRoomSchema;

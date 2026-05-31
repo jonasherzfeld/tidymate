@@ -1,17 +1,22 @@
 <script lang="ts">
-  import AvatarGraphic from "$lib/components/AvatarGraphic.svelte";
+  import { Dialog } from "bits-ui";
+  import { fade, fly } from "svelte/transition";
+  import { cubicOut } from "svelte/easing";
+  import { X, Trash2 } from "lucide-svelte";
+  import { invalidateAll } from "$app/navigation";
   import { page } from "$app/stores";
   import { enhance } from "$app/forms";
-  import FilePond, { registerPlugin, supported } from "svelte-filepond";
+  import FilePond, { registerPlugin } from "svelte-filepond";
   import FilePondPluginImageExifOrientation from "filepond-plugin-image-exif-orientation";
   import FilePondPluginImagePreview from "filepond-plugin-image-preview";
   import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
   import FilePondPluginImageCrop from "filepond-plugin-image-crop";
   import FilePondPluginImageResize from "filepond-plugin-image-resize";
   import FilePondPluginImageTransform from "filepond-plugin-image-transform";
-  import { invalidateAll } from "$app/navigation";
+  import AvatarGraphic from "$lib/components/AvatarGraphic.svelte";
+  import { Button } from "$lib/components/ui";
+  import { toast } from "$lib/components/ui/toast.svelte";
 
-  // Register the plugins
   registerPlugin(
     FilePondPluginImageExifOrientation,
     FilePondPluginImagePreview,
@@ -21,153 +26,163 @@
     FilePondPluginImageTransform
   );
 
-  // a reference to the component, used to call FilePond methods
-  let pond;
-
-  // the name to use for the internal file input
-  let name = "filepond";
-
   let {
-    showModal = $bindable()
+    showModal = $bindable(),
+    actionBase = ""
   }: {
     showModal: boolean;
+    /** Optional absolute route prefix for form actions, e.g. "/profile/user".
+     *  Defaults to the current page (relative `?/`). */
+    actionBase?: string;
   } = $props();
 
-  let dialog: HTMLDialogElement;
+  let pond: any;
   let user = $derived($page.data.user);
-  let fileAdded = $state(false);
+  let busy = $state(false);
 
-  $effect(() => {
-    if (showModal) dialog.showModal();
-  });
-
-  const handleRemove = async ({}) => {
-    return async ({ result, update }) => {
-      if (result.status === 200) {
-        user.thumbnail = "";
-        pond.removeFiles();
-        invalidateAll();
-      } else {
-        update();
-      }
-    };
-  };
-
-  const handleUpload = async ({}) => {
-    return async ({ result, update }) => {
-      if (result.status === 200) {
-        user.thumbnail = result.data.thumbnail;
-        pond.processFiles();
-      } else {
-        update();
-      }
-    };
-  };
+  function closeSoon() {
+    invalidateAll().then(() => (showModal = false));
+  }
 </script>
 
-<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-<dialog
-  class="modal"
-  bind:this={dialog}
-  onclose={() => (showModal = false)}
-  onclick={(e) => {
-    if (e.target === dialog) dialog.close();
-  }}
-  onkeydown={(e) => {
-    if (e.key === "Escape") dialog.close();
-  }}>
-  <div class="modal-box">
-    <div class="modal-title">
-      <button
-        class="btn btn-circle btn-ghost btn-sm absolute top-2 right-2"
-        onclick={() => dialog.close()}>✕</button>
-    </div>
-
-    <div class="mr-4 ml-4 flex flex-col items-center gap-3 sm:flex-row">
-      <div class=" w-full items-center gap-2">
-        <FilePond
-          bind:this={pond}
-          {name}
-          server={{
-            url: "?/",
-            process: {
-              url: "upload_image",
-              method: "POST"
-            },
-            revert: {
-              url: "delete_image",
-              method: "POST"
-            }
-          }}
-          acceptedFileTypes={["image/png", "image/jpeg", "image/webp", "image/jpg"]}
-          allowMultiple={false}
-          allowProcess={false}
-          allowRevert={false}
-          allowRemove={true}
-          instantUpload={false}
-          maxFiles={1}
-          maxFileSize="5MB"
-          onerror={(error) => {
-            alert("Error processing image: " + error.message);
-            invalidateAll();
-          }}
-          onprocessfile={(error, file) => {
-            if (error) {
-              alert("Error processing image: " + error.message);
-            } else {
-              fileAdded = false;
-              pond.removeFiles();
-              invalidateAll();
-            }
-          }}
-          onprocessfilerevert={(file) => {
-            invalidateAll();
-          }}
-          onaddfile={(error, file) => {
-            if (error) {
-              console.error("Error adding file:", error);
-            } else {
-              fileAdded = true;
-            }
-          }}
-          onremovefile={() => {
-            fileAdded = false;
-          }}
-          labelIdle="Tap to add an image or drag and drop"
-          imageCropAspectRatio={"1:1"}
-          imageResizeTargetWidth={200}
-          imageResizeTargetHeight={200}
-          stylePanelLayout={"compact"}
-          labelFileLoading="Loading"
-          labelFileProcessing="Processing"
-          labelFileProcessingComplete="Processing complete"
-          labelFileProcessingAborted="Processing aborted"
-          labelFileProcessingError="Processing error" />
-        {#if fileAdded}
-          <form
-            class="flex w-full"
-            method="POST"
-            use:enhance={handleUpload}
-            enctype="multipart/form-data">
-            <button
-              class="btn btn-info btn-outline w-full"
-              formaction="?/trigger_upload_image"
-              type="submit">
-              Upload image
-            </button>
-          </form>
-        {:else if user.thumbnail}
-          <form
-            class="flex w-full"
-            method="POST"
-            use:enhance={handleRemove}
-            enctype="multipart/form-data">
-            <button class="btn btn-error w-full" formaction="?/delete_image" type="submit">
-              Remove image
-            </button>
-          </form>
+<Dialog.Root bind:open={showModal}>
+  <Dialog.Portal>
+    <Dialog.Overlay forceMount>
+      {#snippet child({ props, open })}
+        {#if open}
+          <div
+            {...props}
+            class="fixed inset-0 z-50 bg-black/40 backdrop-blur-[2px]"
+            transition:fade={{ duration: 160, easing: cubicOut }}>
+          </div>
         {/if}
-      </div>
-    </div>
-  </div>
-</dialog>
+      {/snippet}
+    </Dialog.Overlay>
+
+    <Dialog.Content forceMount>
+      {#snippet child({ props, open })}
+        {#if open}
+          <div
+            class="pointer-events-none fixed inset-0 z-50 flex items-end justify-center p-0 sm:items-center sm:p-4">
+            <div
+              {...props}
+              class="bg-base-100 border-neutral pointer-events-auto flex w-full flex-col rounded-t-box border shadow-[var(--shadow-lg)] sm:max-w-md sm:rounded-box"
+              transition:fly={{ y: 24, duration: 220, easing: cubicOut }}>
+              <!-- Header -->
+              <div class="border-neutral flex items-start justify-between gap-3 border-b p-5">
+                <div class="min-w-0">
+                  <Dialog.Title class="text-lg font-semibold tracking-tight">
+                    Profile photo
+                  </Dialog.Title>
+                  <Dialog.Description class="text-muted mt-1 text-xs">
+                    PNG, JPG, or WebP — square crop, up to 5&nbsp;MB
+                  </Dialog.Description>
+                </div>
+                <Dialog.Close
+                  class="text-muted hover:bg-base-200 hover:text-base-content -m-1 inline-flex h-8 w-8 items-center justify-center rounded-field transition-colors"
+                  aria-label="Close">
+                  <X class="h-4 w-4" />
+                </Dialog.Close>
+              </div>
+
+              <!-- Body -->
+              <div class="flex flex-col gap-5 p-5">
+                <div class="flex justify-center">
+                  <div
+                    class="bg-base-200 ring-base-100 outline-neutral rounded-full outline ring-4">
+                    <AvatarGraphic
+                      thumbnail={user?.thumbnail}
+                      height="h-24"
+                      width="w-24"
+                      textSize="text-3xl font-semibold" />
+                  </div>
+                </div>
+
+                <FilePond
+                  bind:this={pond}
+                  name="filepond"
+                  server={{
+                    url: `${actionBase}?/`,
+                    process: { url: "upload_image", method: "POST" },
+                    revert: { url: "delete_image", method: "POST" }
+                  }}
+                  acceptedFileTypes={["image/png", "image/jpeg", "image/webp", "image/jpg"]}
+                  allowMultiple={false}
+                  allowRevert={false}
+                  allowProcess={false}
+                  allowRemove={true}
+                  instantUpload={true}
+                  maxFiles={1}
+                  maxFileSize="5MB"
+                  imageCropAspectRatio={"1:1"}
+                  imageResizeTargetWidth={200}
+                  imageResizeTargetHeight={200}
+                  stylePanelLayout={"compact"}
+                  labelIdle={`Drop image here or <span class="filepond--label-action">browse</span>`}
+                  labelFileLoading="Loading"
+                  labelFileProcessing="Uploading"
+                  labelFileProcessingComplete="Done"
+                  labelFileProcessingAborted="Cancelled"
+                  labelFileProcessingError="Upload failed"
+                  onprocessfilestart={() => {
+                    busy = true;
+                  }}
+                  onprocessfile={(error: any) => {
+                    busy = false;
+                    if (error) {
+                      toast.error(
+                        "Upload failed",
+                        error?.main ?? error?.message ?? "Try a different image."
+                      );
+                      return;
+                    }
+                    toast.success("Profile photo updated");
+                    pond?.removeFiles?.();
+                    closeSoon();
+                  }}
+                  onerror={(error: any) => {
+                    busy = false;
+                    toast.error("Couldn't load image", error?.main ?? error?.message ?? "");
+                  }} />
+              </div>
+
+              <!-- Footer (only when there's a saved photo to remove) -->
+              {#if user?.thumbnail}
+                <div class="border-neutral flex items-center justify-between border-t p-4">
+                  <form
+                    method="POST"
+                    use:enhance={() => {
+                      busy = true;
+                      return async ({ result }) => {
+                        busy = false;
+                        if (result.status === 200) {
+                          user.thumbnail = "";
+                          pond?.removeFiles?.();
+                          toast.success("Profile photo removed");
+                          closeSoon();
+                        } else {
+                          toast.error("Couldn't remove photo");
+                        }
+                      };
+                    }}>
+                    <button
+                      type="submit"
+                      formaction={`${actionBase}?/delete_image`}
+                      disabled={busy}
+                      class="text-error hover:text-error/80 inline-flex items-center gap-1.5 text-sm font-medium disabled:opacity-50">
+                      <Trash2 class="h-4 w-4" />
+                      Remove photo
+                    </button>
+                  </form>
+                  <Button variant="ghost" size="sm" onclick={() => (showModal = false)}>
+                    Done
+                  </Button>
+                </div>
+              {/if}
+            </div>
+          </div>
+        {/if}
+      {/snippet}
+    </Dialog.Content>
+  </Dialog.Portal>
+</Dialog.Root>

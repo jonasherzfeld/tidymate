@@ -1,15 +1,47 @@
 <script lang="ts">
-  import MenuBlock from "./MenuBlock.svelte";
   import { page } from "$app/stores";
+  import { ROUTE_MAPPING, type RestrictionType } from "$lib/utils/constants";
   import { getRestrictionType } from "$lib/utils/helpers";
-  import type { RestrictionType } from "$lib/utils/constants";
+  import { cn } from "$lib/utils";
 
   let isLoggedIn: boolean = $derived($page.data.user ? true : false);
   let isInHouse: boolean = $derived($page.data.house ? true : false);
   let restrictionType: RestrictionType[] = $derived(getRestrictionType(isLoggedIn, isInHouse));
+
+  let menuItems = $derived(
+    ROUTE_MAPPING.filter(
+      (item) =>
+        item.position.includes("menu") &&
+        (restrictionType.includes(item.restricted) || item.restricted === "none")
+    )
+  );
+
+  function isActive(url: string): boolean {
+    const path = $page.url.pathname;
+    if (url === "/home") return path === "/home";
+    return path.startsWith(url);
+  }
 </script>
 
-<ul
-  class="menu menu-horizontal h-webapp-menu bg-base-300 fixed right-0 bottom-0 left-0 z-20 w-full justify-between gap-5 border-t-[1px] pr-5 pl-5 shadow-md">
-  <MenuBlock restricted={restrictionType} position={"menu"} buttonView={true} />
-</ul>
+<nav
+  class="bg-base-100 border-neutral fixed right-0 bottom-0 left-0 z-20 flex h-webapp-menu items-center justify-around border-t px-3 pb-[env(safe-area-inset-bottom)] shadow-[var(--shadow-md)]">
+  {#each menuItems as item}
+    {@const active = isActive(item.url)}
+    <a
+      href={item.url}
+      target={item.target}
+      class={cn(
+        "flex h-full flex-1 flex-col items-center justify-center gap-1 transition-colors",
+        active ? "text-primary" : "text-muted hover:text-base-content"
+      )}>
+      <span
+        class={cn(
+          "relative flex h-9 w-9 items-center justify-center rounded-full transition-all",
+          active && "bg-primary/10"
+        )}>
+        <item.icon class="h-5 w-5" />
+      </span>
+      <span class="text-[10px] font-medium">{item.title}</span>
+    </a>
+  {/each}
+</nav>

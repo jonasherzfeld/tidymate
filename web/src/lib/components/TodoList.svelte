@@ -1,12 +1,16 @@
 <script lang="ts">
   import type { PageData } from "../../routes/home/todo/$types.js";
   import { enhance } from "$app/forms";
-  import TodoItem from "$lib/components/TodoItem.svelte";
+  import { flip } from "svelte/animate";
+  import { fade } from "svelte/transition";
+  import TaskItem from "$lib/components/TaskItem.svelte";
   import SortDropDown from "$lib/components/SortDropDown.svelte";
   import FilterDropDown from "$lib/components/FilterDropDown.svelte";
-  import { ReloadIcon, UserIcon, DoneAllIcon, SearchIcon } from "$lib/utils/icons";
   import ToggleButton from "$lib/components/ToggleButton.svelte";
+  import { Button, EmptyState } from "$lib/components/ui";
+  import { ReloadIcon, UserIcon, DoneAllIcon, SearchIcon, TodoIcon } from "$lib/utils/icons";
   import { getUsernameById } from "$lib/utils/helpers";
+  import { cn } from "$lib/utils";
 
   let {
     data,
@@ -16,14 +20,19 @@
   let serverErrors: string = $state("");
   let showComplete: boolean = $state(false);
   let newTodoData: string = $state("");
+  let creating: boolean = $state(false);
 
-  let nameFilterFn: (value: string) => string | undefined = (value) => {
-    return getUsernameById(value, data.house.members);
-  };
+  const nameFilterFn = (value: string) => getUsernameById(value, data.house.members);
 
-  const handleSubmit = async ({}) => {
-    return async ({ result, update }) => {
-      serverErrors = result.data.errors;
+  let visibleTodos = $derived(
+    todoPageState.filteredSortedItems.filter((t) => !t.done || (t.done && showComplete))
+  );
+
+  const handleSubmit = async () => {
+    creating = true;
+    return async ({ result, update }: { result: any; update: () => Promise<void> }) => {
+      creating = false;
+      serverErrors = result.data?.errors ?? "";
       if (result.status === 200) {
         todoPageState.items.push(result.data.todo);
         todoPageState.history.push({
@@ -46,27 +55,27 @@
   };
 </script>
 
-<div class="flex min-h-full flex-col justify-between gap-3">
-  <div class="flex flex-col gap-3">
-    <div>
-      <label class="input input-sm input-bordered flex w-full grow items-center gap-2">
-        <SearchIcon />
-        <input
-          type="search"
-          class="grow"
-          placeholder="Search"
-          bind:value={todoPageState.searchText} />
-      </label>
-    </div>
-    <div class="flex w-full flex-row justify-between gap-2">
-      <div>
-        <a href="/home/todo" data-sveltekit-reload>
-          <button class="btn btn-outline btn-sm rounded-md border-neutral-200 shadow-sm">
-            <ReloadIcon class="h-4 w-4" />
-          </button>
-        </a>
-      </div>
-      <div class="flex w-full flex-row justify-end gap-2">
+<div class="flex min-h-full flex-col gap-4">
+  <!-- Toolbar -->
+  <div class="flex flex-col gap-2">
+    <label
+      class="border-neutral bg-base-100 focus-within:border-primary/60 flex w-full items-center gap-2 rounded-field border px-3 py-2 transition-colors">
+      <SearchIcon class="text-muted h-4 w-4" />
+      <input
+        type="search"
+        class="grow bg-transparent text-sm outline-none placeholder:text-base-content/40"
+        placeholder="Search todos"
+        bind:value={todoPageState.searchText} />
+    </label>
+
+    <div class="flex w-full items-center justify-between gap-2">
+      <a href="/home/todo" data-sveltekit-reload aria-label="Reload">
+        <Button variant="outline" size="sm">
+          <ReloadIcon class="h-4 w-4" />
+        </Button>
+      </a>
+
+      <div class="flex items-center gap-2">
         <FilterDropDown
           title="Assignee"
           values={todoPageState.filters[0].values}
@@ -78,85 +87,111 @@
         <SortDropDown
           bind:sortKey={todoPageState.sortBy}
           bind:sortOrder={todoPageState.sortOrder} />
+
         <ToggleButton
-          className={`btn shadow-sm btn-outline rounded-md btn-sm border-neutral-200 ${showComplete ? "bg-accent" : ""}`}
+          className={cn(
+            "btn btn-sm rounded-field border transition-colors",
+            showComplete
+              ? "border-primary bg-primary/10 text-primary"
+              : "border-neutral bg-base-100 hover:bg-base-200"
+          )}
           bind:isToggled={showComplete}>
           <DoneAllIcon class="h-4 w-4" />
         </ToggleButton>
       </div>
     </div>
-
-    <div class="flex flex-col">
-      {#if serverErrors}
-        <h1 class="step-subtitle text-error mt-2">
-          {serverErrors}
-        </h1>
-      {/if}
-      <div class="card card-bordered border-neutral bg-base-300 rounded-lg shadow-md">
-        <div class="flex flex-1 flex-col">
-          {#each todoPageState.filteredSortedItems as todo, id}
-            {#if !todo.done || (todo.done && showComplete)}
-              {#if todo && id !== 0}
-                <div class="divider m-0 h-1 p-0"></div>
-              {/if}
-              <TodoItem
-                {...todo}
-                onChange={(checked: boolean) => {
-                  todoPageState.items = todoPageState.items.map((t) =>
-                    t.id === todo.id ? { ...t, done: checked } : t
-                  );
-                  if (checked) {
-                    todoPageState.history = [
-                      ...todoPageState.history,
-                      {
-                        id: `temp-${Date.now()}`,
-                        event_type: "completed",
-                        item_id: todo.id,
-                        item_data: todo.data,
-                        item_type: "todo",
-                        item: todo,
-                        user_id: data.user.id,
-                        house_id: data.user.house_id,
-                        created_on: new Date().toISOString(),
-                        user: data.user
-                      } as History
-                    ];
-                  }
-                }}
-                onRemove={() => {
-                  todoPageState.items = todoPageState.items.filter((t) => t.id !== todo.id);
-                  todoPageState.history = [
-                    ...todoPageState.history,
-                    {
-                      id: `temp-${Date.now()}`,
-                      event_type: "deleted",
-                      item_id: todo.id,
-                      item_data: todo.data,
-                      item_type: "todo",
-                      item: todo,
-                      user_id: data.user.id,
-                      house_id: data.user.house_id,
-                      created_on: new Date().toISOString(),
-                      user: data.user
-                    } as History
-                  ];
-                }} />
-            {/if}
-          {/each}
-        </div>
-      </div>
-    </div>
   </div>
-  <div class={`card border-base-100 bg-base-300 sticky mb-3 flex w-full rounded-lg border-2 p-2`}>
+
+  {#if serverErrors}
+    <div class="bg-error/10 text-error border-error/20 rounded-field border px-3 py-2 text-sm">
+      {serverErrors}
+    </div>
+  {/if}
+
+  <!-- List -->
+  <div class="flex flex-1 flex-col gap-2">
+    {#if visibleTodos.length === 0}
+      <EmptyState
+        icon={TodoIcon}
+        title={todoPageState.searchText ? "No matches" : "Nothing to do — yet"}
+        description={todoPageState.searchText
+          ? "Try a different search term or clear filters."
+          : "Add your first todo with the input below."} />
+    {:else}
+      {#each visibleTodos as todo (todo.id)}
+        <div animate:flip={{ duration: 220 }} transition:fade={{ duration: 160 }}>
+          <TaskItem
+            id={todo.id}
+            title={todo.data}
+            done={todo.done}
+            kind="todo"
+            deadline={todo.deadline}
+            assigneeName={getUsernameById(todo.assignee, data.house.members)}
+            onCheck={(next) => {
+              todoPageState.items = todoPageState.items.map((t) =>
+                t.id === todo.id ? { ...t, done: next } : t
+              );
+              if (next) {
+                todoPageState.history = [
+                  ...todoPageState.history,
+                  {
+                    id: `temp-${Date.now()}`,
+                    event_type: "completed",
+                    item_id: todo.id,
+                    item_data: todo.data,
+                    item_type: "todo",
+                    item: todo,
+                    user_id: data.user.id,
+                    house_id: data.user.house_id,
+                    created_on: new Date().toISOString(),
+                    user: data.user
+                  } as History
+                ];
+              }
+            }}
+            onRemove={() => {
+              todoPageState.items = todoPageState.items.filter((t) => t.id !== todo.id);
+              todoPageState.history = [
+                ...todoPageState.history,
+                {
+                  id: `temp-${Date.now()}`,
+                  event_type: "deleted",
+                  item_id: todo.id,
+                  item_data: todo.data,
+                  item_type: "todo",
+                  item: todo,
+                  user_id: data.user.id,
+                  house_id: data.user.house_id,
+                  created_on: new Date().toISOString(),
+                  user: data.user
+                } as History
+              ];
+            }} />
+        </div>
+      {/each}
+    {/if}
+  </div>
+
+  <!-- Quick create -->
+  <div
+    class="bg-base-100 border-neutral sticky bottom-3 rounded-field border p-2 shadow-[var(--shadow-md)]">
     <form method="POST" use:enhance={handleSubmit}>
-      <div class="flex flex-row flex-wrap gap-2">
+      <div class="flex items-center gap-2">
         <input
           type="text"
-          class="input input-bordered flex w-fit grow"
-          placeholder="Create to-do"
+          class="grow bg-transparent px-2 py-1.5 text-sm outline-none placeholder:text-base-content/40"
+          placeholder="Add a new todo…"
           name="todo_data"
           bind:value={newTodoData} />
-        <button formaction="?/create_todo" class="btn btn-primary">Add</button>
+        <Button
+          variant="primary"
+          size="sm"
+          loading={creating}
+          disabled={!newTodoData.trim()}
+          type="submit"
+          formaction="?/create_todo">
+          Add
+        </Button>
       </div>
     </form>
   </div>

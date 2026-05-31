@@ -1,15 +1,13 @@
 <script lang="ts">
   import type { PageData } from "./$types.js";
   import ChoreList from "$lib/components/ChoreList.svelte";
-  import ChoreHistory from "$lib/components/items-page/ItemHistory.svelte";
-  import ChoreStats from "$lib/components/items-page/ItemStats.svelte";
-  import { StatisticsIcon, HistoryIcon, ChoresIcon } from "$lib/utils/icons.js";
+  import InsightsPanel from "$lib/components/InsightsPanel.svelte";
+  import { Button, SectionHeader } from "$lib/components/ui";
+  import { StatisticsIcon } from "$lib/utils/icons.js";
   import { onMount } from "svelte";
-  import { initializeFilterValues } from "$lib/utils/helpers";
-  import { byPropertiesOf } from "$lib/utils/helpers";
+  import { initializeFilterValues, byPropertiesOf } from "$lib/utils/helpers";
 
   let { data }: { data: PageData } = $props();
-  let activeTab: "chores" | "stats" | "history" = $state("chores");
 
   let chorePageState: ItemListState<Chore> = $state({
     items: [],
@@ -24,6 +22,8 @@
     filteredSortedItems: []
   });
 
+  let insightsOpen = $state(false);
+
   onMount(() => {
     chorePageState.items = data.chores;
     chorePageState.history = (data.history || []).filter((h) => h.item_type === "chore");
@@ -35,16 +35,12 @@
       .filter((chore: Chore) => {
         for (const filter of chorePageState.filters) {
           if (filter.selection.length > 0) {
-            if (!filter.selection.includes(chore[filter.property] as string)) {
-              return false;
-            }
+            if (!filter.selection.includes(chore[filter.property] as string)) return false;
           }
         }
-
         const matchesSearch =
           !chorePageState.searchText ||
           chore.data.toLowerCase().includes(chorePageState.searchText.toLowerCase());
-
         return matchesSearch;
       })
       .sort(
@@ -57,55 +53,21 @@
   });
 </script>
 
-<div class="flex min-h-full min-w-full flex-col justify-between gap-3">
-  <div role="tablist" class="tabs tabs-lifted">
-    <label class="tab">
-      <input
-        type="radio"
-        name="my_tabs_2"
-        role="tab"
-        class="tab"
-        aria-label="Chores"
-        bind:group={activeTab}
-        value="chores"
-        checked />
-      <ChoresIcon class="mr-2 h-4 w-4" />
-      Chores
-    </label>
-    <div role="tabpanel" class="tab-content bg-base-100 border-base-300 rounded-box p-2">
-      <ChoreList {data} bind:chorePageState />
-    </div>
+<div class="flex w-full flex-1 flex-col gap-5">
+  <SectionHeader title="Chores" subtitle="Recurring tasks shared with your house.">
+    {#snippet actions()}
+      <Button variant="outline" size="sm" onclick={() => (insightsOpen = true)}>
+        <StatisticsIcon class="h-4 w-4" />
+        Insights
+      </Button>
+    {/snippet}
+  </SectionHeader>
 
-    <label class="tab">
-      <input
-        type="radio"
-        name="my_tabs_2"
-        role="tab"
-        class="tab"
-        aria-label="Stats"
-        bind:group={activeTab}
-        value="stats" />
-      <StatisticsIcon class="mr-2 h-4 w-4" />
-      Stats
-    </label>
-    <div role="tabpanel" class="tab-content bg-base-100 border-base-300 rounded-box p-2">
-      <ChoreStats item_type="chore" itemPageState={chorePageState} />
-    </div>
-
-    <label class="tab">
-      <input
-        type="radio"
-        name="my_tabs_2"
-        role="tab"
-        class="tab"
-        aria-label="History"
-        bind:group={activeTab}
-        value="history" />
-      <HistoryIcon class="mr-2 h-4 w-4" />
-      History
-    </label>
-    <div role="tabpanel" class="tab-content bg-base-100 border-base-300 rounded-box p-2">
-      <ChoreHistory itemPageState={chorePageState} itemType="chore" />
-    </div>
-  </div>
+  <ChoreList {data} bind:chorePageState />
 </div>
+
+<InsightsPanel
+  bind:open={insightsOpen}
+  itemType="chore"
+  itemPageState={chorePageState}
+  title="Chore insights" />

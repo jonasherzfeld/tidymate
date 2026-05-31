@@ -7,15 +7,6 @@
   import SunIcon from "virtual:icons/mdi/weather-sunny";
   import MoonIcon from "virtual:icons/mdi/weather-night";
 
-  export function getValueForTheme(str: string) {
-    if (str === "dark") {
-      return "dracula";
-    } else if (str === "light") {
-      return "cupcake";
-    }
-    return str;
-  }
-
   let isDark: boolean = $state(
     browser ? document.documentElement.getAttribute("data-theme") === THEME_MAPPING.dark : false
   );
@@ -32,15 +23,18 @@
   };
 </script>
 
-<form method="POST" use:enhance={submitSetTheme}>
-  <li class="gap-8 text-base">
+<form method="POST" use:enhance={submitSetTheme} class="contents">
+  <li>
     <button
       type="submit"
-      formaction="/?/set_theme&theme={isDark ? 'light' : 'dark'}&redirectTo={$page.url.pathname}">
+      formaction="/?/set_theme&theme={isDark ? 'light' : 'dark'}&redirectTo={$page.url.pathname}"
+      class="text-base-content hover:bg-base-200 flex items-center gap-3 rounded-field px-3 py-2 text-sm transition-colors">
       {#if isDark}
-        <MoonIcon />Dark Mode
+        <SunIcon class="h-4 w-4" />
+        Light mode
       {:else}
-        <SunIcon />Light Mode
+        <MoonIcon class="h-4 w-4" />
+        Dark mode
       {/if}
     </button>
   </li>

@@ -4,20 +4,27 @@ import {
   BathroomIcon,
   BedroomIcon,
   ChoresIcon,
+  FinanceIcon,
   GeneralIcon,
+  HealthIcon,
   HouseCircleOutline,
   HouseIcon,
   InfoIcon,
   KitchenIcon,
+  LearningIcon,
   LivingRoomIcon,
   OfficeIcon,
   OutdoorIcon,
   RegisterIcon,
   ReminderIcon,
+  ShoppingIcon,
   SignIn,
   SignOut,
+  SocialIcon,
   TodoIcon,
-  UserCircleOutline
+  TravelIcon,
+  UserCircleOutline,
+  WorkIcon
 } from "$lib/utils/icons";
 import type { Component } from "svelte";
 
@@ -37,7 +44,7 @@ export const THEME_MAPPING = {
 export const PROTECTED_ROUTES_USER = ["/auth/logout", "/profile", "/home", "/auth/register/house"];
 
 // Routes that are protected and need a user to be assigned to a house
-export const PROTECTED_ROUTES_HOUSE = ["/profile/house", "/home"];
+export const PROTECTED_ROUTES_HOUSE = ["/profile", "/home"];
 
 export type HeaderMap = {
   key: string;
@@ -117,20 +124,11 @@ export const ROUTE_MAPPING: RouteMap[] = [
     target: "_blank"
   },
   {
-    url: "/profile/user",
-    title: "Your Profile",
+    url: "/profile",
+    title: "Settings",
     position: ["avatar_dropdown"],
     icon: UserCircleOutline,
     restricted: "logged_in",
-    publicType: "public",
-    target: ""
-  },
-  {
-    url: "/profile/house",
-    title: "Your House",
-    position: ["avatar_dropdown"],
-    icon: HouseCircleOutline,
-    restricted: "house_member",
     publicType: "public",
     target: ""
   },
@@ -202,65 +200,95 @@ export type CategoryConfig = {
   id: number;
   name: string;
   icon: Component;
+  /** Legacy solid-bg class — still used in a few places; prefer `tint`. */
   color: string;
+  /** Soft tinted classes for modern chips: bg + text + ring, with dark variants. */
+  tint: string;
+  /** rgba color used by chart.js datasets. */
   rgba_color: string;
 };
+
+const TINT = {
+  stone:
+    "bg-stone-100 text-stone-700 ring-stone-200 dark:bg-stone-800/60 dark:text-stone-100 dark:ring-stone-700",
+  sky: "bg-sky-100 text-sky-700 ring-sky-200 dark:bg-sky-900/40 dark:text-sky-200 dark:ring-sky-800",
+  amber:
+    "bg-amber-100 text-amber-800 ring-amber-200 dark:bg-amber-900/40 dark:text-amber-200 dark:ring-amber-800",
+  violet:
+    "bg-violet-100 text-violet-700 ring-violet-200 dark:bg-violet-900/40 dark:text-violet-200 dark:ring-violet-800",
+  emerald:
+    "bg-emerald-100 text-emerald-700 ring-emerald-200 dark:bg-emerald-900/40 dark:text-emerald-200 dark:ring-emerald-800",
+  rose: "bg-rose-100 text-rose-700 ring-rose-200 dark:bg-rose-900/40 dark:text-rose-200 dark:ring-rose-800",
+  green:
+    "bg-green-100 text-green-800 ring-green-200 dark:bg-green-900/40 dark:text-green-200 dark:ring-green-800",
+  indigo:
+    "bg-indigo-100 text-indigo-700 ring-indigo-200 dark:bg-indigo-900/40 dark:text-indigo-200 dark:ring-indigo-800"
+} as const;
+
 export const ROOM_CONFIG: CategoryConfig[] = [
   {
     id: 0,
     name: "General",
     icon: GeneralIcon,
     color: "bg-stone-500",
-    rgba_color: "rgba(120, 113, 108, 0.6)"
+    tint: TINT.stone,
+    rgba_color: "rgba(120, 113, 108, 0.65)"
   },
   {
     id: 1,
     name: "Bathroom",
     icon: BathroomIcon,
-    color: "bg-blue-500",
-    rgba_color: "rgba(59, 130, 246, 0.6)"
+    color: "bg-sky-500",
+    tint: TINT.sky,
+    rgba_color: "rgba(14, 165, 233, 0.65)"
   },
   {
     id: 2,
     name: "Bedroom",
     icon: BedroomIcon,
     color: "bg-amber-400",
-    rgba_color: "rgba(255, 185, 0, 0.6)"
+    tint: TINT.amber,
+    rgba_color: "rgba(245, 158, 11, 0.65)"
   },
   {
     id: 3,
     name: "Kitchen",
     icon: KitchenIcon,
     color: "bg-violet-500",
-    rgba_color: "rgba(139, 92, 246, 0.6)"
+    tint: TINT.violet,
+    rgba_color: "rgba(139, 92, 246, 0.65)"
   },
   {
     id: 4,
     name: "Living Room",
     icon: LivingRoomIcon,
-    color: "bg-lime-400",
-    rgba_color: "rgba(163, 230, 53, 0.6)"
+    color: "bg-emerald-500",
+    tint: TINT.emerald,
+    rgba_color: "rgba(16, 185, 129, 0.65)"
   },
   {
     id: 5,
     name: "Office",
     icon: OfficeIcon,
     color: "bg-rose-400",
-    rgba_color: "rgba(251, 113, 133, 0.6)"
+    tint: TINT.rose,
+    rgba_color: "rgba(244, 114, 182, 0.65)"
   },
   {
     id: 6,
     name: "Outdoor",
     icon: OutdoorIcon,
     color: "bg-green-700",
-    rgba_color: "rgba(21, 128, 61, 0.6)"
+    tint: TINT.green,
+    rgba_color: "rgba(34, 197, 94, 0.65)"
   },
   {
     id: 7,
     name: "House",
     icon: HouseIcon,
     color: "bg-indigo-700",
-    rgba_color: "rgba(48, 63, 159, 0.6)"
+    tint: TINT.indigo,
+    rgba_color: "rgba(99, 102, 241, 0.65)"
   }
 ];
 
@@ -270,55 +298,63 @@ export const CATEGORY_CONFIG: CategoryConfig[] = [
     name: "General",
     icon: GeneralIcon,
     color: "bg-stone-500",
-    rgba_color: "rgba(120, 113, 108, 0.6)"
+    tint: TINT.stone,
+    rgba_color: "rgba(120, 113, 108, 0.65)"
   },
   {
     id: 1,
     name: "Social",
-    icon: GeneralIcon,
-    color: "bg-blue-500",
-    rgba_color: "rgba(59, 130, 246, 0.6)"
+    icon: SocialIcon,
+    color: "bg-sky-500",
+    tint: TINT.sky,
+    rgba_color: "rgba(14, 165, 233, 0.65)"
   },
   {
     id: 2,
     name: "Learning",
-    icon: GeneralIcon,
+    icon: LearningIcon,
     color: "bg-amber-400",
-    rgba_color: "rgba(255, 185, 0, 0.6)"
+    tint: TINT.amber,
+    rgba_color: "rgba(245, 158, 11, 0.65)"
   },
   {
     id: 3,
     name: "Work",
-    icon: GeneralIcon,
+    icon: WorkIcon,
     color: "bg-violet-500",
-    rgba_color: "rgba(139, 92, 246, 0.6)"
+    tint: TINT.violet,
+    rgba_color: "rgba(139, 92, 246, 0.65)"
   },
   {
     id: 4,
     name: "Health",
-    icon: GeneralIcon,
-    color: "bg-lime-400",
-    rgba_color: "rgba(163, 230, 53, 0.6)"
+    icon: HealthIcon,
+    color: "bg-emerald-500",
+    tint: TINT.emerald,
+    rgba_color: "rgba(16, 185, 129, 0.65)"
   },
   {
     id: 5,
     name: "Finance",
-    icon: GeneralIcon,
+    icon: FinanceIcon,
     color: "bg-rose-400",
-    rgba_color: "rgba(251, 113, 133, 0.6)"
+    tint: TINT.rose,
+    rgba_color: "rgba(244, 114, 182, 0.65)"
   },
   {
     id: 6,
     name: "Shopping",
-    icon: GeneralIcon,
+    icon: ShoppingIcon,
     color: "bg-indigo-700",
-    rgba_color: "rgba(48, 63, 159, 0.6)"
+    tint: TINT.indigo,
+    rgba_color: "rgba(99, 102, 241, 0.65)"
   },
   {
     id: 7,
     name: "Travel",
-    icon: GeneralIcon,
+    icon: TravelIcon,
     color: "bg-green-700",
-    rgba_color: "rgba(21, 128, 61, 0.6)"
+    tint: TINT.green,
+    rgba_color: "rgba(34, 197, 94, 0.65)"
   }
 ];

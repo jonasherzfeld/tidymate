@@ -4,6 +4,7 @@
   import { browser } from "$app/environment";
   import "../app.css";
   import WebAppMenuBar from "$lib/components/WebAppMenuBar.svelte";
+  import { Toaster } from "$lib/components/ui";
   import { setContext } from "svelte";
   import { cn } from "$lib/utils";
 
@@ -15,7 +16,6 @@
       window.matchMedia("(display-mode: standalone)").matches ||
       (window.navigator as any).standalone;
 
-    // Register service worker for push notifications
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker.register("/sw.js").catch((err) => {
         console.warn("Service worker registration failed:", err);
@@ -25,7 +25,6 @@
   setContext("webapp", () => isWebApp);
 </script>
 
-<!-- Removed loading spinner to prevent CLS - content renders immediately -->
 <Sidebar>
   <div
     class={cn(
@@ -38,3 +37,5 @@
 {#if isWebApp}
   <WebAppMenuBar />
 {/if}
+
+<Toaster />

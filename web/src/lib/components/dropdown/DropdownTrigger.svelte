@@ -12,7 +12,7 @@
 
 <button
   tabindex="0"
-  class={`btn btn-outline border-base-300 rounded-md shadow-sm ${className}`}
+  class={`btn btn-outline border-neutral rounded-field shadow-[var(--shadow-xs)] hover:bg-base-200 hover:border-base-content/20 ${className}`}
   {...others}>
   {@render children?.()}
 </button>

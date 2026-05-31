@@ -2,101 +2,171 @@
 @import "filepond/dist/filepond.css";
 @import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
 @plugin "daisyui";
+
+/* -------------------------------------------------------------------------- */
+/* Tidymate design system                                                     */
+/* Linear / Things-inspired: warm-neutral surfaces, indigo primary,           */
+/* coral accent, hairline borders, generous radius, soft elevation.           */
+/* -------------------------------------------------------------------------- */
+
 @plugin "daisyui/theme" {
   name: "cupcake";
   default: true;
-  /* prefersdark: false; */
-  /* --color-neutral: #d1d5db, */
-  /* --rounded-box: "0.25rem", 
-  --rounded-btn: "0.25rem", 
-  --rounded-badge: "0.5rem", 
-  --border-btn: "1px", 
-  --tab-border: "1px",
-  --tab-radius: "0.25rem"  */
-  /* --color-neutral: oklch(85% 0.06 240); */
 
-  /* Color contrast fixes for WCAG AA compliance */
-  --color-accent: oklch(
-    65% 0.15 40
-  ); /* Darker orange for 3:1 contrast on light bg (was too light) */
-  --color-base-content: oklch(25% 0.02 280); /* Darker text for 4.5:1 contrast (stat titles) */
+  /* Surfaces — warm, low-chroma neutrals */
+  --color-base-100: oklch(99% 0.004 80);
+  --color-base-200: oklch(96.5% 0.006 80);
+  --color-base-300: oklch(93% 0.008 80);
+  --color-base-content: oklch(22% 0.02 270);
 
-  /* border radius */
-  --radius-selector: 1rem;
-  --radius-field: 0.25rem;
-  --radius-box: 0.5rem;
+  /* Brand: refined indigo / violet */
+  --color-primary: oklch(56% 0.18 270);
+  --color-primary-content: oklch(99% 0.004 80);
 
-  /* base sizes */
+  /* Secondary: soft sky */
+  --color-secondary: oklch(70% 0.11 220);
+  --color-secondary-content: oklch(22% 0.02 270);
+
+  /* Accent: warm coral (matches existing identity but cleaner) */
+  --color-accent: oklch(68% 0.17 30);
+  --color-accent-content: oklch(99% 0.004 80);
+
+  /* Neutral: hairline borders & muted text */
+  --color-neutral: oklch(86% 0.008 80);
+  --color-neutral-content: oklch(38% 0.02 270);
+
+  /* Semantic */
+  --color-info: oklch(65% 0.13 230);
+  --color-info-content: oklch(99% 0.004 80);
+  --color-success: oklch(62% 0.14 150);
+  --color-success-content: oklch(99% 0.004 80);
+  --color-warning: oklch(78% 0.15 80);
+  --color-warning-content: oklch(22% 0.02 270);
+  --color-error: oklch(60% 0.2 25);
+  --color-error-content: oklch(99% 0.004 80);
+
+  /* Radius scale — softer, more modern */
+  --radius-selector: 9999px;
+  --radius-field: 0.625rem;
+  --radius-box: 1rem;
+
+  /* Sizes */
   --size-selector: 0.25rem;
   --size-field: 0.25rem;
 
-  /* border size */
+  /* Borders */
   --border: 1px;
 }
+
 @plugin "daisyui/theme" {
   name: "dracula";
-  /* default: false; */
-  /* prefersdark: true; */
-  /* --color-neutral: #4b5563, */
-  /* --rounded-box: "0.25rem", 
-  --rounded-btn: "0.25rem", 
-  --rounded-badge: "0.5rem", 
-  --border-btn: "1px", 
-  --tab-border: "1px",
-  --tab-radius: "0.25rem"  */
 
-  /* --color-neutral: oklch(85% 0.06 240); */
+  /* Surfaces — deep indigo-black with subtle warmth */
+  --color-base-100: oklch(18% 0.014 270);
+  --color-base-200: oklch(22% 0.014 270);
+  --color-base-300: oklch(26% 0.014 270);
+  --color-base-content: oklch(96% 0.005 80);
 
-  /* border radius */
-  --radius-selector: 1rem;
-  --radius-field: 0.25rem;
-  --radius-box: 0.5rem;
+  /* Brand: brighter indigo for contrast on dark */
+  --color-primary: oklch(74% 0.17 270);
+  --color-primary-content: oklch(15% 0.012 270);
 
-  /* base sizes */
+  --color-secondary: oklch(74% 0.11 220);
+  --color-secondary-content: oklch(15% 0.012 270);
+
+  --color-accent: oklch(76% 0.15 30);
+  --color-accent-content: oklch(15% 0.012 270);
+
+  --color-neutral: oklch(32% 0.014 270);
+  --color-neutral-content: oklch(72% 0.015 270);
+
+  --color-info: oklch(72% 0.13 230);
+  --color-info-content: oklch(15% 0.012 270);
+  --color-success: oklch(70% 0.14 150);
+  --color-success-content: oklch(15% 0.012 270);
+  --color-warning: oklch(80% 0.14 80);
+  --color-warning-content: oklch(15% 0.012 270);
+  --color-error: oklch(68% 0.19 25);
+  --color-error-content: oklch(15% 0.012 270);
+
+  --radius-selector: 9999px;
+  --radius-field: 0.625rem;
+  --radius-box: 1rem;
+
   --size-selector: 0.25rem;
   --size-field: 0.25rem;
 
-  /* border size */
   --border: 1px;
 }
+
 @custom-variant dark (&:where([data-theme=dracula], [data-theme=dracula] *));
 
 @config '../tailwind.config.js';
 
-/* html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    overflow-x: hidden;
-  } */
+/* -------------------------------------------------------------------------- */
+/* Custom theme variables (elevation, motion)                                 */
+/* -------------------------------------------------------------------------- */
 
-/*
-  The default border color has changed to `currentcolor` in Tailwind CSS v4,
-  so we've added these compatibility styles to make sure everything still
-  looks the same as it did with Tailwind CSS v3.
+:root,
+[data-theme="cupcake"] {
+  --shadow-xs: 0 1px 2px rgb(20 22 30 / 0.04);
+  --shadow-sm:
+    0 1px 3px rgb(20 22 30 / 0.06), 0 1px 2px rgb(20 22 30 / 0.04);
+  --shadow-md:
+    0 4px 12px -2px rgb(20 22 30 / 0.08), 0 2px 4px rgb(20 22 30 / 0.04);
+  --shadow-lg: 0 16px 40px -8px rgb(20 22 30 / 0.14);
+  --shadow-focus: 0 0 0 3px oklch(56% 0.18 270 / 0.22);
 
-  If we ever want to remove these styles, we need to add an explicit border
-  color utility to any element that depends on these defaults.
-*/
+  --ease-smooth: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --ease-springy: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  --duration-quick: 120ms;
+  --duration-base: 180ms;
+  --duration-slow: 280ms;
+}
+
+[data-theme="dracula"] {
+  --shadow-xs: 0 1px 2px rgb(0 0 0 / 0.4);
+  --shadow-sm:
+    0 1px 3px rgb(0 0 0 / 0.45), 0 1px 2px rgb(0 0 0 / 0.35);
+  --shadow-md:
+    0 4px 14px -2px rgb(0 0 0 / 0.5), 0 2px 4px rgb(0 0 0 / 0.3);
+  --shadow-lg: 0 18px 44px -8px rgb(0 0 0 / 0.6);
+  --shadow-focus: 0 0 0 3px oklch(74% 0.17 270 / 0.32);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Base layer                                                                 */
+/* -------------------------------------------------------------------------- */
+
 @layer base {
   *,
   ::after,
   ::before,
   ::backdrop,
   ::file-selector-button {
-    border-color: var(--color-gray-200, currentcolor);
+    border-color: var(--color-neutral, currentcolor);
+  }
+
+  html {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    font-feature-settings:
+      "cv11",
+      "ss01",
+      "ss03";
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   /* CLS Prevention: Reserve space for images */
   img {
-    /* Prevent layout shift by maintaining aspect ratio */
     height: auto;
-    /* Optimize image rendering */
-    image-rendering: -webkit-optimize-contrast;
-    image-rendering: crisp-edges;
   }
 
-  /* Ensure avatar images maintain aspect ratio and size */
   img[class*="avatar"],
   .mask img {
     aspect-ratio: 1 / 1;
@@ -105,18 +175,118 @@
     height: auto;
   }
 
-  /* Reserve minimum height for stat cards to prevent shift */
-  .stats .stat {
-    min-height: 8rem;
+  /* Smooth theme transitions */
+  :where(html) {
+    transition:
+      background-color var(--duration-base) var(--ease-smooth),
+      color var(--duration-base) var(--ease-smooth);
   }
 
-  /* Prevent card body shifts */
-  .card-body {
-    min-height: fit-content;
+  /* Focus rings — consistent across all focusable elements */
+  :where(button, [role="button"], a, input, select, textarea, [tabindex])
+    :focus-visible {
+    outline: none;
+  }
+  :where(button, [role="button"], a, input, select, textarea, [tabindex]):focus-visible {
+    box-shadow: var(--shadow-focus);
+    outline: none;
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* Reusable utility classes                                                   */
+/* -------------------------------------------------------------------------- */
+
+@layer components {
+  .surface-card {
+    background-color: var(--color-base-100);
+    border: 1px solid var(--color-neutral);
+    border-radius: var(--radius-box);
+    box-shadow: var(--shadow-sm);
   }
 
-  /* Ensure leaderboard cards have consistent height */
-  .space-y-3 > .card {
-    min-height: 5rem;
+  .surface-card-hover {
+    transition:
+      box-shadow var(--duration-base) var(--ease-smooth),
+      transform var(--duration-base) var(--ease-smooth),
+      border-color var(--duration-base) var(--ease-smooth);
+  }
+  .surface-card-hover:hover {
+    box-shadow: var(--shadow-md);
+    border-color: color-mix(in oklab, var(--color-neutral), var(--color-base-content) 8%);
+  }
+
+  .hairline {
+    border: 1px solid var(--color-neutral);
+  }
+
+  .text-muted {
+    color: var(--color-neutral-content);
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* FilePond — blend into the design system                                    */
+/* -------------------------------------------------------------------------- */
+.filepond--root {
+  margin: 0;
+  font-family: inherit;
+}
+
+.filepond--panel-root {
+  background-color: var(--color-base-200);
+  border: 1px dashed var(--color-neutral);
+  border-radius: var(--radius-field);
+  transition:
+    border-color var(--duration-base) var(--ease-smooth),
+    background-color var(--duration-base) var(--ease-smooth);
+}
+.filepond--root:hover .filepond--panel-root,
+.filepond--root[data-hopper-state="drag-over"] .filepond--panel-root {
+  border-color: var(--color-primary);
+  background-color: var(--color-base-100);
+}
+
+.filepond--drop-label {
+  color: var(--color-neutral-content);
+  font-size: 0.875rem;
+  min-height: 5.5rem;
+}
+.filepond--label-action {
+  color: var(--color-primary);
+  font-weight: 500;
+  text-decoration: none;
+  border-bottom: none;
+}
+
+.filepond--credits {
+  display: none;
+}
+
+.filepond--item-panel {
+  background-color: var(--color-primary);
+  border-radius: var(--radius-field);
+}
+
+.filepond--file-action-button {
+  background-color: rgb(255 255 255 / 0.92);
+  color: var(--color-base-content);
+  box-shadow: var(--shadow-xs);
+}
+.filepond--file-action-button:hover,
+.filepond--file-action-button:focus {
+  background-color: white;
+}
+
+.filepond--drip-blob {
+  background-color: var(--color-primary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
   }
 }
