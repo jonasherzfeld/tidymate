@@ -52,6 +52,15 @@ import GeneralIcon from "virtual:icons/mdi/tools";
 import OfficeIcon from "virtual:icons/mdi/work";
 // import HouseIcon from "virtual:icons/mdi/house";
 
+// Reminder category icons
+import SocialIcon from "virtual:icons/mdi/account-group";
+import TravelIcon from "virtual:icons/mdi/airplane";
+import WorkIcon from "virtual:icons/mdi/briefcase";
+import ShoppingIcon from "virtual:icons/mdi/cart";
+import FinanceIcon from "virtual:icons/mdi/cash";
+import HealthIcon from "virtual:icons/mdi/heart-pulse";
+import LearningIcon from "virtual:icons/mdi/school";
+
 export {
   BathroomIcon,
   BedroomIcon,
@@ -68,8 +77,10 @@ export {
   DoneAllIcon,
   EditIcon,
   EmailIcon,
+  FinanceIcon,
   GeneralIcon,
   GithubIcon,
+  HealthIcon,
   HistoryIcon,
   HouseCircleOutline,
   HouseIcon,
@@ -77,6 +88,7 @@ export {
   InfoIcon,
   JSIcon,
   KitchenIcon,
+  LearningIcon,
   LinkedInIcon,
   LivingRoomIcon,
   MenuDots,
@@ -90,8 +102,10 @@ export {
   ReminderIcon,
   RoomFilterIcon,
   SearchIcon,
+  ShoppingIcon,
   SignIn,
   SignOut,
+  SocialIcon,
   SortIcon,
   StatisticsIcon,
   SubmitIcon,
@@ -100,6 +114,8 @@ export {
   TextIcon,
   ThemeIcon,
   TodoIcon,
+  TravelIcon,
   UserCircleOutline,
-  UserIcon
+  UserIcon,
+  WorkIcon
 };

@@ -27,7 +27,7 @@
 </script>
 
 <div>
-  <h2 class="mt-5 mb-2">Invite friends to your house</h2>
+  <h2 class="mb-2">Invite friends to your house</h2>
   <div class="join">
     <input
       disabled
@@ -52,7 +52,7 @@
           ></g
         ></svg>
     </button>
-    <form action="?/toggle_join_id" method="POST" use:joinidEnhance>
+    <form action="/profile/house?/toggle_join_id" method="POST" use:joinidEnhance>
       <button
         class="btn btn-accent join-item rounded-r-full border-none"
         disabled={creatingJoinId || !$page.data.user.is_admin}>

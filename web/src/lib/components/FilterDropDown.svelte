@@ -22,7 +22,7 @@
 </script>
 
 <Dropdown>
-  <DropdownTrigger className="btn-sm border-neutral-200">
+  <DropdownTrigger className="btn-sm">
     {@render children?.()}
   </DropdownTrigger>
   <DropdownContent>

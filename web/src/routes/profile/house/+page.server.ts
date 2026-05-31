@@ -3,58 +3,16 @@ import {
   houseCitySchema,
   houseCountrySchema,
   houseJoinIdSchema,
-  houseNamechema,
-  houseRoomSchema
+  houseNamechema
 } from "$lib/utils/schemas";
-import type { Cookies } from "@sveltejs/kit";
-import { fail } from "@sveltejs/kit";
+import { fail, redirect } from "@sveltejs/kit";
 import { message, superValidate } from "sveltekit-superforms";
 import { zod } from "sveltekit-superforms/adapters";
 
-async function get_house_members(cookies: Cookies): Promise<User[]> {
-  const requestInitOptions: RequestInit = {
-    method: "GET",
-    credentials: "include",
-    headers: {
-      "Content-Type": "application/json",
-      Cookie: `session=${cookies.get("session")}`
-    },
-    signal: AbortSignal.timeout(FETCH_ABORT_TIMEOUT_MS)
-  };
-
-  const res = await fetch(`${BASE_API_URI}/auth/get-house-members`, requestInitOptions);
-
-  if (!res.ok) {
-    return [] as User[];
-  }
-
-  try {
-    const response = await res.json();
-    return response.user_list as User[];
-  } catch {
-    return [] as User[];
-  }
-}
-
-export const load = async ({ locals, cookies }) => {
-  const nameForm = await superValidate(locals.house, zod(houseNamechema));
-  const cityForm = await superValidate(locals.house, zod(houseCitySchema));
-  const countryForm = await superValidate(locals.house, zod(houseCountrySchema));
-  const newRoomForm = await superValidate(zod(houseRoomSchema));
-  const editRoomForm = await superValidate(zod(houseRoomSchema));
-  const joinIdForm = await superValidate(locals.house, zod(houseJoinIdSchema));
-  return {
-    streamed: {
-      user_list: get_house_members(cookies)
-    },
-    nameForm,
-    cityForm,
-    countryForm,
-    newRoomForm,
-    editRoomForm,
-    joinIdForm,
-    house: locals.house
-  };
+// GET requests redirect to the unified /profile page.
+// POST/form actions below remain so existing action URLs keep working.
+export const load = async () => {
+  redirect(302, "/profile");
 };
 
 export const actions = {
@@ -158,70 +116,6 @@ export const actions = {
     }
 
     return message(countryForm, "Country updated!");
-  },
-
-  create_room: async ({ request, fetch, cookies }) => {
-    const roomForm = await superValidate(request, zod(houseRoomSchema));
-
-    if (!roomForm.valid) return fail(400, { roomForm });
-
-    const requestInitOptions: RequestInit = {
-      method: "PATCH",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-        Cookie: `session=${cookies.get("session")}`
-      },
-      body: JSON.stringify({
-        name: roomForm.data.room
-      }),
-      signal: AbortSignal.timeout(FETCH_ABORT_TIMEOUT_MS)
-    };
-
-    const res = await fetch(`${BASE_API_URI}/auth/create-room`, requestInitOptions);
-
-    if (!res.ok) {
-      try {
-        const response = await res.json();
-        return fail(400, { roomForm, errors: response.error });
-      } catch {
-        return fail(500, { roomForm, errors: "Internal Error" });
-      }
-    }
-
-    return { roomForm };
-  },
-
-  edit_room: async ({ request, fetch, cookies }) => {
-    const roomForm = await superValidate(request, zod(houseRoomSchema));
-
-    if (!roomForm.valid) return fail(400, { roomForm });
-
-    const requestInitOptions: RequestInit = {
-      method: "PATCH",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-        Cookie: `session=${cookies.get("session")}`
-      },
-      body: JSON.stringify({
-        name: roomForm.data.room
-      }),
-      signal: AbortSignal.timeout(FETCH_ABORT_TIMEOUT_MS)
-    };
-
-    const res = await fetch(`${BASE_API_URI}/auth/create-room`, requestInitOptions);
-
-    if (!res.ok) {
-      try {
-        const response = await res.json();
-        return fail(400, { roomForm, errors: response.error });
-      } catch {
-        return fail(500, { roomForm, errors: "Internal Error" });
-      }
-    }
-
-    return { roomForm };
   },
 
   toggle_join_id: async ({ request, locals, cookies }) => {

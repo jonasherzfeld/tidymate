@@ -1,9 +1,8 @@
 <script lang="ts">
   import { superForm, type SuperValidated, type Infer } from "sveltekit-superforms";
   import type { LoginSchema } from "$lib/utils/schemas";
-  import TextInput from "$lib/components/TextInput.svelte";
+  import { Button, FloatingInput } from "$lib/components/ui";
   import { EmailIcon, PasswordIcon } from "$lib/utils/icons";
-
   import { page } from "$app/stores";
 
   let { loginForm }: { loginForm: SuperValidated<Infer<LoginSchema>> } = $props();
@@ -13,57 +12,57 @@
     },
     onUpdate: async ({ result }) => {
       isLoading = false;
-      serverErrors = result.data.errors;
+      serverErrors = (result.data as any)?.errors ?? "";
     }
   });
   let serverErrors: string = $state("");
   let isLoading: boolean = $state(false);
 </script>
 
-<form class="flex flex-col space-y-4" method="POST" action="?/login" use:enhance>
+<form class="flex flex-col gap-5" method="POST" action="?/login" use:enhance>
+  <input type="hidden" name="next" value={$page.url.searchParams.get("next")} />
+
   {#if serverErrors}
-    <h1 class="step-subtitle text-error mt-2">
+    <div class="bg-error/10 text-error border-error/20 rounded-field border px-3 py-2 text-sm">
       {serverErrors}
-    </h1>
+    </div>
   {/if}
-  <input
-    type="hidden"
-    name="next"
-    value={$page.url.searchParams.get("next")}
-    aria-invalid={$errors.email ? "true" : undefined} />
-  <div>
-    <TextInput
-      bind:value={$form.email}
-      type="text"
-      name="email"
-      placeholder="Email"
-      classIn={$errors.email ? "input-error" : ""}>
-      <EmailIcon class="h-4 w-4 opacity-60" />
-    </TextInput>
-    {#if $errors.email}<span class="invalid text-error ml-2 flex w-full text-start text-sm"
-        >{$errors.email}</span
-      >{/if}
-  </div>
-  <div>
-    <TextInput
-      bind:value={$form.password}
-      type="password"
-      name="password"
-      placeholder="Password"
-      classIn={$errors.password ? "input-error" : ""}>
-      <PasswordIcon class="h-4 w-4 opacity-60" />
-    </TextInput>
-    {#if $errors.password}<span class="invalid text-error ml-2 flex w-full text-start text-sm"
-        >{$errors.password}</span
-      >{/if}
-  </div>
-  <div>
-    <button class="btn btn-neutral w-full" disabled={isLoading}>
-      {#if !isLoading}
-        Login
-      {:else}
-        <span class="loading loading-spinner loading-lg"></span>
+
+  <div class="flex flex-col gap-3">
+    <div>
+      <FloatingInput
+        bind:value={$form.email}
+        type="email"
+        name="email"
+        label="Email"
+        autocomplete="username"
+        error={!!$errors.email}>
+        {#snippet leading()}
+          <EmailIcon class="h-4 w-4" />
+        {/snippet}
+      </FloatingInput>
+      {#if $errors.email}
+        <span class="text-error mt-1 ml-1 block text-xs">{$errors.email}</span>
       {/if}
-    </button>
+    </div>
+
+    <div>
+      <FloatingInput
+        bind:value={$form.password}
+        type="password"
+        name="password"
+        label="Password"
+        autocomplete="current-password"
+        error={!!$errors.password}>
+        {#snippet leading()}
+          <PasswordIcon class="h-4 w-4" />
+        {/snippet}
+      </FloatingInput>
+      {#if $errors.password}
+        <span class="text-error mt-1 ml-1 block text-xs">{$errors.password}</span>
+      {/if}
+    </div>
   </div>
+
+  <Button variant="primary" size="lg" block loading={isLoading} type="submit">Sign in</Button>
 </form>

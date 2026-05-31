@@ -79,7 +79,7 @@
       {priority}
       lazy={!priority}
       alt={firstName ? `${firstName}'s avatar` : "User avatar"}
-      class="avatar-image" />
+      class="h-full w-full object-cover" />
   {:else}
     <div
       class={`bg-primary flex items-center justify-center font-normal text-white ${height} ${width} ${textSize}`}>

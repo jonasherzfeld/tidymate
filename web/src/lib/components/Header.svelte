@@ -2,44 +2,76 @@
   import { page } from "$app/stores";
   import Logo from "./Logo.svelte";
   import AvatarGraphic from "./AvatarGraphic.svelte";
-  import { type RestrictionType } from "$lib/utils/constants";
   import MenuBlock from "./MenuBlock.svelte";
-  import { getRouteTitle, getRestrictionType } from "$lib/utils/helpers";
-  import RainbowText from "./RainbowText.svelte";
   import NotificationCenter from "./NotificationCenter.svelte";
+  import ThemeSwitch from "./ThemeSwitch.svelte";
+  import { type RestrictionType } from "$lib/utils/constants";
+  import { getRouteTitle, getRestrictionType } from "$lib/utils/helpers";
 
   let isLoggedIn: boolean = $derived($page.data.user ? true : false);
   let isHouseMember: boolean = $derived($page.data.house ? true : false);
   let menuRestriction: RestrictionType[] = $derived(getRestrictionType(isLoggedIn, isHouseMember));
   let headerTitle: string | undefined = $derived(getRouteTitle($page.route.id));
+  let accountLabel = $derived.by(() => {
+    const u = $page.data.user;
+    if (!u) return "Account menu";
+    const initials = `${u.first_name?.[0] ?? ""}${u.last_name?.[0] ?? ""}`.toUpperCase();
+    const name = `${u.first_name ?? ""} ${u.last_name ?? ""}`.trim();
+    return `${initials} — Account menu${name ? ` for ${name}` : ""}`;
+  });
 </script>
 
-<div class="navbar flex min-h-0 justify-between p-0 pr-3 pl-3">
-  <div class="flex w-fit">
+<div class="navbar flex min-h-0 justify-between gap-2 p-0 px-3">
+  <!-- Brand -->
+  <div class="flex w-fit shrink-0 items-center">
     <a
       href={menuRestriction.includes("house_member") ? "/home" : "/"}
-      class="btn btn-ghost mr-2 p-0 text-xl hover:border-transparent hover:bg-transparent hover:shadow-none">
-      <Logo width="30px" /><span class="hidden lg:block"
-        ><RainbowText plain>Tidymate</RainbowText></span
-      ></a>
+      class="hover:bg-base-200 rounded-field -ml-1 inline-flex items-center gap-2 px-2 py-1.5 transition-colors">
+      <Logo width="28px" />
+      <span class="text-base-content hidden text-base font-semibold tracking-tight lg:block">
+        Tidymate
+      </span>
+    </a>
   </div>
-  <div class="justify-left -z-10 w-fit flex-1 pl-2 font-sans text-xl lg:hidden">
+
+  <!-- Page title (mobile) -->
+  <div class="text-base-content min-w-0 flex-1 truncate pl-1 text-sm font-medium lg:hidden">
     {#if headerTitle}
       {headerTitle}
     {/if}
   </div>
-  <div class="flex w-fit items-center justify-end gap-4">
+
+  <!-- Actions -->
+  <div class="flex w-fit shrink-0 items-center gap-4">
     {#if isLoggedIn}
       <NotificationCenter notifications={$page.data.notifications} />
     {/if}
+
     <div class="dropdown dropdown-end">
-      <div tabindex="0" role="button" class="avatar btn btn-circle btn-ghost hover:bg-secondary">
-        <AvatarGraphic thumbnail={$page.data.user?.thumbnail} height="h-10" width="w-10" />
-      </div>
+      <button
+        tabindex="0"
+        class="hover:ring-primary/40 ring-base-100 flex h-9 w-9 items-center justify-center rounded-full ring-2 transition-shadow"
+        aria-label={accountLabel}>
+        <AvatarGraphic thumbnail={$page.data.user?.thumbnail} height="h-9" width="w-9" />
+      </button>
       <ul
         tabindex="-1"
-        class="menu dropdown-content rounded-box border-neutral bg-base-300 z-[1] mt-3 w-52 border-[1px] p-2 shadow-md">
+        class="menu dropdown-content border-neutral bg-base-100 rounded-box z-[5] mt-2 w-56 border p-1.5 shadow-[var(--shadow-lg)]">
+        {#if isLoggedIn && $page.data.user}
+          <div class="flex flex-col gap-0.5 px-3 py-2 active:!bg-transparent">
+            <span class="text-base-content text-sm font-medium">
+              {$page.data.user.first_name}
+              {$page.data.user.last_name}
+            </span>
+            <span class="text-muted text-xs">{$page.data.user.email}</span>
+          </div>
+          <li class="border-neutral my-1 border-t"></li>
+        {/if}
         <MenuBlock position="avatar_dropdown" restricted={menuRestriction} />
+        {#if isLoggedIn}
+          <li class="border-neutral my-1 border-t"></li>
+          <ThemeSwitch />
+        {/if}
       </ul>
     </div>
   </div>

@@ -11,7 +11,13 @@
       "Bash(python -c \"import ast; ast.parse\\(open\\('src/utils/utils.py'\\).read\\(\\)\\); ast.parse\\(open\\('src/routes/items/items.py'\\).read\\(\\)\\); ast.parse\\(open\\('src/routes/items/chores.py'\\).read\\(\\)\\); ast.parse\\(open\\('src/routes/items/reminders.py'\\).read\\(\\)\\); ast.parse\\(open\\('src/routes/notifications/notifications.py'\\).read\\(\\)\\); print\\('OK'\\)\")",
       "Bash(python3 -c \"import ast; ast.parse\\(open\\('src/utils/utils.py'\\).read\\(\\)\\); ast.parse\\(open\\('src/routes/items/items.py'\\).read\\(\\)\\); ast.parse\\(open\\('src/routes/items/chores.py'\\).read\\(\\)\\); ast.parse\\(open\\('src/routes/items/reminders.py'\\).read\\(\\)\\); ast.parse\\(open\\('src/routes/notifications/notifications.py'\\).read\\(\\)\\); print\\('OK'\\)\")",
       "Bash(npx svelte-kit *)",
-      "Bash(npx svelte-check *)"
+      "Bash(npx svelte-check *)",
+      "Bash(grep -v \":0$\")",
+      "Bash(PUBLIC_DEV_MODE=false npm run build)",
+      "Bash(sort -k2 -rn)",
+      "Bash(sips -z 96 96 tidymate_logo.png --out tidymate_logo.png)",
+      "Bash(sips -z 96 96 tidymate_logo_white.png --out tidymate_logo_white.png)",
+      "Bash(git checkout *)"
     ]
   }
 }

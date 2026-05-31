@@ -91,10 +91,13 @@ def get_personal_stats(user):
 @login_required
 def get_home_stats(user):
     """Get achievement stats for the home page."""
-    thirty_days_ago = (datetime.now(timezone.utc) -
-                       timedelta(days=30)).strftime("%Y-%m-%d %H:%M:%S")
+    now = datetime.now(timezone.utc)
+    thirty_days_ago_dt = now - timedelta(days=30)
+    thirty_days_ago = thirty_days_ago_dt.strftime("%Y-%m-%d %H:%M:%S")
+    fourteen_days_ago_dt = now - timedelta(days=13)
+    fourteen_days_ago = fourteen_days_ago_dt.strftime("%Y-%m-%d %H:%M:%S")
 
-    # Household completions (chores + todos)
+    # Household completions (chores + todos) for breakdowns/totals
     household_events = History.query.filter(
         and_(
             History.house_id == user.house_id,
@@ -157,6 +160,56 @@ def get_home_stats(user):
         strongest_category, strongest_category_count = category_counts.most_common(1)[
             0]
 
+    # Combined completions (household + personal reminders) for weekly view.
+    # Bucket by user-local date is impractical server-side; we bucket by UTC
+    # date which is good enough for the dashboard sparkline.
+    all_recent = [
+        e for e in household_events + reminder_events
+        if e.created_on >= fourteen_days_ago
+    ]
+
+    today_utc = now.date()
+    daily_counts = [0] * 14  # oldest -> newest
+    completions_by_date: dict[str, list[dict]] = {}
+    for e in all_recent:
+        try:
+            event_date = datetime.strptime(
+                e.created_on[:10], "%Y-%m-%d").date()
+        except (ValueError, TypeError):
+            continue
+        idx = 13 - (today_utc - event_date).days
+        if 0 <= idx < 14:
+            daily_counts[idx] += 1
+
+        # Extract item details for the per-day timeline.
+        try:
+            item_data = json.loads(
+                e.item_serialized) if e.item_serialized else {}
+        except (json.JSONDecodeError, TypeError):
+            item_data = {}
+        category = item_data.get("room") if e.item_type == "chore" \
+            else item_data.get("category") if e.item_type == "reminder" \
+            else None
+        date_key = event_date.isoformat()
+        completions_by_date.setdefault(date_key, []).append({
+            "id": e.item_id,
+            "name": e.item_data or item_data.get("data") or "",
+            "kind": e.item_type,
+            "category": (category or "").strip() or None,
+            "completed_at": e.created_on,
+        })
+
+    this_week_count = sum(daily_counts[7:])
+    prev_week_count = sum(daily_counts[:7])
+
+    # Streak: consecutive days ending today (or yesterday) with >=1 completion.
+    streak_days = 0
+    for c in reversed(daily_counts):
+        if c > 0:
+            streak_days += 1
+        else:
+            break
+
     return jsonify({
         "stats": {
             "household": {
@@ -176,6 +229,13 @@ def get_home_stats(user):
                 "strongest_category": strongest_category,
                 "strongest_category_count": strongest_category_count,
                 "category_breakdown": dict(category_counts),
+            },
+            "this_week": {
+                "completed_count": this_week_count,
+                "prev_week_count": prev_week_count,
+                "daily_counts": daily_counts,
+                "streak_days": streak_days,
+                "completions_by_date": completions_by_date,
             }
         }
     })
