@@ -13,8 +13,8 @@
   let isWebApp: boolean = $state(false);
   if (browser) {
     isWebApp = true;
-      // window.matchMedia("(display-mode: standalone)").matches ||
-      // (window.navigator as any).standalone;
+    // window.matchMedia("(display-mode: standalone)").matches ||
+    // (window.navigator as any).standalone;
 
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker.register("/sw.js").catch((err) => {

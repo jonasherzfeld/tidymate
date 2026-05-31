@@ -97,7 +97,7 @@
 
 <div
   class={cn(
-    "group bg-base-100 border-neutral relative flex items-start gap-3 rounded-field border px-3 py-3",
+    "group bg-base-100 border-neutral rounded-field relative flex items-start gap-3 border px-3 py-3",
     "transition-all duration-200 ease-[var(--ease-smooth)]",
     "hover:border-base-content/15 hover:shadow-[var(--shadow-sm)]"
   )}>
@@ -113,12 +113,12 @@
 
   <div class="min-w-0 flex-1">
     <div class="flex flex-wrap items-center gap-1.5">
-      <Badge size="xs" class={cn("ring-inset !ring-1", kindMeta.tint)}>
+      <Badge size="xs" class={cn("!ring-1 ring-inset", kindMeta.tint)}>
         <kindMeta.icon class="h-3 w-3" />
         {kindMeta.label}
       </Badge>
       {#if categoryConfig}
-        <Badge size="xs" class={cn("ring-inset !ring-1", categoryConfig.tint)}>
+        <Badge size="xs" class={cn("!ring-1 ring-inset", categoryConfig.tint)}>
           <categoryConfig.icon class="h-3 w-3" />
           {categoryConfig.name}
         </Badge>

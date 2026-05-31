@@ -60,9 +60,7 @@
 
   const handleDeleteHistory = async ({ cancel }) => {
     if (
-      !confirm(
-        `Clear all ${itemTypeLabel(itemType).toLowerCase()} history? This can't be undone.`
-      )
+      !confirm(`Clear all ${itemTypeLabel(itemType).toLowerCase()} history? This can't be undone.`)
     ) {
       return cancel();
     }
@@ -124,7 +122,7 @@
       {#each groupedHistory as { date, events } (date)}
         <section class="flex flex-col gap-2">
           <div class="flex items-center gap-2">
-            <h3 class="text-base-content text-sm font-semibold leading-none">
+            <h3 class="text-base-content text-sm leading-none font-semibold">
               {formatDate(date)}
             </h3>
             <Badge size="xs" variant="neutral">{events.length}</Badge>

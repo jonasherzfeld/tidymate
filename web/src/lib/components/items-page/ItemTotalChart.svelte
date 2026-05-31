@@ -95,9 +95,7 @@
 </script>
 
 <Card padding="md">
-  <SectionHeader
-    title={`Completed ${item_type}s`}
-    subtitle="Last 12 months." />
+  <SectionHeader title={`Completed ${item_type}s`} subtitle="Last 12 months." />
 
   <div
     use:BarChart={{
