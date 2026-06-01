@@ -4,10 +4,6 @@ import type { RequestHandler } from "./$types";
 
 export const POST: RequestHandler = async ({ request, cookies }) => {
   const session = cookies.get("session");
-  console.log(
-    `[PUSH PROXY] POST unsubscribe, session=${session ? "set" : "MISSING"}, backend=${BASE_API_URI}`
-  );
-
   const body = await request.json();
 
   const res = await fetch(`${BASE_API_URI}/notifications/push/unsubscribe`, {
@@ -21,11 +17,7 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
     signal: AbortSignal.timeout(FETCH_ABORT_TIMEOUT_MS)
   });
 
-  console.log(`[PUSH PROXY] unsubscribe backend response: ${res.status}`);
-
   if (!res.ok) {
-    const text = await res.text();
-    console.error(`[PUSH PROXY] unsubscribe failed: ${res.status} ${text}`);
     return json({ error: "Failed to unsubscribe" }, { status: res.status });
   }
 
