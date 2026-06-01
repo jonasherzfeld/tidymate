@@ -4,12 +4,7 @@ import type { RequestHandler } from "./$types";
 
 export const POST: RequestHandler = async ({ request, cookies }) => {
   const session = cookies.get("session");
-  console.log(
-    `[PUSH PROXY] POST subscribe, session=${session ? "set" : "MISSING"}, backend=${BASE_API_URI}`
-  );
-
   const body = await request.json();
-  console.log(`[PUSH PROXY] subscribe body keys:`, Object.keys(body));
 
   const res = await fetch(`${BASE_API_URI}/notifications/push/subscribe`, {
     method: "POST",
@@ -22,11 +17,7 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
     signal: AbortSignal.timeout(FETCH_ABORT_TIMEOUT_MS)
   });
 
-  console.log(`[PUSH PROXY] subscribe backend response: ${res.status}`);
-
   if (!res.ok) {
-    const text = await res.text();
-    console.error(`[PUSH PROXY] subscribe failed: ${res.status} ${text}`);
     return json({ error: "Failed to subscribe" }, { status: res.status });
   }
 

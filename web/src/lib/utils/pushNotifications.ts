@@ -42,9 +42,8 @@ export async function subscribeToPush(): Promise<boolean> {
     console.debug("[PUSH] Permission result:", permission);
     if (permission !== "granted") return false;
 
-    // Get VAPID public key via SvelteKit proxy (same origin, cookies work)
-    console.debug("[PUSH] Fetching VAPID public key from /api/push/vapid-public-key...");
-    const res = await fetch("/api/push/vapid-public-key");
+    console.debug("[PUSH] Fetching VAPID public key...");
+    const res = await fetch("/push-proxy/vapid-public-key");
     console.debug("[PUSH] VAPID key response:", res.status, res.statusText);
     if (!res.ok) {
       console.error("[PUSH] Failed to fetch VAPID key:", res.status, await res.text());
@@ -69,9 +68,8 @@ export async function subscribeToPush(): Promise<boolean> {
       subscription.endpoint.slice(0, 60) + "..."
     );
 
-    // Send subscription to backend via SvelteKit proxy
     console.debug("[PUSH] Sending subscription to backend...");
-    const subRes = await fetch("/api/push/subscribe", {
+    const subRes = await fetch("/push-proxy/subscribe", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ subscription: subscription.toJSON() })
@@ -102,7 +100,7 @@ export async function unsubscribeFromPush(): Promise<boolean> {
     }
 
     console.debug("[PUSH] Telling backend to remove subscription...");
-    const res = await fetch("/api/push/unsubscribe", {
+    const res = await fetch("/push-proxy/unsubscribe", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ endpoint: subscription.endpoint })

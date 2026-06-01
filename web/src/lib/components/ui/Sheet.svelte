@@ -29,9 +29,9 @@
   } = $props();
 
   const sideClasses: Record<Side, string> = {
-    right:
-      "fixed right-0 top-0 bottom-0 w-full max-w-md border-l border-neutral pt-[calc(env(safe-area-inset-top)+theme(spacing.header))]",
-    bottom: "fixed inset-x-0 bottom-0 max-h-[92dvh] w-full border-t border-neutral rounded-t-box"
+    right: "fixed right-0 top-0 bottom-0 w-full max-w-md border-l border-neutral",
+    bottom:
+      "fixed inset-x-0 bottom-0 max-h-[92dvh] w-full border-t border-neutral rounded-t-box"
   };
 
   const flyParams: Record<Side, { x?: number; y?: number; duration: number }> = {
@@ -72,7 +72,8 @@
             )}
             transition:fly={{ ...flyParams[side], easing: cubicOut }}>
             {#if title || description}
-              <div class="border-neutral flex items-start justify-between gap-3 border-b p-5">
+              <div
+                class="flex min-h-16 shrink-0 items-center justify-between gap-3 border-b border-neutral px-5 pt-safe-top pb-2">
                 <div class="min-w-0 flex-1">
                   {#if title}
                     <Dialog.Title class="text-lg font-semibold tracking-tight">
@@ -80,7 +81,7 @@
                     </Dialog.Title>
                   {/if}
                   {#if description}
-                    <Dialog.Description class="text-muted mt-1 text-sm">
+                    <Dialog.Description class="text-muted text-xs">
                       {description}
                     </Dialog.Description>
                   {/if}
