@@ -25,7 +25,7 @@ export const registerSchema = z
       .string()
       .min(12, "Join ID should have 12 characters")
       .max(12, "Join ID should have 12 characters")
-      .optional()
+      .default("")
   })
   .superRefine(({ confirm_password, password }, ctx) => {
     if (confirm_password !== password) {
