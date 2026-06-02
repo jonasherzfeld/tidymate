@@ -58,16 +58,29 @@
     kind === "todo" ? "/home/todo" : kind === "chore" ? "/home/chores" : "/home/reminders";
 
   const kindMeta = {
-    chore: { icon: ChoresIcon, label: "Chore", tint: "bg-primary/10 text-primary ring-primary/20" },
+    chore: {
+      icon: ChoresIcon,
+      label: "Chore",
+      tint: "bg-primary/10 text-primary ring-primary/20",
+      stripe: "border-l-primary",
+      hoverStripe: "hover:border-primary",
+      surface: "bg-primary/[0.09]"
+    },
     reminder: {
       icon: ReminderIcon,
       label: "Reminder",
-      tint: "bg-secondary/10 text-secondary ring-secondary/20"
+      tint: "bg-secondary/10 text-secondary ring-secondary/20",
+      stripe: "border-l-secondary",
+      hoverStripe: "hover:border-secondary",
+      surface: "bg-secondary/[0.09]"
     },
     todo: {
       icon: TodoIcon,
       label: "Todo",
-      tint: "bg-base-content/10 text-base-content/70 ring-base-content/15"
+      tint: "bg-base-content/10 text-base-content/70 ring-base-content/15",
+      stripe: "border-l-base-content/40",
+      hoverStripe: "hover:border-base-content/40",
+      surface: "bg-base-content/[0.035]"
     }
   }[kind];
   const checkAction = `${routeRoot}?/check_${kind}&id=${id}`;
@@ -147,9 +160,12 @@
 
 <div
   class={cn(
-    "group bg-base-100 border-neutral rounded-field relative flex items-start gap-3 border px-3 py-3 sm:px-4",
+    "group border-neutral rounded-field relative flex items-start gap-3 border border-l-[3px] py-3 pr-3 pl-3 sm:pr-4 sm:pl-4",
+    kindMeta.surface,
+    kindMeta.stripe,
     "transition-all duration-200 ease-[var(--ease-smooth)]",
-    "hover:border-base-content/15 hover:shadow-[var(--shadow-sm)]",
+    kindMeta.hoverStripe,
+    "hover:shadow-[var(--shadow-sm)]",
     displayedDone && "opacity-65"
   )}>
   <form class="mt-0.5 flex shrink-0" action={checkAction} method="POST" use:enhance={handleCheck}>
